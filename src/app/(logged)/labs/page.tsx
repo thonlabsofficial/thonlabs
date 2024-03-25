@@ -1,8 +1,10 @@
-import { Typo } from '@/ui/components/typo';
+import { Typo } from '@/ui/components/ui/typo';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Thon Labs',
+  title: {
+    absolute: 'Thon Labs',
+  },
 };
 
 export default function Home() {

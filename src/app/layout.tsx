@@ -1,5 +1,8 @@
+import '@/app/_core/globals.scss';
+
 import type { Metadata } from 'next';
-import '@/app/globals.scss';
+import CoreProvider from './_providers/core-provider';
+import { fonts } from '@/ui/fonts';
 
 export const metadata: Metadata = {
   title: {
@@ -18,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${fonts.className} bg-white dark:bg-background`}>
+        <CoreProvider>{children}</CoreProvider>
+      </body>
     </html>
   );
 }

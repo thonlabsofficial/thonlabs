@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PortalRootLayout({
+export default function LabsNestedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

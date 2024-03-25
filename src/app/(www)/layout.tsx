@@ -1,4 +1,4 @@
-export default function PublicRootLayout({
+export default function WWWNestedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
