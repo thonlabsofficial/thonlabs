@@ -4,8 +4,8 @@ import { cn } from '@/ui/utils';
 import { VariantProps, cva } from 'class-variance-authority';
 
 const inputVariants = cva(
-  `flex w-full rounded-md border border-input border-solid bg-transparent shadow-sm 
-	 placeholder:text-muted-foreground 
+  `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-input border-solid bg-transparent shadow-sm 
+	 placeholder:text-zinc-300 dark:placeholder:text-zinc-600
 	 transition-all duration-200 ease-in-out
 	 file:border-0 file:bg-transparent file:text-sm file:font-medium 
 	 hover:border-input-hover
@@ -26,7 +26,9 @@ const inputVariants = cva(
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {}
+    VariantProps<typeof inputVariants> {
+  label?: React.ReactNode;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, inputSize, ...props }, ref) => {
@@ -42,4 +44,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = 'Input';
 
-export { Input, inputVariants };
+function InputWrapper({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLElement>) {
+  return (
+    <div className={cn('flex flex-col space-y-1.5 group', className)}>
+      {children}
+    </div>
+  );
+}
+
+export { Input, InputWrapper, inputVariants };
