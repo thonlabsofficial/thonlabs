@@ -20,9 +20,14 @@ const typoVariants = cva('font-sans text-zinc-900 dark:text-zinc-50', {
       muted: 'text-sm text-muted-foreground',
       code: 'font-code text-emerald-200 text-sm',
     },
+    state: {
+      default: '',
+      error: '!text-red-500',
+    },
   },
   defaultVariants: {
     variant: 'default',
+    state: 'default',
   },
 });
 
@@ -32,10 +37,10 @@ export interface TypoProps
   as?: keyof JSX.IntrinsicElements;
 }
 
-function Typo({ className, variant, as = 'span', ...props }: TypoProps) {
+function Typo({ className, variant, state, as = 'span', ...props }: TypoProps) {
   return React.createElement(as, {
     ...props,
-    className: cn(typoVariants({ variant }), className),
+    className: cn(typoVariants({ variant, state }), className),
   });
 }
 

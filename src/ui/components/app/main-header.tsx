@@ -18,7 +18,7 @@ export default function MainHeader({
     <header
       {...props}
       className={cn(
-        'px-3 sm:px-4 h-12 w-full flex items-center justify-between',
+        'px-4 pb-5 pt-7 w-full flex items-center justify-center sm:justify-between',
         className
       )}
     >
