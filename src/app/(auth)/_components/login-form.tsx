@@ -26,20 +26,22 @@ export default function LoginForm() {
   });
 
   async function onSubmit(data: LoginFormData) {
-    setServerError('');
-    setLoading(true);
+    try {
+      setServerError('');
+      setLoading(true);
 
-    const result = await login(data);
+      const result = await login(data);
 
-    if (result.error) {
-      setServerError(result.error);
+      if (result.error) {
+        setServerError(result.error);
+      } else {
+        router.replace('/labs');
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    router.replace('/labs');
-
-    setLoading(false);
   }
 
   return (

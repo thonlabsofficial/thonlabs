@@ -1,37 +1,32 @@
 'use server';
 
-import { labsAPI } from '@/helpers/api';
+import { labsPublicAPI } from '@/helpers/api';
 import { LoginFormData } from '../_validators/login-validators';
 import { AxiosError } from 'axios';
-import { cookies } from 'next/headers';
+import { saveSessionCookies } from '../_services/auth-services';
 
 type ErrorResponse = {
   error?: string;
 };
 
-type LoginResponse = {
+export type SessionData = {
   token: string;
   tokenExpiresIn: number;
   refreshToken: string;
   refreshTokenExpiresIn: number;
 } & ErrorResponse;
 
-export async function login(payload: LoginFormData): Promise<LoginResponse> {
+export async function login(payload: LoginFormData): Promise<SessionData> {
   try {
-    const { data } = await labsAPI.post<LoginResponse>('/auth/login', payload);
+    const { data } = await labsPublicAPI.post<SessionData>(
+      '/auth/login',
+      payload
+    );
 
-    cookies().set('tl_session', data.token, {
-      path: '/',
-      expires: data.tokenExpiresIn,
-    });
-    cookies().set('tl_refresh', data.refreshToken, {
-      path: '/',
-      expires: data.refreshTokenExpiresIn,
-      httpOnly: true,
-    });
+    saveSessionCookies(data);
 
     return data;
   } catch (e) {
-    return (e as AxiosError)?.response?.data as LoginResponse;
+    return (e as AxiosError)?.response?.data as SessionData;
   }
 }
