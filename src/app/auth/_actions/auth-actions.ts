@@ -3,7 +3,7 @@
 import { labsPublicAPI } from '@/helpers/api';
 import { LoginFormData } from '../_validators/login-validators';
 import { AxiosError } from 'axios';
-import { saveSessionCookies } from '../_services/auth-services';
+import Session from '../_services/auth-services';
 
 type ErrorResponse = {
   error?: string;
@@ -23,7 +23,7 @@ export async function login(payload: LoginFormData): Promise<SessionData> {
       payload
     );
 
-    saveSessionCookies(data);
+    Session.create(data);
 
     return data;
   } catch (e) {

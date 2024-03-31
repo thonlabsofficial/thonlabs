@@ -24,8 +24,18 @@ async function validateTokensInterceptor(
   let accessToken = Cookies.get('tl_session');
 
   if (!accessToken) {
+    const controller = new AbortController();
+
     await intAPI.post('/api/auth/logout');
-    return config;
+
+    controller.abort();
+
+    window.location.href = '/auth/login';
+
+    return {
+      ...config,
+      signal: controller.signal,
+    };
   }
 
   const { exp } = jose.decodeJwt(accessToken as string);
@@ -47,7 +57,7 @@ async function handleResponseError(error: any) {
   switch (statusCode) {
     case 401:
       await intAPI.post('/api/auth/logout');
-      window.location.href = '/login';
+      window.location.href = '/auth/login';
       break;
   }
 

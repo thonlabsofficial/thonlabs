@@ -2,7 +2,7 @@ import { Typo } from '@/ui/components/ui/typo';
 import { Metadata } from 'next';
 import styles from './_styles/login-page.module.scss';
 import { cn } from '@/ui/utils';
-import LoginForm from '@/app/(auth)/_components/login-form';
+import LoginForm from '@/app/auth/_components/login-form';
 
 export const metadata: Metadata = {
   title: 'Login',

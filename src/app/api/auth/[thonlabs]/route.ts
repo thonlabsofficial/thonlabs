@@ -1,9 +1,6 @@
-import {
-  logout,
-  saveSessionCookies,
-} from '@/app/(auth)/_services/auth-services';
+import Session from '@/app/auth/_services/auth-services';
 import { cookies } from 'next/headers';
-
+import { redirect } from 'next/navigation';
 export const POST = async (
   req: Request,
   { params }: { params: { thonlabs: string } }
@@ -43,13 +40,28 @@ export const POST = async (
         return Response.json(data.error, { status: data.statusCode });
       }
 
-      saveSessionCookies(data.data);
+      Session.create(data.data);
 
       return Response.json(data, { status: 200 });
 
     case 'logout':
-      logout();
+      Session.logout();
       return Response.json('', { status: 200 });
+  }
+
+  return Response.json(null, { status: 404 });
+};
+
+export const GET = async (
+  req: Request,
+  { params }: { params: { thonlabs: string } }
+) => {
+  const action = params.thonlabs;
+
+  switch (action) {
+    case 'logout':
+      Session.logout();
+      return redirect('/auth/login');
   }
 
   return Response.json(null, { status: 404 });

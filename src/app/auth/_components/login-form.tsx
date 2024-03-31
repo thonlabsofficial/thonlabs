@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import {
   LoginFormData,
   LoginFormSchema,
-} from '@/app/(auth)/_validators/login-validators';
+} from '@/app/auth/_validators/login-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { login } from '../_actions/auth-actions';
 import React from 'react';
