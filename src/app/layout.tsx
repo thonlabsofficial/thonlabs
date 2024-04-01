@@ -6,11 +6,11 @@ import { fonts } from '@/ui/fonts';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Thon Labs',
+    template: '%s · Thon Labs',
     default: 'Thon Labs',
   },
   icons: {
-    icon: 'favicon.png',
+    icon: '/favicon.png',
   },
 };
 

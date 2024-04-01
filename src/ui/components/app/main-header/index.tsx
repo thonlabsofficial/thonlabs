@@ -3,7 +3,7 @@ import { cn } from '@/ui/utils';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-const Logo = dynamic(() => import('./logo'), { ssr: false });
+const Logo = dynamic(() => import('../logo'), { ssr: false });
 
 type Props = {
   withNav?: boolean;

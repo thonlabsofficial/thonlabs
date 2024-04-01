@@ -9,14 +9,14 @@ const inputVariants = cva(
   `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-solid bg-background shadow-sm 
 	 placeholder:text-zinc-300 dark:placeholder:text-zinc-600
 	 transition-all duration-200 ease-in-out
-	 file:border-0 file:bg-transparent file:text-sm file:font-medium 
-	 hover:border-input-hover
-	 outline-none
+	 file:border-0 file:bg-transparent file:text-sm file:font-medium outline-none
 	 disabled:cursor-not-allowed disabled:opacity-50`,
   {
     variants: {
       state: {
-        default: 'border-input focus:border-zinc-600',
+        default: `border-zinc-200 dark:border-zinc-800 
+                  focus:border-zinc-600 dark:focus:border-zinc-500
+                  hover:border-zinc-400 dark:hover:border-zinc-700`,
         error: 'border-red-500 focus:border-red-500',
       },
       inputSize: {
@@ -44,6 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <>
         {label && <Label htmlFor={props.id}>{label}</Label>}
         <input
+          id={props.name}
           type={type}
           className={cn(
             inputVariants({ inputSize, state: error ? 'error' : state }),

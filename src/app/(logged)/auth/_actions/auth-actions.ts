@@ -1,12 +1,14 @@
 'use server';
 
 import { labsPublicAPI } from '@/helpers/api';
-import { LoginFormData } from '../_validators/login-validators';
+import { LoginFormData } from '../_validators/auth-validators';
 import { AxiosError } from 'axios';
 import Session from '../_services/auth-services';
 
 type ErrorResponse = {
+  statusCode?: number;
   error?: string;
+  message?: string;
 };
 
 export type SessionData = {

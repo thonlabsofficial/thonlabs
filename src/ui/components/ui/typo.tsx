@@ -16,7 +16,7 @@ const typoVariants = cva('font-sans text-zinc-900 dark:text-zinc-50', {
         'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
       lead: 'text-xl text-muted-foreground',
       large: 'text-lg font-semibold',
-      small: 'text-sm font-medium leading-none',
+      small: 'text-sm font-medium',
       muted: 'text-sm text-muted-foreground',
       code: 'font-code text-emerald-200 text-sm',
     },

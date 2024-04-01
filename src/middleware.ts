@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Session from './app/auth/_services/auth-services';
+import Session from './app/(logged)/auth/_services/auth-services';
 
 export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico).*)',

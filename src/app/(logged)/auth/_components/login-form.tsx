@@ -8,18 +8,18 @@ import { useForm } from 'react-hook-form';
 import {
   LoginFormData,
   LoginFormSchema,
-} from '@/app/auth/_validators/login-validators';
+} from '@/app/(logged)/auth/_validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { login } from '../_actions/auth-actions';
 import React from 'react';
-import { Typo } from '@/ui/components/ui/typo';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/ui/components/ui/use-toast';
 
 export default function LoginForm() {
-  const [serverError, setServerError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
@@ -27,13 +27,16 @@ export default function LoginForm() {
 
   async function onSubmit(data: LoginFormData) {
     try {
-      setServerError('');
       setLoading(true);
 
       const result = await login(data);
 
-      if (result.error) {
-        setServerError(result.error);
+      if (result.statusCode) {
+        toast({
+          title: 'Log in error',
+          description: result.message || 'Invalid credentials',
+          variant: 'destructive',
+        });
       } else {
         router.replace('/labs');
       }
@@ -62,10 +65,10 @@ export default function LoginForm() {
           <div className="flex justify-between">
             <Label htmlFor="password">Password</Label>
             <Link
-              className={`text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 
+              className={`text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 
             transition-all duration-200 ease-in-out 
-            text-sm font-medium leading-none hover:underline`}
-              href="/forgot-password"
+            text-sm font-medium leading-none underline-offset-4 hover:underline`}
+              href="/auth/reset-password"
               tabIndex={-1}
             >
               Forgot your password?
@@ -81,16 +84,6 @@ export default function LoginForm() {
           />
         </InputWrapper>
       </div>
-      {serverError && (
-        <Typo
-          as="div"
-          variant={'small'}
-          state={'error'}
-          className="text-center mt-4"
-        >
-          {serverError}
-        </Typo>
-      )}
 
       <Button size="lg" className="w-full mt-8" loading={loading}>
         {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin -mt-1" />}
