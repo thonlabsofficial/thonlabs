@@ -3,7 +3,7 @@
 import { labsPublicAPI } from '@/helpers/api';
 import { LoginFormData } from '../_validators/auth-validators';
 import { AxiosError } from 'axios';
-import Session from '../_services/auth-services';
+import Session from '../_services/session-service';
 
 type ErrorResponse = {
   statusCode?: number;

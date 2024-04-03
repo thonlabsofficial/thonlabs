@@ -1,4 +1,4 @@
-import Session from '@/app/(logged)/auth/_services/auth-services';
+import Session from '@/app/(logged)/auth/_services/session-service';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 export const POST = async (
@@ -12,20 +12,18 @@ export const POST = async (
       const refreshToken = cookies().get('tl_refresh');
 
       if (!refreshToken?.value) {
-        return Response.json(null, { status: 403 });
+        console.log('Invalid refresh token');
+
+        return Response.json(null, { status: 401 });
       }
 
-      // TODO: when create lib, make sure to call the prod domain
-      const token = cookies().get('tl_session');
-      cookies().delete('tl_session');
-
       const response = await fetch(
+        // TODO: when create lib, make sure to call the prod domain
         `${process.env.NEXT_PUBLIC_TL_API}/auth/refresh`,
         {
           method: 'POST',
           headers: {
             Accept: 'application/json',
-            Authorization: `Bearer ${token?.value}`,
             'Content-Type': 'application/json',
             'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
           } as HeadersInit & { 'tl-env-id': string },
@@ -42,7 +40,7 @@ export const POST = async (
 
       Session.create(data.data);
 
-      return Response.json(data, { status: 200 });
+      return Response.json('', { status: 200 });
 
     case 'logout':
       Session.logout();

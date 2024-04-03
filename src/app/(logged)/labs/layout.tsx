@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import ThonlabsProvider from './_providers/thon-labs-provider';
 
 export const metadata: Metadata = {
   robots: {
@@ -13,9 +14,9 @@ export default function LabsNestedLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <ThonlabsProvider>
       <div>Portal</div>
       {children}
-    </>
+    </ThonlabsProvider>
   );
 }

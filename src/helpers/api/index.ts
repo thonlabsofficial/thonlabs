@@ -1,6 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import * as jose from 'jose';
+import ClientSession from '@/app/(logged)/auth/_services/client-session-service';
 
 const labsPublicAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
@@ -21,16 +22,11 @@ const intAPI = axios.create();
 async function validateTokensInterceptor(
   config: InternalAxiosRequestConfig<any>
 ) {
-  let accessToken = Cookies.get('tl_session');
+  const accessToken = Cookies.get('tl_session');
 
   if (!accessToken) {
     const controller = new AbortController();
-
-    await intAPI.post('/api/auth/logout');
-
     controller.abort();
-
-    window.location.href = '/auth/login';
 
     return {
       ...config,
@@ -38,14 +34,6 @@ async function validateTokensInterceptor(
     };
   }
 
-  const { exp } = jose.decodeJwt(accessToken as string);
-  const sessionValid = (exp as number) * 1000 > new Date().getTime();
-
-  if (!sessionValid) {
-    await intAPI.post('/api/auth/refresh');
-  }
-
-  accessToken = Cookies.get('tl_session');
   config.headers['Authorization'] = `Bearer ${accessToken}`;
 
   return config;
@@ -66,5 +54,7 @@ async function handleResponseError(error: any) {
 
 labsAPI.interceptors.request.use(validateTokensInterceptor);
 labsAPI.interceptors.response.use((res) => res, handleResponseError);
+
+intAPI.interceptors.response.use((res) => res, handleResponseError);
 
 export { labsPublicAPI, labsAPI, intAPI };
