@@ -1,8 +1,6 @@
-import { Typo } from '@/ui/components/ui/typo';
 import { Metadata } from 'next';
 import LoginForm from '@/app/(logged)/auth/_components/login-form';
 import LandingGrid from '@/ui/components/app/landing-grid';
-import { Alert, AlertDescription, AlertTitle } from '@/ui/components/ui/alert';
 import AuthHeader from '@/ui/components/app/auth-header';
 
 export const metadata: Metadata = {
