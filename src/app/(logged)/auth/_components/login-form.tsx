@@ -65,7 +65,7 @@ export default function LoginForm() {
           <div className="flex justify-between">
             <Label htmlFor="password">Password</Label>
             <Link
-              className={`text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 
+              className={`text-gray-500 hover:text-gray-900 dark:hover:text-gray-50 
             transition-all duration-200 ease-in-out 
             text-sm font-medium leading-none underline-offset-4 hover:underline`}
               href="/auth/reset-password"

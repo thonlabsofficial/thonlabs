@@ -20,6 +20,7 @@ const config = {
         sans: ['var(--font-sans)'],
       },
       colors: {
+        text: 'hsl(var(--text))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

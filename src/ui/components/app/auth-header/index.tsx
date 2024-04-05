@@ -16,7 +16,7 @@ export default function AuthHeader({
   return (
     <header {...props} className={cn('flex flex-col gap-1', className)}>
       <Typo variant={'h2'}>{title}</Typo>
-      <Typo variant={'muted'} className="!text-zinc-400">
+      <Typo variant={'muted'} className="!text-gray-400">
         {description}
       </Typo>
     </header>

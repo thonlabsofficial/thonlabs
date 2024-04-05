@@ -26,11 +26,11 @@ export default function ResetPassword() {
         />
         <ResetPasswordForm />
         <footer className="text-center mt-4">
-          <Typo variant={'muted'} className="!text-zinc-400">
+          <Typo variant={'muted'} className="!text-gray-400">
             Remember your password?{' '}
             <Link
               href="/auth/login"
-              className="text-zinc-900 dark:text-zinc-50 underline-offset-4 hover:underline"
+              className="text-gray-900 dark:text-gray-50 underline-offset-4 hover:underline"
             >
               Log in
             </Link>

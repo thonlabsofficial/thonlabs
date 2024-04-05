@@ -6,7 +6,7 @@ import { cn } from '@/ui/utils';
 const alertVariants = cva(
   `
     relative w-full rounded-lg border px-4 py-3 text-sm  
-    text-zinc-900 dark:text-white [&>svg]:text-zinc-900 dark:[&>svg]:text-white
+    text-gray-900 dark:text-white [&>svg]:text-gray-900 dark:[&>svg]:text-white
     [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 
     [&>svg~*]:pl-7
   `,
@@ -14,7 +14,7 @@ const alertVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-accent/70 dark:bg-accent/60 border-zinc-400 dark:border-accent',
+          'bg-accent/70 dark:bg-accent/60 border-gray-400 dark:border-accent',
         info: `bg-sky-100/70 dark:bg-sky-900/60 border-sky-300 dark:border-sky-900`,
         destructive:
           'bg-destructive/10 dark:bg-destructive/20 border-destructive/50 dark:border-destructive',

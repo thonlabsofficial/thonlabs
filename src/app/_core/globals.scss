@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --text: 26, 16%, 9%;
     --foreground: 240 10% 3.9%;
     --background: 0 0% 100%;
     --thirdground: 24deg 8.37% 7.9%;
@@ -29,6 +30,7 @@
   }
 
   .dark {
+    --text: 0, 2%, 90%;
     --foreground: 0 0% 95%;
     --background: 20 14.3% 9%;
     --thirdground: 24deg 8.37% 7.9%;

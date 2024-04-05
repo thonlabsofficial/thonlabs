@@ -31,7 +31,7 @@ const toastVariants = cva(
   `
     group pointer-events-auto relative flex w-full items-center justify-between space-x-2 
     overflow-hidden rounded-md border p-4 pr-6 shadow-lg transition-all 
-    text-zinc-900 dark:text-white
+    text-gray-900 dark:text-white
     data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] 
     data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] 
     data-[swipe=move]:transition-none data-[state=open]:animate-in 
@@ -43,7 +43,7 @@ const toastVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-accent/70 dark:bg-accent/60 border-zinc-400 dark:border-accent',
+          'bg-accent/70 dark:bg-accent/60 border-gray-400 dark:border-accent',
         info: `bg-sky-100/70 dark:bg-sky-900/60 border-sky-300 dark:border-sky-900`,
         destructive:
           'bg-destructive/10 dark:bg-destructive/20 border-destructive/50 dark:border-destructive',
