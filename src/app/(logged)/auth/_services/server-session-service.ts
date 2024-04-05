@@ -1,16 +1,12 @@
 import { cookies } from 'next/headers';
 import { SessionData } from '../_actions/auth-actions';
 
-const Session = {
+const ServerSessionService = {
   create(data: SessionData) {
-    cookies().delete('tl_session');
-    cookies().delete('tl_refresh');
-    cookies().delete('tl_keep_alive');
-
     const expires = new Date(data.tokenExpiresIn);
     cookies().set('tl_session', data.token, {
       path: '/',
-      // the 3 seconds is necessary only to validate better
+      // the 10 seconds is necessary only to validate better
       // the refresh token. In case of not exists, keep the token as is
       expires: data.refreshToken
         ? expires.setSeconds(expires.getSeconds() + 10)
@@ -44,4 +40,4 @@ const Session = {
   },
 };
 
-export default Session;
+export default ServerSessionService;

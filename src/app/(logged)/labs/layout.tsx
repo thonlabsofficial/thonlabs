@@ -48,11 +48,11 @@ export default function LabsNestedLayout({
                     Projects
                   </Typo>
 
-                  <div className="w-full grid grid-cols-3 gap-3">
-                    <Card className="w-32 h-24">Test</Card>
-                    <Card className="w-32 h-24">Test</Card>
-                    <Card className="w-32 h-24">Test</Card>
-                    <Card className="w-32 h-24">Test</Card>
+                  <div className="w-full grid grid-cols-2 gap-3">
+                    <Card className="w-32 h-24 p-2">Test</Card>
+                    <Card className="w-32 h-24 p-2">Test</Card>
+                    <Card className="w-32 h-24 p-2">Test</Card>
+                    <Card className="w-32 h-24 p-2">Test</Card>
                   </div>
                 </div>
               </nav>

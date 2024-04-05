@@ -3,7 +3,7 @@
 import { labsPublicAPI } from '@/helpers/api';
 import { LoginFormData } from '../_validators/auth-validators';
 import { AxiosError } from 'axios';
-import Session from '../_services/session-service';
+import ServerSessionService from '../_services/server-session-service';
 
 type ErrorResponse = {
   statusCode?: number;
@@ -25,7 +25,7 @@ export async function login(payload: LoginFormData): Promise<SessionData> {
       payload
     );
 
-    Session.create(data);
+    ServerSessionService.create(data);
 
     return data;
   } catch (e) {

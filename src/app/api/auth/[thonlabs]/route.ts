@@ -1,4 +1,4 @@
-import Session from '@/app/(logged)/auth/_services/session-service';
+import ServerSessionService from '@/app/(logged)/auth/_services/server-session-service';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 export const POST = async (
@@ -34,17 +34,21 @@ export const POST = async (
       );
       const data = await response.json();
 
-      if (data.error) {
-        return Response.json(data.error, { status: data.statusCode });
+      console.log('api', data);
+
+      if (data.statusCode) {
+        return Response.json(data?.error || data?.message, {
+          status: data.statusCode,
+        });
       }
 
-      Session.create(data.data);
+      ServerSessionService.create(data.data);
 
-      return Response.json('', { status: 200 });
+      return Response.json(null, { status: 200 });
 
     case 'logout':
-      Session.logout();
-      return Response.json('', { status: 200 });
+      ServerSessionService.logout();
+      return Response.json(null, { status: 200 });
   }
 
   return Response.json(null, { status: 404 });
@@ -58,7 +62,7 @@ export const GET = async (
 
   switch (action) {
     case 'logout':
-      Session.logout();
+      ServerSessionService.logout();
       return redirect('/auth/login');
   }
 
