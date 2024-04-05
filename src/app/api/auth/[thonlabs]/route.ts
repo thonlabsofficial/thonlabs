@@ -1,4 +1,8 @@
 import ServerSessionService from '@/app/(logged)/auth/_services/server-session-service';
+import {
+  APIErrorCodes,
+  apiErrorMessages,
+} from '@/app/(logged)/labs/_providers/thon-labs-provider';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 export const POST = async (
@@ -14,7 +18,13 @@ export const POST = async (
       if (!refreshToken?.value) {
         console.log('Invalid refresh token');
 
-        return Response.json(null, { status: 401 });
+        return Response.json(
+          {
+            code: APIErrorCodes.Unauthorized,
+            error: apiErrorMessages[APIErrorCodes.Unauthorized],
+          },
+          { status: 401 }
+        );
       }
 
       const response = await fetch(
@@ -33,8 +43,6 @@ export const POST = async (
         }
       );
       const data = await response.json();
-
-      console.log('api', data);
 
       if (data.statusCode) {
         return Response.json(data?.error || data?.message, {

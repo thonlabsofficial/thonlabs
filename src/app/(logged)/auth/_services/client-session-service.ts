@@ -34,7 +34,6 @@ const ClientSessionService = {
   },
   async shouldKeepAlive(router: ReturnType<typeof useRouter>) {
     const isValid = this.isValid(router);
-    console.log('1. is valid', isValid);
 
     if (isValid) {
       while (true) {
@@ -62,14 +61,13 @@ const ClientSessionService = {
           }
         } catch (e) {
           toast({
-            title: 'Error',
-            description:
-              ((e as AxiosError)?.response?.data as string) ||
-              apiErrorMessages[0],
+            title: 'Logged out',
+            description: apiErrorMessages['40002'],
           });
           intAPI.post('/api/auth/logout').then(() => {
             router.replace('/auth/login');
           });
+          break;
         }
       }
     }

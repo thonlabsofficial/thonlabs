@@ -1,7 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
-import * as jose from 'jose';
-import ClientSession from '@/app/(logged)/auth/_services/client-session-service';
 
 const labsPublicAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
@@ -44,8 +42,7 @@ async function handleResponseError(error: any) {
 
   switch (statusCode) {
     case 401:
-      await intAPI.post('/api/auth/logout');
-      window.location.href = '/auth/login';
+      intAPI.post('/api/auth/logout');
       break;
   }
 
