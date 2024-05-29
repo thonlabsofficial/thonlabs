@@ -45,10 +45,14 @@ export const POST = async (
       const data = await response.json();
 
       if (data.statusCode) {
+        console.log(data);
+
         return Response.json(data?.error || data?.message, {
           status: data.statusCode,
         });
       }
+
+      console.log(data);
 
       ServerSessionService.create(data.data);
 

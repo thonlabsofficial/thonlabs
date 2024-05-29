@@ -13,18 +13,11 @@ function delay(ms: number) {
 const ClientSessionService = {
   refreshing: false,
 
-  isValid(router: ReturnType<typeof useRouter>) {
+  isValid() {
     const accessToken = Cookies.get('tl_session');
 
     if (!accessToken) {
-      toast({
-        title: 'Logged out',
-        description: apiErrorMessages['40002'],
-      });
-      intAPI.post('/api/auth/logout').then(() => {
-        router.replace('/auth/login');
-      });
-      return;
+      return false;
     }
 
     const { exp } = jose.decodeJwt(accessToken as string);
@@ -33,44 +26,23 @@ const ClientSessionService = {
     return sessionValid;
   },
   async shouldKeepAlive(router: ReturnType<typeof useRouter>) {
-    const isValid = this.isValid(router);
+    window.addEventListener('focus', async () => {
+      try {
+        const isValid = this.isValid();
 
-    if (isValid) {
-      while (true) {
-        try {
-          await delay(1000);
-
-          const isValid = this.isValid(router);
-
-          if (isValid === undefined) {
-            break;
-          }
-
-          if (
-            !this.refreshing &&
-            Cookies.get('tl_keep_alive') === 'true' &&
-            isValid === false
-          ) {
-            this.refreshing = true;
-
-            await intAPI.post('/api/auth/refresh');
-
-            this.refreshing = false;
-
-            await delay(1000);
-          }
-        } catch (e) {
-          toast({
-            title: 'Logged out',
-            description: apiErrorMessages['40002'],
-          });
-          intAPI.post('/api/auth/logout').then(() => {
-            router.replace('/auth/login');
-          });
-          break;
+        if (Cookies.get('tl_keep_alive') === 'true' && isValid === false) {
+          await intAPI.post('/api/auth/refresh');
         }
+      } catch (e) {
+        toast({
+          title: 'Logged out',
+          description: apiErrorMessages['40002'],
+        });
+        intAPI.post('/api/auth/logout').then(() => {
+          router.replace('/auth/login');
+        });
       }
-    }
+    });
   },
 };
 
