@@ -3,7 +3,7 @@ import * as jose from 'jose';
 import { intAPI } from '@helpers/api';
 import { toast } from '@repo/ui/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { apiErrorMessages } from '../../labs/_providers/thon-labs-provider';
+import { apiErrorMessages } from '../../(labs)/_providers/thon-labs-provider';
 
 const ClientSessionService = {
   refreshing: false,

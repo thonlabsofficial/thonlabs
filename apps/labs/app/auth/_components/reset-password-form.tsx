@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import {
   ResetPasswordFormSchema,
   ResetPasswordFormData,
-} from '@/(logged)/auth/_validators/auth-validators';
+} from '@/auth/_validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';

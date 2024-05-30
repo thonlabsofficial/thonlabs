@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ServerSessionService from './app/(logged)/auth/_services/server-session-service';
+import ServerSessionService from './app/auth/_services/server-session-service';
 
 export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico).*)',
@@ -8,7 +8,11 @@ export const config = {
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
-  if (pathname.startsWith('/labs') && !ServerSessionService.isValid()) {
+  if (
+    !pathname.startsWith('/api/auth') &&
+    !pathname.startsWith('/auth') &&
+    !ServerSessionService.isValid()
+  ) {
     return NextResponse.redirect(new URL('/api/auth/logout', req.url));
   }
 

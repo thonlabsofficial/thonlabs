@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import LoginForm from '@/(logged)/auth/_components/login-form';
+import LoginForm from '@/auth/_components/login-form';
 import LandingGrid from '@/_components/landing-grid';
 import AuthHeader from '@/_components/auth-header';
 

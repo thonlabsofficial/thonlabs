@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import {
   LoginFormData,
   LoginFormSchema,
-} from '@/(logged)/auth/_validators/auth-validators';
+} from '@/auth/_validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { login } from '../_actions/auth-actions';
 import React from 'react';
@@ -38,7 +38,7 @@ export default function LoginForm() {
           variant: 'destructive',
         });
       } else {
-        router.replace('/labs');
+        router.replace('/');
       }
     } catch (e) {
       console.error(e);

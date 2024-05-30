@@ -1,8 +1,8 @@
-import ServerSessionService from '@/(logged)/auth/_services/server-session-service';
+import ServerSessionService from '@/auth/_services/server-session-service';
 import {
   APIErrorCodes,
   apiErrorMessages,
-} from '@/(logged)/labs/_providers/thon-labs-provider';
+} from '@/(labs)/_providers/thon-labs-provider';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 export const POST = async (
