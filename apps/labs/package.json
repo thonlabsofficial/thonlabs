@@ -1,0 +1,40 @@
+{
+  "name": "labs",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@repo/ui": "*",
+    "@hookform/resolvers": "^3.3.4",
+    "axios": "^1.6.8",
+    "jose": "^5.2.3",
+    "js-cookie": "^3.0.5",
+    "next": "14.1.4",
+    "next-themes": "^0.3.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.51.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@repo/config-tailwind": "*",
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4",
+    "sass": "^1.72.0",
+    "turbo": "^1.13.3",
+    "typescript": "^5",
+    "autoprefixer": "^10.4.18",
+    "tailwindcss": "^3.4.1",
+    "tailwind-merge": "^2.2.2",
+    "postcss": "^8"
+  }
+}
