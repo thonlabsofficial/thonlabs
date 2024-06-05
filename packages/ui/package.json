@@ -17,7 +17,9 @@
     "./core/styles/globals": "./src/core/styles/globals.scss",
     "./core/ui-content": "./src/core/ui-content.ts",
     "./assets/images/thon-labs-logo-dark.svg": "./assets/images/thon-labs-logo-dark.svg",
-    "./assets/images/thon-labs-logo-light.svg": "./assets/images/thon-labs-logo-light.svg"
+    "./assets/images/thon-labs-logo-light.svg": "./assets/images/thon-labs-logo-light.svg",
+    "./assets/images/thon-labs-logo-dark-reduced.svg": "./assets/images/thon-labs-logo-dark-reduced.svg",
+    "./assets/images/thon-labs-logo-light-reduced.svg": "./assets/images/thon-labs-logo-light-reduced.svg"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0"

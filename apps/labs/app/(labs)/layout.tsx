@@ -20,60 +20,28 @@ export default function LabsNestedLayout({
 }>) {
   return (
     <ThonLabsProvider>
-      {/* <header className="p-4 border-b border-solid">header</header> */}
-      <main className="grid grid-cols-[12rem_1fr]">
-        <aside className="h-screen bg-card border-r border-solid relative">
-          <div className="p-4">
-            <Logo className="h-4" />
+      <header className="p-4 border-b border-solid">
+        <nav className="flex gap-1">
+          <div className="flex gap-1">
+            <Logo reduced className="h-7" />
           </div>
 
-          <div className="border-b border-solid" />
-
-          <nav className="flex flex-col gap-1 p-2">
-            <div
+          {/* <div
               role="button"
-              className="flex flex-col px-2 pb-1 pt-1.5 rounded-sm transition-all duration-100 ease-in-out hover:bg-gray-925/[0.06] dark:hover:bg-white/[0.03]"
+              className="flex flex-col gap-0.5 px-2 pb-1 pt-1.5 rounded-sm transition-all duration-100 ease-in-out hover:bg-gray-925/[0.06] dark:hover:bg-white/[0.03]"
             >
               <Typo
                 variant={'xs'}
                 className="text-muted-foreground font-semibold"
               >
-                Project
+                Project / Environment
               </Typo>
-              <Typo variant={'small'}>Thon Labs</Typo>
-
-              <nav className="h-screen bg-card border-r border-solid fixed left-[192px] top-0">
-                <div className="py-2 px-4">
-                  <Typo variant={'h3'} className="mb-4">
-                    Projects
-                  </Typo>
-
-                  <div className="w-full grid grid-cols-2 gap-3">
-                    <Card className="w-32 h-24 p-2">Test</Card>
-                    <Card className="w-32 h-24 p-2">Test</Card>
-                    <Card className="w-32 h-24 p-2">Test</Card>
-                    <Card className="w-32 h-24 p-2">Test</Card>
-                  </div>
-                </div>
-              </nav>
-            </div>
-
-            <div
-              role="button"
-              className="flex flex-col px-2 pb-1 pt-1.5 rounded-sm transition-all duration-100 ease-in-out hover:bg-gray-925/[0.06] dark:hover:bg-white/[0.03]"
-            >
-              <Typo
-                variant={'xs'}
-                className="text-muted-foreground font-semibold"
-              >
-                Environment
-              </Typo>
-              <Typo variant={'small'}>Production</Typo>
-            </div>
-          </nav>
-
-          <div className="border-b border-solid" />
-
+              <Typo variant={'small'}>Thon Labs / Production</Typo>
+            </div> */}
+        </nav>
+      </header>
+      <main className="grid grid-cols-[16rem_1fr]">
+        <aside className="h-screen relative">
           <nav className="p-4">
             <Typo>Menus</Typo>
           </nav>
