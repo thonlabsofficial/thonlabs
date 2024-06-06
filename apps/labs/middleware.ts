@@ -7,10 +7,12 @@ export const config = {
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  const publicRoutes =
-    pathname.startsWith('/api/auth') || pathname.startsWith('/auth');
+  const publicRoutes = ['/api/auth', '/auth'];
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
 
-  if (!publicRoutes) {
+  if (!isPublicRoute) {
     const { accessToken, refreshToken, keepAlive } =
       ServerSessionService.getSession();
 
