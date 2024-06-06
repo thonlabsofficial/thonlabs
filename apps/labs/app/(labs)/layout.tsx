@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import ThonLabsProvider from './_providers/thon-labs-provider';
 import { Typo } from '@repo/ui/typo';
 import dynamic from 'next/dynamic';
 import { Card } from '@repo/ui/card';
+import { Badge } from '@repo/ui/badge';
+import ServerSessionService from '@/auth/_services/server-session-service';
 
 const Logo = dynamic(() => import('@/_components/logo'), { ssr: false });
 
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LabsNestedLayout({
+export default async function LabsNestedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -24,6 +27,7 @@ export default function LabsNestedLayout({
         <nav className="flex gap-1">
           <div className="flex gap-1">
             <Logo reduced className="h-7" />
+            <Badge>Thon Labs</Badge>
           </div>
 
           {/* <div

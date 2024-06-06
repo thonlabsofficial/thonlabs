@@ -3,7 +3,7 @@ import * as jose from 'jose';
 import { intAPI } from '@helpers/api';
 import { toast } from '@repo/ui/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { apiErrorMessages } from '../../(labs)/_providers/thon-labs-provider';
+import { apiResponseMessages } from '../../(labs)/_providers/thon-labs-provider';
 
 const ClientSessionService = {
   refreshing: false,
@@ -31,7 +31,7 @@ const ClientSessionService = {
       } catch (e) {
         toast({
           title: 'Logged out',
-          description: apiErrorMessages['40002'],
+          description: apiResponseMessages['40002'],
         });
         intAPI.post('/api/auth/logout').then(() => {
           router.replace('/auth/login');

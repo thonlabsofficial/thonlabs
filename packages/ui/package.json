@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     "./alert": "./src/components/alert.tsx",
+    "./badge": "./src/components/badge.tsx",
     "./button": "./src/components/button.tsx",
     "./card": "./src/components/card.tsx",
     "./input": "./src/components/input.tsx",
