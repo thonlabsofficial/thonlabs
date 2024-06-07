@@ -30,8 +30,6 @@ export const GET = async (
     case 'refresh':
       const response = await ServerSessionService.validateRefreshToken();
 
-      console.log(response);
-
       if (response.statusCode === 200) {
         return redirect('/');
       }

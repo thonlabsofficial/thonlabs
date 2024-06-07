@@ -7,7 +7,7 @@
     "NEXT_PUBLIC_TL_ENV_ID",
     "NEXT_PUBLIC_TL_PK"
   ],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]

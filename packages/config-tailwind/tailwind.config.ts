@@ -14,6 +14,9 @@ const config: Omit<Config, 'content'> = {
       fontFamily: {
         sans: ['var(--font-sans)'],
       },
+      spacing: {
+        '13.25': '3.313rem',
+      },
       colors: {
         text: 'hsl(var(--text))',
         border: 'hsl(var(--border))',

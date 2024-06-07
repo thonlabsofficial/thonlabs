@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
+  title: 'My Projects',
 };
 
 export default function Home() {
-  return <div className="px-3 py-2">Dashboard - Home</div>;
+  return <div>Projects</div>;
 }
