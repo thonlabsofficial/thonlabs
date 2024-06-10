@@ -14,7 +14,7 @@ export async function middleware(req: NextRequest) {
 
   if (!isPublicRoute) {
     const { accessToken, refreshToken, keepAlive } =
-      ServerSessionService.getSession();
+      ServerSessionService.getSessionCookies();
 
     // Validates the access token or access token and refresh token
     // based on keep alive

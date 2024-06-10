@@ -13,6 +13,8 @@ import {
   BsGear,
 } from 'react-icons/bs';
 import { Badge } from '@repo/ui/badge';
+import ServerAuthProvider from '@/auth/_services/server-auth-provider';
+import Utils from '@helpers/utils';
 
 const Logo = dynamic(() => import('@/_components/logo'), { ssr: false });
 
@@ -28,6 +30,8 @@ export default async function LabsNestedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = ServerAuthProvider.getSession();
+
   return (
     <ThonLabsProvider>
       <header className="fixed top-0 left-0 w-full flex justify-between items-center px-4 py-2.5 bg-background/[0.8] backdrop-blur-sm z-10 border-b border-collapse">
@@ -66,7 +70,9 @@ export default async function LabsNestedLayout({
         <div className="flex gap-3 items-center">
           <Badge className="cursor-default select-none">Authentication</Badge>
           <Avatar size="small" className="cursor-default select-none">
-            <AvatarFallback>GS</AvatarFallback>
+            <AvatarFallback>
+              {Utils.getFirstAndLastInitials(session.user.fullName)}
+            </AvatarFallback>
           </Avatar>
         </div>
       </header>

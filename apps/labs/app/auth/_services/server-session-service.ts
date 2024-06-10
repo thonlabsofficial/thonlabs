@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import * as jose from 'jose';
 import { SessionData } from '../_actions/auth-actions';
+import { User } from '../_interfaces/user';
 
 const ServerSessionService = {
   create(data: SessionData) {
@@ -26,11 +27,25 @@ const ServerSessionService = {
     }
   },
 
-  getSession() {
+  getSessionCookies() {
     return {
       accessToken: cookies().get('tl_session')?.value,
       refreshToken: cookies().get('tl_refresh')?.value,
       keepAlive: cookies().get('tl_keep_alive')?.value,
+    };
+  },
+
+  getSession() {
+    const accessToken = cookies().get('tl_session');
+    const session = jose.decodeJwt<User>(accessToken!.value as string);
+
+    return {
+      user: {
+        id: session.sub as string,
+        fullName: session.fullName,
+        email: session.email,
+        profilePicture: session.profilePicture,
+      },
     };
   },
 
@@ -94,7 +109,7 @@ const ServerSessionService = {
   async shouldKeepAlive() {
     try {
       const isValid = this.isValid();
-      const { keepAlive, refreshToken } = this.getSession();
+      const { keepAlive, refreshToken } = this.getSessionCookies();
 
       if (keepAlive === 'true' && isValid === false) {
         if (!refreshToken) {

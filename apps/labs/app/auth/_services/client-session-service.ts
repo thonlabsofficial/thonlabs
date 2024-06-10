@@ -4,6 +4,7 @@ import { intAPI } from '@helpers/api';
 import { toast } from '@repo/ui/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { apiResponseMessages } from '../../(labs)/_providers/thon-labs-provider';
+import { User } from '../_interfaces/user';
 
 const ClientSessionService = {
   refreshing: false,
@@ -19,6 +20,22 @@ const ClientSessionService = {
     const sessionValid = (exp as number) * 1000 > new Date().getTime();
 
     return sessionValid;
+  },
+  getSession(): User | null {
+    const accessToken = Cookies.get('tl_session');
+
+    if (!accessToken) {
+      return null;
+    }
+
+    const session = jose.decodeJwt<User>(accessToken as string);
+
+    return {
+      id: session.sub as string,
+      fullName: session.fullName,
+      email: session.email,
+      profilePicture: session.profilePicture,
+    };
   },
   async shouldKeepAlive(router: ReturnType<typeof useRouter>) {
     window.addEventListener('focus', async () => {

@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@repo/ui/toaster';
 import { SWRConfig } from 'swr';
 import { labsAPI } from '@helpers/api';
+import SessionProvider from '@/auth/_providers/session-provider';
 
 export default function CoreProvider({
   children,
@@ -20,15 +21,17 @@ export default function CoreProvider({
         fetcher,
       }}
     >
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        {children}
-        <Toaster />
-      </ThemeProvider>
+      <SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </SessionProvider>
     </SWRConfig>
   );
 }
