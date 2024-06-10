@@ -61,7 +61,7 @@ export default function ResetPasswordForm() {
         </InputWrapper>
       </div>
 
-      <Button size="lg" className="w-full mt-4" loading={loading}>
+      <Button className="w-full mt-4" loading={loading}>
         {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin -mt-1" />}
         Send Reset Link
       </Button>

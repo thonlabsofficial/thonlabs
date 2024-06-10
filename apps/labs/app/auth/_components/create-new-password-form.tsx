@@ -77,7 +77,7 @@ export default function CreateNewPasswordForm({ token }: Props) {
         </InputWrapper>
       </div>
 
-      <Button size="lg" className="w-full mt-8" loading={loading}>
+      <Button className="w-full mt-8" loading={loading}>
         {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin -mt-1" />}
         Create
       </Button>

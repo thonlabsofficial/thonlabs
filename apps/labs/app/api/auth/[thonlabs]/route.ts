@@ -1,5 +1,5 @@
 import ServerSessionService from '@/auth/_services/server-session-service';
-import { redirect } from 'next/navigation';
+import { redirect, notFound } from 'next/navigation';
 
 export const POST = async (
   req: Request,
@@ -17,7 +17,7 @@ export const POST = async (
       return Response.json(null, { status: 200 });
   }
 
-  return Response.json(null, { status: 404 });
+  return notFound();
 };
 
 export const GET = async (
@@ -40,5 +40,5 @@ export const GET = async (
       return redirect('/auth/login');
   }
 
-  return Response.json(null, { status: 404 });
+  return notFound();
 };

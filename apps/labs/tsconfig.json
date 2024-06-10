@@ -8,6 +8,7 @@
     ],
     "paths": {
       "@/*": ["./app/*"],
+      "@labs/*": ["./app/(labs)/*"],
       "@helpers/*": ["./helpers/*"]
     }
   },
