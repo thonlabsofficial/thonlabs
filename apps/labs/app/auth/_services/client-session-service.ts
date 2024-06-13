@@ -37,22 +37,29 @@ const ClientSessionService = {
       profilePicture: session.profilePicture,
     };
   },
+  redirectToLogout(router: ReturnType<typeof useRouter>) {
+    toast({
+      title: 'Logged out',
+      description: apiResponseMessages['40002'],
+    });
+    intAPI.post('/api/auth/logout').then(() => {
+      router.replace('/auth/login');
+    });
+  },
   async shouldKeepAlive(router: ReturnType<typeof useRouter>) {
     window.addEventListener('focus', async () => {
       try {
         const isValid = this.isValid();
 
-        if (Cookies.get('tl_keep_alive') === 'true' && isValid === false) {
-          await intAPI.post('/api/auth/refresh');
+        if (isValid === false) {
+          if (Cookies.get('tl_keep_alive') === 'true') {
+            await intAPI.post('/api/auth/refresh');
+          } else {
+            this.redirectToLogout(router);
+          }
         }
       } catch (e) {
-        toast({
-          title: 'Logged out',
-          description: apiResponseMessages['40002'],
-        });
-        intAPI.post('/api/auth/logout').then(() => {
-          router.replace('/auth/login');
-        });
+        this.redirectToLogout(router);
       }
     });
   },
