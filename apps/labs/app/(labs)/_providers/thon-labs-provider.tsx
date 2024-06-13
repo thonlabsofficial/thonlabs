@@ -25,7 +25,15 @@ export default function ThonLabsProvider({
   const router = useRouter();
 
   React.useEffect(() => {
-    ClientSessionService.shouldKeepAlive(router);
+    async function onFocus() {
+      await ClientSessionService.shouldKeepAlive(router);
+    }
+
+    window.addEventListener('focus', onFocus);
+
+    return () => {
+      window.removeEventListener('focus', onFocus);
+    };
   }, []);
 
   return children;

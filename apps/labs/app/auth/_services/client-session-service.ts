@@ -47,21 +47,19 @@ const ClientSessionService = {
     });
   },
   async shouldKeepAlive(router: ReturnType<typeof useRouter>) {
-    window.addEventListener('focus', async () => {
-      try {
-        const isValid = this.isValid();
+    try {
+      const isValid = this.isValid();
 
-        if (isValid === false) {
-          if (Cookies.get('tl_keep_alive') === 'true') {
-            await intAPI.post('/api/auth/refresh');
-          } else {
-            this.redirectToLogout(router);
-          }
+      if (isValid === false) {
+        if (Cookies.get('tl_keep_alive') === 'true') {
+          await intAPI.post('/api/auth/refresh');
+        } else {
+          this.redirectToLogout(router);
         }
-      } catch (e) {
-        this.redirectToLogout(router);
       }
-    });
+    } catch (e) {
+      this.redirectToLogout(router);
+    }
   },
 };
 
