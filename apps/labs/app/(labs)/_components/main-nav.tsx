@@ -11,6 +11,7 @@ import {
   BsGear,
 } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   environment: Environment;
@@ -18,8 +19,10 @@ type Props = {
 
 export default function MainNav({ environment }: Props) {
   const { environment: clientEnvironment } = useUserSession();
+  const pathname = usePathname();
 
   return (
+    !pathname.startsWith('/projects') &&
     (clientEnvironment || environment) && (
       <nav className="w-52 flex flex-col justify-between px-1.5 py-2 h-[94vh] pb-1.5 fixed top-13.25 left-0 border-r border-collapse">
         <div className="flex flex-col gap-2 w-full">

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { GoGrabber } from 'react-icons/go';
 import useUserSession from '../_hooks/use-user-session';
 import { Environment } from '@/(labs)/_interfaces/environment';
-import { useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   environment: Environment;
@@ -13,8 +13,10 @@ type Props = {
 
 export default function ProjectEnvNav({ environment }: Props) {
   const { environment: clientEnvironment } = useUserSession();
+  const pathname = usePathname();
 
   return (
+    !pathname.startsWith('/projects') &&
     (clientEnvironment || environment) && (
       <nav className="flex items-center gap-1">
         <Link
