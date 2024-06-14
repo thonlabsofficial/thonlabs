@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="p-4">
+    <div className="container p-4">
       <header className="flex items-center justify-between mb-6">
         <Typo variant={'h2'}>My Projects</Typo>
         <Button variant={'secondary'} size={'small'}>
-          Create Project
+          New Project
         </Button>
       </header>
       <ProjectsList />

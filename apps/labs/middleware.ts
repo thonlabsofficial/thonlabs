@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ServerSessionService from './app/auth/_services/server-session-service';
+import { cookies } from 'next/headers';
+import ServerUserSession from '@/(labs)/_services/server-auth-provider';
 
 export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico|favicon.png).*)',
@@ -33,6 +35,10 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/api/auth/logout', req.url));
     } else if (status === 'needs_refresh') {
       return NextResponse.redirect(new URL('/api/auth/refresh', req.url));
+    }
+
+    if (!pathname.startsWith('/projects') && !ServerUserSession.getEnv()) {
+      return NextResponse.redirect(new URL('/projects', req.url));
     }
   }
 

@@ -1,15 +1,11 @@
+import { Environment } from '@/(labs)/_interfaces/environment';
+import { Project } from '@/(labs)/_interfaces/project';
 import useSWR from 'swr';
 
 interface ProjectsResponse {
-  items: {
-    id: string;
-    appName: string;
-    environments: {
-      id: string;
-      name: string;
-      appURL: string;
-    }[];
-  }[];
+  items: (Project & {
+    environments: Environment[];
+  })[];
 }
 
 export function useProjects() {

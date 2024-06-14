@@ -1,13 +1,29 @@
 'use client';
 
+import React from 'react';
+import useUserSession from '@/(labs)/_hooks/use-user-session';
 import { useProjects } from '@/(labs)/projects/_hooks/use-projects';
+import { Environment } from '@/(labs)/_interfaces/environment';
+import { Project } from '@/(labs)/_interfaces/project';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import { Badge } from '@repo/ui/badge';
 import { Card, CardContent } from '@repo/ui/card';
 import { Typo } from '@repo/ui/typo';
+import { useRouter } from 'next/navigation';
 
 export default function ProjectsList() {
   const { isLoadingProjects, projects, projectsError } = useProjects();
+  const { setEnv, clearEnv } = useUserSession();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    clearEnv();
+  }, []);
+
+  function handleSetEnvironment(project: Project, environment: Environment) {
+    setEnv({ project, environment });
+    router.push('/');
+  }
 
   if (isLoadingProjects) {
     return <div>Loading...</div>;
@@ -35,6 +51,7 @@ export default function ProjectsList() {
                     role="button"
                     key={environment.id}
                     className="!bg-card border-transparent shadow-md hover:!bg-white/[0.04] hover:!border-white/[0.06]"
+                    onClick={() => handleSetEnvironment(project, environment)}
                   >
                     <CardContent className="flex flex-col gap-3 p-4">
                       <div className="flex gap-2">
