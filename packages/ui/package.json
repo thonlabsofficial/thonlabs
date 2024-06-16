@@ -8,6 +8,7 @@
     "./badge": "./src/components/badge.tsx",
     "./button": "./src/components/button.tsx",
     "./card": "./src/components/card.tsx",
+    "./dialog": "./src/components/dialog.tsx",
     "./input": "./src/components/input.tsx",
     "./label": "./src/components/label.tsx",
     "./toast": "./src/components/toast.tsx",
@@ -51,5 +52,8 @@
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5"
   }
 }
