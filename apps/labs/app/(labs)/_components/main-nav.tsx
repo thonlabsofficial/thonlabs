@@ -32,10 +32,10 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start !px-2.5 !py-2.5 !text-zinc-900 dark:!text-zinc-50 bg-accent',
+                'flex items-center gap-2.5 w-full !justify-start !px-4 !py-2 !font-normal !text-zinc-900 dark:!text-zinc-50 bg-accent',
             })}
           >
-            <BsClipboardData className="w-5 h-5" /> Home
+            <BsClipboardData className="w-4 h-4" /> Home
           </Link>
 
           <Link
@@ -44,10 +44,10 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-2.5 !py-2.5 hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
-            <BsPersonSquare className="w-5 h-5" /> Users
+            <BsPersonSquare className="w-4 h-4" /> Users
           </Link>
           <Link
             href="/shield/emails"
@@ -55,10 +55,10 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-2.5 !py-2.5 hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
-            <BsEnvelopePaper className="w-5 h-5" /> Emails
+            <BsEnvelopePaper className="w-4 h-4" /> Emails
           </Link>
           <Link
             href="/shield/security"
@@ -66,10 +66,10 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-2.5 !py-2.5 hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
-            <BsShield className="w-5 h-5" /> Security
+            <BsShield className="w-4 h-4" /> Security
           </Link>
         </div>
 
@@ -80,10 +80,10 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-2.5 !py-2.5 hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
-            <BsGear className="w-5 h-5" /> Environment Settings
+            <BsGear className="w-4 h-4" /> Environment Settings
           </Link>
         </div>
       </nav>
