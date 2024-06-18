@@ -31,7 +31,7 @@ export default function LoginForm() {
 
       const result = await login(data);
 
-      if (result.statusCode) {
+      if (result?.statusCode) {
         toast({
           title: 'Log in error',
           description: result.message || 'Invalid credentials',

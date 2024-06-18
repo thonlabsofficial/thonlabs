@@ -1,15 +1,6 @@
 'use client';
 
 import { Button } from '@repo/ui/button';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '@repo/ui/dialog';
 import { Input, InputWrapper } from '@repo/ui/input';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,14 +9,23 @@ import {
   NewProjectFormSchema,
 } from '../_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@repo/ui/drawer';
 
 type Props = {
   trigger: React.ReactNode;
 };
 
-export default function NewProjectDialog({
+export default function NewProjectDrawer({
   trigger,
-  ...props
 }: Props & React.HTMLAttributes<HTMLElement>) {
   const form = useForm<NewProjectFormData>({
     resolver: zodResolver(NewProjectFormSchema),
@@ -35,17 +35,22 @@ export default function NewProjectDialog({
     console.log(data);
   }
 
+  function handleClose() {
+    form.clearErrors();
+    form.reset();
+  }
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent {...props}>
-        <DialogHeader>
-          <DialogTitle>New Project</DialogTitle>
-          <DialogDescription>
+    <Drawer onClose={handleClose}>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>New Project</DrawerTitle>
+          <DrawerDescription>
             Once you create a new project, a "Production" environment will be
             automatically created.
-          </DialogDescription>
-        </DialogHeader>
+          </DrawerDescription>
+        </DrawerHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid w-full items-center gap-3">
             <InputWrapper>
@@ -69,11 +74,16 @@ export default function NewProjectDialog({
               />
             </InputWrapper>
           </div>
-          <DialogFooter className="mt-6">
-            <Button type="submit">Create</Button>
-          </DialogFooter>
+          <DrawerFooter>
+            <DrawerClose>
+              <Button type="button" variant="ghost" className="w-full">
+                Cancel
+              </Button>
+            </DrawerClose>
+            <Button type="submit">Create Project</Button>
+          </DrawerFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </DrawerContent>
+    </Drawer>
   );
 }

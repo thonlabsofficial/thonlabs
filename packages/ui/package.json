@@ -9,6 +9,7 @@
     "./button": "./src/components/button.tsx",
     "./card": "./src/components/card.tsx",
     "./dialog": "./src/components/dialog.tsx",
+    "./drawer": "./src/components/drawer.tsx",
     "./input": "./src/components/input.tsx",
     "./label": "./src/components/label.tsx",
     "./toast": "./src/components/toast.tsx",
@@ -54,6 +55,8 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.0.5"
+    "@radix-ui/react-dialog": "^1.0.5",
+    "react-icons": "^5.2.1",
+    "vaul": "^0.9.1"
   }
 }

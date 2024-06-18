@@ -4,29 +4,29 @@ import { Typo } from '@repo/ui/typo';
 import { Button } from '@repo/ui/button';
 import dynamic from 'next/dynamic';
 
-const NewProjectDialog = dynamic(
-  () => import('@labs/projects/_components/new-project-dialog'),
+const NewProjectDrawer = dynamic(
+  () => import('@/(labs)/projects/_components/new-project-drawer'),
   { ssr: false },
 );
 
 export const metadata: Metadata = {
-  title: 'My Projects',
+  title: 'Projects',
 };
 
 export default function Home() {
   return (
-    <div className="container p-4">
-      <header className="flex items-center justify-between mb-6">
-        <Typo variant={'h2'}>My Projects</Typo>
-        <NewProjectDialog
-          trigger={
-            <Button variant={'secondary'} size={'small'}>
-              New Project
-            </Button>
-          }
-        />
+    <>
+      <header className="mb-6 border-b bg-card py-8">
+        <div className="w-full flex items-center justify-between container">
+          <Typo variant={'h2'}>Projects</Typo>
+          <NewProjectDrawer
+            trigger={<Button variant={'opposite'}>New Project</Button>}
+          />
+        </div>
       </header>
-      <ProjectsList />
-    </div>
+      <div className="container p-4">
+        <ProjectsList />
+      </div>
+    </>
   );
 }

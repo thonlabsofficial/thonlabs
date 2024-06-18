@@ -2,14 +2,21 @@ import * as React from 'react';
 
 import { cn } from '../core/utils';
 
+type Props = {
+  noBackground?: boolean;
+};
+
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  Props & React.HTMLAttributes<HTMLDivElement>
+>(({ className, noBackground, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      'rounded-md border bg-white dark:bg-gray-925 text-card-foreground shadow transition-all duration-120 ease-in-out',
+      'rounded-md border text-card-foreground shadow transition-all duration-120 ease-in-out',
+      {
+        'bg-card': !noBackground,
+      },
       className,
     )}
     {...props}

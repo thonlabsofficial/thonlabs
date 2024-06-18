@@ -44,7 +44,7 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
             <BsPersonSquare className="w-4 h-4" /> Users
@@ -55,7 +55,7 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
             <BsEnvelopePaper className="w-4 h-4" /> Emails
@@ -66,7 +66,7 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
             <BsShield className="w-4 h-4" /> Security
@@ -80,7 +80,7 @@ export default function MainNav({ environment }: Props) {
               variant: 'linkGhost',
               size: 'small',
               className:
-                'flex items-center gap-2.5 w-full !justify-start font-normal !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
+                'flex items-center gap-2.5 w-full !justify-start !px-4 !py-2 !font-normal hover:bg-accent/[0.3]',
             })}
           >
             <BsGear className="w-4 h-4" /> Environment Settings
