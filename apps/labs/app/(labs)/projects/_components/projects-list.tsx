@@ -12,7 +12,7 @@ import { Typo } from '@repo/ui/typo';
 import { useRouter } from 'next/navigation';
 
 export default function ProjectsList() {
-  const { isLoadingProjects, projects, projectsError } = useProjects();
+  const { isLoadingProjects, projects } = useProjects();
   const { setEnv, clearEnv } = useUserSession();
   const router = useRouter();
 
@@ -26,6 +26,7 @@ export default function ProjectsList() {
   }
 
   if (isLoadingProjects) {
+    // TODO: skeletons and errors
     return <div>Loading...</div>;
   }
 
