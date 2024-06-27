@@ -13,28 +13,26 @@ type Props = {
 
 export default function ProjectEnvNav({ environment }: Props) {
   const { environment: clientEnvironment } = useUserSession();
-  const pathname = usePathname();
 
   return (
-    !pathname.startsWith('/projects') &&
     (clientEnvironment || environment) && (
-      <nav className="flex items-center gap-1">
+      <div className="flex w-full items-center gap-1">
         <Link
           href="/projects"
           className={buttonVariants({
             variant: 'linkGhost',
-            size: 'small',
+            size: 'xs',
             className:
-              'flex items-center gap-1 !text-zinc-900 dark:!text-zinc-50',
+              'w-full flex flex-col !items-start gap-1 !text-zinc-900 dark:!text-zinc-50',
           })}
         >
           <span>{(clientEnvironment || environment).project.appName}</span>
-          <span className="-mt-px">
+          {/* <span className="-mt-px">
             <GoGrabber className="fill-zinc-900 dark:fill-zinc-50" />
-          </span>
+          </span> */}
           <span>{(clientEnvironment || environment).name}</span>
         </Link>
-      </nav>
+      </div>
     )
   );
 }

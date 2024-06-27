@@ -2,8 +2,10 @@ import { cookies } from 'next/headers';
 import ServerSessionService from '../../auth/_services/server-session-service';
 import { Environment } from '@/(labs)/_interfaces/environment';
 
+export type UserSession = ReturnType<typeof ServerSessionService.getSession>;
+
 const ServerUserSession = {
-  getSession() {
+  getSession(): UserSession {
     return ServerSessionService.getSession();
   },
   getEnv() {

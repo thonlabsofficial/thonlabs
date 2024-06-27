@@ -68,7 +68,7 @@ const DrawerContent = React.forwardRef<
       <div className="flex justify-end">
         <DrawerClose asChild>
           <Button
-            size="small"
+            size="xs"
             variant="ghost"
             className="w-9 h-9 -mt-[0.7rem] -mr-[0.7rem] mb-[0.14rem]"
           >

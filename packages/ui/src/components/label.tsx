@@ -14,7 +14,7 @@ const labelVariants = cva(
     variants: {
       state: {
         default:
-          'text-gray-500 group-focus-within:text-gray-700 dark:group-focus-within:text-gray-300',
+          'text-zinc-500 group-focus-within:text-zinc-700 dark:group-focus-within:text-zinc-300',
       },
     },
     defaultVariants: {

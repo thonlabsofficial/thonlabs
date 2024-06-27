@@ -6,17 +6,17 @@ import { Typo } from './typo';
 import { Label } from './label';
 
 const inputVariants = cva(
-  `flex text-gray-900 dark:text-gray-50 w-full rounded-md border border-solid bg-background shadow-sm 
-	 placeholder:text-gray-300 dark:placeholder:text-gray-600
+  `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-solid hover:bg-input-hover shadow-sm 
+	 placeholder:text-zinc-300 dark:placeholder:text-zinc-600
 	 transition-all duration-200 ease-in-out
-	 file:border-0 file:bg-transparent file:text-sm file:font-medium outline-none
+	 file:border-0 bg-transparent file:text-sm file:font-medium outline-none
 	 disabled:cursor-not-allowed disabled:opacity-50`,
   {
     variants: {
       state: {
-        default: `border-gray-200 dark:border-gray-800 
-                  focus:border-gray-600 dark:focus:border-gray-500
-                  hover:border-gray-400 dark:hover:border-gray-700`,
+        default: `border-zinc-200 dark:border-zinc-600 
+                  hover:border-zinc-400 dark:hover:border-zinc-500
+                  focus:border-zinc-700 dark:focus:border-zinc-300`,
         error: 'border-red-500 focus:border-red-500',
       },
       inputSize: {

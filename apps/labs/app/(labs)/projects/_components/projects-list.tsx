@@ -33,7 +33,7 @@ export default function ProjectsList() {
   return (
     <div className="grid gap-6">
       {projects.map((project) => (
-        <Card key={project.id} noBackground>
+        <Card key={project.id}>
           <CardContent className="flex flex-col gap-6 pt-6">
             <header className="flex gap-2 items-center">
               <Typo variant={'h4'}>{project.appName}</Typo>
@@ -51,8 +51,9 @@ export default function ProjectsList() {
                   <Card
                     role="button"
                     key={environment.id}
-                    className="shadow-md hover:!bg-foreground/[0.04] hover:!border-foreground/[0.06]"
+                    className="shadow-md hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1]"
                     onClick={() => handleSetEnvironment(project, environment)}
+                    variant={'background'}
                   >
                     <CardContent className="flex flex-col gap-3 p-4">
                       <div className="flex gap-2">
