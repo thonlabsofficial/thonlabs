@@ -5,9 +5,9 @@ import { Input, InputWrapper } from '@repo/ui/input';
 import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  NewProjectFormData,
-  NewProjectFormSchema,
-} from '../_validators/projects-validators';
+  NewEnvironmentFormData,
+  NewEnvironmentFormSchema,
+} from '@labs/projects/_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
@@ -19,31 +19,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useProject from '@/(labs)/projects/_hooks/use-project';
-import useUserSession from '@/(labs)/_hooks/use-user-session';
+import useUserSession from '@labs/_hooks/use-user-session';
 import { useRouter } from 'next/navigation';
+import { Project } from '@labs/_interfaces/project';
+import useEnvironment from '@labs/projects/_hooks/use-environment';
 
 type Props = {
   trigger: React.ReactNode;
+  project: Project;
 };
 
-export default function NewProjectDialog({
+export default function newEnvironmentDialog({
   trigger,
+  project,
 }: Props & React.HTMLAttributes<HTMLElement>) {
-  const form = useForm<NewProjectFormData>({
-    resolver: zodResolver(NewProjectFormSchema),
+  const form = useForm<NewEnvironmentFormData>({
+    resolver: zodResolver(NewEnvironmentFormSchema),
   });
-  const { createProject } = useProject();
-  const [isCreatingProject, startTransitionCreatingProject] = useTransition();
+  const { createEnvironment } = useEnvironment();
+  const [isCreating, startCreatingTransition] = useTransition();
   const { setEnv } = useUserSession();
   const router = useRouter();
 
-  function onSubmit(payload: NewProjectFormData) {
-    startTransitionCreatingProject(async () => {
-      const project = await createProject(payload);
+  function onSubmit(payload: NewEnvironmentFormData) {
+    startCreatingTransition(async () => {
+      const environment = await createEnvironment(project.id, payload);
 
-      if (project) {
-        setEnv({ environment: project.environment, project });
+      if (environment) {
+        setEnv({ environment, project });
         router.push('/');
       }
     });
@@ -61,29 +64,29 @@ export default function NewProjectDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New Project</DialogTitle>
+          <DialogTitle>New Environment</DialogTitle>
           <DialogDescription>
-            Once you create a new project, a <strong>"Production"</strong>{' '}
-            environment will be automatically set up.
+            Complete the information below to create a new environment for{' '}
+            <strong>{project.appName}</strong> project.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid w-full items-center gap-3">
             <InputWrapper>
               <Input
-                id="appName"
-                placeholder="e.g.: Thon Labs"
+                id="name"
+                placeholder="e.g.: Staging"
                 inputSize="lg"
                 label="Name"
-                maxLength={30}
-                error={form.formState.errors.appName?.message}
-                {...form.register('appName')}
+                maxLength={25}
+                error={form.formState.errors.name?.message}
+                {...form.register('name')}
               />
             </InputWrapper>
             <InputWrapper>
               <Input
                 id="appURL"
-                placeholder="e.g.: https://thonlabs.io"
+                placeholder="e.g.: https://staging.thonlabs.io"
                 inputSize="lg"
                 label="URL"
                 error={form.formState.errors.appURL?.message}
@@ -93,16 +96,12 @@ export default function NewProjectDialog({
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                disabled={isCreatingProject}
-              >
+              <Button type="button" variant="ghost" disabled={isCreating}>
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" loading={isCreatingProject}>
-              {isCreatingProject ? 'Creating...' : 'Create Project'}
+            <Button type="submit" loading={isCreating}>
+              {isCreating ? 'Creating...' : 'Create Environment'}
             </Button>
           </DialogFooter>
         </form>

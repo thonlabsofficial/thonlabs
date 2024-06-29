@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 const config: Omit<Config, 'content'> = {
   darkMode: ['class'],
@@ -89,7 +90,16 @@ const config: Omit<Config, 'content'> = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    plugin(({ addUtilities, theme }) => {
+      addUtilities({
+        '.transition-default': {
+          transition: 'all 0.2s ease-in-out',
+        },
+      });
+    }),
+  ],
 };
 
 export default config;

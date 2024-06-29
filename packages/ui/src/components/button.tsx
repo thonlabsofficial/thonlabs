@@ -23,10 +23,10 @@ const buttonVariants = cva(
           'text-zinc-500 hover:bg-accent hover:text-accent-foreground hover:text-zinc-600 dark:hover:text-zinc-300',
       },
       size: {
-        default: 'px-4 py-2.5 text-base',
-        sm: 'py-1.5 px-2 text-sm',
+        default: 'px-4 py-2 text-base',
+        sm: 'py-1 px-2 text-sm',
         lg: 'py-4 px-6 text-base',
-        xs: 'py-1.5 px-2 text-xs',
+        xs: 'py-1 px-2 text-xs',
       },
     },
     defaultVariants: {

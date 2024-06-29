@@ -5,7 +5,7 @@ import { useToast } from '@repo/ui/hooks/use-toast';
 import { Environment } from '@/(labs)/_interfaces/environment';
 import { Project } from '@/(labs)/_interfaces/project';
 
-export default function useProjectMutation() {
+export default function useProject() {
   const { toast } = useToast();
 
   async function createProject(payload: NewProjectFormData) {
@@ -15,18 +15,18 @@ export default function useProjectMutation() {
       >('/projects', payload);
 
       toast({
-        title: 'Project Created',
-        description: `Your project ${payload.appName} has been created successfully`,
+        title: 'This is a beginning of something!',
+        description: `Your project ${payload.appName} has been successfully created.`,
       });
 
       return data;
     } catch (error: any) {
       console.error('[Create Project]', error);
       toast({
-        title: 'Project Creation Error',
+        title: "We couldn't create your project",
         description:
           error?.response?.data?.message ||
-          'Your project could not be created. Please try again.',
+          "We're not sure if it was on our end. Please check the fields and try again.",
         variant: 'destructive',
       });
     }

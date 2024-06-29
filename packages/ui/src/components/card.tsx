@@ -10,10 +10,16 @@ const cardVariants = cva(
       variant: {
         default: 'bg-card',
         background: 'bg-background',
+        transparent: 'bg-transparent',
+      },
+      border: {
+        solid: 'border-solid',
+        dashed: 'border-dashed border-foreground/[0.12]',
       },
     },
     defaultVariants: {
       variant: 'default',
+      border: 'solid',
     },
   },
 );
@@ -25,10 +31,10 @@ export interface CardProps
 const Card = React.forwardRef<
   HTMLDivElement,
   CardProps & React.HTMLAttributes<HTMLDivElement>
->(({ className, variant, ...props }, ref) => (
+>(({ className, variant, border, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(cardVariants({ variant }), className)}
+    className={cn(cardVariants({ variant, border }), className)}
     {...props}
   />
 ));

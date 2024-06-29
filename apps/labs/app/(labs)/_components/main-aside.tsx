@@ -42,7 +42,7 @@ export default function MainAside({ environment, session }: Props) {
           <ProjectEnvNav environment={environment as Environment} />
         </div>
 
-        <nav className="w-full flex flex-col justify-between pt-3 pb-2 h-[94vh]">
+        <nav className="w-full flex flex-col justify-between pt-3 pb-2 px-1.5 h-[94vh]">
           <div className="flex flex-col gap-2 w-full">
             <Link
               href="/"
@@ -103,7 +103,7 @@ export default function MainAside({ environment, session }: Props) {
           </div>
 
           <div className="flex items-center gap-2 w-full">
-            <Avatar size="small" className="cursor-default select-none">
+            <Avatar size="sm" className="cursor-default select-none">
               <AvatarFallback>
                 {Utils.getFirstAndLastInitials(
                   user?.fullName || session.user.fullName,

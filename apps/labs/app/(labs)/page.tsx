@@ -6,9 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return (
-    <PageWrapper>
-      <div className="px-3 py-2">Dashboard - Home</div>
-    </PageWrapper>
-  );
+  return <PageWrapper>Dashboard - Home</PageWrapper>;
 }

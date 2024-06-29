@@ -26,7 +26,7 @@ export default function Home() {
         <div className="container flex justify-between items-center gap-3">
           <Logo reduced className="h-5" />
 
-          <Avatar size="small" className="cursor-default select-none">
+          <Avatar size="sm" className="cursor-default select-none">
             <AvatarFallback>
               {Utils.getFirstAndLastInitials(session.user.fullName)}
             </AvatarFallback>
