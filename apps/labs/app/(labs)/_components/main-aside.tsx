@@ -12,7 +12,7 @@ import {
 } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
 import { usePathname } from 'next/navigation';
-import Utils from '@helpers/utils';
+import Utils from '@repo/utils';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import ProjectEnvNav from './project-env-nav';
 import { UserSession } from '../_services/server-auth-provider';

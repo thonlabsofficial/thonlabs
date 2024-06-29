@@ -1,3 +1,4 @@
+import Utils from '@repo/utils';
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
@@ -18,18 +19,28 @@ const labsAPI = axios.create({
 const intAPI = axios.create();
 
 async function validateTokensInterceptor(
-  config: InternalAxiosRequestConfig<any>
+  config: InternalAxiosRequestConfig<any>,
 ) {
-  const accessToken = Cookies.get('tl_session');
+  let accessToken = Cookies.get('tl_session');
 
   if (!accessToken) {
-    const controller = new AbortController();
-    controller.abort();
+    /* 
+      Wait the /refresh finishes and try 10 times until get the access token 
+      or send to response error interceptor
+    */
+    let round = 0;
+    const retry = 10;
 
-    return {
-      ...config,
-      signal: controller.signal,
-    };
+    while (round < retry) {
+      if (accessToken) break;
+      await Utils.delay(50);
+      accessToken = Cookies.get('tl_session');
+      round++;
+    }
+
+    if (!accessToken) {
+      return config;
+    }
   }
 
   config.headers['Authorization'] = `Bearer ${accessToken}`;

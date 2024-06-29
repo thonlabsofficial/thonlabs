@@ -1,4 +1,4 @@
-import { passwordPatterns } from '@helpers/patterns/password-pattern';
+import { passwordPatterns } from '@repo/utils/validation-patterns';
 import { z } from 'zod';
 
 export const LoginFormSchema = z.object({

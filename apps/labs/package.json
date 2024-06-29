@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@repo/config-tailwind": "workspace:*",
+    "@repo/utils": "workspace:*",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",

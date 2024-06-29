@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import * as jose from 'jose';
 import { SessionData } from '../_actions/auth-actions';
 import { User } from '../_interfaces/user';
+import Utils from '@helpers/utils';
 
 const ServerSessionService = {
   create(data: SessionData) {
@@ -37,7 +38,7 @@ const ServerSessionService = {
 
   getSession() {
     const accessToken = cookies().get('tl_session');
-    const session = jose.decodeJwt<User>(accessToken!.value as string);
+    const session = jose.decodeJwt<User>(accessToken?.value as string);
 
     return {
       user: {
@@ -50,7 +51,7 @@ const ServerSessionService = {
   },
 
   isValid() {
-    const accessToken = cookies().get('tl_session');
+    let accessToken = cookies().get('tl_session');
 
     if (!accessToken?.value) {
       return false;

@@ -10,7 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import { labsPublicAPI } from '@helpers/api';
+import { labsPublicAPI } from '../../../helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 

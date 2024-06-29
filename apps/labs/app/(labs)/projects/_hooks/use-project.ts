@@ -1,4 +1,4 @@
-import { labsAPI } from '@helpers/api';
+import { labsAPI } from '../../../../helpers/api';
 import { useState } from 'react';
 import { NewProjectFormData } from '../_validators/projects-validators';
 import { useToast } from '@repo/ui/hooks/use-toast';

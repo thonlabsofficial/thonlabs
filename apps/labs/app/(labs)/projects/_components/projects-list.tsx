@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { BsArrowRightShort } from 'react-icons/bs';
+import { BsArrowRightShort, BsGearFill } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
 import { useProjects } from '@labs/projects/_hooks/use-projects';
 import { Environment } from '@labs/_interfaces/environment';
@@ -13,6 +13,7 @@ import { Typo } from '@repo/ui/typo';
 import { useRouter } from 'next/navigation';
 import NewEnvironmentDialog from '@labs/projects/_components/new-environment-dialog';
 import { useToast } from '@repo/ui/hooks/use-toast';
+import { Button } from '@repo/ui/button';
 
 export default function ProjectsList() {
   const { isLoadingProjects, projects } = useProjects();
@@ -45,9 +46,18 @@ export default function ProjectsList() {
       {projects.map((project) => (
         <Card key={project.id}>
           <CardContent className="flex flex-col gap-6 pt-6">
-            <header className="flex gap-2 items-center">
-              <Typo variant={'h4'}>{project.appName}</Typo>
-              <Badge variant={'secondary'}>PID - {project.id}</Badge>
+            <header className="flex justify-between">
+              <div className="flex items-center gap-2">
+                <Typo variant={'h4'}>{project.appName}</Typo>
+                <div>
+                  <Badge variant={'secondary'}>PID - {project.id}</Badge>
+                </div>
+              </div>
+              <div>
+                <Button variant={'ghost'} size={'sm'} icon={BsGearFill}>
+                  Settings
+                </Button>
+              </div>
             </header>
 
             <section>

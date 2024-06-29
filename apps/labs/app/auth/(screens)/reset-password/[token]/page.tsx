@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import LandingGrid from '@/_components/landing-grid';
 import AuthHeader from '@/_components/auth-header';
-import { labsPublicAPI } from '@helpers/api';
+import { labsPublicAPI } from '../../../../../helpers/api';
 import { notFound } from 'next/navigation';
 import CreateNewPasswordForm from '../../../_components/create-new-password-form';
 

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ServerSessionService from './app/auth/_services/server-session-service';
-import { cookies } from 'next/headers';
 import ServerUserSession from '@/(labs)/_services/server-auth-provider';
 
 export const config = {
@@ -24,20 +23,35 @@ export async function middleware(req: NextRequest) {
       (!keepAlive && !accessToken) ||
       (keepAlive === 'true' && !accessToken && !refreshToken)
     ) {
+      console.log('[MIDDLEWARE] Invalid session');
       return NextResponse.redirect(new URL('/api/auth/logout', req.url));
     }
 
-    // Validates the session status and redirects to regenerate
-    // a new token in case of need
-    const { status } = await ServerSessionService.shouldKeepAlive();
+    const isPageRefresh = req.headers.get('referer') === req.url;
+    if (isPageRefresh) {
+      // Validates the session status and redirects to regenerate
+      // a new token in case of need
+      const { status } = await ServerSessionService.shouldKeepAlive();
 
-    if (status === 'invalid_session') {
-      return NextResponse.redirect(new URL('/api/auth/logout', req.url));
-    } else if (status === 'needs_refresh') {
-      return NextResponse.redirect(new URL('/api/auth/refresh', req.url));
+      if (status === 'invalid_session') {
+        console.log('[MIDDLEWARE] Invalid session from keep alive', status);
+
+        return NextResponse.redirect(new URL('/api/auth/logout', req.url));
+      } else if (status === 'needs_refresh') {
+        console.log('[MIDDLEWARE] Needs refresh from keep alive', status);
+
+        const { pathname } = new URL(req.url);
+
+        return NextResponse.redirect(
+          new URL(`/api/auth/refresh?dest=${pathname}`, req.url),
+        );
+      }
     }
 
     if (!pathname.startsWith('/projects') && !ServerUserSession.getEnv()) {
+      console.log(
+        '[MIDDLEWARE] No environment selected, redirecting to /projects',
+      );
       return NextResponse.redirect(new URL('/projects', req.url));
     }
   }

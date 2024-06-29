@@ -1,6 +1,6 @@
 'use server';
 
-import { labsPublicAPI } from '@helpers/api';
+import { labsPublicAPI } from '../../../helpers/api';
 import { LoginFormData } from '../_validators/auth-validators';
 import { AxiosError } from 'axios';
 import ServerSessionService from '../_services/server-session-service';

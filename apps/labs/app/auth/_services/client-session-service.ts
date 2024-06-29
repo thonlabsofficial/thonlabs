@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import * as jose from 'jose';
-import { intAPI } from '@helpers/api';
+import { intAPI } from '../../../helpers/api';
 import { toast } from '@repo/ui/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { apiResponseMessages } from '../../(labs)/_providers/thon-labs-provider';

@@ -1,8 +1,9 @@
 import ServerSessionService from '@/auth/_services/server-session-service';
-import { redirect, notFound } from 'next/navigation';
+import { type NextRequest } from 'next/server';
+import { redirect, notFound, RedirectType } from 'next/navigation';
 
 export const POST = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: { thonlabs: string } },
 ) => {
   const action = params.thonlabs;
@@ -21,7 +22,7 @@ export const POST = async (
 };
 
 export const GET = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: { thonlabs: string } },
 ) => {
   const action = params.thonlabs;
@@ -31,10 +32,12 @@ export const GET = async (
       const response = await ServerSessionService.validateRefreshToken();
 
       if (response.statusCode === 200) {
-        return redirect('/');
+        const searchParams = req.nextUrl.searchParams;
+        const dest = searchParams.get('dest') || '/';
+        return redirect(dest, RedirectType.replace);
       }
 
-      return redirect('/api/auth/logout');
+      return redirect('/api/auth/logout', RedirectType.replace);
     case 'logout':
       ServerSessionService.logout();
       return redirect('/auth/login');
