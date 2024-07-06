@@ -2,7 +2,6 @@ import { cookies } from 'next/headers';
 import * as jose from 'jose';
 import { SessionData } from '../_actions/auth-actions';
 import { User } from '../_interfaces/user';
-import Utils from '@helpers/utils';
 
 const ServerSessionService = {
   create(data: SessionData) {
@@ -32,12 +31,19 @@ const ServerSessionService = {
     return {
       accessToken: cookies().get('tl_session')?.value,
       refreshToken: cookies().get('tl_refresh')?.value,
-      keepAlive: cookies().get('tl_keep_alive')?.value,
+      keepAlive: cookies().get('tl_keep_alive')?.value === 'true',
     };
   },
 
   getSession() {
     const accessToken = cookies().get('tl_session');
+
+    if (!accessToken?.value) {
+      return {
+        user: null,
+      };
+    }
+
     const session = jose.decodeJwt<User>(accessToken?.value as string);
 
     return {
@@ -112,7 +118,7 @@ const ServerSessionService = {
       const isValid = this.isValid();
       const { keepAlive, refreshToken } = this.getSessionCookies();
 
-      if (keepAlive === 'true' && isValid === false) {
+      if (keepAlive && isValid === false) {
         if (!refreshToken) {
           console.log('Error "shouldKeepAlive": Invalid refresh token');
           return {

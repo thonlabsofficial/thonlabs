@@ -28,7 +28,7 @@ export default function Home() {
 
           <Avatar size="sm" className="cursor-default select-none">
             <AvatarFallback>
-              {Utils.getFirstAndLastInitials(session.user.fullName)}
+              {Utils.getFirstAndLastInitials(session?.user?.fullName || '')}
             </AvatarFallback>
           </Avatar>
         </div>

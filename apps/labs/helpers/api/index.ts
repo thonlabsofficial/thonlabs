@@ -1,4 +1,3 @@
-import Utils from '@repo/utils';
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
@@ -24,23 +23,12 @@ async function validateTokensInterceptor(
   let accessToken = Cookies.get('tl_session');
 
   if (!accessToken) {
-    /* 
-      Wait the /refresh finishes and try 10 times until get the access token 
-      or send to response error interceptor
-    */
-    let round = 0;
-    const retry = 10;
+    localStorage.setItem('tl_refreshing', 'true');
 
-    while (round < retry) {
-      if (accessToken) break;
-      await Utils.delay(50);
-      accessToken = Cookies.get('tl_session');
-      round++;
-    }
+    await intAPI.post('/api/auth/refresh');
+    accessToken = Cookies.get('tl_session');
 
-    if (!accessToken) {
-      return config;
-    }
+    localStorage.removeItem('tl_refreshing');
   }
 
   config.headers['Authorization'] = `Bearer ${accessToken}`;
@@ -53,7 +41,10 @@ async function handleResponseError(error: any) {
 
   switch (statusCode) {
     case 401:
-      intAPI.post('/api/auth/logout');
+      // TODO: if react only, clear here using Cookies lib
+      await intAPI.post('/api/auth/logout');
+      localStorage.removeItem('tl_refreshing');
+      window.location.href = '/login?reason=unauthorized';
       break;
   }
 

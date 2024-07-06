@@ -24,6 +24,8 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         linkGhost:
           'text-zinc-500 hover:bg-accent hover:text-accent-foreground hover:text-zinc-600 dark:hover:text-zinc-300',
+        success: 'bg-success shadow-sm hover:bg-success/90',
+        info: 'bg-info shadow-sm hover:bg-info/90',
       },
       size: {
         xs: 'py-1 px-2 text-xs gap-1',
@@ -65,7 +67,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }), {
-          'pointer-events-none opacity-80': loading || disabled,
+          'pointer-events-none opacity-50': loading || disabled,
         })}
         ref={ref}
         {...props}

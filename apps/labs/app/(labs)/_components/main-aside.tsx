@@ -106,12 +106,12 @@ export default function MainAside({ environment, session }: Props) {
             <Avatar size="sm" className="cursor-default select-none">
               <AvatarFallback>
                 {Utils.getFirstAndLastInitials(
-                  user?.fullName || session.user.fullName,
+                  user?.fullName || session?.user?.fullName || '',
                 )}
               </AvatarFallback>
             </Avatar>
-            <Typo variant={'small'}>
-              {user?.fullName || session.user.fullName}
+            <Typo variant={'sm'}>
+              {user?.fullName || session?.user?.fullName || ''}
             </Typo>
           </div>
         </nav>

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   NewEnvironmentFormData,
   NewEnvironmentFormSchema,
-} from '@labs/projects/_validators/projects-validators';
+} from '@labs/projects/_validators/environments-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
@@ -29,7 +29,7 @@ type Props = {
   project: Project;
 };
 
-export default function newEnvironmentDialog({
+export default function NewEnvironmentDialog({
   trigger,
   project,
 }: Props & React.HTMLAttributes<HTMLElement>) {

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import ClientSessionService from '../../auth/_services/client-session-service';
-import { useRouter } from 'next/navigation';
 
 // TODO: move to other place when having the @thonlabs/nextjs ready
 export enum APIResponseCodes {
@@ -22,11 +21,9 @@ export const apiResponseMessages = {
 export default function ThonLabsProvider({
   children,
 }: React.HTMLAttributes<HTMLElement>) {
-  const router = useRouter();
-
   React.useEffect(() => {
     async function onFocus() {
-      await ClientSessionService.shouldKeepAlive(router);
+      await ClientSessionService.shouldKeepAlive();
     }
 
     window.addEventListener('focus', onFocus);

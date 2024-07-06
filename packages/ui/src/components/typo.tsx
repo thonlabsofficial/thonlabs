@@ -5,7 +5,7 @@ import { cn } from '../core/utils';
 const typoVariants = cva('font-sans text-text', {
   variants: {
     variant: {
-      default: '',
+      default: 'text-base font-normal leading-relaxed',
       paragraph: 'leading-relaxed [&:not(:first-child)]:mt-5 mb-0',
       h1: 'scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl',
       h2: 'scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0',
@@ -15,8 +15,9 @@ const typoVariants = cva('font-sans text-text', {
       inlineCode:
         'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
       lead: 'text-xl text-muted-foreground',
-      large: 'text-lg font-semibold',
-      small: 'text-sm font-medium',
+      lg: 'text-lg font-semibold',
+      md: 'text-lg font-medium',
+      sm: 'text-sm font-medium',
       xs: 'text-xs font-medium',
       muted: 'text-sm text-muted-foreground',
       code: 'font-code text-emerald-200 text-sm',

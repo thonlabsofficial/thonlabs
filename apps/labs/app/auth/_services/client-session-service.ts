@@ -1,10 +1,8 @@
 import Cookies from 'js-cookie';
 import * as jose from 'jose';
 import { intAPI } from '../../../helpers/api';
-import { toast } from '@repo/ui/hooks/use-toast';
-import { useRouter } from 'next/navigation';
-import { apiResponseMessages } from '../../(labs)/_providers/thon-labs-provider';
 import { User } from '../_interfaces/user';
+import Utils from '@repo/utils';
 
 const ClientSessionService = {
   refreshing: false,
@@ -37,28 +35,34 @@ const ClientSessionService = {
       profilePicture: session.profilePicture,
     };
   },
-  redirectToLogout(router: ReturnType<typeof useRouter>) {
-    toast({
-      title: 'Logged out',
-      description: apiResponseMessages['40002'],
-    });
+  redirectToLogout() {
     intAPI.post('/api/auth/logout').then(() => {
-      router.replace('/auth/login');
+      window.location.href = '/auth/login?reason=unauthorized';
     });
   },
-  async shouldKeepAlive(router: ReturnType<typeof useRouter>) {
+  async shouldKeepAlive() {
     try {
-      const isValid = this.isValid();
+      /*
+        This delay is necessary to live together with "validateTokensInterceptor"
+        from API client.
+      */
+      await Utils.delay(50);
 
-      if (isValid === false) {
-        if (Cookies.get('tl_keep_alive') === 'true') {
-          await intAPI.post('/api/auth/refresh');
-        } else {
-          this.redirectToLogout(router);
+      const isRefreshing = localStorage.getItem('tl_refreshing') === 'true';
+      if (!isRefreshing) {
+        const isValid = this.isValid();
+
+        if (isValid === false) {
+          if (Cookies.get('tl_keep_alive') === 'true') {
+            await intAPI.post('/api/auth/refresh');
+          } else {
+            this.redirectToLogout();
+          }
         }
       }
     } catch (e) {
-      this.redirectToLogout(router);
+      console.error(e);
+      this.redirectToLogout();
     }
   },
 };

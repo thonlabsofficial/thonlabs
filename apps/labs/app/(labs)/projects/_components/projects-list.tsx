@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import NewEnvironmentDialog from '@labs/projects/_components/new-environment-dialog';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Button } from '@repo/ui/button';
+import ProjectSettingsDrawer from './project-settings-drawer';
 
 export default function ProjectsList() {
   const { isLoadingProjects, projects } = useProjects();
@@ -50,13 +51,18 @@ export default function ProjectsList() {
               <div className="flex items-center gap-2">
                 <Typo variant={'h4'}>{project.appName}</Typo>
                 <div>
-                  <Badge variant={'secondary'}>PID - {project.id}</Badge>
+                  <Badge variant={'secondary'}>{project.id}</Badge>
                 </div>
               </div>
               <div>
-                <Button variant={'ghost'} size={'sm'} icon={BsGearFill}>
-                  Settings
-                </Button>
+                <ProjectSettingsDrawer
+                  trigger={
+                    <Button variant={'ghost'} size={'sm'} icon={BsGearFill}>
+                      Settings
+                    </Button>
+                  }
+                  project={project}
+                />
               </div>
             </header>
 
@@ -84,9 +90,9 @@ export default function ProjectsList() {
                             </AvatarFallback>
                           </Avatar>
                           <div className="mt-1">
-                            <Typo variant={'large'}>{environment.name}</Typo>
+                            <Typo variant={'lg'}>{environment.name}</Typo>
                             <Typo
-                              variant={'small'}
+                              variant={'sm'}
                               className="text-zinc-600 dark:text-zinc-400"
                             >
                               {environment.appURL}
@@ -99,7 +105,7 @@ export default function ProjectsList() {
                             variant={'secondary'}
                             className="cursor-pointer"
                           >
-                            EID - {environment.id}
+                            {environment.id}
                           </Badge>
                         </div>
                       </div>
@@ -125,7 +131,7 @@ export default function ProjectsList() {
                     >
                       <CardContent className="flex h-full justify-center items-center gap-4 p-4">
                         <Typo
-                          variant={'large'}
+                          variant={'lg'}
                           className="text-foreground/[0.7] group-hover:text-foreground/[0.9] transition-default"
                         >
                           New Environment

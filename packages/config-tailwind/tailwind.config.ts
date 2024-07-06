@@ -25,6 +25,8 @@ const config: Omit<Config, 'content'> = {
         ring: 'hsl(var(--ring))',
         foreground: 'hsl(var(--foreground))',
         background: 'hsl(var(--background))',
+        success: 'hsl(var(--success))',
+        info: 'hsl(var(--info))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

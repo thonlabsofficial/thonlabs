@@ -1,7 +1,8 @@
 import { labsAPI } from '../../../../helpers/api';
-import { NewEnvironmentFormData } from '../_validators/projects-validators';
+import { NewEnvironmentFormData } from '../_validators/environments-validators';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Environment } from '@/(labs)/_interfaces/environment';
+import { APIErrors } from '@helpers/api/api-errors';
 
 export default function useEnvironment() {
   const { toast } = useToast();
@@ -26,9 +27,7 @@ export default function useEnvironment() {
       console.error('[Create Environment]', error);
       toast({
         title: "We couldn't create your environment",
-        description:
-          error?.response?.data?.message ||
-          "We're not sure if it was on our end. Please check the fields and try again.",
+        description: error?.response?.data?.message || APIErrors.Generic,
         variant: 'destructive',
       });
     }

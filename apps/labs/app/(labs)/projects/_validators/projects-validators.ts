@@ -10,12 +10,21 @@ export const NewProjectFormSchema = z.object({
 
 export type NewProjectFormData = z.infer<typeof NewProjectFormSchema>;
 
-export const NewEnvironmentFormSchema = z.object({
-  name: z
+export const UpdateProjectGeneralInfoFormSchema = z.object({
+  appName: z
     .string({ required_error: 'This field is required' })
-    .min(1, { message: 'Environment name is required' })
-    .max(25, { message: 'Environment name must be 25 characters or fewer' }),
-  appURL: z.string().url(),
+    .min(1, { message: 'Project name is required' })
+    .max(25, { message: 'Project name must be 25 characters or fewer' }),
 });
 
-export type NewEnvironmentFormData = z.infer<typeof NewEnvironmentFormSchema>;
+export type UpdateProjectGeneralInfoFormData = z.infer<
+  typeof UpdateProjectGeneralInfoFormSchema
+>;
+
+export const DeleteProjectFormSchema = z.object({
+  appName: z
+    .string({ required_error: 'This field is required' })
+    .min(1, { message: 'Project name is required' }),
+});
+
+export type DeleteProjectFormData = z.infer<typeof DeleteProjectFormSchema>;

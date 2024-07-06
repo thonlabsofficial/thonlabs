@@ -37,12 +37,12 @@ export default function LoginForm() {
           description: result.message || 'Invalid credentials',
           variant: 'destructive',
         });
+        setLoading(false);
       } else {
         router.replace('/');
       }
     } catch (e) {
       console.error(e);
-    } finally {
       setLoading(false);
     }
   }
@@ -86,8 +86,7 @@ export default function LoginForm() {
       </div>
 
       <Button className="w-full mt-8" loading={loading}>
-        {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin -mt-1" />}
-        Continue
+        {loading ? 'Logging in...' : 'Continue'}
       </Button>
     </form>
   );

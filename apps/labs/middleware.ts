@@ -21,13 +21,14 @@ export async function middleware(req: NextRequest) {
     // based on keep alive
     if (
       (!keepAlive && !accessToken) ||
-      (keepAlive === 'true' && !accessToken && !refreshToken)
+      (keepAlive && !accessToken && !refreshToken)
     ) {
       console.log('[MIDDLEWARE] Invalid session');
       return NextResponse.redirect(new URL('/api/auth/logout', req.url));
     }
 
     const isPageRefresh = req.headers.get('referer') === req.url;
+
     if (isPageRefresh) {
       // Validates the session status and redirects to regenerate
       // a new token in case of need

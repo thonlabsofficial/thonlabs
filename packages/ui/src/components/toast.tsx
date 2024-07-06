@@ -44,11 +44,10 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'bg-zinc-950/70 border-zinc-900 dark:bg-zinc-700/40 dark:border-zinc-700',
-        info: `bg-sky-100/70 dark:bg-sky-900/60 border-sky-300 dark:border-sky-900`,
-        destructive:
-          'bg-destructive/30 dark:bg-destructive/40 border-destructive/50 dark:border-destructive',
+        default: 'bg-background/90 border-foreground/20 text-foreground',
+        info: `bg-info/90 border-info/50`,
+        destructive: 'bg-destructive/90 border-destructive/50',
+        success: `bg-success/90 border-success/60`,
       },
     },
     defaultVariants: {
@@ -93,20 +92,35 @@ const ToastAction = React.forwardRef<
 ));
 ToastAction.displayName = ToastPrimitives.Action.displayName;
 
+const toastCloseVariants = cva(
+  `
+  absolute right-1 top-1 rounded-md p-1  opacity-0
+  focus:opacity-100 focus:outline-none focus:ring-1 
+  group-hover:opacity-100 transition-default
+  `,
+  {
+    variants: {
+      variant: {
+        default: 'text-foreground/50 hover:text-foreground',
+        info: 'text-text/50 hover:text-text',
+        destructive: 'text-text/50 hover:text-text',
+        success: `text-text/50 hover:text-text`,
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  },
+);
+
 const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close> &
+    VariantProps<typeof toastCloseVariants>
+>(({ className, variant, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
-    className={cn(
-      `absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity 
-      hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-1 
-      group-hover:opacity-100 group-[.destructive]:text-red-300 
-      group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 
-      group-[.destructive]:focus:ring-offset-red-600`,
-      className,
-    )}
+    className={cn(toastCloseVariants({ variant }), className)}
     toast-close=""
     {...props}
   >
@@ -121,7 +135,7 @@ const ToastTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn('text-sm font-semibold [&+div]:text-xs', className)}
+    className={cn('text-sm font-semibold', className)}
     {...props}
   />
 ));
