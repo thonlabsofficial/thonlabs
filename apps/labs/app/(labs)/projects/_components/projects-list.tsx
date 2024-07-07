@@ -15,6 +15,165 @@ import NewEnvironmentDialog from '@labs/projects/_components/new-environment-dia
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Button } from '@repo/ui/button';
 import ProjectSettingsDrawer from './project-settings-drawer';
+import { Skeleton } from '@repo/ui/skeleton';
+import { cn } from '@repo/ui/core/utils';
+
+function ProjectSession({
+  project,
+  loading,
+  handleSetEnvironment,
+}: {
+  project: Project & { environments: Environment[] };
+  loading?: boolean;
+  handleSetEnvironment: (project: Project, environment: Environment) => void;
+}) {
+  return (
+    <Card key={project.id}>
+      <CardContent className="flex flex-col gap-6 pt-6">
+        <header className="flex justify-between">
+          <div className="flex items-center gap-2">
+            {!loading ? (
+              <Typo variant={'h4'}>{project.appName}</Typo>
+            ) : (
+              <Skeleton width={'5.75rem'} height={'1.75rem'} />
+            )}
+            <div>
+              {!loading ? (
+                <Badge variant={'secondary'}>{project.id}</Badge>
+              ) : (
+                <Skeleton width={'11.25rem'} height={'1.5rem'} />
+              )}
+            </div>
+          </div>
+          <div>
+            {!loading ? (
+              <ProjectSettingsDrawer
+                trigger={
+                  <Button variant={'ghost'} size={'sm'} icon={BsGearFill}>
+                    Settings
+                  </Button>
+                }
+                project={project}
+              />
+            ) : (
+              <Skeleton width={'5.75rem'} height={'1.75rem'} />
+            )}
+          </div>
+        </header>
+
+        <section>
+          <header className="mb-1">
+            {!loading ? (
+              <Typo variant={'muted'}>
+                Environment{project.environments.length === 1 ? '' : 's'}
+              </Typo>
+            ) : (
+              <Skeleton width={'6rem'} height={'1.125rem'} />
+            )}
+          </header>
+          <div className="grid grid-cols-3 gap-3">
+            {project.environments.map((environment) => (
+              <Card
+                role="button"
+                key={environment.id}
+                className={cn(
+                  'group shadow-md hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1]',
+                  {
+                    'pointer-events-none': loading,
+                  },
+                )}
+                onClick={() => {
+                  if (!loading) handleSetEnvironment(project, environment);
+                }}
+                variant={'background'}
+              >
+                <CardContent className="flex h-full justify-between gap-4 p-4">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex gap-2">
+                      {!loading ? (
+                        <Avatar>
+                          <AvatarFallback>
+                            {environment.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <Skeleton
+                          borderRadius={'100%'}
+                          width={'2.5rem'}
+                          height={'2.5rem'}
+                        />
+                      )}
+                      <div className="mt-1">
+                        {!loading ? (
+                          <Typo variant={'lg'}>{environment.name}</Typo>
+                        ) : (
+                          <Skeleton width={'6.25rem'} height={'1.75rem'} />
+                        )}
+                        {!loading ? (
+                          <Typo
+                            variant={'sm'}
+                            className="text-zinc-600 dark:text-zinc-400"
+                          >
+                            {environment.appURL}
+                          </Typo>
+                        ) : (
+                          <Skeleton width={'10rem'} height={'1.125rem'} />
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      {!loading ? (
+                        <Badge variant={'secondary'} className="cursor-pointer">
+                          {environment.id}
+                        </Badge>
+                      ) : (
+                        <Skeleton width={'7rem'} height={'1.125rem'} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    {!loading && (
+                      <BsArrowRightShort
+                        className={`
+                  w-5 h-5 opacity-0 invisible 
+                  group-hover:opacity-100 group-hover:visible 
+                  transition-all duration-120 ease-in-out
+                `}
+                      />
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            {!loading && (
+              <NewEnvironmentDialog
+                trigger={
+                  <Card
+                    role="button"
+                    variant={'transparent'}
+                    border={'dashed'}
+                    className="group hover:border-foreground/[0.27] min-h-32"
+                  >
+                    <CardContent className="flex h-full justify-center items-center gap-4 p-4">
+                      <Typo
+                        variant={'lg'}
+                        className="text-foreground/[0.7] group-hover:text-foreground/[0.9] transition-default"
+                      >
+                        New Environment
+                      </Typo>
+                    </CardContent>
+                  </Card>
+                }
+                project={project}
+              />
+            )}
+          </div>
+        </section>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function ProjectsList() {
   const { isLoadingProjects, projects } = useProjects();
@@ -37,115 +196,37 @@ export default function ProjectsList() {
     });
   }
 
-  if (isLoadingProjects) {
-    // TODO: skeletons and errors
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="grid gap-6">
-      {projects.map((project) => (
-        <Card key={project.id}>
-          <CardContent className="flex flex-col gap-6 pt-6">
-            <header className="flex justify-between">
-              <div className="flex items-center gap-2">
-                <Typo variant={'h4'}>{project.appName}</Typo>
-                <div>
-                  <Badge variant={'secondary'}>{project.id}</Badge>
-                </div>
-              </div>
-              <div>
-                <ProjectSettingsDrawer
-                  trigger={
-                    <Button variant={'ghost'} size={'sm'} icon={BsGearFill}>
-                      Settings
-                    </Button>
-                  }
-                  project={project}
-                />
-              </div>
-            </header>
+      {isLoadingProjects && (
+        <>
+          <ProjectSession
+            loading
+            project={
+              {
+                environments: [
+                  {} as Environment,
+                  {} as Environment,
+                  {} as Environment,
+                  {} as Environment,
+                  {} as Environment,
+                  {} as Environment,
+                ],
+              } as Project & { environments: Environment[] }
+            }
+            handleSetEnvironment={handleSetEnvironment}
+          />
+        </>
+      )}
 
-            <section>
-              <header className="mb-1">
-                <Typo variant={'muted'}>
-                  Environment{project.environments.length === 1 ? '' : 's'}
-                </Typo>
-              </header>
-              <div className="grid grid-cols-3 gap-3">
-                {project.environments.map((environment) => (
-                  <Card
-                    role="button"
-                    key={environment.id}
-                    className="group shadow-md hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1]"
-                    onClick={() => handleSetEnvironment(project, environment)}
-                    variant={'background'}
-                  >
-                    <CardContent className="flex h-full justify-between gap-4 p-4">
-                      <div className="flex flex-col gap-3">
-                        <div className="flex gap-2">
-                          <Avatar>
-                            <AvatarFallback>
-                              {environment.name.charAt(0)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="mt-1">
-                            <Typo variant={'lg'}>{environment.name}</Typo>
-                            <Typo
-                              variant={'sm'}
-                              className="text-zinc-600 dark:text-zinc-400"
-                            >
-                              {environment.appURL}
-                            </Typo>
-                          </div>
-                        </div>
-
-                        <div>
-                          <Badge
-                            variant={'secondary'}
-                            className="cursor-pointer"
-                          >
-                            {environment.id}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="flex items-center">
-                        <BsArrowRightShort
-                          className={`
-                          w-5 h-5 opacity-0 invisible 
-                          group-hover:opacity-100 group-hover:visible 
-                          transition-all duration-120 ease-in-out
-                        `}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-                <NewEnvironmentDialog
-                  trigger={
-                    <Card
-                      role="button"
-                      variant={'transparent'}
-                      border={'dashed'}
-                      className="group hover:border-foreground/[0.27] min-h-32"
-                    >
-                      <CardContent className="flex h-full justify-center items-center gap-4 p-4">
-                        <Typo
-                          variant={'lg'}
-                          className="text-foreground/[0.7] group-hover:text-foreground/[0.9] transition-default"
-                        >
-                          New Environment
-                        </Typo>
-                      </CardContent>
-                    </Card>
-                  }
-                  project={project}
-                />
-              </div>
-            </section>
-          </CardContent>
-        </Card>
-      ))}
+      {!isLoadingProjects &&
+        projects.map((project) => (
+          <ProjectSession
+            key={project.id}
+            project={project}
+            handleSetEnvironment={handleSetEnvironment}
+          />
+        ))}
     </div>
   );
 }

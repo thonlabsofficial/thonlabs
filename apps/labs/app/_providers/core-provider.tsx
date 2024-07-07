@@ -6,6 +6,7 @@ import { Toaster } from '@repo/ui/toaster';
 import { SWRConfig } from 'swr';
 import { labsAPI } from '../../helpers/api';
 import SessionProvider from '@/auth/_providers/session-provider';
+import { SkeletonProvider } from '@repo/ui/skeleton';
 
 const fetcher = (url: string) => labsAPI.get(url).then((res) => res.data);
 
@@ -25,7 +26,7 @@ export default function CoreProvider({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SkeletonProvider>{children}</SkeletonProvider>
           <Toaster />
         </ThemeProvider>
       </SessionProvider>

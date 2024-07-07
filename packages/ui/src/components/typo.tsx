@@ -37,11 +37,20 @@ export interface TypoProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof typoVariants> {
   as?: keyof JSX.IntrinsicElements;
+  fallback?: React.ReactNode;
 }
 
-function Typo({ className, variant, state, as = 'div', ...props }: TypoProps) {
+function Typo({
+  className,
+  variant,
+  state,
+  as = 'div',
+  fallback = '-',
+  ...props
+}: TypoProps) {
   return React.createElement(as, {
     ...props,
+    children: props.children || fallback,
     className: cn(typoVariants({ variant, state }), className),
   });
 }

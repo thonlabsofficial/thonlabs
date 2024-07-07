@@ -28,6 +28,8 @@
     --input-hover: 240 5.9% 98%;
     --ring: 346.8 77.2% 49.8%;
     --radius: 0.5rem;
+    --skeleton-base: 0 0 90%;
+    --skeleton-highlight: 0 0 85%;
   }
 
   .dark {
@@ -55,6 +57,8 @@
     --input-hover: 0 0% 13%;
     --ring: 346.8 77.2% 49.8%;
     --radius: 0.5rem;
+    --skeleton-base: 0 0% 20%;
+    --skeleton-highlight: 0 0% 24%;
   }
 }
 

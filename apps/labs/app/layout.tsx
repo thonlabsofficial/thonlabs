@@ -1,4 +1,5 @@
 import '@repo/ui/core/styles/globals';
+import '@repo/ui/core';
 
 import type { Metadata } from 'next';
 import CoreProvider from './_providers/core-provider';
