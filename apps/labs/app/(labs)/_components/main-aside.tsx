@@ -34,11 +34,10 @@ export default function MainAside({ environment, session }: Props) {
     !pathname.startsWith('/projects') &&
     (clientEnvironment || environment) && (
       <aside className="w-64 fixed top-0 left-0 border-r border-collapse bg-card flex flex-col justify-between px-1.5 py-2 h-screen pb-1.5">
-        <div className="flex justify-center items-center gap-3 py-1.5 pl-2">
+        <div className="flex justify-center items-center gap-1 py-1.5 pl-2">
           <div className="px-1">
             <Logo reduced className="h-5 -mt-0.5" />
           </div>
-          <div className="border-r border-collapse h-full" />
           <ProjectEnvNav environment={environment as Environment} />
         </div>
 
@@ -53,7 +52,7 @@ export default function MainAside({ environment, session }: Props) {
                   'flex items-center gap-2.5 w-full !justify-start !p-2 !font-normal !text-zinc-900 dark:!text-zinc-50 bg-accent',
               })}
             >
-              <BsClipboardData className="w-4 h-4" /> Home
+              <BsClipboardData className="w-4 h-4" /> Dashboard
             </Link>
 
             <Link
