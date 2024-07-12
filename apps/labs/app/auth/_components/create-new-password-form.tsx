@@ -58,7 +58,7 @@ export default function CreateNewPasswordForm({ token }: Props) {
         <InputWrapper>
           <Input
             placeholder="••••••••••••"
-            inputSize="lg"
+            size="lg"
             type="password"
             label="New Password"
             error={form.formState.errors.password?.message}
@@ -68,7 +68,7 @@ export default function CreateNewPasswordForm({ token }: Props) {
         <InputWrapper>
           <Input
             placeholder="••••••••••••"
-            inputSize="lg"
+            size="lg"
             type="password"
             label="Confirm New Password"
             error={form.formState.errors.confirm?.message}

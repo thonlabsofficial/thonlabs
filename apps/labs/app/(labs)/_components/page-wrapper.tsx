@@ -7,7 +7,7 @@ export default function PageWrapper({
 }: React.HTMLAttributes<HTMLElement>) {
   return (
     <div className="pl-64">
-      <div className={cn('px-3 py-2', className)}>{children}</div>
+      <div className={cn('px-3 py-2 container', className)}>{children}</div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { labsAPI } from '../../../../helpers/api';
+import { labsAPI } from '../../../helpers/api';
 import {
   NewProjectFormData,
   UpdateProjectGeneralInfoFormData,
@@ -55,7 +55,7 @@ export default function useProject() {
       );
 
       toast({
-        title: 'Project Saved',
+        title: 'Changes Saved',
         description: `The general info for ${payload.appName} has been successfully updated.`,
       });
     } catch (error: any) {

@@ -12,7 +12,6 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { login } from '../_actions/auth-actions';
 import React from 'react';
-import { ReloadIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
 
@@ -54,7 +53,7 @@ export default function LoginForm() {
           <Input
             id="email"
             placeholder="you@example.com"
-            inputSize="lg"
+            size="lg"
             label="Email"
             error={form.formState.errors.email?.message}
             {...form.register('email')}
@@ -78,7 +77,7 @@ export default function LoginForm() {
             id="password"
             type="password"
             placeholder="••••••••••••"
-            inputSize="lg"
+            size="lg"
             error={form.formState.errors.password?.message}
             {...form.register('password')}
           />

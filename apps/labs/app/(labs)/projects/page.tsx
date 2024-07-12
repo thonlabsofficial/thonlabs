@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: 'Projects',
 };
 
-export default function Home() {
+export default function Projects() {
   const session = ServerUserSession.getSession();
 
   return (

@@ -27,8 +27,12 @@ export default function ProjectEnvNav({ environment }: Props) {
           })}
         >
           <span className="flex flex-col items-start gap-1">
-            <span>{(clientEnvironment || environment).project.appName}</span>
-            <span>{(clientEnvironment || environment).name}</span>
+            <span className="max-w-[9.375rem] truncate">
+              {(clientEnvironment || environment).project.appName}
+            </span>
+            <span className="max-w-[9.375rem] truncate">
+              {(clientEnvironment || environment).name}
+            </span>
           </span>
           <BsArrowRightShort
             className={`

@@ -13,8 +13,7 @@ const labelVariants = cva(
   {
     variants: {
       state: {
-        default:
-          'text-zinc-500 group-focus-within:text-zinc-700 dark:group-focus-within:text-zinc-300',
+        default: 'text-zinc-500',
       },
     },
     defaultVariants: {
@@ -23,14 +22,26 @@ const labelVariants = cva(
   },
 );
 
+type Props = {
+  withFocusWithin?: boolean;
+};
+
 const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+  Props &
+    React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
     VariantProps<typeof labelVariants>
->(({ className, state, ...props }, ref) => (
+>(({ className, state, withFocusWithin = true, ...props }, ref) => (
   <LabelPrimitive.Root
     ref={ref}
-    className={cn(labelVariants({ state }), className)}
+    className={cn(
+      labelVariants({ state }),
+      {
+        'group-focus-within:text-zinc-700 dark:group-focus-within:text-zinc-300':
+          withFocusWithin,
+      },
+      className,
+    )}
     {...props}
   />
 ));

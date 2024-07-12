@@ -97,7 +97,7 @@ const config: Omit<Config, 'content'> = {
     plugin(({ addUtilities, theme }) => {
       addUtilities({
         '.transition-default': {
-          transition: 'all 0.2s ease-in-out',
+          transition: 'all 120ms ease-in-out',
         },
       });
     }),

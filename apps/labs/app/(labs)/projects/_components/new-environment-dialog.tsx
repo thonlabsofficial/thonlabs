@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   NewEnvironmentFormData,
   NewEnvironmentFormSchema,
-} from '@labs/projects/_validators/environments-validators';
+} from '@/(labs)/_validators/environments-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
@@ -22,7 +22,7 @@ import {
 import useUserSession from '@labs/_hooks/use-user-session';
 import { useRouter } from 'next/navigation';
 import { Project } from '@labs/_interfaces/project';
-import useEnvironment from '@labs/projects/_hooks/use-environment';
+import useEnvironment from '@/(labs)/_hooks/use-environment';
 
 type Props = {
   trigger: React.ReactNode;
@@ -76,7 +76,7 @@ export default function NewEnvironmentDialog({
               <Input
                 id="name"
                 placeholder="e.g.: Staging"
-                inputSize="lg"
+                size="lg"
                 label="Name"
                 maxLength={25}
                 error={form.formState.errors.name?.message}
@@ -87,7 +87,7 @@ export default function NewEnvironmentDialog({
               <Input
                 id="appURL"
                 placeholder="e.g.: https://staging.thonlabs.io"
-                inputSize="lg"
+                size="lg"
                 label="URL"
                 error={form.formState.errors.appURL?.message}
                 {...form.register('appURL')}

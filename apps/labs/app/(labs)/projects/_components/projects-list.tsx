@@ -3,11 +3,10 @@
 import React from 'react';
 import { BsArrowRightShort, BsGearFill } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
-import { useProjects } from '@labs/projects/_hooks/use-projects';
+import { useProjects } from '@labs/_hooks/use-projects';
 import { Environment } from '@labs/_interfaces/environment';
 import { Project } from '@labs/_interfaces/project';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
-import { Badge } from '@repo/ui/badge';
 import { Card, CardContent } from '@repo/ui/card';
 import { Typo } from '@repo/ui/typo';
 import { useRouter } from 'next/navigation';
@@ -18,7 +17,7 @@ import ProjectSettingsDrawer from './project-settings-drawer';
 import { Skeleton } from '@repo/ui/skeleton';
 import { cn } from '@repo/ui/core/utils';
 
-function ProjectSession({
+function ProjectSection({
   project,
   loading,
   handleSetEnvironment,
@@ -37,13 +36,6 @@ function ProjectSession({
             ) : (
               <Skeleton width={'5.75rem'} height={'1.75rem'} />
             )}
-            <div>
-              {!loading ? (
-                <Badge variant={'secondary'}>{project.id}</Badge>
-              ) : (
-                <Skeleton width={'11.25rem'} height={'1.5rem'} />
-              )}
-            </div>
           </div>
           <div>
             {!loading ? (
@@ -72,10 +64,10 @@ function ProjectSession({
             )}
           </header>
           <div className="grid grid-cols-3 gap-3">
-            {project.environments.map((environment) => (
+            {project.environments.map((environment, index) => (
               <Card
                 role="button"
-                key={environment.id}
+                key={`${index}_${environment.id}`}
                 className={cn(
                   'group shadow-md hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1]',
                   {
@@ -89,7 +81,7 @@ function ProjectSession({
               >
                 <CardContent className="flex h-full justify-between gap-4 p-4">
                   <div className="flex flex-col gap-3">
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2">
                       {!loading ? (
                         <Avatar>
                           <AvatarFallback>
@@ -117,19 +109,13 @@ function ProjectSession({
                             {environment.appURL}
                           </Typo>
                         ) : (
-                          <Skeleton width={'10rem'} height={'1.125rem'} />
+                          <Skeleton
+                            width={'10rem'}
+                            height={'1.125rem'}
+                            className="mt-1"
+                          />
                         )}
                       </div>
-                    </div>
-
-                    <div>
-                      {!loading ? (
-                        <Badge variant={'secondary'} className="cursor-pointer">
-                          {environment.id}
-                        </Badge>
-                      ) : (
-                        <Skeleton width={'7rem'} height={'1.125rem'} />
-                      )}
                     </div>
                   </div>
                   <div className="flex items-center">
@@ -153,7 +139,7 @@ function ProjectSession({
                     role="button"
                     variant={'transparent'}
                     border={'dashed'}
-                    className="group hover:border-foreground/[0.27] min-h-32"
+                    className="group hover:border-foreground/[0.27] min-h-[5.25rem]"
                   >
                     <CardContent className="flex h-full justify-center items-center gap-4 p-4">
                       <Typo
@@ -200,7 +186,7 @@ export default function ProjectsList() {
     <div className="grid gap-6">
       {isLoadingProjects && (
         <>
-          <ProjectSession
+          <ProjectSection
             loading
             project={
               {
@@ -221,7 +207,7 @@ export default function ProjectsList() {
 
       {!isLoadingProjects &&
         projects.map((project) => (
-          <ProjectSession
+          <ProjectSection
             key={project.id}
             project={project}
             handleSetEnvironment={handleSetEnvironment}

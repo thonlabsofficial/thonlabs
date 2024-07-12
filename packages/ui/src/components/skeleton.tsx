@@ -13,8 +13,12 @@ function SkeletonProvider({ children }: React.HTMLAttributes<HTMLElement>) {
   );
 }
 
+function SkeletonWrapper({ children }: React.HTMLAttributes<HTMLElement>) {
+  return <div className="leading-[0]">{children}</div>;
+}
+
 function Skeleton(props: React.ComponentProps<typeof ReactLoadingSkeleton>) {
-  return <ReactLoadingSkeleton {...props} />;
+  return <ReactLoadingSkeleton wrapper={SkeletonWrapper} {...props} />;
 }
 
 export { Skeleton, SkeletonProvider };

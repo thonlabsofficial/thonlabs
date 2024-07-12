@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   NewProjectFormData,
   NewProjectFormSchema,
-} from '../_validators/projects-validators';
+} from '../../_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useProject from '@/(labs)/projects/_hooks/use-project';
+import useProject from '@/(labs)/_hooks/use-project';
 import useUserSession from '@/(labs)/_hooks/use-user-session';
 import { useRouter } from 'next/navigation';
 
@@ -73,7 +73,7 @@ export default function NewProjectDialog({
               <Input
                 id="appName"
                 placeholder="e.g.: Thon Labs"
-                inputSize="lg"
+                size="lg"
                 label="Name"
                 maxLength={30}
                 error={form.formState.errors.appName?.message}
@@ -84,7 +84,7 @@ export default function NewProjectDialog({
               <Input
                 id="appURL"
                 placeholder="e.g.: https://thonlabs.io"
-                inputSize="lg"
+                size="lg"
                 label="URL"
                 error={form.formState.errors.appURL?.message}
                 {...form.register('appURL')}

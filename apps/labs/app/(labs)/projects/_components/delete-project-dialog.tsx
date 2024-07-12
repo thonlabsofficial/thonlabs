@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   DeleteProjectFormSchema,
   DeleteProjectFormData,
-} from '../_validators/projects-validators';
+} from '../../_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useProject from '@/(labs)/projects/_hooks/use-project';
+import useProject from '@/(labs)/_hooks/use-project';
 import { Project } from '@/(labs)/_interfaces/project';
 
 type Props = {
@@ -67,7 +67,7 @@ export default function DeleteProjectDialog({
           <InputWrapper>
             <Input
               id="appName"
-              inputSize="lg"
+              size="lg"
               label={`To confirm, type "${project.appName}" in the field below`}
               maxLength={30}
               error={form.formState.errors.appName?.message}

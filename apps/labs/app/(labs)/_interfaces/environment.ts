@@ -6,3 +6,13 @@ export interface Environment {
   appURL: string;
   project: Project;
 }
+
+export interface EnvironmentDetail extends Environment {
+  active: boolean;
+  tokenExpiration: string;
+  refreshTokenExpiration: string;
+  createdAt: Date;
+  updatedAt: Date;
+  projectId: string;
+  publicKey: string;
+}

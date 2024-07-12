@@ -53,7 +53,7 @@ export default function ResetPasswordForm() {
           <Input
             id="email"
             placeholder="you@example.com"
-            inputSize="lg"
+            size="lg"
             label="Email"
             error={form.formState.errors.email?.message}
             {...form.register('email')}

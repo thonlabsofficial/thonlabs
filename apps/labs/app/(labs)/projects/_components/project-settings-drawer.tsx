@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   UpdateProjectGeneralInfoFormSchema,
   UpdateProjectGeneralInfoFormData,
-} from '@labs/projects/_validators/projects-validators';
+} from '@/(labs)/_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Drawer,
@@ -22,7 +22,7 @@ import {
   DrawerContentContainer,
 } from '@repo/ui/drawer';
 import { Project } from '@labs/_interfaces/project';
-import useProject from '../_hooks/use-project';
+import useProject from '../../_hooks/use-project';
 import { Typo } from '@repo/ui/typo';
 import { Label } from '@repo/ui/label';
 import DeleteProjectDialog from './delete-project-dialog';
@@ -77,7 +77,7 @@ export default function ProjectSettingsDrawer({
                 <InputWrapper>
                   <Input
                     id="appName"
-                    inputSize="lg"
+                    size="lg"
                     label="Project Name"
                     maxLength={25}
                     error={form.formState.errors.appName?.message}
