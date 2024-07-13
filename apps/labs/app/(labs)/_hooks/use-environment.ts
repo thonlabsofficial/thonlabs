@@ -1,15 +1,15 @@
 import { labsAPI } from '../../../helpers/api';
 import {
   NewEnvironmentFormData,
+  UpdateEnvironmentAuthSettingsFormData,
   UpdateEnvironmentGeneralSettingsFormData,
 } from '../_validators/environments-validators';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Environment } from '@/(labs)/_interfaces/environment';
 import { APIErrors } from '@helpers/api/api-errors';
-import useSWR, { useSWRConfig } from 'swr';
+import useSWR from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
-import useUserSession from './use-user-session';
 import useOptimisticUpdate from './use-optmistic-update';
 
 type Params = {
@@ -119,11 +119,53 @@ export default function useEnvironment(
     }
   }
 
+  async function updateEnvironmentAuthSettings(
+    environmentID: string,
+    payload: UpdateEnvironmentAuthSettingsFormData,
+  ) {
+    try {
+      await labsAPI.patch<Environment>(
+        `/environments/${environmentID}/auth-settings`,
+        payload,
+      );
+
+      /*
+        Updates the cache of get and projects list with the new environment data
+      */
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentID}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            ...payload,
+          }),
+        },
+      ]);
+
+      toast({
+        title: 'Changes Saved',
+        description: 'The auth settings has been successfully updated.',
+      });
+
+      return Promise.resolve();
+    } catch (error: any) {
+      console.error('useEnvironment.updateEnvironmentAuthSettings', error);
+      toast({
+        title: 'Update Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+
+      return Promise.reject(error);
+    }
+  }
+
   return {
     environment,
     isLoadingEnvironment,
     environmentError,
     createEnvironment,
     updateEnvironmentGeneralSettings,
+    updateEnvironmentAuthSettings,
   };
 }

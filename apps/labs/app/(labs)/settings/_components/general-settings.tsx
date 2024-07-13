@@ -63,8 +63,8 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex gap-48">
-          <CardHeader>General Settings</CardHeader>
+        <div className="grid grid-cols-[15rem_1fr] gap-48">
+          <CardHeader>Environment</CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
               <InputWrapper>
@@ -93,7 +93,7 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
                 <Input
                   id="appURL"
                   placeholder="e.g.: https://staging.thonlabs.io"
-                  label="URL"
+                  label="Application URL"
                   loading={isLoadingEnvironment}
                   error={form.formState.errors.appURL?.message}
                   {...form.register('appURL')}

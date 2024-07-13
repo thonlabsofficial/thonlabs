@@ -21,3 +21,15 @@ export const UpdateEnvironmentGeneralSettingsFormSchema = z.object({
 export type UpdateEnvironmentGeneralSettingsFormData = z.infer<
   typeof UpdateEnvironmentGeneralSettingsFormSchema
 >;
+
+export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
+  authProvider: z.string({ required_error: 'This field is required' }),
+  tokenExpiration: z.string({ required_error: 'This field is required' }),
+  refreshTokenExpiration: z.string({
+    required_error: 'This field is required',
+  }),
+});
+
+export type UpdateEnvironmentAuthSettingsFormData = z.infer<
+  typeof UpdateEnvironmentAuthSettingsFormSchema
+>;

@@ -23,7 +23,10 @@ export default async function LabsNestedLayout({
     <ThonLabsProvider>
       <main>
         <MainAside environment={environment as Environment} session={session} />
-        <div>{children}</div>
+        <div>
+          {children}
+          <footer className="mt-12" />
+        </div>
       </main>
     </ThonLabsProvider>
   );
