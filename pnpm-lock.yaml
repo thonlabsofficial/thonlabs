@@ -271,6 +271,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../config-typescript
+      '@repo/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@turbo/gen':
         specifier: ^1.12.4
         version: 1.13.4(@types/node@20.14.2)(typescript@5.4.5)

@@ -75,6 +75,7 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
                   readOnly
                   loading={isLoadingEnvironment}
                   value={environment?.id}
+                  withCopy
                 />
               </InputWrapper>
               <InputWrapper>
@@ -104,18 +105,13 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
         <CardFooter className="flex gap-2 justify-end">
           <Button
             type="button"
-            size={'sm'}
             variant={'ghost'}
             disabled={!form.formState.isDirty || isSaving}
             onClick={() => form.reset()}
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            size={'sm'}
-            disabled={!form.formState.isDirty || isSaving}
-          >
+          <Button type="submit" disabled={!form.formState.isDirty || isSaving}>
             {isSaving ? 'Saving...' : 'Save'}
           </Button>
         </CardFooter>

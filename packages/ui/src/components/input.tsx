@@ -5,6 +5,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { Typo } from './typo';
 import { Label } from './label';
 import { Skeleton } from './skeleton';
+import { Clipboard } from './clipboard';
 
 const inputVariants = cva(
   `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-solid hover:bg-input-hover shadow-sm 
@@ -24,8 +25,9 @@ const inputVariants = cva(
         error: 'border-red-500 focus:border-red-500',
       },
       size: {
-        md: 'px-3 py-1 text-sm h-9',
-        lg: 'px-4 pb-2 pt-3 text-base h-14',
+        sm: 'px-2.5 py-1 text-sm h-9',
+        md: 'px-3 py-1.5 text-base h-12',
+        lg: 'px-4 py-2 text-base h-14',
       },
     },
     defaultVariants: {
@@ -41,15 +43,20 @@ export interface InputProps
   label?: React.ReactNode;
   error?: React.ReactNode;
   loading?: boolean;
+  withCopy?: boolean;
 }
 
 const loadingSizeMapper = {
-  md: '2.25rem',
+  sm: '2.25rem',
+  md: '3rem',
   lg: '3.5rem',
 };
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, size, label, error, state, loading, ...props }, ref) => {
+  (
+    { className, type, size, label, error, state, loading, withCopy, ...props },
+    ref,
+  ) => {
     return (
       <>
         {label && !loading ? (
@@ -60,16 +67,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <Skeleton width={'7.5rem'} height={'0.875rem'} />
         )}
         {!loading ? (
-          <input
-            id={props.name}
-            type={type}
-            className={cn(
-              inputVariants({ size, state: error ? 'error' : state }),
-              className,
+          <div className="relative">
+            <input
+              id={props.name}
+              type={type}
+              className={cn(
+                inputVariants({ size, state: error ? 'error' : state }),
+                {
+                  'pr-[4.8rem]': withCopy,
+                },
+                className,
+              )}
+              ref={ref}
+              {...props}
+            />
+            {withCopy && (
+              <Clipboard
+                className="inline-flex absolute top-1 right-1 h-[calc(100%-8px)] rounded px-3"
+                size="xs"
+                variant="secondary"
+                value={props.value?.toString() || ''}
+              />
             )}
-            ref={ref}
-            {...props}
-          />
+          </div>
         ) : (
           <Skeleton
             width={'100%'}

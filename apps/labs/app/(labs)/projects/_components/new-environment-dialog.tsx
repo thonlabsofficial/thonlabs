@@ -71,12 +71,11 @@ export default function NewEnvironmentDialog({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid w-full items-center gap-3">
+          <div className="grid w-full items-center gap-4">
             <InputWrapper>
               <Input
                 id="name"
                 placeholder="e.g.: Staging"
-                size="lg"
                 label="Name"
                 maxLength={25}
                 error={form.formState.errors.name?.message}
@@ -87,7 +86,6 @@ export default function NewEnvironmentDialog({
               <Input
                 id="appURL"
                 placeholder="e.g.: https://staging.thonlabs.io"
-                size="lg"
                 label="URL"
                 error={form.formState.errors.appURL?.message}
                 {...form.register('appURL')}

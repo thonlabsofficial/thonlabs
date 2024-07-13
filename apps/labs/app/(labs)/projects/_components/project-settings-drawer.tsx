@@ -71,13 +71,17 @@ export default function ProjectSettingsDrawer({
             <DrawerContentContainer>
               <div className="grid w-full items-center gap-4">
                 <InputWrapper>
-                  <Label>PID (Project ID)</Label>
-                  <Typo>{project.id}</Typo>
+                  <Input
+                    id="appName"
+                    label="PID (Project ID)"
+                    value={project.id}
+                    readOnly
+                    withCopy
+                  />
                 </InputWrapper>
                 <InputWrapper>
                   <Input
                     id="appName"
-                    size="lg"
                     label="Project Name"
                     maxLength={25}
                     error={form.formState.errors.appName?.message}

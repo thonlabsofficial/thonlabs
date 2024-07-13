@@ -68,12 +68,11 @@ export default function NewProjectDialog({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid w-full items-center gap-3">
+          <div className="grid w-full items-center gap-4">
             <InputWrapper>
               <Input
                 id="appName"
                 placeholder="e.g.: Thon Labs"
-                size="lg"
                 label="Name"
                 maxLength={30}
                 error={form.formState.errors.appName?.message}
@@ -84,7 +83,6 @@ export default function NewProjectDialog({
               <Input
                 id="appURL"
                 placeholder="e.g.: https://thonlabs.io"
-                size="lg"
                 label="URL"
                 error={form.formState.errors.appURL?.message}
                 {...form.register('appURL')}
