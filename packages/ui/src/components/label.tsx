@@ -9,7 +9,7 @@ import { cn } from '../core/utils';
 const labelVariants = cva(
   `text-sm font-medium leading-none 
    peer-disabled:cursor-not-allowed peer-disabled:opacity-70 
-   transition-all duration-200 ease-in-out`,
+   transition-default`,
   {
     variants: {
       state: {

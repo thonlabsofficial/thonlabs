@@ -59,12 +59,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     return (
       <>
-        {label && !loading ? (
-          <Label htmlFor={props.id} withFocusWithin={!props.readOnly}>
-            {label}
-          </Label>
-        ) : (
-          <Skeleton width={'7.5rem'} height={'0.875rem'} />
+        {label && (
+          <>
+            {' '}
+            {!loading ? (
+              <Label htmlFor={props.id} withFocusWithin={!props.readOnly}>
+                {label}
+              </Label>
+            ) : (
+              <Skeleton width={'7.5rem'} height={'0.875rem'} />
+            )}
+          </>
         )}
         {!loading ? (
           <div className="relative">

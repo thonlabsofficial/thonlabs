@@ -1,7 +1,6 @@
 'use client';
 
 import useEnvironment from '@/(labs)/_hooks/use-environment';
-import useUserSession from '@/(labs)/_hooks/use-user-session';
 import { Environment } from '@/(labs)/_interfaces/environment';
 import {
   UpdateEnvironmentAuthSettingsFormData,
@@ -11,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
+import { InputRadio } from '@repo/ui/input-radio';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -21,6 +21,7 @@ type Props = {
 export default function AuthSettings({ sessionEnvironment }: Props) {
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
+    mode: 'onChange',
   });
   const { environment, isLoadingEnvironment, updateEnvironmentAuthSettings } =
     useEnvironment(
@@ -58,17 +59,24 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
           <CardHeader>Login Type</CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
-              <InputWrapper>
-                <Input
-                  id="name"
-                  placeholder="e.g.: 1d"
-                  label="Access Token Expiration"
-                  maxLength={25}
-                  loading={isLoadingEnvironment}
-                  error={form.formState.errors.tokenExpiration?.message}
-                  {...form.register('tokenExpiration')}
-                />
-              </InputWrapper>
+              <InputRadio
+                // control={form.control}
+                loading={isLoadingEnvironment}
+                options={[
+                  {
+                    value: 'MagicLogin',
+                    label: 'Magic Login',
+                    description:
+                      'This generates a unique link to user authenticate',
+                  },
+                  {
+                    value: 'EmailAndPassword',
+                    label: 'Email and Password',
+                    description: 'The classic way to authenticate',
+                  },
+                ]}
+                {...form.register('authProvider')}
+              />
             </div>
           </CardContent>
         </div>

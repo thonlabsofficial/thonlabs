@@ -11,6 +11,7 @@
     "./dialog": "./src/components/dialog.tsx",
     "./drawer": "./src/components/drawer.tsx",
     "./input": "./src/components/input.tsx",
+    "./input-radio": "./src/components/input-radio.tsx",
     "./label": "./src/components/label.tsx",
     "./skeleton": "./src/components/skeleton.tsx",
     "./toast": "./src/components/toast.tsx",
