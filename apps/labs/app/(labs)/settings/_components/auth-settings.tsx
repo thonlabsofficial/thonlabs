@@ -56,7 +56,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-[19rem_1fr] gap-48">
+        <div className="grid grid-cols-[19rem_1fr] gap-40">
           <CardHeader>Login Type</CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
@@ -82,7 +82,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
           </CardContent>
         </div>
         <div className="h-px bg-background w-full my-6" />
-        <div className="grid grid-cols-[19rem_1fr] gap-48">
+        <div className="grid grid-cols-[19rem_1fr] gap-40">
           <CardHeader
             description={
               <>
@@ -98,7 +98,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
               </>
             }
           >
-            Session Tokens Settings
+            Session Tokens Expirations
           </CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">

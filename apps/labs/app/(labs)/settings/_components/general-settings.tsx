@@ -63,7 +63,7 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-[15rem_1fr] gap-48">
+        <div className="grid grid-cols-[19rem_1fr] gap-40">
           <CardHeader>Environment</CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">

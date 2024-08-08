@@ -5,10 +5,9 @@ import { buttonVariants } from '@repo/ui/button';
 import Link from 'next/link';
 import {
   BsClipboardData,
-  BsPersonSquare,
   BsEnvelopePaper,
-  BsShield,
   BsGear,
+  BsPersonFill,
 } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
 import { usePathname } from 'next/navigation';
@@ -77,7 +76,7 @@ export default function MainAside({ environment, session }: Props) {
         <nav className="w-full flex flex-col justify-between pt-3 pb-2 px-1.5 h-[94vh]">
           <div className="flex flex-col gap-2 w-full">
             <NavItem label="Dashboard" href="/" icon={BsClipboardData} />
-            <NavItem label="Users" href="/users" icon={BsPersonSquare} />
+            <NavItem label="Users" href="/users" icon={BsPersonFill} />
             <NavItem label="Emails" href="/emails" icon={BsEnvelopePaper} />
             <NavItem label="Settings" href="/settings" icon={BsGear} />
           </div>

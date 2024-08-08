@@ -7,6 +7,7 @@ import GeneralSettings from './_components/general-settings';
 import AuthSettings from './_components/auth-settings';
 import { Typo } from '@repo/ui/typo';
 import React from 'react';
+import { BsGear } from 'react-icons/bs';
 
 export const metadata: Metadata = {
   title: 'Settings',
@@ -32,7 +33,7 @@ export default function Settings() {
 
   return (
     <>
-      <PageHeader title="Settings" />
+      <PageHeader title="Settings" icon={BsGear} />
       <PageWrapper className="pt-4 grid gap-12">
         <section>
           <SectionHeader
