@@ -89,13 +89,19 @@ const InputRadio = React.forwardRef<HTMLInputElement, InputRadioProps>(
         )}
 
         {!loading ? (
-          <div className="border rounded border-zinc-200 dark:border-zinc-600">
+          <div className="border rounded border-zinc-200 dark:border-zinc-600 overflow-hidden">
             {options.map((option, index) => (
               <Label
                 className={inputRadioOptionsWrapperVariants({
                   size,
                   state: error ? 'error' : 'default',
                   className: cn(
+                    `
+                    text-zinc-600 dark:text-zinc-400
+                    group-hover:text-zinc-800 dark:group-hover:text-zinc-200 
+                    has-[:checked]:text-zinc-800 dark:has-[:checked]:text-zinc-200 has-[:checked]:bg-accent
+                    transition-default
+                    `,
                     {
                       'border-t': index > 0,
                     },
@@ -125,15 +131,7 @@ const InputRadio = React.forwardRef<HTMLInputElement, InputRadioProps>(
                       />
                     </span>
                     <span className="flex flex-col">
-                      <span
-                        className={`
-                          text-zinc-600 dark:text-zinc-400
-                          group-hover:text-zinc-800 dark:group-hover:text-zinc-200 
-                          transition-default
-                        `}
-                      >
-                        {option.label}
-                      </span>
+                      <span>{option.label}</span>
                       {option.description && (
                         <Typo
                           variant={'xs'}

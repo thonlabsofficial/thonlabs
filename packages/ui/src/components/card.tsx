@@ -43,14 +43,11 @@ Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn('flex flex-col space-y-1.5 p-6', className)}
-    {...props}
-  >
+  { description?: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>
+>(({ className, description, children, ...props }, ref) => (
+  <div ref={ref} className={cn('flex flex-col p-6', className)} {...props}>
     <Typo>{children}</Typo>
+    {description && <Typo variant={'muted'}>{description}</Typo>}
   </div>
 ));
 CardHeader.displayName = 'CardHeader';

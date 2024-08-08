@@ -19,7 +19,7 @@ const inputVariants = cva(
         default: `border-zinc-200 dark:border-zinc-600 
                   hover:border-zinc-400 dark:hover:border-zinc-500
                   focus:border-zinc-700 dark:focus:border-zinc-300
-                  read-only:bg-foreground/[0.05] 
+                  read-only:bg-accent
                   hover:read-only:border-zinc-200 dark:hover:read-only:border-zinc-600
                   focus:read-only:border-zinc-200 dark:focus:read-only:border-zinc-600`,
         error: 'border-red-500 focus:border-red-500',

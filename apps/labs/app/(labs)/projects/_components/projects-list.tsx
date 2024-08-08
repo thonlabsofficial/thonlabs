@@ -95,7 +95,7 @@ function ProjectSection({
                           height={'2.5rem'}
                         />
                       )}
-                      <div className="mt-1">
+                      <div className="flex flex-col mt-1">
                         {!loading ? (
                           <Typo variant={'lg'}>{environment.name}</Typo>
                         ) : (

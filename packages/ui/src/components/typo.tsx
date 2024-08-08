@@ -20,7 +20,9 @@ const typoVariants = cva('font-sans text-text', {
       sm: 'text-sm font-medium',
       xs: 'text-xs font-medium',
       muted: 'text-sm text-muted-foreground',
-      code: 'font-code text-emerald-200 text-sm',
+      code: 'font-code p-0.5 bg-blue-500/[0.2] rounded-sm text-sm',
+      codeLink:
+        'font-code py-0.5 px-1 bg-blue-500/[0.2] hover:bg-blue-500/[0.3] rounded-sm text-sm transition-default',
     },
     state: {
       default: '',
@@ -44,7 +46,7 @@ function Typo({
   className,
   variant,
   state,
-  as = 'div',
+  as = 'span',
   fallback = '-',
   ...props
 }: TypoProps) {

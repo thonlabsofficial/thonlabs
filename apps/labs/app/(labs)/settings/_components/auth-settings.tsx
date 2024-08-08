@@ -11,6 +11,7 @@ import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
 import { InputRadio } from '@repo/ui/input-radio';
+import { Typo } from '@repo/ui/typo';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -55,7 +56,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-[15rem_1fr] gap-48">
+        <div className="grid grid-cols-[19rem_1fr] gap-48">
           <CardHeader>Login Type</CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
@@ -81,8 +82,24 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
           </CardContent>
         </div>
         <div className="h-px bg-background w-full my-6" />
-        <div className="grid grid-cols-[15rem_1fr] gap-48">
-          <CardHeader>Session Tokens Settings</CardHeader>
+        <div className="grid grid-cols-[19rem_1fr] gap-48">
+          <CardHeader
+            description={
+              <>
+                You can follow the{' '}
+                <a
+                  href="https://github.com/vercel/ms?tab=readme-ov-file#examples"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Typo variant={'codeLink'}>vercel/ms</Typo>
+                </a>{' '}
+                to set token expiration times.
+              </>
+            }
+          >
+            Session Tokens Settings
+          </CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
               <InputWrapper>
