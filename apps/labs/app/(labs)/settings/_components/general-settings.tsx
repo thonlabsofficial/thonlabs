@@ -44,7 +44,7 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
 
   function onSubmit(payload: UpdateEnvironmentGeneralSettingsFormData) {
     startSavingTransition(() => {
-      updateEnvironmentGeneralSettings(environment.id, payload).then(() => {
+      updateEnvironmentGeneralSettings(environment!.id, payload).then(() => {
         form.reset({
           name: payload?.name || '',
           appURL: payload?.appURL || '',
@@ -105,13 +105,18 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
         <CardFooter className="flex gap-2 justify-end">
           <Button
             type="button"
+            size={'sm'}
             variant={'ghost'}
             disabled={!form.formState.isDirty || isSaving}
             onClick={() => form.reset()}
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={!form.formState.isDirty || isSaving}>
+          <Button
+            type="submit"
+            size={'sm'}
+            disabled={!form.formState.isDirty || isSaving}
+          >
             {isSaving ? 'Saving...' : 'Save'}
           </Button>
         </CardFooter>

@@ -5,7 +5,10 @@ import {
   UpdateEnvironmentGeneralSettingsFormData,
 } from '../_validators/environments-validators';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { Environment } from '@/(labs)/_interfaces/environment';
+import {
+  Environment,
+  EnvironmentDetail,
+} from '@/(labs)/_interfaces/environment';
 import { APIErrors } from '@helpers/api/api-errors';
 import useSWR from 'swr';
 import React from 'react';
@@ -28,7 +31,7 @@ export default function useEnvironment(
     data: environment,
     isLoading: isLoadingEnvironment,
     error: environmentError,
-  } = useSWR(
+  } = useSWR<EnvironmentDetail>(
     () => params.environmentID && `/environments/${params.environmentID}`,
   );
   const { toast } = useToast();
@@ -129,9 +132,6 @@ export default function useEnvironment(
         payload,
       );
 
-      /*
-        Updates the cache of get and projects list with the new environment data
-      */
       makeMutations([
         {
           cacheKey: `/environments/${environmentID}`,
@@ -160,6 +160,80 @@ export default function useEnvironment(
     }
   }
 
+  async function replaceEnvironmentPublicKey(environmentID: string) {
+    try {
+      const { data } = await labsAPI.patch<{ publicKey: string }>(
+        `/environments/${environmentID}/public`,
+      );
+
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentID}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            publicKey: data.publicKey,
+          }),
+        },
+      ]);
+
+      toast({
+        description: 'The new public key has been successfully generated.',
+      });
+
+      return Promise.resolve();
+    } catch (error: any) {
+      console.error('useEnvironment.createNewPublicKey', error);
+      toast({
+        title: 'Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+
+      return Promise.reject(error);
+    }
+  }
+
+  async function replaceEnvironmentSecretKey(environmentID: string) {
+    try {
+      const { data } = await labsAPI.patch<{ secretKey: string }>(
+        `/environments/${environmentID}/secret`,
+      );
+
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentID}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            secretKey: data.secretKey,
+          }),
+        },
+      ]);
+
+      toast({
+        description: 'The new secret key has been successfully generated.',
+      });
+
+      return Promise.resolve();
+    } catch (error: any) {
+      console.error('useEnvironment.createNewSecretKey', error);
+      toast({
+        title: 'Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+
+      return Promise.reject(error);
+    }
+  }
+
+  async function getEnvironmentSecretKey(environmentID: string) {
+    const { data } = await labsAPI.get<{ secretKey: string }>(
+      `/environments/${environmentID}/secret`,
+    );
+
+    return data.secretKey;
+  }
+
   return {
     environment,
     isLoadingEnvironment,
@@ -167,5 +241,8 @@ export default function useEnvironment(
     createEnvironment,
     updateEnvironmentGeneralSettings,
     updateEnvironmentAuthSettings,
+    replaceEnvironmentPublicKey,
+    replaceEnvironmentSecretKey,
+    getEnvironmentSecretKey,
   };
 }

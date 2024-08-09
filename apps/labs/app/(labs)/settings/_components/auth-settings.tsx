@@ -22,7 +22,6 @@ type Props = {
 export default function AuthSettings({ sessionEnvironment }: Props) {
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
-    mode: 'onChange',
   });
   const { environment, isLoadingEnvironment, updateEnvironmentAuthSettings } =
     useEnvironment(
@@ -43,7 +42,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
 
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
     startSavingTransition(() => {
-      updateEnvironmentAuthSettings(environment.id, payload).then(() => {
+      updateEnvironmentAuthSettings(environment!.id, payload).then(() => {
         form.reset({
           authProvider: payload?.authProvider || '',
           tokenExpiration: payload?.tokenExpiration || '',
@@ -86,7 +85,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
           <CardHeader
             description={
               <>
-                You can follow the{' '}
+                The time is based on{' '}
                 <a
                   href="https://github.com/vercel/ms?tab=readme-ov-file#examples"
                   target="_blank"
@@ -94,7 +93,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
                 >
                   <Typo variant={'codeLink'}>vercel/ms</Typo>
                 </a>{' '}
-                to set token expiration times.
+                convert time formats pattern.
               </>
             }
           >
@@ -129,13 +128,18 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
         <CardFooter className="flex gap-2 justify-end">
           <Button
             type="button"
+            size={'sm'}
             variant={'ghost'}
             disabled={!form.formState.isDirty || isSaving}
             onClick={() => form.reset()}
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={!form.formState.isDirty || isSaving}>
+          <Button
+            type="submit"
+            size={'sm'}
+            disabled={!form.formState.isDirty || isSaving}
+          >
             {isSaving ? 'Saving...' : 'Save'}
           </Button>
         </CardFooter>

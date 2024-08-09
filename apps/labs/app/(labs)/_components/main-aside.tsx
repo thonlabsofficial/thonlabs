@@ -7,6 +7,7 @@ import {
   BsClipboardData,
   BsEnvelopePaper,
   BsGear,
+  BsLockFill,
   BsPersonFill,
 } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
@@ -78,6 +79,11 @@ export default function MainAside({ environment, session }: Props) {
             <NavItem label="Dashboard" href="/" icon={BsClipboardData} />
             <NavItem label="Users" href="/users" icon={BsPersonFill} />
             <NavItem label="Emails" href="/emails" icon={BsEnvelopePaper} />
+            <NavItem
+              label="API Settings"
+              href="/settings/api"
+              icon={BsLockFill}
+            />
             <NavItem label="Settings" href="/settings" icon={BsGear} />
           </div>
 

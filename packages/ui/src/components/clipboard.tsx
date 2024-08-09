@@ -7,12 +7,16 @@ import { cn } from '../core/utils';
 type Props = {
   value: string;
   labels?: string[];
+  onCopied?: () => void;
+  onCopyFinished?: () => void;
 };
 
 function Clipboard({
   value,
-  labels = ['Copy', 'Copied!'],
+  labels = ['Copy', 'Copied'],
   className,
+  onCopied,
+  onCopyFinished,
   ...props
 }: Props & React.ComponentProps<typeof Button>) {
   const [idle, after] = labels;
@@ -25,13 +29,17 @@ function Clipboard({
     }
 
     navigator.clipboard.writeText(value);
+    onCopied?.();
+
     setCopied(true);
     toast({
       description: 'Copied to clipboard',
       duration: 3000,
     });
+
     await Utils.delay(3000);
     setCopied(false);
+    onCopyFinished?.();
   }
 
   return (

@@ -15,4 +15,6 @@ export interface EnvironmentDetail extends Environment {
   updatedAt: Date;
   projectId: string;
   publicKey: string;
+  authProvider: string;
+  secretKey?: string;
 }

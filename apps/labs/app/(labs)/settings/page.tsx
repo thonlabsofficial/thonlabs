@@ -18,12 +18,12 @@ function SectionHeader({
   description,
 }: {
   title: React.ReactNode;
-  description: React.ReactNode;
+  description?: React.ReactNode;
 }) {
   return (
     <header className="flex flex-col gap-1 mb-4">
       <Typo variant="h4">{title}</Typo>
-      <Typo variant="muted">{description}</Typo>
+      {description && <Typo variant="muted">{description}</Typo>}
     </header>
   );
 }
