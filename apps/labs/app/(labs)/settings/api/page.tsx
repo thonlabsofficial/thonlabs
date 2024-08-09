@@ -8,6 +8,7 @@ import React from 'react';
 import { BsLockFill } from 'react-icons/bs';
 import PublicKeySettings from './_components/public-key-settings';
 import SecretKeySettings from './_components/secret-key-settings';
+import EnvironmentDetails from './_components/environment-details';
 
 export const metadata: Metadata = {
   title: 'API Settings',
@@ -39,6 +40,16 @@ export default function Settings() {
         icon={BsLockFill}
       />
       <PageWrapper className="pt-4 grid gap-12">
+        <section>
+          <SectionHeader title="Environment Info" />
+
+          <div className="grid gap-1.5">
+            <EnvironmentDetails
+              sessionEnvironment={sessionEnvironment as Environment}
+            />
+          </div>
+        </section>
+
         <section>
           <SectionHeader title="API Keys" />
 

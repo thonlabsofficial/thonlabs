@@ -14,6 +14,7 @@
     "./input-radio": "./src/components/input-radio.tsx",
     "./label": "./src/components/label.tsx",
     "./skeleton": "./src/components/skeleton.tsx",
+    "./spinner": "./src/components/spinner.tsx",
     "./toast": "./src/components/toast.tsx",
     "./toaster": "./src/components/toaster.tsx",
     "./typo": "./src/components/typo.tsx",

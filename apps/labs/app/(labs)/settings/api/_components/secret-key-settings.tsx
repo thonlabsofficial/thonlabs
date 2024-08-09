@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import useEnvironment from '@/(labs)/_hooks/use-environment';
 import { Environment } from '@/(labs)/_interfaces/environment';
 import { Button } from '@repo/ui/button';
@@ -11,9 +12,20 @@ type Props = {
 };
 
 export default function SecretKeySettings({ sessionEnvironment }: Props) {
-  const { environment, isLoadingEnvironment } = useEnvironment({
+  const [secretKey, setSecretKey] = React.useState('');
+  const { isLoadingEnvironment, getEnvironmentSecretKey } = useEnvironment({
     environmentID: sessionEnvironment.id,
   });
+
+  async function handleHiddenClick() {
+    if (secretKey) {
+      return;
+    }
+
+    const key = await getEnvironmentSecretKey(sessionEnvironment.id);
+
+    setSecretKey(key);
+  }
 
   return (
     <Card>
@@ -27,8 +39,10 @@ export default function SecretKeySettings({ sessionEnvironment }: Props) {
               <Input
                 readOnly
                 loading={isLoadingEnvironment}
-                value={'••••••••••••••••••••••••'}
+                value={secretKey}
                 withCopy
+                withHide
+                onHiddenClick={handleHiddenClick}
               />
             </InputWrapper>
           </div>

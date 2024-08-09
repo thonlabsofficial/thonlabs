@@ -7,6 +7,7 @@ import { Label } from './label';
 import { Skeleton } from './skeleton';
 import { Clipboard } from './clipboard';
 import { Button } from './button';
+import { Spinner } from './spinner';
 
 const inputVariants = cva(
   `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-solid hover:bg-input-hover shadow-sm 
@@ -44,9 +45,11 @@ export interface InputProps
   label?: React.ReactNode;
   error?: React.ReactNode;
   loading?: boolean;
+  loadingInternal?: 'show-hide';
   withCopy?: boolean;
   withHide?: boolean;
   hidePlaceholder?: string;
+  onHiddenClick?: () => void;
 }
 
 const loadingSizeMapper = {
@@ -68,6 +71,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       withCopy,
       withHide,
       hidePlaceholder = '••••••••••••••••••••••••',
+      onHiddenClick,
       ...props
     },
     ref,
@@ -76,6 +80,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const [buttonTriggered, setButtonTriggered] = React.useState(0);
     const [buttonsWidth, setButtonsWidth] = React.useState(0);
     const buttonsRef = React.useRef<HTMLDivElement>(null);
+    const [loadingFromButtons, setLoadingFromButtons] = React.useState<
+      'show-hide' | null
+    >(null);
 
     React.useEffect(() => {
       if (buttonsRef.current) {
@@ -133,16 +140,30 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 )}
                 {withHide && (
                   <Button
-                    className="inline-flex"
+                    className={cn('inline-flex', {
+                      'pointer-events-none': loadingFromButtons === 'show-hide',
+                    })}
                     size="xs"
                     variant="secondary"
                     type="button"
-                    onClick={() => {
+                    onClick={async () => {
+                      if (onHiddenClick) {
+                        setLoadingFromButtons('show-hide');
+                        await onHiddenClick();
+                        setLoadingFromButtons(null);
+                      }
+
                       setHidden(!hidden);
                       setButtonTriggered(Math.random());
                     }}
                   >
-                    {hidden ? 'Show' : 'Hide'}
+                    {loadingFromButtons === 'show-hide' ? (
+                      <Spinner />
+                    ) : hidden ? (
+                      'Show'
+                    ) : (
+                      'Hide'
+                    )}
                   </Button>
                 )}
               </div>
