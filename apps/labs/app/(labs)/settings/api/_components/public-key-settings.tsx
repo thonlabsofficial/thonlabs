@@ -5,15 +5,17 @@ import { Environment } from '@/(labs)/_interfaces/environment';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
+import RegeneratePublicKeyDialog from './regenerate-public-key-dialog';
 
 type Props = {
   sessionEnvironment: Environment;
 };
 
 export default function PublicKeySettings({ sessionEnvironment }: Props) {
-  const { environment, isLoadingEnvironment } = useEnvironment({
-    environmentID: sessionEnvironment.id,
-  });
+  const { environment, isLoadingEnvironment, regenerateEnvironmentPublicKey } =
+    useEnvironment({
+      environmentID: sessionEnvironment.id,
+    });
 
   return (
     <Card>
@@ -36,9 +38,14 @@ export default function PublicKeySettings({ sessionEnvironment }: Props) {
         </CardContent>
       </div>
       <CardFooter className="flex justify-end">
-        <Button type="button" size={'sm'}>
-          Regenerate
-        </Button>
+        <RegeneratePublicKeyDialog
+          environmentID={sessionEnvironment.id}
+          trigger={
+            <Button type="button" size={'sm'} disabled={isLoadingEnvironment}>
+              Regenerate
+            </Button>
+          }
+        />
       </CardFooter>
     </Card>
   );

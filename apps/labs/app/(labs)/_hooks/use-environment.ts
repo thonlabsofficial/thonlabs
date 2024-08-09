@@ -160,7 +160,7 @@ export default function useEnvironment(
     }
   }
 
-  async function replaceEnvironmentPublicKey(environmentID: string) {
+  async function regenerateEnvironmentPublicKey(environmentID: string) {
     try {
       const { data } = await labsAPI.patch<{ publicKey: string }>(
         `/environments/${environmentID}/public`,
@@ -176,13 +176,9 @@ export default function useEnvironment(
         },
       ]);
 
-      toast({
-        description: 'The new public key has been successfully generated.',
-      });
-
       return Promise.resolve();
     } catch (error: any) {
-      console.error('useEnvironment.createNewPublicKey', error);
+      console.error('useEnvironment.regenerateEnvironmentPublicKey', error);
       toast({
         title: 'Error',
         description: error?.response?.data?.message || APIErrors.Generic,
@@ -193,7 +189,7 @@ export default function useEnvironment(
     }
   }
 
-  async function replaceEnvironmentSecretKey(environmentID: string) {
+  async function regenerateEnvironmentSecretKey(environmentID: string) {
     try {
       const { data } = await labsAPI.patch<{ secretKey: string }>(
         `/environments/${environmentID}/secret`,
@@ -209,13 +205,9 @@ export default function useEnvironment(
         },
       ]);
 
-      toast({
-        description: 'The new secret key has been successfully generated.',
-      });
-
-      return Promise.resolve();
+      return Promise.resolve(data.secretKey);
     } catch (error: any) {
-      console.error('useEnvironment.createNewSecretKey', error);
+      console.error('useEnvironment.regenerateEnvironmentSecretKey', error);
       toast({
         title: 'Error',
         description: error?.response?.data?.message || APIErrors.Generic,
@@ -241,8 +233,8 @@ export default function useEnvironment(
     createEnvironment,
     updateEnvironmentGeneralSettings,
     updateEnvironmentAuthSettings,
-    replaceEnvironmentPublicKey,
-    replaceEnvironmentSecretKey,
+    regenerateEnvironmentPublicKey,
+    regenerateEnvironmentSecretKey,
     getEnvironmentSecretKey,
   };
 }
