@@ -18,11 +18,13 @@ import { Input, InputWrapper } from '@repo/ui/input';
 type Props = {
   trigger: React.ReactNode;
   environmentID: string;
+  onSecretKeyRegenerated: (newSecretKey: string) => void;
 };
 
 export default function RegenerateSecretKeyDialog({
   trigger,
   environmentID,
+  onSecretKeyRegenerated,
 }: Props & React.HTMLAttributes<HTMLElement>) {
   const [regenerated, setRegenerated] = React.useState(false);
   const [secretKey, setSecretKey] = React.useState('');
@@ -34,6 +36,7 @@ export default function RegenerateSecretKeyDialog({
       const key = await regenerateEnvironmentSecretKey(environmentID);
       setSecretKey(key);
       setRegenerated(true);
+      onSecretKeyRegenerated(key);
     } catch {}
   }
 

@@ -57,6 +57,7 @@ export default function SecretKeySettings({ sessionEnvironment }: Props) {
               Regenerate
             </Button>
           }
+          onSecretKeyRegenerated={(newSecretKey) => setSecretKey(newSecretKey)}
         />
       </CardFooter>
     </Card>
