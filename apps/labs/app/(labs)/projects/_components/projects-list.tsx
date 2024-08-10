@@ -178,7 +178,7 @@ export default function ProjectsList() {
     toast({
       title: 'Welcome back!',
       description: `You're now in ${environment.name} for project ${project.appName}.`,
-      duration: 2800,
+      duration: 2000,
     });
   }
 

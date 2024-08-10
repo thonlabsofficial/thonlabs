@@ -10,7 +10,7 @@ import {
   EnvironmentDetail,
 } from '@/(labs)/_interfaces/environment';
 import { APIErrors } from '@helpers/api/api-errors';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optmistic-update';
@@ -226,8 +226,46 @@ export default function useEnvironment(
     return data.secretKey;
   }
 
+  async function deleteEnvironment(environment: EnvironmentDetail) {
+    try {
+      await labsAPI.delete(`/environments/${environment.id}`);
+
+      makeMutations([
+        {
+          cacheKey: `/projects`,
+          populateCache: (_, projects) => ({
+            ...projects,
+            items: projects.items.map(
+              (p: Project & { environments: Environment[] }) =>
+                p.id === environment.projectId
+                  ? {
+                      ...p,
+                      environments: p.environments.filter(
+                        (e) => e.id !== environment.id,
+                      ),
+                    }
+                  : p,
+            ),
+          }),
+        },
+      ]);
+
+      toast({
+        title: 'Environment Deleted',
+        description: `Your environment ${environment.name} has been successfully deleted.`,
+      });
+    } catch (error: any) {
+      console.error('[Delete Environment]', error);
+      toast({
+        title: 'Deleting Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
   return {
-    environment,
+    environment: environment as EnvironmentDetail,
     isLoadingEnvironment,
     environmentError,
     createEnvironment,
@@ -236,5 +274,6 @@ export default function useEnvironment(
     regenerateEnvironmentPublicKey,
     regenerateEnvironmentSecretKey,
     getEnvironmentSecretKey,
+    deleteEnvironment,
   };
 }

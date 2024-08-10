@@ -33,3 +33,13 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
 export type UpdateEnvironmentAuthSettingsFormData = z.infer<
   typeof UpdateEnvironmentAuthSettingsFormSchema
 >;
+
+export const DeleteEnvironmentFormSchema = z.object({
+  name: z
+    .string({ required_error: 'This field is required' })
+    .min(1, { message: 'Environment name is required' }),
+});
+
+export type DeleteEnvironmentFormData = z.infer<
+  typeof DeleteEnvironmentFormSchema
+>;

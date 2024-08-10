@@ -74,7 +74,7 @@ export default function useProject() {
         '/projects',
         labsAPI.delete<Project>(`/projects/${projectID}`),
         {
-          populateCache: ({ data }, projects) => ({
+          populateCache: (_, projects) => ({
             ...projects,
             items: projects.items.filter((p: Project) => p.id !== projectID),
           }),

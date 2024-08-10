@@ -8,6 +8,7 @@ import AuthSettings from './_components/auth-settings';
 import { Typo } from '@repo/ui/typo';
 import React from 'react';
 import { BsGear } from 'react-icons/bs';
+import DangerZone from './_components/danger-zone';
 
 export const metadata: Metadata = {
   title: 'Settings',
@@ -53,6 +54,11 @@ export default function Settings() {
           <AuthSettings
             sessionEnvironment={sessionEnvironment as Environment}
           />
+        </section>
+
+        <section>
+          <SectionHeader title="Danger Zone" />
+          <DangerZone sessionEnvironment={sessionEnvironment as Environment} />
         </section>
       </PageWrapper>
     </>
