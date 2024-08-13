@@ -26,7 +26,7 @@ export default function useUserSession() {
   }
 
   function clearEnv() {
-    removeCookie('tl_env');
+    removeCookie('tl_env', { path: '/' });
   }
 
   return {

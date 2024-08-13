@@ -173,7 +173,8 @@ export default function ProjectsList() {
 
   function handleSetEnvironment(project: Project, environment: Environment) {
     setEnv({ project, environment });
-    router.push('/');
+    router.replace('/');
+    router.refresh();
 
     toast({
       title: 'Welcome back!',

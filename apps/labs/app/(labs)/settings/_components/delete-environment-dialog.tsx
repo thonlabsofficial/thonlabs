@@ -73,7 +73,7 @@ export default function DeleteEnvironmentDialog({
             <Input
               id="name"
               size="lg"
-              label={`To confirm, type "${environment.name}" in the field below`}
+              label={`To confirm, type "${environment?.name}" in the field below`}
               maxLength={30}
               error={form.formState.errors.name?.message}
               {...form.register('name')}
@@ -90,7 +90,7 @@ export default function DeleteEnvironmentDialog({
             type="button"
             variant={'destructive'}
             loading={isDeleting}
-            disabled={environment.name !== name}
+            disabled={environment?.name !== name}
             onClick={handleDelete}
           >
             {isDeleting ? 'Deleting...' : 'Delete Environment'}
