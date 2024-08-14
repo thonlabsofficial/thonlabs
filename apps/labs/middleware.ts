@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ServerSessionService from './app/auth/_services/server-session-service';
-import ServerUserSession from '@/(labs)/_services/server-auth-provider';
+import ServerAuthSessionService from '@/(labs)/_services/server-auth-session-service';
 
 export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico|favicon.png).*)',
@@ -49,7 +49,10 @@ export async function middleware(req: NextRequest) {
       }
     }
 
-    if (!pathname.startsWith('/projects') && !ServerUserSession.getEnv()) {
+    if (
+      !pathname.startsWith('/projects') &&
+      !ServerAuthSessionService.getEnv()
+    ) {
       console.log(
         '[MIDDLEWARE] No environment selected, redirecting to /projects',
       );

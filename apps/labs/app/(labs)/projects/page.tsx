@@ -5,7 +5,7 @@ import { Button } from '@repo/ui/button';
 import dynamic from 'next/dynamic';
 import Utils from '@repo/utils';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
-import ServerUserSession from '../_services/server-auth-provider';
+import ServerAuthSessionService from '../_services/server-auth-session-service';
 
 const NewProjectDialog = dynamic(
   () => import('@/(labs)/projects/_components/new-project-dialog'),
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default function Projects() {
-  const session = ServerUserSession.getSession();
+  const session = ServerAuthSessionService.getSession();
 
   return (
     <>

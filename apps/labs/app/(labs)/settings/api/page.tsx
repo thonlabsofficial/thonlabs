@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import PageWrapper from '@labs/_components/page-wrapper';
 import PageHeader from '@labs/_components/page-header';
-import ServerUserSession from '@labs/_services/server-auth-provider';
+import ServerAuthSessionService from '@/(labs)/_services/server-auth-session-service';
 import { Environment } from '@labs/_interfaces/environment';
 import { Typo } from '@repo/ui/typo';
 import React from 'react';
@@ -30,7 +30,7 @@ function SectionHeader({
 }
 
 export default function Settings() {
-  const sessionEnvironment = ServerUserSession.getEnv();
+  const sessionEnvironment = ServerAuthSessionService.getEnv();
 
   return (
     <>

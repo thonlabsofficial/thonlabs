@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import ThonLabsProvider from './_providers/thon-labs-provider';
-import ServerUserSession from '@/(labs)/_services/server-auth-provider';
+import ServerAuthSessionService from '@/(labs)/_services/server-auth-session-service';
 import { Environment } from '@/(labs)/_interfaces/environment';
 import MainAside from './_components/main-aside';
 
@@ -16,8 +16,8 @@ export default async function LabsNestedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = ServerUserSession.getSession();
-  const environment = ServerUserSession.getEnv();
+  const session = ServerAuthSessionService.getSession();
+  const environment = ServerAuthSessionService.getEnv();
 
   return (
     <ThonLabsProvider>

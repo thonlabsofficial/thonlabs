@@ -8,6 +8,7 @@ const labsPublicAPI = axios.create({
     'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
   },
 });
+
 const labsAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
   headers: {
@@ -15,7 +16,21 @@ const labsAPI = axios.create({
     'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
   },
 });
+
+const labsEnvAPI = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_TL_API,
+});
+
 const intAPI = axios.create();
+
+const fetcher = (url: string) => labsAPI.get(url).then((res) => res.data);
+
+const envFetcher = (envID: string) => (url: string) =>
+  labsEnvAPI
+    .get(url, {
+      headers: { 'tl-env-id': envID },
+    })
+    .then((res) => res.data);
 
 async function validateTokensInterceptor(
   config: InternalAxiosRequestConfig<any>,
@@ -51,9 +66,16 @@ async function handleResponseError(error: any) {
   return Promise.reject(error);
 }
 
+function envURL(url: string, envID: string) {
+  return `${url}?c=${envID.split('-').reverse()[0]?.substring(0, 5)}`;
+}
+
 labsAPI.interceptors.request.use(validateTokensInterceptor);
 labsAPI.interceptors.response.use((res) => res, handleResponseError);
 
+labsEnvAPI.interceptors.request.use(validateTokensInterceptor);
+labsEnvAPI.interceptors.response.use((res) => res, handleResponseError);
+
 intAPI.interceptors.response.use((res) => res, handleResponseError);
 
-export { labsPublicAPI, labsAPI, intAPI };
+export { labsPublicAPI, labsAPI, intAPI, fetcher, envFetcher, envURL };

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import PageWrapper from '@labs/_components/page-wrapper';
 import PageHeader from '../_components/page-header';
-import ServerUserSession from '../_services/server-auth-provider';
+import ServerAuthSessionService from '../_services/server-auth-session-service';
 import { Environment } from '../_interfaces/environment';
 import GeneralSettings from './_components/general-settings';
 import AuthSettings from './_components/auth-settings';
@@ -30,7 +30,7 @@ function SectionHeader({
 }
 
 export default function Settings() {
-  const sessionEnvironment = ServerUserSession.getEnv();
+  const sessionEnvironment = ServerAuthSessionService.getEnv();
 
   return (
     <>

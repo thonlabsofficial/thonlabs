@@ -15,7 +15,7 @@ import { usePathname } from 'next/navigation';
 import Utils from '@repo/utils';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import ProjectEnvNav from './project-env-nav';
-import { UserSession } from '../_services/server-auth-provider';
+import { UserSession } from '../_services/server-auth-session-service';
 import dynamic from 'next/dynamic';
 import { Typo } from '@repo/ui/typo';
 import { IconType } from 'react-icons';

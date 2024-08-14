@@ -4,7 +4,7 @@ import { Environment } from '@/(labs)/_interfaces/environment';
 
 export type UserSession = ReturnType<typeof ServerSessionService.getSession>;
 
-const ServerUserSession = {
+const ServerAuthSessionService = {
   getSession(): UserSession {
     return ServerSessionService.getSession();
   },
@@ -15,4 +15,4 @@ const ServerUserSession = {
   },
 };
 
-export default ServerUserSession;
+export default ServerAuthSessionService;
