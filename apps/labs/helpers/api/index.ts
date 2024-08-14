@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
+import qs from 'qs';
 
 const labsPublicAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
@@ -66,8 +67,14 @@ async function handleResponseError(error: any) {
   return Promise.reject(error);
 }
 
-function envURL(url: string, envID: string) {
-  return `${url}?c=${envID.split('-').reverse()[0]?.substring(0, 5)}`;
+function envURL(url: string, envID: string, queryString: any = {}) {
+  return `${url}${qs.stringify(
+    {
+      ...queryString,
+      c: envID.split('-').reverse()[0]?.substring(0, 5),
+    },
+    { addQueryPrefix: true },
+  )}`;
 }
 
 labsAPI.interceptors.request.use(validateTokensInterceptor);
