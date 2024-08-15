@@ -6,7 +6,7 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
+  <div className="relative w-full overflow-auto shadow-lg">
     <table
       ref={ref}
       className={cn('w-full caption-bottom text-sm', className)}
@@ -53,12 +53,19 @@ TableFooter.displayName = 'TableFooter';
 
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
+  {
+    header?: boolean;
+    withHover?: boolean;
+  } & React.HTMLAttributes<HTMLTableRowElement>
+>(({ className, header, withHover = true, ...props }, ref) => (
   <tr
     ref={ref}
     className={cn(
-      'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+      'border-b bg-muted/20 data-[state=selected]:bg-muted',
+      {
+        'bg-card': header,
+        'transition-colors hover:bg-muted/50': withHover,
+      },
       className,
     )}
     {...props}

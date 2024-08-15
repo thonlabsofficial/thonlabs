@@ -4,14 +4,10 @@ import plugin from 'tailwindcss/plugin';
 const config: Omit<Config, 'content'> = {
   darkMode: ['class'],
   theme: {
-    container: {
-      center: true,
-      padding: '1rem',
-      screens: {
-        '2xl': '1400px',
-      },
-    },
     extend: {
+      screens: {
+        '3xl': '1800px',
+      },
       fontFamily: {
         sans: ['var(--font-sans)'],
       },

@@ -12,7 +12,7 @@ export default function Users() {
   return (
     <>
       <PageHeader title="Users" icon={BsPersonFill} />
-      <PageWrapper>
+      <PageWrapper withContainer={false}>
         <UsersList />
       </PageWrapper>
     </>

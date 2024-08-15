@@ -7,7 +7,6 @@ import {
   BsClipboardData,
   BsEnvelopePaper,
   BsGear,
-  BsLockFill,
   BsPersonFill,
 } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
@@ -66,7 +65,7 @@ export default function MainAside({ environment, session }: Props) {
   return (
     !pathname.startsWith('/projects') &&
     (clientEnvironment || environment) && (
-      <aside className="w-64 fixed top-0 left-0 border-r border-collapse bg-card flex flex-col justify-between px-1.5 py-2 h-screen pb-1.5">
+      <aside className="w-64 fixed top-0 left-0 border-r border-collapse bg-background flex flex-col justify-between px-1.5 py-2 h-screen pb-1.5">
         <div className="flex justify-center items-center gap-1 py-1.5 pl-2">
           <div className="px-1 flex-none basis-7">
             <Logo reduced className="h-5 -mt-0.5" />
@@ -79,11 +78,6 @@ export default function MainAside({ environment, session }: Props) {
             <NavItem label="Dashboard" href="/" icon={BsClipboardData} />
             <NavItem label="Users" href="/users" icon={BsPersonFill} />
             <NavItem label="Emails" href="/emails" icon={BsEnvelopePaper} />
-            <NavItem
-              label="API Settings"
-              href="/settings/api"
-              icon={BsLockFill}
-            />
             <NavItem label="Settings" href="/settings" icon={BsGear} />
           </div>
 

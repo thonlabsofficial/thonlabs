@@ -1,5 +1,6 @@
 'use client';
 
+import SeparatorLine from '@/(labs)/_components/separator-line';
 import useEnvironment from '@/(labs)/_hooks/use-environment';
 import { Environment } from '@/(labs)/_interfaces/environment';
 import {
@@ -80,7 +81,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
             </div>
           </CardContent>
         </div>
-        <div className="h-px bg-background w-full my-6" />
+        <SeparatorLine />
         <div className="grid grid-cols-[19rem_1fr] gap-40">
           <CardHeader
             description={

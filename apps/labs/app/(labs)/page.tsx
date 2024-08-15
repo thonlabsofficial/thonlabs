@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <PageHeader title="Dashboard" icon={BsClipboardData} />
-      <PageWrapper>Dashboard page</PageWrapper>
+      <PageWrapper withContainer={false}>Dashboard page</PageWrapper>
     </>
   );
 }
