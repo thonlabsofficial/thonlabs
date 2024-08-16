@@ -30,7 +30,7 @@ export default function PageHeader({
             'items-center': !description,
           })}
         >
-          <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center border border-foreground/[0.05]">
+          <div className="w-8 h-8 rounded-md bg-card flex items-center justify-center border border-foreground/[0.05]">
             {icon({ className: 'w-4 h-4' })}
           </div>
           <div className="flex flex-col">

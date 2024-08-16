@@ -11,17 +11,18 @@ const badgeVariants = cva(
         secondary: 'border-transparent bg-secondary text-secondary-foreground',
         destructive:
           'border-transparent bg-destructive text-destructive-foreground shadow',
-        outline: 'text-foreground',
+        outline: 'text-foreground bg-transparent border-foreground/20',
       },
       size: {
-        small: 'px-1 py-0.5',
-        medium: 'px-2 py-0.5',
-        large: 'px-3 py-1',
+        xs: 'text-[0.6875rem] px-1 py-0',
+        sm: 'px-1 py-0.5',
+        md: 'px-2 py-0.5',
+        lg: 'px-3 py-1',
       },
     },
     defaultVariants: {
       variant: 'default',
-      size: 'medium',
+      size: 'md',
     },
   },
 );

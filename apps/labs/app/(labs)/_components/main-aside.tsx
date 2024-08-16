@@ -3,12 +3,6 @@
 import { Environment } from '@/(labs)/_interfaces/environment';
 import { buttonVariants } from '@repo/ui/button';
 import Link from 'next/link';
-import {
-  BsClipboardData,
-  BsEnvelopePaper,
-  BsGear,
-  BsPersonFill,
-} from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
 import { usePathname } from 'next/navigation';
 import Utils from '@repo/utils';
@@ -19,6 +13,7 @@ import dynamic from 'next/dynamic';
 import { Typo } from '@repo/ui/typo';
 import { IconType } from 'react-icons';
 import { cn } from '@repo/ui/core/utils';
+import { LuLayoutDashboard, LuMail, LuSettings, LuUser } from 'react-icons/lu';
 
 const Logo = dynamic(() => import('@/_components/logo'), { ssr: false });
 
@@ -75,10 +70,10 @@ export default function MainAside({ environment, session }: Props) {
 
         <nav className="w-full flex flex-col justify-between pt-3 pb-2 px-1.5 h-[94vh]">
           <div className="flex flex-col gap-2 w-full">
-            <NavItem label="Dashboard" href="/" icon={BsClipboardData} />
-            <NavItem label="Users" href="/users" icon={BsPersonFill} />
-            <NavItem label="Emails" href="/emails" icon={BsEnvelopePaper} />
-            <NavItem label="Settings" href="/settings" icon={BsGear} />
+            <NavItem label="Dashboard" href="/" icon={LuLayoutDashboard} />
+            <NavItem label="Users" href="/users" icon={LuUser} />
+            <NavItem label="Emails" href="/emails" icon={LuMail} />
+            <NavItem label="Settings" href="/settings" icon={LuSettings} />
           </div>
 
           <div className="flex items-center gap-2 w-full">

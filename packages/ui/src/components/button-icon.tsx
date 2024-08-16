@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-
 import { cn } from '../core/utils';
 import { IconType } from 'react-icons';
+import { Skeleton } from './skeleton';
 
-const buttonVariants = cva(
+const buttonIconVariants = cva(
   `inline-flex items-center justify-center whitespace-nowrap rounded-md font-semibold 
   transition-default focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring 
   disabled:pointer-events-none disabled:opacity-50 select-none`,
@@ -17,7 +17,7 @@ const buttonVariants = cva(
         destructive:
           'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
         outline:
-          'border border-input text-foreground bg-transparent border-foreground/20 hover:bg-card hover:text-accent-foreground',
+          'border border-input text-foreground bg-transparent border-foreground/20 hover:bg-card',
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'text-text hover:bg-accent hover:text-accent-foreground',
@@ -28,10 +28,10 @@ const buttonVariants = cva(
         info: 'bg-info shadow-sm hover:bg-info/90',
       },
       size: {
-        xs: 'py-1 px-2 text-xs gap-1',
-        sm: 'py-1.5 px-3 text-sm gap-1',
-        md: 'px-4 py-2 text-base gap-1.5',
-        lg: 'py-4 px-6 text-base gap-2',
+        xs: 'p-1',
+        sm: 'p-1.5',
+        md: 'p-2',
+        lg: 'p-4',
       },
     },
     defaultVariants: {
@@ -41,7 +41,7 @@ const buttonVariants = cva(
   },
 );
 
-const buttonIconVariants = cva('', {
+const iconVariants = cva('', {
   variants: {
     iconSize: {
       xs: 'w-3 h-3',
@@ -52,33 +52,33 @@ const buttonIconVariants = cva('', {
   },
 });
 
-export interface ButtonProps
+export interface ButtonIconProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonIconVariants> {
+  icon: IconType;
   loading?: boolean;
-  icon?: IconType;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
   (
     { className, variant, size, loading, disabled, children, icon, ...props },
     ref,
   ) => {
-    return (
+    return loading ? (
+      <Skeleton className={buttonIconVariants({ size })} />
+    ) : (
       <button
-        className={cn(buttonVariants({ variant, size, className }), {
+        className={cn(buttonIconVariants({ variant, size, className }), {
           'pointer-events-none opacity-50': loading || disabled,
         })}
         ref={ref}
         {...props}
       >
-        {icon &&
-          icon({ className: cn(buttonIconVariants({ iconSize: size })) })}
-        {children}
+        {icon({ className: cn(iconVariants({ iconSize: size })) })}
       </button>
     );
   },
 );
-Button.displayName = 'Button';
+ButtonIcon.displayName = 'ButtonIcon';
 
-export { Button, buttonVariants, buttonIconVariants };
+export { ButtonIcon, buttonIconVariants };

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { BsArrowRightShort, BsGearFill } from 'react-icons/bs';
 import useUserSession from '@labs/_hooks/use-user-session';
 import { useProjects } from '@labs/_hooks/use-projects';
 import { Environment } from '@labs/_interfaces/environment';
@@ -16,6 +15,7 @@ import { Button } from '@repo/ui/button';
 import ProjectSettingsDrawer from './project-settings-drawer';
 import { Skeleton } from '@repo/ui/skeleton';
 import { cn } from '@repo/ui/core/utils';
+import { LuArrowRight, LuSettings } from 'react-icons/lu';
 
 function ProjectSection({
   project,
@@ -41,7 +41,7 @@ function ProjectSection({
             {!loading ? (
               <ProjectSettingsDrawer
                 trigger={
-                  <Button variant={'ghost'} size={'sm'} icon={BsGearFill}>
+                  <Button variant={'ghost'} size={'sm'} icon={LuSettings}>
                     Settings
                   </Button>
                 }
@@ -69,7 +69,7 @@ function ProjectSection({
                 role="button"
                 key={`${index}_${environment.id}`}
                 className={cn(
-                  'group shadow-md hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1]',
+                  'group border-foreground/[0.2] hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1]',
                   {
                     'pointer-events-none': loading,
                   },
@@ -77,7 +77,7 @@ function ProjectSection({
                 onClick={() => {
                   if (!loading) handleSetEnvironment(project, environment);
                 }}
-                variant={'background'}
+                variant={'transparent'}
               >
                 <CardContent className="flex h-full justify-between gap-4 p-4">
                   <div className="flex flex-col gap-3">
@@ -120,7 +120,7 @@ function ProjectSection({
                   </div>
                   <div className="flex items-center">
                     {!loading && (
-                      <BsArrowRightShort
+                      <LuArrowRight
                         className={`
                   w-5 h-5 opacity-0 invisible 
                   group-hover:opacity-100 group-hover:visible 
@@ -139,7 +139,7 @@ function ProjectSection({
                     role="button"
                     variant={'transparent'}
                     border={'dashed'}
-                    className="group hover:border-foreground/[0.27] min-h-[5.25rem]"
+                    className="group border-foreground/[0.2] hover:border-foreground/[0.3] min-h-[5.25rem]"
                   >
                     <CardContent className="flex h-full justify-center items-center gap-4 p-4">
                       <Typo

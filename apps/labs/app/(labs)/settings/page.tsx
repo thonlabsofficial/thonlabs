@@ -6,10 +6,10 @@ import { Environment } from '../_interfaces/environment';
 import GeneralSettings from './_components/general-settings';
 import AuthSettings from './_components/auth-settings';
 import React from 'react';
-import { BsGear } from 'react-icons/bs';
 import DangerZone from './_components/danger-zone';
 import SectionHeader from '@/(labs)/_components/section-header';
 import APIKeysSettings from './_components/api-key-settings';
+import { LuSettings } from 'react-icons/lu';
 
 export const metadata: Metadata = {
   title: 'Settings',
@@ -20,7 +20,7 @@ export default function Settings() {
 
   return (
     <>
-      <PageHeader title="Settings" icon={BsGear} withContainer />
+      <PageHeader title="Settings" icon={LuSettings} withContainer />
       <PageWrapper className="pt-4 grid gap-12">
         <section>
           <GeneralSettings
@@ -39,7 +39,10 @@ export default function Settings() {
         </section>
 
         <section>
-          <SectionHeader title="API Keys" />
+          <SectionHeader
+            title="API Keys"
+            description="Connect these keys with our libraries, SDKs, or APIs"
+          />
 
           <div className="grid gap-1.5">
             <APIKeysSettings

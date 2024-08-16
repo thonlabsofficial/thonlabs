@@ -10,7 +10,6 @@ const cardVariants = cva(
     variants: {
       variant: {
         default: 'bg-card',
-        background: 'bg-background',
         transparent: 'bg-transparent',
       },
       border: {

@@ -2,10 +2,9 @@
 
 import { buttonVariants } from '@repo/ui/button';
 import Link from 'next/link';
-import { GoGrabber } from 'react-icons/go';
 import useUserSession from '../_hooks/use-user-session';
 import { Environment } from '@/(labs)/_interfaces/environment';
-import { BsArrowRightShort } from 'react-icons/bs';
+import { LuArrowRight } from 'react-icons/lu';
 
 type Props = {
   environment: Environment;
@@ -34,9 +33,9 @@ export default function ProjectEnvNav({ environment }: Props) {
               {(clientEnvironment || environment).name}
             </span>
           </span>
-          <BsArrowRightShort
+          <LuArrowRight
             className={`
-              w-5 h-5 opacity-0 invisible 
+              w-3 h-3 opacity-0 invisible 
               group-hover:opacity-100 group-hover:visible 
               transition-all duration-120 ease-in-out
             `}

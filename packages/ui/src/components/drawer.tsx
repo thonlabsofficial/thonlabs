@@ -2,10 +2,9 @@
 
 import * as React from 'react';
 import { Drawer as DrawerPrimitive } from 'vaul';
-import { BsX } from 'react-icons/bs';
-
 import { cn } from '../core/utils';
 import { Button } from './button';
+import { LuX } from 'react-icons/lu';
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -71,7 +70,7 @@ const DrawerContent = React.forwardRef<
       <div className="flex justify-end p-2 absolute top-0.5 right-0.5">
         <DrawerClose asChild>
           <Button size="xs" variant="ghost" className="w-8 h-8 p-0">
-            <BsX className="w-5 h-5" />
+            <LuX className="w-5 h-5" />
           </Button>
         </DrawerClose>
       </div>
