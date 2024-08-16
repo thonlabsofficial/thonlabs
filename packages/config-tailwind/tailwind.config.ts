@@ -81,10 +81,20 @@ const config: Omit<Config, 'content'> = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'slide-fade-in-from-right': {
+          from: { transform: 'translateX(0.375rem)', opacity: 0 },
+          to: { transform: 'translateX(0)', opacity: 1 },
+        },
+        'slide-fade-out-to-right': {
+          from: { transform: 'translateX(0)', opacity: 1 },
+          to: { transform: 'translateX(0.375rem)', opacity: 0 },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'slide-fade-in-from-right': 'slide-fade-in-from-right 0.2s ease-out',
+        'slide-fade-out-to-right': 'slide-fade-out-to-right 0.2s ease-out',
       },
     },
   },

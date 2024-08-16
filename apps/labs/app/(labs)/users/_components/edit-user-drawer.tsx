@@ -20,34 +20,28 @@ import {
   DrawerScrollArea,
   DrawerContentContainer,
 } from '@repo/ui/drawer';
-import { Project } from '@labs/_interfaces/project';
-import useProject from '../../_hooks/use-project';
-import DeleteProjectDialog from './delete-project-dialog';
+import { User } from '@/(labs)/_interfaces/user';
 
 type Props = {
   trigger: React.ReactNode;
-  project: Project;
+  user: User;
 };
 
-export default function ProjectSettingsDrawer({
+export default function EditUserDrawer({
   trigger,
-  project,
+  user,
 }: Props & React.HTMLAttributes<HTMLElement>) {
   const form = useForm<UpdateProjectGeneralInfoFormData>({
     resolver: zodResolver(UpdateProjectGeneralInfoFormSchema),
   });
   const [isSaving, startSavingTransition] = useTransition();
-  const { updateGeneralInfo } = useProject();
 
   function onSubmit(payload: UpdateProjectGeneralInfoFormData) {
-    startSavingTransition(async () => {
-      await updateGeneralInfo(project.id, payload);
-    });
+    startSavingTransition(async () => {});
   }
 
   function handleReset() {
     form.clearErrors();
-    form.setValue('appName', project.appName);
   }
 
   return (
@@ -57,25 +51,13 @@ export default function ProjectSettingsDrawer({
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Project Settings</DrawerTitle>
-          <DrawerDescription>
-            You can update the name of <strong>{project.appName}</strong>{' '}
-            project.
-          </DrawerDescription>
+          <DrawerTitle>User</DrawerTitle>
+          <DrawerDescription>-</DrawerDescription>
         </DrawerHeader>
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
               <div className="grid w-full items-center gap-4">
-                <InputWrapper>
-                  <Input
-                    id="appName"
-                    label="PID (Project ID)"
-                    value={project.id}
-                    readOnly
-                    withCopy
-                  />
-                </InputWrapper>
                 <InputWrapper>
                   <Input
                     id="appName"
@@ -89,10 +71,7 @@ export default function ProjectSettingsDrawer({
             </DrawerContentContainer>
           </DrawerScrollArea>
           <DrawerFooter>
-            <DeleteProjectDialog
-              trigger={<Button variant="ghost">Delete Project</Button>}
-              project={project}
-            />
+            <Button variant="ghost">Delete User</Button>
             <Button type="submit" loading={isSaving}>
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>

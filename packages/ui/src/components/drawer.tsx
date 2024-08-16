@@ -1,84 +1,65 @@
 'use client';
 
 import * as React from 'react';
-import { Drawer as DrawerPrimitive } from 'vaul';
+import * as DrawerPrimitive from '@radix-ui/react-dialog';
 import { cn } from '../core/utils';
-import { Button } from './button';
 import { LuX } from 'react-icons/lu';
 
-const Drawer = ({
-  shouldScaleBackground = true,
-  direction = 'right',
-  ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
-  <DrawerPrimitive.Root
-    shouldScaleBackground={shouldScaleBackground}
-    direction={direction}
-    dismissible={false}
-    {...props}
-  />
-);
-Drawer.displayName = 'Drawer';
+const Drawer = DrawerPrimitive.Root;
 
 const DrawerTrigger = DrawerPrimitive.Trigger;
 
-const DrawerPortal = DrawerPrimitive.Portal;
+const DrawerClose = DrawerPrimitive.Close;
 
-const DrawerClose = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Close>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Close>
->(({ className, asChild = true, ...props }, ref) => (
-  <DrawerPrimitive.Close
-    ref={ref}
-    asChild={asChild}
-    {...props}
-    className={className}
-  />
-));
+const DrawerPortal = DrawerPrimitive.Portal;
 
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-  <DrawerClose asChild>
-    <DrawerPrimitive.Overlay
-      ref={ref}
-      className={cn(
-        'fixed inset-0 z-50 bg-black/70 backdrop-blur-sm',
-        className,
-      )}
-      {...props}
-    />
-  </DrawerClose>
+  <DrawerPrimitive.Overlay
+    className={cn(
+      'fixed inset-0 z-50 bg-black/70 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      className,
+    )}
+    {...props}
+    ref={ref}
+  />
 ));
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
+interface DrawerContentProps
+  extends React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> {}
+
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
+  DrawerContentProps
 >(({ className, children, ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed w-[26rem] top-0 right-0 z-50 flex h-screen flex-col border-l bg-card !select-auto !cursor-auto',
+        `
+        fixed w-[26rem] top-0 right-0 z-50 flex h-screen 
+        flex-col border-l bg-card !select-auto !cursor-auto 
+        inset-y-0 right-0 h-full border-l sm:max-w-sm
+        data-[state=open]:animate-slide-fade-in-from-right 
+        data-[state=closed]:animate-slide-fade-out-to-right
+      `,
         className,
       )}
       {...props}
     >
-      <div className="flex justify-end p-2 absolute top-0.5 right-0.5">
-        <DrawerClose asChild>
-          <Button size="xs" variant="ghost" className="w-8 h-8 p-0">
-            <LuX className="w-5 h-5" />
-          </Button>
-        </DrawerClose>
-      </div>
       {children}
+      <DrawerPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+        <LuX className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DrawerPrimitive.Close>
     </DrawerPrimitive.Content>
   </DrawerPortal>
 ));
-DrawerContent.displayName = 'DrawerContent';
+DrawerContent.displayName = DrawerPrimitive.Content.displayName;
 
 const DrawerHeader = ({
   className,
@@ -121,10 +102,7 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={cn(
-      'text-text text-xl font-semibold leading-none tracking-tight',
-      className,
-    )}
+    className={cn('text-lg font-semibold text-foreground', className)}
     {...props}
   />
 ));

@@ -158,19 +158,14 @@ export default function UsersList() {
   const { users, isLoadingUsers } = useUsers();
 
   return (
-    <>
-      {isLoadingUsers ? (
-        'Loading...'
-      ) : (
-        <DataTable
-          columns={columns}
-          data={users}
-          defaultSorting={[{ id: 'fullName', desc: false }]}
-          searchFields={['id', 'fullName', 'email']}
-          noResultsMessage="No users found"
-          searchPlaceholder="Search by name, email or UID..."
-        />
-      )}
-    </>
+    <DataTable
+      loading={isLoadingUsers}
+      columns={columns}
+      data={users}
+      defaultSorting={[{ id: 'fullName', desc: false }]}
+      searchFields={['id', 'fullName', 'email']}
+      noResultsMessage="No users found"
+      searchPlaceholder="Search by name, email or UID..."
+    />
   );
 }

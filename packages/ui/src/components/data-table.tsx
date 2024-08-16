@@ -23,6 +23,7 @@ import React from 'react';
 import { Input } from '@repo/ui/input';
 import Utils from '@repo/utils';
 import { LuArrowUp } from 'react-icons/lu';
+import { Skeleton } from './skeleton';
 
 function DataTableHeaderCell({
   accessorKey,
@@ -56,6 +57,24 @@ function DataTableHeaderCell({
   );
 }
 
+function DataTableLoaderCell({
+  table,
+}: {
+  table: ReturnType<typeof useReactTable>;
+}) {
+  return table.getHeaderGroups().map((headerGroup) => (
+    <TableRow header key={headerGroup.id} withHover={false}>
+      {headerGroup.headers.map((header) => {
+        return (
+          <TableCell key={`loading-${header.id}`} className="py-3">
+            <Skeleton className="!w-3/4 h-6" />
+          </TableCell>
+        );
+      })}
+    </TableRow>
+  ));
+}
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -65,6 +84,7 @@ interface DataTableProps<TData, TValue> {
   defaultSearch?: string;
   searchPlaceholder?: string;
   searchFields?: string[];
+  loading?: boolean;
 }
 
 function DataTable<TData, TValue>({
@@ -76,6 +96,7 @@ function DataTable<TData, TValue>({
   defaultSearch = '',
   searchPlaceholder = 'Search...',
   searchFields = [],
+  loading,
   ...props
 }: DataTableProps<TData, TValue> & React.HTMLAttributes<HTMLElement>) {
   const [sorting, setSorting] = React.useState<SortingState>(defaultSorting);
@@ -142,7 +163,19 @@ function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {loading ? (
+              <>
+                <DataTableLoaderCell
+                  table={table as ReturnType<typeof useReactTable>}
+                />
+                <DataTableLoaderCell
+                  table={table as ReturnType<typeof useReactTable>}
+                />
+                <DataTableLoaderCell
+                  table={table as ReturnType<typeof useReactTable>}
+                />
+              </>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
