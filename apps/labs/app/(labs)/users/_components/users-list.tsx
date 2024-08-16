@@ -10,7 +10,6 @@ import { Typo } from '@repo/ui/typo';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
 import { LuCheck, LuCopy, LuMoreHorizontal } from 'react-icons/lu';
-import { Button } from '@repo/ui/button';
 import { ButtonIcon } from '@repo/ui/button-icon';
 
 const columns: ColumnDef<User>[] = [
@@ -47,6 +46,7 @@ const columns: ColumnDef<User>[] = [
                 variant="outline"
                 value={id}
                 labels={[LuCopy, LuCheck]}
+                className="opacity-0 group-hover:opacity-100"
               />
             </div>
           </div>
@@ -64,6 +64,21 @@ const columns: ColumnDef<User>[] = [
           columnDef={columnDef}
           accessorKey="email"
         />
+      );
+    },
+    cell: ({ getValue }) => {
+      const email = getValue() as string;
+      return (
+        <div className="flex items-center gap-1">
+          {email}
+          <Clipboard
+            size="xs"
+            variant="outline"
+            value={email}
+            labels={[LuCopy, LuCheck]}
+            className="opacity-0 group-hover:opacity-100"
+          />
+        </div>
       );
     },
     sortingFn: 'alphanumeric',
