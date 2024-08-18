@@ -20,7 +20,7 @@ const buttonIconVariants = cva(
           'border border-input text-foreground bg-transparent border-foreground/20 hover:bg-card',
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-        ghost: 'text-text hover:bg-accent hover:text-accent-foreground',
+        ghost: 'text-text hover:bg-foreground/10 hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         linkGhost:
           'text-zinc-500 hover:bg-accent hover:text-accent-foreground hover:text-zinc-600 dark:hover:text-zinc-300',

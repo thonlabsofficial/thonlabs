@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
 import { LuCheck, LuCopy, LuMoreHorizontal } from 'react-icons/lu';
 import { ButtonIcon } from '@repo/ui/button-icon';
+import InfoUserDrawer from './info-user-drawer';
 
 const columns: ColumnDef<User>[] = [
   {
@@ -39,7 +40,7 @@ const columns: ColumnDef<User>[] = [
             <Typo className="font-semibold">{data}</Typo>
             <div className="flex gap-0.5">
               <Badge variant={'outline'} size={'xs'} className="cursor-text">
-                UID: {id.substring(0, 4)}...{id.substring(id.length - 4)}
+                UID: {id?.substring(0, 4)}...{id?.substring(id.length - 4)}
               </Badge>
               <Clipboard
                 size="xs"
@@ -89,7 +90,11 @@ const columns: ColumnDef<User>[] = [
     cell: ({ getValue }) => {
       const data = getValue() as boolean;
       return (
-        <Badge variant={'outline'} size={'sm'} className="cursor-text">
+        <Badge
+          variant={data ? 'success' : 'destructive'}
+          size={'sm'}
+          className="cursor-text"
+        >
           {data ? 'Active' : 'Inactive'}
         </Badge>
       );
@@ -149,7 +154,13 @@ const columns: ColumnDef<User>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      return <ButtonIcon variant="outline" icon={LuMoreHorizontal} />;
+      const user = row.original;
+      return (
+        <InfoUserDrawer
+          trigger={<ButtonIcon variant="outline" icon={LuMoreHorizontal} />}
+          user={user}
+        />
+      );
     },
   },
 ];

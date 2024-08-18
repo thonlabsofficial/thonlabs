@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Drawer,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -21,6 +20,11 @@ import {
   DrawerContentContainer,
 } from '@repo/ui/drawer';
 import { User } from '@/(labs)/_interfaces/user';
+import { Avatar, AvatarFallback } from '@repo/ui/avatar';
+import Utils from '@repo/utils';
+import { Badge } from '@repo/ui/badge';
+import { Clipboard } from '@repo/ui/clipboard';
+import { LuCheck, LuCopy } from 'react-icons/lu';
 
 type Props = {
   trigger: React.ReactNode;
@@ -51,8 +55,28 @@ export default function EditUserDrawer({
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>User</DrawerTitle>
-          <DrawerDescription>-</DrawerDescription>
+          <DrawerTitle className="flex gap-1.5">
+            <Avatar size={'md'}>
+              <AvatarFallback>
+                {Utils.getFirstAndLastInitials(user?.fullName || '')}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col justify-center gap-1.5 w-[17.625rem]">
+              <div className="mt-1.5 truncate">{user?.fullName || '-'}</div>
+              <div className="flex gap-0.5 h-[1.375rem]">
+                <Badge variant={'outline'} size={'xs'} className="cursor-text">
+                  UID: {user?.id?.substring(0, 4)}...
+                  {user?.id?.substring(user?.id.length - 4)}
+                </Badge>
+                <Clipboard
+                  size="xs"
+                  variant="outline"
+                  value={user?.id}
+                  labels={[LuCopy, LuCheck]}
+                />
+              </div>
+            </div>
+          </DrawerTitle>
         </DrawerHeader>
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
@@ -60,9 +84,7 @@ export default function EditUserDrawer({
               <div className="grid w-full items-center gap-4">
                 <InputWrapper>
                   <Input
-                    id="appName"
-                    label="Project Name"
-                    maxLength={25}
+                    label="Full Name"
                     error={form.formState.errors.appName?.message}
                     {...form.register('appName')}
                   />
@@ -71,8 +93,7 @@ export default function EditUserDrawer({
             </DrawerContentContainer>
           </DrawerScrollArea>
           <DrawerFooter>
-            <Button variant="ghost">Delete User</Button>
-            <Button type="submit" loading={isSaving}>
+            <Button type="submit" loading={isSaving} className="w-full">
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>
           </DrawerFooter>
