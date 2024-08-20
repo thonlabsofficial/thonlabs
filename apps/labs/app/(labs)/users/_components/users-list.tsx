@@ -12,6 +12,8 @@ import Utils from '@repo/utils';
 import { LuCheck, LuCopy, LuMoreHorizontal } from 'react-icons/lu';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import InfoUserDrawer from './info-user-drawer';
+import { Button } from '@repo/ui/button';
+import NewUserDialog from './new-user-dialog';
 
 const columns: ColumnDef<User>[] = [
   {
@@ -177,6 +179,9 @@ export default function UsersList() {
       searchFields={['id', 'fullName', 'email']}
       noResultsMessage="No users found"
       searchPlaceholder="Search by name, email or UID..."
+      actions={
+        <NewUserDialog trigger={<Button size={'sm'}>New User</Button>} />
+      }
     />
   );
 }

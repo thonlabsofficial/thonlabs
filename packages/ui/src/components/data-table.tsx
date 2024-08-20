@@ -85,6 +85,7 @@ interface DataTableProps<TData, TValue> {
   searchPlaceholder?: string;
   searchFields?: string[];
   loading?: boolean;
+  actions?: React.ReactNode;
 }
 
 function DataTable<TData, TValue>({
@@ -97,6 +98,7 @@ function DataTable<TData, TValue>({
   searchPlaceholder = 'Search...',
   searchFields = [],
   loading,
+  actions,
   ...props
 }: DataTableProps<TData, TValue> & React.HTMLAttributes<HTMLElement>) {
   const [sorting, setSorting] = React.useState<SortingState>(defaultSorting);
@@ -131,8 +133,8 @@ function DataTable<TData, TValue>({
   return (
     <div {...props}>
       {searchFields.length > 0 && (
-        <div className="mb-4">
-          <div className="max-w-sm">
+        <div className="flex justify-between gap-3 mb-4">
+          <div className="min-w-[22rem]">
             <Input
               placeholder={searchPlaceholder}
               size={'sm'}
@@ -140,6 +142,7 @@ function DataTable<TData, TValue>({
               onChange={(e) => setGlobalFilter(String(e.target.value))}
             />
           </div>
+          {actions && <div className="flex items-center gap-2">{actions}</div>}
         </div>
       )}
       <div className="rounded-md border overflow-hidden">
