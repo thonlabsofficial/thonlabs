@@ -37,7 +37,6 @@ function Clipboard({
     setCopied(true);
     toast({
       description: 'Copied to clipboard',
-      duration: 3000,
     });
 
     await Utils.delay(3000);

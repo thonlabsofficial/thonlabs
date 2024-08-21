@@ -77,6 +77,14 @@ function envURL(url: string, envID: string, queryString: any = {}) {
   )}`;
 }
 
+function envHeaders(envID: string) {
+  return {
+    headers: {
+      'tl-env-id': envID,
+    },
+  };
+}
+
 labsAPI.interceptors.request.use(validateTokensInterceptor);
 labsAPI.interceptors.response.use((res) => res, handleResponseError);
 
@@ -85,4 +93,13 @@ labsEnvAPI.interceptors.response.use((res) => res, handleResponseError);
 
 intAPI.interceptors.response.use((res) => res, handleResponseError);
 
-export { labsPublicAPI, labsAPI, intAPI, fetcher, envFetcher, envURL };
+export {
+  labsPublicAPI,
+  labsAPI,
+  intAPI,
+  labsEnvAPI,
+  fetcher,
+  envFetcher,
+  envURL,
+  envHeaders,
+};

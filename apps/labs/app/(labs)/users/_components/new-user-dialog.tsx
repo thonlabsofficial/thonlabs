@@ -7,7 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 import {
   NewUserFormData,
   NewUserFormSchema,
-} from '../../_validators/users-validators';
+} from '@labs/_validators/users-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from '@repo/ui/dialog';
 import { InputSwitch } from '@repo/ui/input-switch';
+import useUser from '@/(labs)/_hooks/use-user';
 
 type Props = {
   trigger: React.ReactNode;
@@ -28,6 +29,7 @@ type Props = {
 export default function NewUserDialog({
   trigger,
 }: Props & React.HTMLAttributes<HTMLElement>) {
+  const [open, setOpen] = React.useState(false);
   const form = useForm<NewUserFormData>({
     defaultValues: {
       sendInvite: true,
@@ -35,10 +37,16 @@ export default function NewUserDialog({
     resolver: zodResolver(NewUserFormSchema),
   });
   const [isCreatingUser, startTransitionCreatingUser] = useTransition();
+  const { createUser } = useUser();
 
-  function onSubmit({ sendInvite, ...payload }: NewUserFormData) {
-    console.log('payload ->', payload);
-    // startTransitionCreatingUser(async () => {});
+  function onSubmit(payload: NewUserFormData) {
+    startTransitionCreatingUser(async () => {
+      const user = await createUser(payload);
+
+      if (user) {
+        setOpen(false);
+      }
+    });
   }
 
   function handleReset() {
@@ -47,7 +55,7 @@ export default function NewUserDialog({
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild onClick={handleReset}>
         {trigger}
       </DialogTrigger>

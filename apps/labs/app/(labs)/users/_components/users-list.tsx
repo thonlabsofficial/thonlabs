@@ -1,6 +1,6 @@
 'use client';
 
-import { useUsers } from '@labs/users/_hooks/use-users';
+import { useUsers } from '@/(labs)/_hooks/use-users';
 import { User } from '@/(labs)/_interfaces/user';
 import { DataTable, DataTableHeaderCell, ColumnDef } from '@repo/ui/data-table';
 import { Clipboard } from '@repo/ui/clipboard';
@@ -9,13 +9,36 @@ import { Badge } from '@repo/ui/badge';
 import { Typo } from '@repo/ui/typo';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
-import { LuCheck, LuCopy, LuMoreHorizontal } from 'react-icons/lu';
+import {
+  LuCheck,
+  LuCopy,
+  LuFileEdit,
+  LuMoreHorizontal,
+  LuTrash2,
+} from 'react-icons/lu';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import InfoUserDrawer from './info-user-drawer';
 import { Button } from '@repo/ui/button';
 import NewUserDialog from './new-user-dialog';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+} from '@repo/ui/dropdown';
+import React from 'react';
+import useUserSession from '@/(labs)/_hooks/use-user-session';
 
-const columns: ColumnDef<User>[] = [
+const columns = ({
+  setOpen,
+  setUser,
+  authUser,
+}: {
+  setOpen: React.Dispatch<React.SetStateAction<string>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  authUser: User;
+}): ColumnDef<User>[] => [
   {
     accessorKey: 'fullName',
     header: (columnDef) => {
@@ -103,6 +126,22 @@ const columns: ColumnDef<User>[] = [
     },
   },
   {
+    accessorKey: 'emailConfirmed',
+    header: 'Invitation Status',
+    cell: ({ getValue }) => {
+      const data = getValue() as boolean;
+      return (
+        <Badge
+          variant={data ? 'success' : 'destructive'}
+          size={'sm'}
+          className="cursor-text"
+        >
+          {data ? 'Confirmed' : 'Pending'}
+        </Badge>
+      );
+    },
+  },
+  {
     accessorKey: 'lastSignIn',
     header: (columnDef) => {
       return (
@@ -137,31 +176,36 @@ const columns: ColumnDef<User>[] = [
     sortingFn: 'datetime',
   },
   {
-    accessorKey: 'updatedAt',
-    header: (columnDef) => {
-      return (
-        <DataTableHeaderCell
-          header="Updated At"
-          columnDef={columnDef}
-          accessorKey="updatedAt"
-        />
-      );
-    },
-    cell: ({ getValue }) => {
-      const data = getValue() as string;
-      return format(new Date(data), 'MM/dd/yyyy hh:mm aa');
-    },
-    sortingFn: 'datetime',
-  },
-  {
     id: 'actions',
     cell: ({ row }) => {
       const user = row.original;
       return (
-        <InfoUserDrawer
-          trigger={<ButtonIcon variant="outline" icon={LuMoreHorizontal} />}
-          user={user}
-        />
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <ButtonIcon variant="outline" icon={LuMoreHorizontal} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end">
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setOpen('info-user-drawer');
+                    setUser(user);
+                  }}
+                >
+                  <LuFileEdit className="mr-2 h-4 w-4" />
+                  <span>View info</span>
+                </DropdownMenuItem>
+                {authUser?.id !== user.id && (
+                  <DropdownMenuItem className="text-red-400 hover:bg-destructive/10">
+                    <LuTrash2 className="mr-2 h-4 w-4" />
+                    <span>Delete</span>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
       );
     },
   },
@@ -169,19 +213,33 @@ const columns: ColumnDef<User>[] = [
 
 export default function UsersList() {
   const { users, isLoadingUsers } = useUsers();
+  const [open, setOpen] = React.useState('');
+  const [user, setUser] = React.useState<User | null>(null);
+  const { user: authUser } = useUserSession();
 
   return (
-    <DataTable
-      loading={isLoadingUsers}
-      columns={columns}
-      data={users}
-      defaultSorting={[{ id: 'fullName', desc: false }]}
-      searchFields={['id', 'fullName', 'email']}
-      noResultsMessage="No users found"
-      searchPlaceholder="Search by name, email or UID..."
-      actions={
-        <NewUserDialog trigger={<Button size={'sm'}>New User</Button>} />
-      }
-    />
+    <>
+      <DataTable
+        loading={isLoadingUsers}
+        columns={columns({
+          setOpen,
+          setUser,
+          authUser: authUser as User,
+        })}
+        data={users}
+        defaultSorting={[{ id: 'fullName', desc: false }]}
+        searchFields={['id', 'fullName', 'email']}
+        noResultsMessage="No users found"
+        searchPlaceholder="Search by name, email or UID..."
+        actions={
+          <NewUserDialog trigger={<Button size={'sm'}>New User</Button>} />
+        }
+      />
+      <InfoUserDrawer
+        user={user as User}
+        open={open === 'info-user-drawer'}
+        onOpenChange={() => setOpen('')}
+      />
+    </>
   );
 }

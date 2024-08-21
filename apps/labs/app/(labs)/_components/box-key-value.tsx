@@ -22,9 +22,11 @@ export default function BoxKeyValue({
 }: Props) {
   return (
     <div className={cn('flex flex-col gap-0.5', className)} {...props}>
-      <Typo variant={'muted'}>{label}</Typo>
+      <Typo variant={'muted'} className="font-semibold">
+        {label}
+      </Typo>
       <Typo variant={'sm'} className="flex items-center gap-1">
-        {date
+        {date && value
           ? format(new Date(value as string), 'MM/dd/yyyy hh:mm aa')
           : (value as React.ReactNode)}
         {withCopy && (

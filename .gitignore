@@ -21,6 +21,8 @@ node_modules
 .DS_Store
 *.pem
 .turbo
+.idea
+.vscode
 
 # debug
 npm-debug.log*
@@ -34,7 +36,6 @@ yarn-error.log*
 
 # vercel
 .vercel
-.vscode
 
 # typescript
 *.tsbuildinfo

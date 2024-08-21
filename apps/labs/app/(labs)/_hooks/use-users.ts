@@ -1,5 +1,5 @@
-import useUserSession from '@/(labs)/_hooks/use-user-session';
-import { User } from '@/(labs)/_interfaces/user';
+import useUserSession from '@labs/_hooks/use-user-session';
+import { User } from '@labs/_interfaces/user';
 import { envFetcher, envURL } from '@helpers/api';
 import useSWR from 'swr';
 
