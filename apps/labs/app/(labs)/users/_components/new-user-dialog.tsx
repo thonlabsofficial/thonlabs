@@ -28,7 +28,7 @@ type Props = {
 
 export default function NewUserDialog({
   trigger,
-}: Props & React.HTMLAttributes<HTMLElement>) {
+}: Props & React.ComponentProps<typeof Dialog>) {
   const [open, setOpen] = React.useState(false);
   const form = useForm<NewUserFormData>({
     defaultValues: {

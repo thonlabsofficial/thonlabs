@@ -1,7 +1,10 @@
 import { envHeaders, envURL, labsEnvAPI } from '@helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
-import { NewUserFormData } from '@labs/_validators/users-validators';
+import {
+  NewUserFormData,
+  UpdateUserGeneralDataFormData,
+} from '@labs/_validators/users-validators';
 import useOptimisticUpdate from '@labs/_hooks/use-optmistic-update';
 import { User } from '@labs/_interfaces/user';
 import qs from 'qs';
@@ -46,7 +49,47 @@ export default function useUser() {
     }
   }
 
+  async function updateGeneralData(
+    userId: string,
+    payload: UpdateUserGeneralDataFormData,
+  ) {
+    try {
+      const { data } = await labsEnvAPI.patch<User>(
+        `/users/${userId}/general-data`,
+        payload,
+        envHeaders(environment.id),
+      );
+
+      toast({
+        title: 'Changes Saved',
+        description: `${data.fullName} has been updated successfully`,
+      });
+
+      makeMutations([
+        {
+          cacheKey: envURL(`/users`, environment.id),
+          populateCache: (_, cache) => ({
+            ...cache,
+            items: cache.items.map((item: User) =>
+              item.id === userId ? { ...item, ...data } : item,
+            ),
+          }),
+        },
+      ]);
+
+      return data;
+    } catch (error: any) {
+      console.error('useUser.updateGeneralData', error);
+      toast({
+        title: 'Updating Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
   return {
     createUser,
+    updateGeneralData,
   };
 }

@@ -37,7 +37,7 @@ export default function InfoUserDrawer({
                 {Utils.getFirstAndLastInitials(user?.fullName || '')}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col justify-center gap-1.5 w-[17.625rem]">
+            <div className="flex flex-col justify-center w-[17.625rem]">
               <div className="truncate">{user?.fullName || '-'}</div>
             </div>
           </DrawerTitle>
@@ -64,11 +64,11 @@ export default function InfoUserDrawer({
                 label="Invitation Status"
                 value={
                   <Badge
-                    variant={user?.active ? 'success' : 'destructive'}
+                    variant={user?.emailConfirmed ? 'success' : 'destructive'}
                     size={'sm'}
                     className="cursor-text"
                   >
-                    {user?.active ? 'Confirmed' : 'Pending'}
+                    {user?.emailConfirmed ? 'Confirmed' : 'Pending'}
                   </Badge>
                 }
               />

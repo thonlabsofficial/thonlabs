@@ -3,6 +3,7 @@ export interface User {
   fullName: string;
   email: string;
   active: boolean;
+  emailConfirmed: boolean;
   createdAt: Date;
   lastSignIn: Date;
   updatedAt: Date;

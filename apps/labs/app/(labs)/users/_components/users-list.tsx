@@ -11,10 +11,14 @@ import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
 import {
   LuCheck,
+  LuCheckCircle,
   LuCopy,
   LuFileEdit,
+  LuMails,
   LuMoreHorizontal,
   LuTrash2,
+  LuView,
+  LuXCircle,
 } from 'react-icons/lu';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import InfoUserDrawer from './info-user-drawer';
@@ -26,9 +30,11 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from '@repo/ui/dropdown';
 import React from 'react';
 import useUserSession from '@/(labs)/_hooks/use-user-session';
+import EditUserDrawer from './edit-user-drawer';
 
 const columns = ({
   setOpen,
@@ -189,15 +195,47 @@ const columns = ({
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   onSelect={() => {
-                    setOpen('info-user-drawer');
                     setUser(user);
+                    setOpen('info-user-drawer');
+                  }}
+                >
+                  <LuView className="mr-2 h-4 w-4" />
+                  <span>View info</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setUser(user);
+                    setOpen('edit-user-drawer');
                   }}
                 >
                   <LuFileEdit className="mr-2 h-4 w-4" />
-                  <span>View info</span>
+                  <span>Edit</span>
                 </DropdownMenuItem>
+                {!user.emailConfirmed && (
+                  <DropdownMenuItem onSelect={() => {}}>
+                    <LuMails className="mr-2 h-4 w-4" />
+                    <span>Resend invitation</span>
+                  </DropdownMenuItem>
+                )}
                 {authUser?.id !== user.id && (
-                  <DropdownMenuItem className="text-red-400 hover:bg-destructive/10">
+                  <DropdownMenuItem onSelect={() => {}}>
+                    {user.active ? (
+                      <>
+                        <LuXCircle className="mr-2 h-4 w-4" />
+                        <span>Deactivate</span>
+                      </>
+                    ) : (
+                      <>
+                        <LuCheckCircle className="mr-2 h-4 w-4" />
+                        <span>Activate</span>
+                      </>
+                    )}
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                {authUser?.id !== user.id && (
+                  <DropdownMenuItem variant={'destructive'}>
                     <LuTrash2 className="mr-2 h-4 w-4" />
                     <span>Delete</span>
                   </DropdownMenuItem>
@@ -238,6 +276,11 @@ export default function UsersList() {
       <InfoUserDrawer
         user={user as User}
         open={open === 'info-user-drawer'}
+        onOpenChange={() => setOpen('')}
+      />
+      <EditUserDrawer
+        user={user as User}
+        open={open === 'edit-user-drawer'}
         onOpenChange={() => setOpen('')}
       />
     </>

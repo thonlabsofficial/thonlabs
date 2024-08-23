@@ -28,7 +28,9 @@ export default function BoxKeyValue({
       <Typo variant={'sm'} className="flex items-center gap-1">
         {date && value
           ? format(new Date(value as string), 'MM/dd/yyyy hh:mm aa')
-          : (value as React.ReactNode)}
+          : value
+            ? (value as React.ReactNode)
+            : '-'}
         {withCopy && (
           <Clipboard
             size="xs"

@@ -4,10 +4,6 @@ import { Button } from '@repo/ui/button';
 import { Input, InputWrapper } from '@repo/ui/input';
 import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  UpdateProjectGeneralInfoFormSchema,
-  UpdateProjectGeneralInfoFormData,
-} from '@/(labs)/_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Drawer,
@@ -20,61 +16,60 @@ import {
   DrawerContentContainer,
 } from '@repo/ui/drawer';
 import { User } from '@/(labs)/_interfaces/user';
-import { Avatar, AvatarFallback } from '@repo/ui/avatar';
-import Utils from '@repo/utils';
-import { Badge } from '@repo/ui/badge';
-import { Clipboard } from '@repo/ui/clipboard';
-import { LuCheck, LuCopy } from 'react-icons/lu';
+import { Typo } from '@repo/ui/typo';
+import {
+  UpdateUserGeneralDataFormSchema,
+  UpdateUserGeneralDataFormData,
+} from '@/(labs)/_validators/users-validators';
+import useUser from '@/(labs)/_hooks/use-user';
 
 type Props = {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   user: User;
 };
 
 export default function EditUserDrawer({
   trigger,
   user,
-}: Props & React.HTMLAttributes<HTMLElement>) {
-  const form = useForm<UpdateProjectGeneralInfoFormData>({
-    resolver: zodResolver(UpdateProjectGeneralInfoFormSchema),
+  ...props
+}: Props & React.ComponentProps<typeof Drawer>) {
+  const form = useForm<UpdateUserGeneralDataFormData>({
+    resolver: zodResolver(UpdateUserGeneralDataFormSchema),
   });
   const [isSaving, startSavingTransition] = useTransition();
+  const { updateGeneralData } = useUser();
+  const formValues = form.getValues();
 
-  function onSubmit(payload: UpdateProjectGeneralInfoFormData) {
-    startSavingTransition(async () => {});
+  React.useEffect(() => {
+    if (props.open) {
+      handleReset();
+    }
+  }, [props.open]);
+
+  function onSubmit(payload: UpdateUserGeneralDataFormData) {
+    startSavingTransition(async () => {
+      await updateGeneralData(user.id, payload);
+    });
   }
 
   function handleReset() {
     form.clearErrors();
+    form.setValue('fullName', user.fullName);
   }
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild onClick={handleReset}>
-        {trigger}
-      </DrawerTrigger>
+    <Drawer {...props}>
+      {trigger && (
+        <DrawerTrigger asChild onClick={handleReset}>
+          {trigger}
+        </DrawerTrigger>
+      )}
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle className="flex gap-1.5">
-            <Avatar size={'md'}>
-              <AvatarFallback>
-                {Utils.getFirstAndLastInitials(user?.fullName || '')}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col justify-center gap-1.5 w-[17.625rem]">
-              <div className="mt-1.5 truncate">{user?.fullName || '-'}</div>
-              <div className="flex gap-0.5 h-[1.375rem]">
-                <Badge variant={'outline'} size={'xs'} className="cursor-text">
-                  UID: {user?.id?.substring(0, 4)}...
-                  {user?.id?.substring(user?.id.length - 4)}
-                </Badge>
-                <Clipboard
-                  size="xs"
-                  variant="outline"
-                  value={user?.id}
-                  labels={[LuCopy, LuCheck]}
-                />
-              </div>
+            <div className="flex flex-col justify-center w-[17.625rem]">
+              <Typo variant={'muted'}>Edit User</Typo>
+              <div className="truncate">{formValues?.fullName || '-'}</div>
             </div>
           </DrawerTitle>
         </DrawerHeader>
@@ -85,8 +80,8 @@ export default function EditUserDrawer({
                 <InputWrapper>
                   <Input
                     label="Full Name"
-                    error={form.formState.errors.appName?.message}
-                    {...form.register('appName')}
+                    error={form.formState.errors.fullName?.message}
+                    {...form.register('fullName')}
                   />
                 </InputWrapper>
               </div>

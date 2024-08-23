@@ -5,6 +5,7 @@ import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 
 import { cn } from '../core/utils';
 import { LuCheck, LuChevronRight, LuCircle } from 'react-icons/lu';
+import { VariantProps, cva } from 'class-variance-authority';
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -93,21 +94,34 @@ const DropdownMenuContent = React.forwardRef<
 ));
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;
 
+const dropdownMenuItemVariants = cva(
+  `relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm 
+  outline-none transition-colors 
+  data-[disabled]:pointer-events-none data-[disabled]:opacity-30`,
+  {
+    variants: {
+      variant: {
+        default: 'hover:bg-accent hover:text-accent-foreground',
+        destructive: 'text-red-400 hover:bg-destructive/20',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  },
+);
+
 const DropdownMenuItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
-    inset?: boolean;
-  }
->(({ className, inset, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> &
+    VariantProps<typeof dropdownMenuItemVariants> & {
+      inset?: boolean;
+    }
+>(({ className, variant, inset, ...props }, ref) => (
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      `
-        relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm 
-        outline-none transition-colors focus:bg-accent focus:text-accent-foreground 
-        hover:bg-foreground/10
-        data-[disabled]:pointer-events-none data-[disabled]:opacity-30
-      `,
+      dropdownMenuItemVariants({ variant }),
       inset && 'pl-8',
       className,
     )}
