@@ -35,6 +35,38 @@ import {
 import React from 'react';
 import useUserSession from '@/(labs)/_hooks/use-user-session';
 import EditUserDrawer from './edit-user-drawer';
+import useUser from '@/(labs)/_hooks/use-user';
+
+function DropdownMenuItemAction({
+  type,
+  user,
+}: {
+  type: 'update-status' | 'resend-invitation' | 'delete';
+  user: User;
+}) {
+  const { updateStatus } = useUser();
+
+  switch (type) {
+    case 'update-status':
+      return (
+        <DropdownMenuItem
+          onSelect={() => updateStatus(user.id, { active: !user.active })}
+        >
+          {user.active ? (
+            <>
+              <LuXCircle className="mr-2 h-4 w-4" />
+              <span>Deactivate</span>
+            </>
+          ) : (
+            <>
+              <LuCheckCircle className="mr-2 h-4 w-4" />
+              <span>Activate</span>
+            </>
+          )}
+        </DropdownMenuItem>
+      );
+  }
+}
 
 const columns = ({
   setOpen,
@@ -219,19 +251,7 @@ const columns = ({
                   </DropdownMenuItem>
                 )}
                 {authUser?.id !== user.id && (
-                  <DropdownMenuItem onSelect={() => {}}>
-                    {user.active ? (
-                      <>
-                        <LuXCircle className="mr-2 h-4 w-4" />
-                        <span>Deactivate</span>
-                      </>
-                    ) : (
-                      <>
-                        <LuCheckCircle className="mr-2 h-4 w-4" />
-                        <span>Activate</span>
-                      </>
-                    )}
-                  </DropdownMenuItem>
+                  <DropdownMenuItemAction type="update-status" user={user} />
                 )}
                 <DropdownMenuSeparator />
                 {authUser?.id !== user.id && (

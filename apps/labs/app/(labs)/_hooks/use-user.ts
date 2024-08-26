@@ -4,6 +4,7 @@ import { APIErrors } from '@helpers/api/api-errors';
 import {
   NewUserFormData,
   UpdateUserGeneralDataFormData,
+  UpdateUserStatusFormData,
 } from '@labs/_validators/users-validators';
 import useOptimisticUpdate from '@labs/_hooks/use-optmistic-update';
 import { User } from '@labs/_interfaces/user';
@@ -88,8 +89,48 @@ export default function useUser() {
     }
   }
 
+  async function updateStatus(
+    userId: string,
+    payload: UpdateUserStatusFormData,
+  ) {
+    try {
+      const { data } = await labsEnvAPI.patch<User>(
+        `/users/${userId}/status`,
+        payload,
+        envHeaders(environment.id),
+      );
+
+      toast({
+        title: 'Status Updated',
+        description: `${data.fullName} has been ${payload.active ? 'activated' : 'deactivated'} successfully`,
+      });
+
+      makeMutations([
+        {
+          cacheKey: envURL(`/users`, environment.id),
+          populateCache: (_, cache) => ({
+            ...cache,
+            items: cache.items.map((item: User) =>
+              item.id === userId ? { ...item, active: payload.active } : item,
+            ),
+          }),
+        },
+      ]);
+
+      return data;
+    } catch (error: any) {
+      console.error('useUser.updateStatus', error);
+      toast({
+        title: 'Updating Status Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
   return {
     createUser,
     updateGeneralData,
+    updateStatus,
   };
 }

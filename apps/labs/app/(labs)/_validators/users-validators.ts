@@ -23,3 +23,10 @@ export const UpdateUserGeneralDataFormSchema = z.object({
 export type UpdateUserGeneralDataFormData = z.infer<
   typeof UpdateUserGeneralDataFormSchema
 >;
+
+export const UpdateUserStatusFormSchema = z.object({
+  active: z.boolean(),
+});
+export type UpdateUserStatusFormData = z.infer<
+  typeof UpdateUserStatusFormSchema
+>;
