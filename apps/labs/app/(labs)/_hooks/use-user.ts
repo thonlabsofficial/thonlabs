@@ -161,10 +161,33 @@ export default function useUser() {
     }
   }
 
+  async function resendInvitation(userId: string) {
+    try {
+      const { data } = await labsEnvAPI.post(
+        `/users/${userId}/resend-invitation`,
+        {},
+        envHeaders(environment.id),
+      );
+
+      toast({
+        title: 'Invitation Sent',
+        description: `The ${data.fullName} invitation has been resent successfully`,
+      });
+    } catch (error: any) {
+      console.error('useUser.resendInvitation', error);
+      toast({
+        title: 'Resend Invitation Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
   return {
     createUser,
     updateGeneralData,
     updateStatus,
     exclude,
+    resendInvitation,
   };
 }

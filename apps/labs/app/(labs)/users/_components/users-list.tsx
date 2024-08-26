@@ -37,6 +37,7 @@ import useUserSession from '@/(labs)/_hooks/use-user-session';
 import EditUserDrawer from './edit-user-drawer';
 import useUser from '@/(labs)/_hooks/use-user';
 import { AlertDialog } from '@repo/ui/alert-dialog';
+import { useToast } from '@repo/ui/hooks/use-toast';
 
 function DropdownMenuItemAction({
   type,
@@ -45,13 +46,17 @@ function DropdownMenuItemAction({
   type: 'update-status' | 'resend-invitation';
   user: User;
 }) {
-  const { updateStatus } = useUser();
+  const { updateStatus, resendInvitation } = useUser();
+  const { toast } = useToast();
 
   switch (type) {
     case 'update-status':
       return (
         <DropdownMenuItem
-          onSelect={() => updateStatus(user.id, { active: !user.active })}
+          onSelect={async () => {
+            toast({ title: 'Updating status...' });
+            await updateStatus(user.id, { active: !user.active });
+          }}
         >
           {user.active ? (
             <>
@@ -64,6 +69,18 @@ function DropdownMenuItemAction({
               <span>Activate</span>
             </>
           )}
+        </DropdownMenuItem>
+      );
+    case 'resend-invitation':
+      return (
+        <DropdownMenuItem
+          onSelect={async () => {
+            toast({ title: 'Resending invitation...' });
+            await resendInvitation(user.id);
+          }}
+        >
+          <LuMails className="mr-2 h-4 w-4" />
+          <span>Resend invitation</span>
         </DropdownMenuItem>
       );
   }
@@ -245,11 +262,11 @@ const columns = ({
                   <LuFileEdit className="mr-2 h-4 w-4" />
                   <span>Edit</span>
                 </DropdownMenuItem>
-                {!user.emailConfirmed && (
-                  <DropdownMenuItem onSelect={() => {}}>
-                    <LuMails className="mr-2 h-4 w-4" />
-                    <span>Resend invitation</span>
-                  </DropdownMenuItem>
+                {user.active && !user.emailConfirmed && (
+                  <DropdownMenuItemAction
+                    type="resend-invitation"
+                    user={user}
+                  />
                 )}
                 {authUser?.id !== user.id && (
                   <DropdownMenuItemAction type="update-status" user={user} />
