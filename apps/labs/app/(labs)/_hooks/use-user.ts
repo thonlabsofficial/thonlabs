@@ -128,9 +128,43 @@ export default function useUser() {
     }
   }
 
+  async function exclude(userId: string) {
+    try {
+      const { data } = await labsEnvAPI.delete<User>(
+        `/users/${userId}`,
+        envHeaders(environment.id),
+      );
+
+      toast({
+        title: 'User Deleted',
+        description: `${data.fullName} has been deleted successfully`,
+      });
+
+      makeMutations([
+        {
+          cacheKey: envURL(`/users`, environment.id),
+          populateCache: (_, cache) => ({
+            ...cache,
+            items: cache.items.filter((item: User) => item.id !== userId),
+          }),
+        },
+      ]);
+
+      return data;
+    } catch (error: any) {
+      console.error('useUser.exclude', error);
+      toast({
+        title: 'Delete User Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
   return {
     createUser,
     updateGeneralData,
     updateStatus,
+    exclude,
   };
 }

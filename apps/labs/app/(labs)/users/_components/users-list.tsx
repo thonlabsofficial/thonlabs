@@ -36,12 +36,13 @@ import React from 'react';
 import useUserSession from '@/(labs)/_hooks/use-user-session';
 import EditUserDrawer from './edit-user-drawer';
 import useUser from '@/(labs)/_hooks/use-user';
+import { AlertDialog } from '@repo/ui/alert-dialog';
 
 function DropdownMenuItemAction({
   type,
   user,
 }: {
-  type: 'update-status' | 'resend-invitation' | 'delete';
+  type: 'update-status' | 'resend-invitation';
   user: User;
 }) {
   const { updateStatus } = useUser();
@@ -253,12 +254,20 @@ const columns = ({
                 {authUser?.id !== user.id && (
                   <DropdownMenuItemAction type="update-status" user={user} />
                 )}
-                <DropdownMenuSeparator />
                 {authUser?.id !== user.id && (
-                  <DropdownMenuItem variant={'destructive'}>
-                    <LuTrash2 className="mr-2 h-4 w-4" />
-                    <span>Delete</span>
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      variant={'destructive'}
+                      onSelect={() => {
+                        setUser(user);
+                        setOpen('delete-user');
+                      }}
+                    >
+                      <LuTrash2 className="mr-2 h-4 w-4" />
+                      <span>Delete</span>
+                    </DropdownMenuItem>
+                  </>
                 )}
               </DropdownMenuGroup>
             </DropdownMenuContent>
@@ -271,6 +280,7 @@ const columns = ({
 
 export default function UsersList() {
   const { users, isLoadingUsers } = useUsers();
+  const { exclude } = useUser();
   const [open, setOpen] = React.useState('');
   const [user, setUser] = React.useState<User | null>(null);
   const { user: authUser } = useUserSession();
@@ -302,6 +312,22 @@ export default function UsersList() {
         user={user as User}
         open={open === 'edit-user-drawer'}
         onOpenChange={() => setOpen('')}
+      />
+      <AlertDialog
+        open={open === 'delete-user'}
+        onOpenChange={() => setOpen('')}
+        title="Delete User"
+        description={`Are you sure you want to delete ${user?.fullName}? This action cannot be undone.`}
+        idleLabel="Yes, delete"
+        actingLabel="Deleting..."
+        variant="destructive"
+        onClick={async () => {
+          if (user) {
+            await exclude(user.id);
+            setOpen('');
+            setUser(null);
+          }
+        }}
       />
     </>
   );
