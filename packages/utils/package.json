@@ -8,7 +8,8 @@
   },
   "exports": {
     ".": "./src/utils.ts",
-    "./validation-patterns": "./src/validation-patterns.ts"
+    "./validation-patterns": "./src/validation-patterns.ts",
+    "./errors-metadata": "./src/errors-metadata.ts"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*"

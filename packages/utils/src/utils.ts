@@ -32,6 +32,19 @@ const Utils = {
       .map(() => Math.random().toString(36).substring(2))
       .join('');
   },
+  getSubDomains(domain: string) {
+    if (!domain) {
+      return '';
+    }
+
+    const parts = domain.split('.');
+
+    if (parts.length <= 2) {
+      return '';
+    }
+
+    return parts.slice(0, -2).join('.');
+  },
 };
 
 export default Utils;

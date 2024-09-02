@@ -40,7 +40,7 @@ export default function Settings() {
 
         <section>
           <SectionHeader
-            title="API Keys"
+            title="API Settings"
             description="Connect these keys with our libraries, SDKs, or APIs"
           />
 

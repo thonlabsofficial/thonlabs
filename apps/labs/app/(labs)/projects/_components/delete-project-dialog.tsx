@@ -88,7 +88,7 @@ export default function DeleteProjectDialog({
             disabled={project.appName !== appName}
             onClick={handleDelete}
           >
-            {isDeleting ? 'Deleting...' : 'Delete Project'}
+            {isDeleting ? 'Deleting...' : 'Delete this project'}
           </Button>
         </DialogFooter>
       </DialogContent>

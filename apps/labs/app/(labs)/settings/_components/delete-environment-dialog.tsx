@@ -93,7 +93,7 @@ export default function DeleteEnvironmentDialog({
             disabled={environment?.name !== name}
             onClick={handleDelete}
           >
-            {isDeleting ? 'Deleting...' : 'Delete Environment'}
+            {isDeleting ? 'Deleting...' : 'Delete this environment'}
           </Button>
         </DialogFooter>
       </DialogContent>

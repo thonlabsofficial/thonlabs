@@ -1,5 +1,11 @@
 import { Project } from './project';
 
+export enum CustomDomainStatus {
+  Verifying = 'Verifying',
+  Verified = 'Verified',
+  Failed = 'Failed',
+}
+
 export interface Environment {
   id: string;
   name: string;
@@ -17,4 +23,8 @@ export interface EnvironmentDetail extends Environment {
   publicKey: string;
   authProvider: string;
   secretKey?: string;
+  customDomain?: string;
+  customDomainStatus?: string;
+  customDomainStartValidationAt?: Date;
+  customDomainLastValidationAt?: Date;
 }

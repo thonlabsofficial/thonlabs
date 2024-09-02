@@ -255,9 +255,98 @@ export default function useEnvironment(
         description: `Your environment ${environment.name} has been successfully deleted.`,
       });
     } catch (error: any) {
-      console.error('[Delete Environment]', error);
+      console.error('useEnvironment.deleteEnvironment', error);
       toast({
         title: 'Deleting Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
+  async function setCustomDomain(environmentID: string, customDomain: string) {
+    try {
+      const { data } = await labsAPI.patch(
+        `/environments/${environmentID}/domains`,
+        {
+          customDomain,
+        },
+      );
+
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentID}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            ...data,
+          }),
+        },
+      ]);
+
+      toast({
+        title: 'Custom Domain Set',
+        description: 'Your custom domain has been successfully set.',
+      });
+    } catch (error: any) {
+      console.error('useEnvironment.setCustomDomain', error);
+      toast({
+        title: 'Set Custom Domain Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
+  async function deleteCustomDomain(environmentID: string) {
+    try {
+      await labsAPI.delete(`/environments/${environmentID}/domains`);
+
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentID}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            customDomain: null,
+            customDomainStatus: null,
+            customDomainStartValidationAt: null,
+            customDomainLastValidationAt: null,
+          }),
+        },
+      ]);
+
+      toast({
+        title: 'Custom Domain Deleted',
+        description: 'Your custom domain has been successfully deleted.',
+      });
+    } catch (error: any) {
+      console.error('useEnvironment.deleteCustomDomain', error);
+      toast({
+        title: 'Deleting Custom Domain Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+    }
+  }
+
+  async function verifyCustomDomain(environmentID: string) {
+    try {
+      const { data } = await labsAPI.post(
+        `/environments/${environmentID}/domains/verify`,
+      );
+
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentID}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            ...data,
+          }),
+        },
+      ]);
+    } catch (error: any) {
+      console.error('useEnvironment.verifyCustomDomain', error);
+      toast({
+        title: 'Verify Custom Domain Error',
         description: error?.response?.data?.message || APIErrors.Generic,
         variant: 'destructive',
       });
@@ -275,5 +364,8 @@ export default function useEnvironment(
     regenerateEnvironmentSecretKey,
     getEnvironmentSecretKey,
     deleteEnvironment,
+    deleteCustomDomain,
+    setCustomDomain,
+    verifyCustomDomain,
   };
 }
