@@ -28,7 +28,11 @@ export async function login(payload: LoginFormData): Promise<SessionData> {
     ServerSessionService.create(data);
 
     return data;
-  } catch (e) {
+  } catch (e: any) {
+    console.log('Error on authActions.login:', {
+      error: e.message,
+      code: e.code,
+    });
     return (e as AxiosError)?.response?.data as SessionData;
   }
 }
