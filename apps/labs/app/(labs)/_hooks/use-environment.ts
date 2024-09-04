@@ -5,12 +5,9 @@ import {
   UpdateEnvironmentGeneralSettingsFormData,
 } from '../_validators/environments-validators';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import {
-  Environment,
-  EnvironmentDetail,
-} from '@/(labs)/_interfaces/environment';
+import { Environment, EnvironmentDetail } from '@labs/_interfaces/environment';
 import { APIErrors } from '@helpers/api/api-errors';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optmistic-update';
@@ -30,13 +27,14 @@ export default function useEnvironment(
   const {
     data: environment,
     isLoading: isLoadingEnvironment,
+    isValidating: isValidatingEnvironment,
     error: environmentError,
   } = useSWR<EnvironmentDetail>(
     () => params.environmentID && `/environments/${params.environmentID}`,
   );
+
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
-
   React.useEffect(() => {
     onFetchComplete && onFetchComplete();
   }, [environment]);
@@ -353,9 +351,30 @@ export default function useEnvironment(
     }
   }
 
+  async function reverifyCustomDomain(environmentID: string) {
+    try {
+      const { data } = await labsAPI.post(
+        `/environments/${environmentID}/domains/reverify`,
+      );
+
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentID}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            customDomainStatus: data.customDomainStatus,
+          }),
+        },
+      ]);
+    } catch (error: any) {
+      console.error('useEnvironment.reverifyCustomDomain', error);
+    }
+  }
+
   return {
     environment: environment as EnvironmentDetail,
     isLoadingEnvironment,
+    isValidatingEnvironment,
     environmentError,
     createEnvironment,
     updateEnvironmentGeneralSettings,
@@ -367,5 +386,6 @@ export default function useEnvironment(
     deleteCustomDomain,
     setCustomDomain,
     verifyCustomDomain,
+    reverifyCustomDomain,
   };
 }

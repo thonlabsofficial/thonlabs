@@ -15,12 +15,23 @@ interface Props {
 }
 
 export default function CustomDomainStatusCard({ environmentID }: Props) {
-  const { environment, isLoadingEnvironment } = useEnvironment({
+  const {
+    environment,
+    isLoadingEnvironment,
+    isValidatingEnvironment,
+    reverifyCustomDomain,
+  } = useEnvironment({
     environmentID,
   });
   const authDomain = React.useMemo(() => {
     return `${environment?.id.split('-').reverse()[0]}.auth.thonlabs.io`;
   }, [environment]);
+
+  React.useEffect(() => {
+    if (environment?.customDomain) {
+      reverifyCustomDomain(environmentID);
+    }
+  }, [environment, isValidatingEnvironment]);
 
   return (
     !isLoadingEnvironment &&
