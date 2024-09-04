@@ -1,6 +1,14 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import qs from 'qs';
+import https from 'https';
+
+const httpsAgent =
+  process.env.NODE_ENV === 'development'
+    ? new https.Agent({
+        rejectUnauthorized: false,
+      })
+    : null;
 
 const labsPublicAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
@@ -8,6 +16,7 @@ const labsPublicAPI = axios.create({
     'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
     'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
   },
+  httpsAgent,
 });
 
 const labsAPI = axios.create({
@@ -16,10 +25,12 @@ const labsAPI = axios.create({
     'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
     'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
   },
+  httpsAgent,
 });
 
 const labsEnvAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
+  httpsAgent,
 });
 
 const intAPI = axios.create();
@@ -58,9 +69,9 @@ async function handleResponseError(error: any) {
   switch (statusCode) {
     case 401:
       // TODO: if react only, clear here using Cookies lib
-      await intAPI.post('/api/auth/logout');
-      localStorage.removeItem('tl_refreshing');
-      window.location.href = '/login?reason=unauthorized';
+      // await intAPI.post('/api/auth/logout');
+      // localStorage.removeItem('tl_refreshing');
+      // window.location.href = '/login?reason=unauthorized';
       break;
   }
 
