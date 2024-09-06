@@ -259,6 +259,7 @@ export default function useEnvironment(
         description: error?.response?.data?.message || APIErrors.Generic,
         variant: 'destructive',
       });
+      throw error;
     }
   }
 
@@ -292,6 +293,7 @@ export default function useEnvironment(
         description: error?.response?.data?.message || APIErrors.Generic,
         variant: 'destructive',
       });
+      throw error;
     }
   }
 
