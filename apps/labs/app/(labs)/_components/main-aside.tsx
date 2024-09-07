@@ -69,7 +69,7 @@ export default function MainAside({ environment, session }: Props) {
         </div>
 
         <nav className="w-full flex flex-col justify-between pt-3 pb-2 px-1.5 h-[94vh]">
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-1 w-full">
             <NavItem label="Dashboard" href="/" icon={LuLayoutDashboard} />
             <NavItem label="Users" href="/users" icon={LuUser} />
             <NavItem label="Emails" href="/emails" icon={LuMail} />

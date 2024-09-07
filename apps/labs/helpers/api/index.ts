@@ -69,9 +69,9 @@ async function handleResponseError(error: any) {
   switch (statusCode) {
     case 401:
       // TODO: if react only, clear here using Cookies lib
-      // await intAPI.post('/api/auth/logout');
-      // localStorage.removeItem('tl_refreshing');
-      // window.location.href = '/login?reason=unauthorized';
+      await intAPI.post('/api/auth/logout');
+      localStorage.removeItem('tl_refreshing');
+      window.location.href = '/login?reason=unauthorized';
       break;
   }
 

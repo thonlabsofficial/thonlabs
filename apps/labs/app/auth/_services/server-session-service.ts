@@ -153,6 +153,7 @@ const ServerSessionService = {
     cookies().delete('tl_session');
     cookies().delete('tl_refresh');
     cookies().delete('tl_keep_alive');
+    cookies().delete('tl_env');
   },
 };
 

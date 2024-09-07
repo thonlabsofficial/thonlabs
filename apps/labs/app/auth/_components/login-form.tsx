@@ -33,7 +33,7 @@ export default function LoginForm() {
       if (!result || result?.statusCode) {
         toast({
           title: 'Log in error',
-          description: result?.message || 'Invalid credentials',
+          description: result?.error || 'Invalid credentials',
           variant: 'destructive',
         });
         setLoading(false);
