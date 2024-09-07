@@ -14,11 +14,15 @@ import { login } from '../_actions/auth-actions';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
+import { useEnvironmentData } from '@/_libs/_nextjs';
 
 export default function LoginForm() {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const { authProvider } = useEnvironmentData();
+
+  console.log(authProvider);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),

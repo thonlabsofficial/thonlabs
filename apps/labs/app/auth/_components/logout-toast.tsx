@@ -1,6 +1,6 @@
 'use client';
 
-import { apiResponseMessages } from '@labs/_providers/thon-labs-provider';
+import { apiResponseMessages } from '@/_libs/_nextjs/utils/errors';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import Utils from '@repo/utils';
 import { useSearchParams } from 'next/navigation';

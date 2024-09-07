@@ -1,12 +1,12 @@
 import { cookies } from 'next/headers';
-import ServerSessionService from '../../auth/_services/server-session-service';
 import { Environment } from '@/(labs)/_interfaces/environment';
+import { getSession } from '@/_libs/_nextjs/server';
 
-export type UserSession = ReturnType<typeof ServerSessionService.getSession>;
+export type UserSession = ReturnType<typeof getSession>;
 
 const ServerAuthSessionService = {
   getSession(): UserSession {
-    return ServerSessionService.getSession();
+    return getSession();
   },
   getEnv() {
     const env = cookies().get('tl_env');

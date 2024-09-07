@@ -3,22 +3,12 @@
 import { labsPublicAPI } from '../../../helpers/api';
 import { LoginFormData } from '../_validators/auth-validators';
 import { AxiosError } from 'axios';
-import ServerSessionService from '../_services/server-session-service';
+import ServerSessionService from '../../_libs/_nextjs/services/server-session-service';
+import { SessionData, ErrorResponse } from '@/_libs/_nextjs';
 
-type ErrorResponse = {
-  statusCode?: number;
-  error?: string;
-  message?: string;
-};
+type DataReturn = SessionData & ErrorResponse;
 
-export type SessionData = {
-  token: string;
-  tokenExpiresIn: number;
-  refreshToken: string;
-  refreshTokenExpiresIn: number;
-} & ErrorResponse;
-
-export async function login(payload: LoginFormData): Promise<SessionData> {
+export async function login(payload: LoginFormData): Promise<DataReturn> {
   try {
     const { data } = await labsPublicAPI.post<SessionData>(
       '/auth/login',
@@ -31,8 +21,7 @@ export async function login(payload: LoginFormData): Promise<SessionData> {
   } catch (e: any) {
     console.log('Error on authActions.login:', {
       error: e.message,
-      code: e.code,
     });
-    return (e as AxiosError)?.response?.data as SessionData;
+    return (e as AxiosError)?.response?.data as DataReturn;
   }
 }

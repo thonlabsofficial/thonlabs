@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import ThonLabsProvider from './_providers/thon-labs-provider';
 import ServerAuthSessionService from '@/(labs)/_services/server-auth-session-service';
 import { Environment } from '@/(labs)/_interfaces/environment';
 import MainAside from './_components/main-aside';
@@ -20,14 +19,12 @@ export default async function LabsNestedLayout({
   const environment = ServerAuthSessionService.getEnv();
 
   return (
-    <ThonLabsProvider>
-      <main>
-        <MainAside environment={environment as Environment} session={session} />
-        <div>
-          {children}
-          <footer className="mt-12" />
-        </div>
-      </main>
-    </ThonLabsProvider>
+    <main>
+      <MainAside environment={environment as Environment} session={session} />
+      <div>
+        {children}
+        <footer className="mt-12" />
+      </div>
+    </main>
   );
 }

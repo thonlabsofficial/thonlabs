@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import * as jose from 'jose';
-import { intAPI } from '../../../helpers/api';
-import { User } from '../_interfaces/user';
+import { intAPI } from '../../../../helpers/api';
+import { User } from '../interfaces/user';
 import Utils from '@repo/utils';
 
 const ClientSessionService = {
@@ -42,6 +42,10 @@ const ClientSessionService = {
   },
   async shouldKeepAlive() {
     try {
+      if (window.location.pathname.startsWith('/auth')) {
+        return;
+      }
+
       /*
         This delay is necessary to live together with "validateTokensInterceptor"
         from API client.

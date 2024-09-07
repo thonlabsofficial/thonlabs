@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import * as jose from 'jose';
-import { SessionData } from '../_actions/auth-actions';
-import { User } from '../_interfaces/user';
+import { User } from '../interfaces/user';
+import { SessionData } from '../interfaces/session-data';
 
 const ServerSessionService = {
   create(data: SessionData) {

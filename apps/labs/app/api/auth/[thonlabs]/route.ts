@@ -1,6 +1,6 @@
-import ServerSessionService from '@/auth/_services/server-session-service';
 import { type NextRequest } from 'next/server';
 import { redirect, notFound, RedirectType } from 'next/navigation';
+import ServerSessionService from '@/_libs/_nextjs/services/server-session-service';
 
 export const POST = async (
   req: NextRequest,

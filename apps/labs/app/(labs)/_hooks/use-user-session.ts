@@ -1,6 +1,6 @@
 import { Environment } from '@/(labs)/_interfaces/environment';
 import { Project } from '@/(labs)/_interfaces/project';
-import useSession from '@/auth/_hooks/use-session';
+import { useSession } from '@/_libs/_nextjs';
 import { useCookies } from 'react-cookie';
 
 export default function useUserSession() {
