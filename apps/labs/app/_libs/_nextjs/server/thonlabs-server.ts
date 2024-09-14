@@ -3,7 +3,15 @@ import ServerSessionService from '../services/server-session-service';
 
 export function isAuthRoute(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  const publicRoutes = ['/api/auth', '/auth'];
+  const publicRoutes = [
+    '/api/auth/logout',
+    '/api/auth/refresh',
+    '/api/auth/magic',
+    '/auth/login',
+    '/auth/sign-up',
+    '/auth/magic',
+    '/auth/reset-password',
+  ];
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route),
   );
@@ -11,10 +19,18 @@ export function isAuthRoute(req: NextRequest) {
   return isPublicRoute;
 }
 
+export function bypassRoutes(req: NextRequest, routes: string[]) {
+  const pathname = req.nextUrl.pathname;
+  const shouldBypass = routes.some((route) => pathname.startsWith(route));
+
+  return shouldBypass;
+}
+
 export async function validateSession(req: NextRequest) {
   const isPublicRoute = isAuthRoute(req);
 
   if (!isPublicRoute) {
+    console.log(`Accessing route ${req.nextUrl.pathname}`);
     const { accessToken, refreshToken, keepAlive } =
       ServerSessionService.getSessionCookies();
 

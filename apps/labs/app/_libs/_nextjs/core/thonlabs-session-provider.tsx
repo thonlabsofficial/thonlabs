@@ -33,7 +33,7 @@ export interface ThonLabsSessionProviderProps
   environmentData: EnvironmentData;
 }
 
-export async function ThonLabsSessionProvider({
+export function ThonLabsSessionProvider({
   environmentData,
   children,
 }: ThonLabsSessionProviderProps) {

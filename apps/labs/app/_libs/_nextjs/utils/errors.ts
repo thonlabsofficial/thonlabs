@@ -3,6 +3,7 @@ export enum APIResponseCodes {
   Success = 20000,
   Unauthorized = 40001,
   SessionExpired = 40002,
+  InvalidMagicToken = 40003,
 }
 
 export interface ErrorResponse {
@@ -16,4 +17,5 @@ export const apiResponseMessages = {
   [APIResponseCodes.Success]: 'Request executed with success',
   [APIResponseCodes.Unauthorized]: 'Unauthorized access',
   [APIResponseCodes.SessionExpired]: 'Your session has expired',
+  [APIResponseCodes.InvalidMagicToken]: 'Invalid magic link',
 };

@@ -1,4 +1,4 @@
-import { EnvironmentData } from './interfaces/environment-data';
+import { EnvironmentData } from '../interfaces/environment-data';
 import { ThonLabsGeneralProvider } from './thonlabs-general-provider';
 import { ThonLabsSessionProvider } from './thonlabs-session-provider';
 

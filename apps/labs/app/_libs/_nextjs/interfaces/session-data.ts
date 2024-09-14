@@ -3,4 +3,5 @@ export type SessionData = {
   tokenExpiresIn: number;
   refreshToken: string;
   refreshTokenExpiresIn: number;
+  emailSent?: boolean;
 };

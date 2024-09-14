@@ -14,7 +14,7 @@ import { login } from '../_actions/auth-actions';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { useEnvironmentData } from '@/_libs/_nextjs';
+import { AuthProviders, useEnvironmentData } from '@/_libs/_nextjs';
 
 export default function LoginForm() {
   const [loading, setLoading] = React.useState(false);
@@ -22,10 +22,10 @@ export default function LoginForm() {
   const { toast } = useToast();
   const { authProvider } = useEnvironmentData();
 
-  console.log(authProvider);
-
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(LoginFormSchema),
+    resolver: zodResolver(
+      LoginFormSchema(authProvider === AuthProviders.MagicLogin),
+    ),
   });
 
   async function onSubmit(data: LoginFormData) {
@@ -37,12 +37,13 @@ export default function LoginForm() {
       if (!result || result?.statusCode) {
         toast({
           title: 'Log in error',
-          description: result?.error || 'Invalid credentials',
+          description:
+            result?.message || result?.error || 'Invalid credentials',
           variant: 'destructive',
         });
         setLoading(false);
       } else {
-        router.replace('/');
+        router.replace(result.emailSent ? '/auth/magic' : '/');
       }
     } catch (e) {
       console.error(e);
@@ -64,28 +65,30 @@ export default function LoginForm() {
           />
         </InputWrapper>
 
-        <InputWrapper>
-          <div className="flex justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link
-              className={`text-gray-500 hover:text-gray-900 dark:hover:text-gray-50 
+        {authProvider === AuthProviders.EmailAndPassword && (
+          <InputWrapper>
+            <div className="flex justify-between">
+              <Label htmlFor="password">Password</Label>
+              <Link
+                className={`text-gray-500 hover:text-gray-900 dark:hover:text-gray-50 
             transition-all duration-200 ease-in-out 
             text-sm font-medium leading-none underline-offset-4 hover:underline`}
-              href="/auth/reset-password"
-              tabIndex={-1}
-            >
-              Forgot your password?
-            </Link>
-          </div>
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••••••"
-            size="lg"
-            error={form.formState.errors.password?.message}
-            {...form.register('password')}
-          />
-        </InputWrapper>
+                href="/auth/reset-password"
+                tabIndex={-1}
+              >
+                Forgot your password?
+              </Link>
+            </div>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••••••"
+              size="lg"
+              error={form.formState.errors.password?.message}
+              {...form.register('password')}
+            />
+          </InputWrapper>
+        )}
       </div>
 
       <Button className="w-full mt-8" loading={loading}>

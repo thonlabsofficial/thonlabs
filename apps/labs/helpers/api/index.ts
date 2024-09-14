@@ -2,6 +2,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import qs from 'qs';
 import https from 'https';
+import { APIResponseCodes } from '@/_libs/_nextjs/utils/errors';
 
 const httpsAgent =
   process.env.NODE_ENV === 'development'
@@ -71,7 +72,7 @@ async function handleResponseError(error: any) {
       // TODO: if react only, clear here using Cookies lib
       await intAPI.post('/api/auth/logout');
       localStorage.removeItem('tl_refreshing');
-      window.location.href = '/login?reason=unauthorized';
+      window.location.href = `/login?reason=${APIResponseCodes.SessionExpired}`;
       break;
   }
 
@@ -82,7 +83,7 @@ function envURL(url: string, envID: string, queryString: any = {}) {
   return `${url}${qs.stringify(
     {
       ...queryString,
-      c: envID.split('-').reverse()[0]?.substring(0, 5),
+      c: envID?.split('-')?.reverse()[0]?.substring(0, 5),
     },
     { addQueryPrefix: true },
   )}`;

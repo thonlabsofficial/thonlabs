@@ -5,13 +5,14 @@ import { ErrorResponse } from './utils/errors';
 import { useEnvironmentData } from './hooks/use-environment-data';
 import { useSession } from './hooks/use-session';
 import { ThonLabsWrapper } from './core/thonlabs-wrapper';
+import { ThonlabsAuthPage } from './pages/base';
 
-export type {
-  EnvironmentData,
+export type { EnvironmentData, User, SessionData, ErrorResponse };
+
+export {
   AuthProviders,
-  User,
-  SessionData,
-  ErrorResponse,
+  ThonLabsWrapper,
+  ThonlabsAuthPage,
+  useEnvironmentData,
+  useSession,
 };
-
-export { ThonLabsWrapper, useEnvironmentData, useSession };

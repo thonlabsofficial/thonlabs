@@ -1,12 +1,13 @@
 import { type NextRequest } from 'next/server';
 import { redirect, notFound, RedirectType } from 'next/navigation';
 import ServerSessionService from '@/_libs/_nextjs/services/server-session-service';
+import { APIResponseCodes } from '@/_libs/_nextjs/utils/errors';
 
 export const POST = async (
   req: NextRequest,
   { params }: { params: { thonlabs: string } },
 ) => {
-  const action = params.thonlabs;
+  const [action] = params.thonlabs;
 
   switch (action) {
     case 'refresh':
@@ -25,16 +26,31 @@ export const GET = async (
   req: NextRequest,
   { params }: { params: { thonlabs: string } },
 ) => {
-  const action = params.thonlabs;
+  let response;
+  const [action, param] = params.thonlabs;
 
   switch (action) {
+    case 'magic':
+      if (!param) {
+        return redirect('/auth/login');
+      }
+
+      response = await ServerSessionService.validateMagicToken(param as string);
+
+      return redirect(
+        response.statusCode === 200
+          ? '/'
+          : `/auth/login?reason=${APIResponseCodes.InvalidMagicToken}`,
+        RedirectType.replace,
+      );
+
     case 'refresh':
-      const response = await ServerSessionService.validateRefreshToken();
+      response = await ServerSessionService.validateRefreshToken();
 
       if (response.statusCode === 200) {
         const searchParams = req.nextUrl.searchParams;
-        const dest = searchParams.get('dest') || '/';
-        return redirect(dest, RedirectType.replace);
+        const to = searchParams.get('to') || '/';
+        return redirect(to, RedirectType.replace);
       }
 
       return redirect('/api/auth/logout', RedirectType.replace);

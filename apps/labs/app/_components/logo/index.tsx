@@ -18,11 +18,11 @@ export default function Logo({
   reduced,
   ...props
 }: Props & Omit<React.ComponentProps<typeof Image>, 'alt' | 'src'>) {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   let sourceImg;
 
-  if (theme !== 'dark') {
+  if (resolvedTheme !== 'dark') {
     sourceImg = reduced ? logoLightReduced : logoLight;
   } else {
     sourceImg = reduced ? logoDarkReduced : logoDark;

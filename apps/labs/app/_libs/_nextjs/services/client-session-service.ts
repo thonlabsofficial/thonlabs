@@ -3,6 +3,7 @@ import * as jose from 'jose';
 import { intAPI } from '../../../../helpers/api';
 import { User } from '../interfaces/user';
 import Utils from '@repo/utils';
+import { APIResponseCodes } from '../utils/errors';
 
 const ClientSessionService = {
   refreshing: false,
@@ -37,7 +38,7 @@ const ClientSessionService = {
   },
   redirectToLogout() {
     intAPI.post('/api/auth/logout').then(() => {
-      window.location.href = '/auth/login?reason=unauthorized';
+      window.location.href = `/auth/login?reason=${APIResponseCodes.SessionExpired}`;
     });
   },
   async shouldKeepAlive() {

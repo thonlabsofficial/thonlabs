@@ -10,8 +10,8 @@ interface UsersResponse {
 export function useUsers() {
   const { environment } = useUserSession();
   const { data, error, isLoading } = useSWR<UsersResponse>(
-    envURL('/users', environment.id),
-    envFetcher(environment.id),
+    envURL('/users', environment?.id),
+    envFetcher(environment?.id),
   );
 
   return {

@@ -1,12 +1,12 @@
 import { passwordPatterns } from '@repo/utils/validation-patterns';
 import { z } from 'zod';
 
-export const LoginFormSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
-});
-
-export type LoginFormData = z.infer<typeof LoginFormSchema>;
+export const LoginFormSchema = (isMagicLogin: boolean) =>
+  z.object({
+    email: z.string().email(),
+    ...(isMagicLogin ? {} : { password: z.string() }),
+  });
+export type LoginFormData = z.infer<ReturnType<typeof LoginFormSchema>>;
 
 export const ResetPasswordFormSchema = z.object({
   email: z.string().email(),

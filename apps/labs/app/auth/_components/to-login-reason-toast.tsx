@@ -6,20 +6,22 @@ import Utils from '@repo/utils';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-export default function LogoutToast() {
+export default function ToLoginReasonToast() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
   React.useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
-    const reason = params.get('reason');
+    const reason = params.get(
+      'reason',
+    ) as unknown as keyof typeof apiResponseMessages;
 
-    if (reason === 'unauthorized') {
+    if (reason) {
       Utils.delay(10).then(() => {
         toast({
-          title: 'Logged out',
-          description: apiResponseMessages['40002'],
+          title: apiResponseMessages[reason],
           duration: 2800,
+          variant: 'destructive',
         });
         params.delete('reason');
         window.history.pushState(null, '', `?${params.toString()}`);

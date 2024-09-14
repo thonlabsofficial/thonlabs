@@ -15,7 +15,9 @@ export async function login(payload: LoginFormData): Promise<DataReturn> {
       payload,
     );
 
-    ServerSessionService.create(data);
+    if (data) {
+      ServerSessionService.create(data);
+    }
 
     return data;
   } catch (e: any) {
