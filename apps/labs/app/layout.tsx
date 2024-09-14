@@ -8,8 +8,8 @@ import { ThonLabsWrapper } from '@/_libs/_nextjs';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s · Thon Labs',
-    default: 'Thon Labs',
+    template: '%s · ThonLabs',
+    default: 'ThonLabs',
   },
   icons: {
     icon: '/favicon.png',
@@ -23,7 +23,7 @@ function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fonts.className} bg-background`}>
+      <body className={`${fonts.className} bg-background text-text`}>
         <ThonLabsWrapper
           environmentId={process.env.NEXT_PUBLIC_TL_ENV_ID as string}
           publicKey={process.env.NEXT_PUBLIC_TL_PK as string}

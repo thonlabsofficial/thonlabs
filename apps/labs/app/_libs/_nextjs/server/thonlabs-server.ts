@@ -11,6 +11,7 @@ export function isAuthRoute(req: NextRequest) {
     '/auth/sign-up',
     '/auth/magic',
     '/auth/reset-password',
+    '/auth/logout',
   ];
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route),

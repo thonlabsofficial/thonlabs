@@ -33,7 +33,7 @@ export default function Logo({
       {...props}
       src={sourceImg}
       alt="Thon Labs Logo"
-      className={cn('w-auto h-5', className)}
+      className={cn('w-auto h-[1.125rem]', className)}
     />
   );
 }

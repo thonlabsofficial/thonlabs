@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typo } from '../../../../../packages/ui/src/components/typo';
+import { Typo } from '@repo/ui/typo';
 import { cn } from '@repo/ui/core/utils';
 
 type Props = {

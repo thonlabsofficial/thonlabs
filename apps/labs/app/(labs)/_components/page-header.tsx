@@ -46,7 +46,7 @@ export default function PageHeader({
 
   return (
     <div className="pl-64">
-      <header className="bg-background py-4">
+      <header className="bg-background py-3 mt-2">
         {withContainer ? <Container>{body}</Container> : body}
       </header>
     </div>
