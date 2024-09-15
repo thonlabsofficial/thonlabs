@@ -31,7 +31,6 @@ export async function validateSession(req: NextRequest) {
   const isPublicRoute = isAuthRoute(req);
 
   if (!isPublicRoute) {
-    console.log(`Accessing route ${req.nextUrl.pathname}`);
     const { accessToken, refreshToken, keepAlive } =
       ServerSessionService.getSessionCookies();
 

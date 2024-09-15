@@ -17,7 +17,7 @@ export default function ToLoginReasonToast() {
     ) as unknown as keyof typeof apiResponseMessages;
 
     if (reason) {
-      Utils.delay(10).then(() => {
+      Utils.delay(1).then(() => {
         toast({
           title: apiResponseMessages[reason],
           duration: 2800,

@@ -41,6 +41,10 @@ const ClientSessionService = {
       window.location.href = `/auth/login?reason=${APIResponseCodes.SessionExpired}`;
     });
   },
+  async logout() {
+    await intAPI.post('/api/auth/logout');
+    window.location.href = `/auth/login?reason=${APIResponseCodes.Logout}`;
+  },
   async shouldKeepAlive() {
     try {
       if (window.location.pathname.startsWith('/auth')) {

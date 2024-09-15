@@ -53,7 +53,7 @@ export const GET = async (
         return redirect(to, RedirectType.replace);
       }
 
-      return redirect('/api/auth/logout', RedirectType.replace);
+    // return redirect('/api/auth/logout', RedirectType.replace);
     case 'logout':
       ServerSessionService.logout();
       return redirect('/auth/login');
