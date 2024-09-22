@@ -61,7 +61,7 @@ export default function InfoUserDrawer({
                 }
               />
               <BoxKeyValue
-                label="Invitation Status"
+                label="Email Confirmed"
                 value={
                   <Badge
                     variant={user?.emailConfirmed ? 'success' : 'destructive'}

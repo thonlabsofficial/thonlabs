@@ -2,6 +2,7 @@ import { type NextRequest } from 'next/server';
 import { redirect, notFound, RedirectType } from 'next/navigation';
 import ServerSessionService from '@/_libs/_nextjs/services/server-session-service';
 import { APIResponseCodes } from '@/_libs/_nextjs/utils/errors';
+import { forwardSearchParams } from '@/_libs/_nextjs/utils/helpers';
 
 export const POST = async (
   req: NextRequest,
@@ -44,6 +45,18 @@ export const GET = async (
         RedirectType.replace,
       );
 
+    case 'confirm-email':
+      response = await ServerSessionService.validateEmailConfirmationToken(
+        param as string,
+      );
+
+      return redirect(
+        response.statusCode === 200
+          ? `/?info=${ServerSessionService.isValid() ? APIResponseCodes.EmailConfirmation : APIResponseCodes.EmailConfirmationWithoutSession}`
+          : `/?reason=${response?.data?.emailResent ? APIResponseCodes.EmailConfirmationResent : APIResponseCodes.EmailConfirmationError}`,
+        RedirectType.replace,
+      );
+
     case 'refresh':
       response = await ServerSessionService.validateRefreshToken();
 
@@ -53,10 +66,10 @@ export const GET = async (
         return redirect(to, RedirectType.replace);
       }
 
-    // return redirect('/api/auth/logout', RedirectType.replace);
+      return redirect('/api/auth/logout', RedirectType.replace);
     case 'logout':
       ServerSessionService.logout();
-      return redirect('/auth/login');
+      return redirect(forwardSearchParams(req, '/auth/login').toString());
   }
 
   return notFound();

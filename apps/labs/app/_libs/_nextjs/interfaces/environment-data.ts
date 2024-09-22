@@ -5,4 +5,5 @@ export enum AuthProviders {
 
 export interface EnvironmentData {
   authProvider: AuthProviders;
+  enableSignUp: boolean;
 }

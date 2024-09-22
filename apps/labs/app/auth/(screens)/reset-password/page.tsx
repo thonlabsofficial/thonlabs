@@ -1,7 +1,7 @@
 import { Typo } from '@repo/ui/typo';
 import { Metadata } from 'next';
 import LandingGrid from '@/_components/landing-grid';
-import ResetPasswordForm from '@/auth/_components/reset-password-form';
+import ResetPasswordForm from '@/_libs/_nextjs/pages/components/reset-password-form';
 import Link from 'next/link';
 import AuthHeader from '@/_components/auth-header';
 

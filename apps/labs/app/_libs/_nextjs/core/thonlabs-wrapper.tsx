@@ -1,6 +1,9 @@
 import { EnvironmentData } from '../interfaces/environment-data';
+import { api } from '../services/api';
 import { ThonLabsGeneralProvider } from './thonlabs-general-provider';
 import { ThonLabsSessionProvider } from './thonlabs-session-provider';
+import { ThonLabsInternalProvider } from './thonlabs-internal-provider';
+import ToasterObservable from '../pages/components/toaster-observable';
 
 /*
   This is a wrapper to get environment data from backend and forward to frontend.
@@ -31,19 +34,13 @@ export async function ThonLabsWrapper({
     throw new Error('ThonLabs Error: Public key is required.');
   }
 
-  const environmentData = await fetch(
-    `${
-      process.env.NODE_ENV === 'development'
-        ? process.env.NEXT_PUBLIC_TL_API
-        : 'https://api.thonlabs.io'
-    }/environments/${environmentId}/data`,
+  const environmentData = await api<EnvironmentData>(
+    `/environments/${environmentId}/data`,
     {
-      headers: {
-        'tl-env-id': environmentId,
-        'tl-public-key': publicKey,
-      },
+      environmentId,
+      publicKey,
     },
-  ).then((res) => res.json() as Promise<EnvironmentData>);
+  );
 
   if (!environmentData) {
     throw new Error(
@@ -52,8 +49,15 @@ export async function ThonLabsWrapper({
   }
 
   return (
-    <ThonLabsSessionProvider environmentData={environmentData}>
-      <ThonLabsGeneralProvider>{children}</ThonLabsGeneralProvider>
-    </ThonLabsSessionProvider>
+    <ThonLabsInternalProvider>
+      <ToasterObservable />
+      <ThonLabsSessionProvider
+        environmentData={environmentData}
+        environmentId={environmentId}
+        publicKey={publicKey}
+      >
+        <ThonLabsGeneralProvider>{children}</ThonLabsGeneralProvider>
+      </ThonLabsSessionProvider>
+    </ThonLabsInternalProvider>
   );
 }

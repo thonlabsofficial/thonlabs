@@ -144,6 +144,36 @@ const ServerSessionService = {
     };
   },
 
+  async validateEmailConfirmationToken(token: string) {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_TL_API}/auth/confirm-email/${token}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
+          'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
+        } as HeadersInit & { 'tl-env-id': string; 'tl-public-key': string },
+      },
+    );
+    const data = await response.json();
+
+    if (data.statusCode) {
+      console.log('Error "validateEmailConfirmationToken": ', data);
+
+      return {
+        statusCode: data.statusCode,
+        error: data?.error || data?.message,
+        data: { emailResent: data?.emailResent },
+      };
+    }
+
+    return {
+      statusCode: 200,
+    };
+  },
+
   async shouldKeepAlive() {
     try {
       const isValid = this.isValid();

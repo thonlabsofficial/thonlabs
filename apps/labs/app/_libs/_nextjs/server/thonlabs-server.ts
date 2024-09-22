@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ServerSessionService from '../services/server-session-service';
+import { forwardSearchParams } from '../utils/helpers';
 
 export function isAuthRoute(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
@@ -7,11 +8,13 @@ export function isAuthRoute(req: NextRequest) {
     '/api/auth/logout',
     '/api/auth/refresh',
     '/api/auth/magic',
+    '/api/auth/confirm-email',
     '/auth/login',
     '/auth/sign-up',
     '/auth/magic',
     '/auth/reset-password',
     '/auth/logout',
+    '/auth/confirm-email',
   ];
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route),
@@ -41,7 +44,9 @@ export async function validateSession(req: NextRequest) {
       (keepAlive && !accessToken && !refreshToken)
     ) {
       console.log('ThonLabs Validate Session: Invalid session');
-      return NextResponse.redirect(new URL('/api/auth/logout', req.url));
+      return NextResponse.redirect(
+        forwardSearchParams(req, '/api/auth/logout'),
+      );
     }
 
     const isPageRefresh = req.headers.get('referer') === req.url;
@@ -57,7 +62,9 @@ export async function validateSession(req: NextRequest) {
           status,
         );
 
-        return NextResponse.redirect(new URL('/api/auth/logout', req.url));
+        return NextResponse.redirect(
+          forwardSearchParams(req, '/api/auth/logout'),
+        );
       } else if (status === 'needs_refresh') {
         console.log(
           'ThonLabs Validate Session: Needs refresh from keep alive',

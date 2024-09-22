@@ -4,6 +4,8 @@ import React from 'react';
 import ClientSessionService from '../services/client-session-service';
 import { EnvironmentData } from '../interfaces/environment-data';
 import { User } from '../interfaces/user';
+import useSWR from 'swr';
+import { fetcher } from '../services/api';
 
 /*
   This is a session provider to spread the data to frontend,
@@ -31,16 +33,32 @@ export const ThonLabsSessionContext =
 export interface ThonLabsSessionProviderProps
   extends React.HTMLAttributes<HTMLElement> {
   environmentData: EnvironmentData;
+  environmentId: string;
+  publicKey: string;
 }
 
 export function ThonLabsSessionProvider({
   environmentData,
   children,
+  environmentId,
+  publicKey,
 }: ThonLabsSessionProviderProps) {
   const user = ClientSessionService.getSession();
+  const { data: clientEnvironmentData } = useSWR<EnvironmentData>(
+    `/environments/${environmentId}/data`,
+    fetcher({
+      environmentId,
+      publicKey,
+    }),
+  );
 
   return (
-    <ThonLabsSessionContext.Provider value={{ environmentData, user }}>
+    <ThonLabsSessionContext.Provider
+      value={{
+        environmentData: clientEnvironmentData || environmentData,
+        user,
+      }}
+    >
       {children}
     </ThonLabsSessionContext.Provider>
   );

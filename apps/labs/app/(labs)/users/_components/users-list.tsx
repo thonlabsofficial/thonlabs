@@ -183,7 +183,7 @@ const columns = ({
   },
   {
     accessorKey: 'emailConfirmed',
-    header: 'Invitation Status',
+    header: 'Email Confirmed',
     cell: ({ getValue }) => {
       const data = getValue() as boolean;
       return (

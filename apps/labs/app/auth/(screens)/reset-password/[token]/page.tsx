@@ -3,7 +3,7 @@ import LandingGrid from '@/_components/landing-grid';
 import AuthHeader from '@/_components/auth-header';
 import { labsPublicAPI } from '../../../../../helpers/api';
 import { notFound } from 'next/navigation';
-import CreateNewPasswordForm from '../../../_components/create-new-password-form';
+import CreateNewPasswordForm from '../../../../_libs/_nextjs/pages/components/create-new-password-form';
 
 export const metadata: Metadata = {
   title: 'Create a new password',

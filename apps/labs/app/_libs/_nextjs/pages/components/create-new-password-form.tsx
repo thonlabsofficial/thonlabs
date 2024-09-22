@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form';
 import {
   CreateNewPasswordFormSchema,
   CreateNewPasswordFormData,
-} from '@/auth/_validators/auth-validators';
+} from '@/_libs/_nextjs/pages/validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import { labsPublicAPI } from '../../../helpers/api';
+import { labsPublicAPI } from '../../../../../helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 
