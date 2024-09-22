@@ -43,6 +43,7 @@ const ClientSessionService = {
   },
   async logout() {
     await intAPI.post('/api/auth/logout');
+    await Utils.delay(200);
     window.location.href = `/auth/login?reason=${APIResponseCodes.Logout}`;
   },
   async shouldKeepAlive() {

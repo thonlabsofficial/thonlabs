@@ -16,7 +16,7 @@ export const POST = async (
       return Response.json(response, { status: response.statusCode });
 
     case 'logout':
-      ServerSessionService.logout();
+      await ServerSessionService.logout();
       return Response.json(null, { status: 200 });
   }
 

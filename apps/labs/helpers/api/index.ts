@@ -72,7 +72,7 @@ async function handleResponseError(error: any) {
       // TODO: if react only, clear here using Cookies lib
       await intAPI.post('/api/auth/logout');
       localStorage.removeItem('tl_refreshing');
-      window.location.href = `/login?reason=${APIResponseCodes.SessionExpired}`;
+      window.location.href = `/auth/login?reason=${APIResponseCodes.SessionExpired}`;
       break;
   }
 

@@ -210,7 +210,18 @@ const ServerSessionService = {
     }
   },
 
-  logout() {
+  async logout() {
+    const token = cookies().get('tl_session')?.value;
+    await fetch(`${process.env.NEXT_PUBLIC_TL_API}/auth/logout`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
+        'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
+      } as HeadersInit & { 'tl-env-id': string; 'tl-public-key': string },
+    });
     cookies().delete('tl_session');
     cookies().delete('tl_refresh');
     cookies().delete('tl_keep_alive');
