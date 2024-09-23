@@ -4,6 +4,7 @@ export enum APIResponseCodes {
   Logout = 20001,
   EmailConfirmation = 20002,
   EmailConfirmationWithoutSession = 20003,
+  InviteAccepted = 20004,
   Unauthorized = 40001,
   SessionExpired = 40002,
   InvalidMagicToken = 40003,
@@ -31,4 +32,5 @@ export const apiResponseMessages = {
     'Your email has been confirmed. Please log in to continue.',
   [APIResponseCodes.EmailConfirmationResent]:
     'The email confirmation link is expired. We resent you another email.',
+  [APIResponseCodes.InviteAccepted]: 'Invite accepted, welcome!',
 };

@@ -1,7 +1,11 @@
 'use server';
 
 import { labsPublicAPI } from '../../../../../helpers/api';
-import { LoginFormData, SignUpFormData } from '../validators/auth-validators';
+import {
+  CreateNewPasswordFormData,
+  LoginFormData,
+  SignUpFormData,
+} from '../validators/auth-validators';
 import { AxiosError } from 'axios';
 import ServerSessionService from '../../services/server-session-service';
 import { SessionData, ErrorResponse } from '@/_libs/_nextjs';
@@ -45,5 +49,24 @@ export async function signUp(payload: SignUpFormData): Promise<DataReturn> {
       error: e.message,
     });
     return (e as AxiosError)?.response?.data as DataReturn;
+  }
+}
+
+export async function createNewPassword(
+  token: string,
+  payload: CreateNewPasswordFormData,
+): Promise<DataReturn> {
+  try {
+    const { data } = await labsPublicAPI.patch<SessionData>(
+      `/auth/reset-password/${token}`,
+      payload,
+    );
+
+    return data;
+  } catch (e: any) {
+    console.log('Error on authActions.createNewPassword:', {
+      error: e.message,
+    });
+    throw e;
   }
 }

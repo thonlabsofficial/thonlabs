@@ -175,6 +175,7 @@ const ServerSessionService = {
 
     return {
       statusCode: 200,
+      ...data,
     };
   },
 

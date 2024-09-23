@@ -10,15 +10,16 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
-import { labsPublicAPI } from '../../../../../helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { createNewPassword, login } from '../actions/auth-actions';
 
 type Props = {
   token: string;
+  email?: string;
 };
 
-export default function CreateNewPasswordForm({ token }: Props) {
+export default function CreateNewPasswordForm({ token, email }: Props) {
   const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -31,15 +32,29 @@ export default function CreateNewPasswordForm({ token }: Props) {
     try {
       setLoading(true);
 
-      await labsPublicAPI.patch(`/auth/reset-password/${token}`, data);
+      await createNewPassword(token, data);
+
+      let goTo = '/auth/login';
+
+      /*
+        If there is an email here it means the user is coming
+        from a "invitation" flow, the goal is to define password
+        and continue to the app.
+      */
+      if (email) {
+        await login({
+          email,
+          password: data.password,
+        });
+        goTo = '/';
+      }
 
       toast({
-        title: 'Password created',
-        description:
-          'Your new password has been securely stored. You can now access your account using it.',
+        title: email ? 'Welcome' : 'Password created',
+        description: `Your new password has been securely stored. You can now access your account using it.`,
       });
 
-      router.push('/auth/login');
+      router.push(goTo);
     } catch (e) {
       toast({
         title: 'Error',

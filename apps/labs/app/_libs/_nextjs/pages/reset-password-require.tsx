@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ResetPassword() {
+export default function ResetPasswordRequire() {
   return (
     <div className="flex md:items-center justify-center">
       <LandingGrid />

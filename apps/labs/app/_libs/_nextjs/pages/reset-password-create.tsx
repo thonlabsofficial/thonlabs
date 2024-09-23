@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import LandingGrid from '@/_components/landing-grid';
 import AuthHeader from '@/_components/auth-header';
-import { labsPublicAPI } from '../../../../../helpers/api';
 import { notFound } from 'next/navigation';
-import CreateNewPasswordForm from '../../../../_libs/_nextjs/pages/components/create-new-password-form';
+import CreateNewPasswordForm from './components/create-new-password-form';
+import { labsPublicAPI } from '@helpers/api';
 
 export const metadata: Metadata = {
   title: 'Create a new password',
@@ -13,14 +13,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CreateNewPassword({
-  params,
+export default async function ResetPasswordCreate({
+  token,
+  inviteFlowEmail,
 }: {
-  params: { token: string };
+  token: string;
+  inviteFlowEmail?: string;
 }) {
   // Validates the token
   try {
-    await labsPublicAPI.get(`/auth/reset-password/${params.token}`);
+    await labsPublicAPI.get(`/auth/reset-password/${token}`);
   } catch (e) {
     notFound();
   }
@@ -34,7 +36,7 @@ export default async function CreateNewPassword({
           description="Please complete the form below to create a new password for your account."
           className="mb-10"
         />
-        <CreateNewPasswordForm token={params.token} />
+        <CreateNewPasswordForm token={token} email={inviteFlowEmail} />
       </div>
     </div>
   );

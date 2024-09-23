@@ -40,7 +40,7 @@ export const GET = async (
 
       return redirect(
         response.statusCode === 200
-          ? '/'
+          ? forwardSearchParams(req, '/').toString()
           : `/auth/login?reason=${APIResponseCodes.InvalidMagicToken}`,
         RedirectType.replace,
       );
@@ -49,6 +49,21 @@ export const GET = async (
       response = await ServerSessionService.validateEmailConfirmationToken(
         param as string,
       );
+
+      /*
+        If there's a token it means the user is coming from a "invitation" flow,
+        the goal is to define password and continue to the app.
+      */
+      if (response.statusCode === 200 && response.token) {
+        const { token, tokenType, email } = response;
+
+        return redirect(
+          tokenType === 'ResetPassword'
+            ? `/auth/reset-password/${token}?inviteFlow=${Buffer.from(email).toString('base64')}`
+            : `/auth/magic/${token}?inviteFlow=true`,
+          RedirectType.replace,
+        );
+      }
 
       return redirect(
         response.statusCode === 200
