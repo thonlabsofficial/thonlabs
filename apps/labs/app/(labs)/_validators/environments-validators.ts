@@ -29,6 +29,7 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
   refreshTokenExpiration: z.string({
     required_error: ErrorMessages.RequiredField,
   }),
+  enableSignUp: z.boolean(),
 });
 
 export type UpdateEnvironmentAuthSettingsFormData = z.infer<

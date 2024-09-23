@@ -35,6 +35,8 @@ export default function SignUpForm() {
 
       const result = await signUp(data);
 
+      console.log(result);
+
       if (!result || result?.statusCode) {
         toast({
           title: 'Sign up error',

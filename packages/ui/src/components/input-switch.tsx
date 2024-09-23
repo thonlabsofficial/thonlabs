@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Typo } from './typo';
 import { Switch } from './switch';
 import { cn } from '../core/utils';
+import { Skeleton } from './skeleton';
 
 export interface InputSwitchProps extends React.HTMLAttributes<HTMLElement> {
   label: React.ReactNode;
@@ -28,11 +29,11 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
     },
     _,
   ) => {
-    return (
+    return !loading ? (
       <label
         className={cn(
           `
-          flex gap-3 items-center justify-between rounded-lg border p-4
+          flex gap-3 items-center justify-between rounded-md border p-4
           cursor-pointer select-none
           border-zinc-200 dark:border-zinc-600 
           hover:border-zinc-400 dark:hover:border-zinc-500
@@ -55,6 +56,8 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
           checked={checked}
         />
       </label>
+    ) : (
+      <Skeleton className="h-[4.75rem] w-full" />
     );
   },
 );

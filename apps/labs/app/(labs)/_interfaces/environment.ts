@@ -1,3 +1,4 @@
+import { AuthProviders, EnvironmentData } from '@/_libs/_nextjs';
 import { Project } from './project';
 
 export enum CustomDomainStatus {
@@ -13,7 +14,7 @@ export interface Environment {
   project: Project;
 }
 
-export interface EnvironmentDetail extends Environment {
+export interface EnvironmentDetail extends Environment, EnvironmentData {
   active: boolean;
   tokenExpiration: string;
   refreshTokenExpiration: string;
@@ -21,7 +22,6 @@ export interface EnvironmentDetail extends Environment {
   updatedAt: Date;
   projectId: string;
   publicKey: string;
-  authProvider: string;
   secretKey?: string;
   customDomain?: string;
   customDomainStatus?: string;

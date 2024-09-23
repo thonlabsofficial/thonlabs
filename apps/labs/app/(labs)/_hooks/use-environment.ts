@@ -11,6 +11,7 @@ import useSWR from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optmistic-update';
+import { useEnvironmentData } from '@/_libs/_nextjs';
 
 type Params = {
   environmentID?: string;
@@ -32,12 +33,21 @@ export default function useEnvironment(
   } = useSWR<EnvironmentDetail>(
     () => params.environmentID && `/environments/${params.environmentID}`,
   );
+  const environmentData = useEnvironmentData();
 
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
   React.useEffect(() => {
     onFetchComplete && onFetchComplete();
-  }, [environment]);
+  }, [environment, environmentData]);
+
+  const environmentMemo = React.useMemo(() => {
+    if (!environment || !environmentData) {
+      return null;
+    }
+
+    return { ...environment, ...environmentData } as EnvironmentDetail;
+  }, [environment, environmentData]);
 
   async function createEnvironment(
     projectId: string,
@@ -374,7 +384,7 @@ export default function useEnvironment(
   }
 
   return {
-    environment: environment as EnvironmentDetail,
+    environment: environmentMemo as EnvironmentDetail,
     isLoadingEnvironment,
     isValidatingEnvironment,
     environmentError,

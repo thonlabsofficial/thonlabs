@@ -23,7 +23,7 @@ export default function APIKeysSettings({ sessionEnvironment }: Props) {
     });
   const [secretKey, setSecretKey] = React.useState('');
   const authDomain = React.useMemo(() => {
-    return `${environment?.id.split('-').reverse()[0]}.auth.thonlabs.io`;
+    return `${environment?.id?.split('-')?.reverse()?.[0]}.auth.thonlabs.io`;
   }, [environment]);
 
   async function handleHiddenClick() {

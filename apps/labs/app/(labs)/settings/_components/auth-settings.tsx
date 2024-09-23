@@ -7,14 +7,16 @@ import {
   UpdateEnvironmentAuthSettingsFormData,
   UpdateEnvironmentAuthSettingsFormSchema,
 } from '@/(labs)/_validators/environments-validators';
+import { useEnvironmentData } from '@/_libs/_nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
 import { InputRadio } from '@repo/ui/input-radio';
+import { InputSwitch } from '@repo/ui/input-switch';
 import { Typo } from '@repo/ui/typo';
 import { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 type Props = {
   sessionEnvironment: Environment;
@@ -35,6 +37,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
             authProvider: environment?.authProvider || '',
             tokenExpiration: environment?.tokenExpiration || '',
             refreshTokenExpiration: environment?.refreshTokenExpiration || '',
+            enableSignUp: environment?.enableSignUp || false,
           });
         },
       },
@@ -48,6 +51,7 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
           authProvider: payload?.authProvider || '',
           tokenExpiration: payload?.tokenExpiration || '',
           refreshTokenExpiration: payload?.refreshTokenExpiration || '',
+          enableSignUp: payload?.enableSignUp || false,
         });
       });
     });
@@ -57,26 +61,44 @@ export default function AuthSettings({ sessionEnvironment }: Props) {
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-[19rem_1fr] gap-40">
-          <CardHeader>Login Type</CardHeader>
+          <CardHeader description="Customize the login page to match your brand and user experience.">
+            Login Page
+          </CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
-              <InputRadio
-                // control={form.control}
-                loading={isLoadingEnvironment}
-                options={[
-                  {
-                    value: 'MagicLogin',
-                    label: 'Magic Login',
-                    description:
-                      'This generates a unique link to user authenticate',
-                  },
-                  {
-                    value: 'EmailAndPassword',
-                    label: 'Email and Password',
-                    description: 'The classic way to authenticate',
-                  },
-                ]}
-                {...form.register('authProvider')}
+              <InputWrapper>
+                <InputRadio
+                  label="Login Type"
+                  loading={isLoadingEnvironment}
+                  options={[
+                    {
+                      value: 'MagicLogin',
+                      label: 'Magic Login',
+                      description:
+                        'This generates a unique link to user authenticate',
+                    },
+                    {
+                      value: 'EmailAndPassword',
+                      label: 'Email and Password',
+                      description: 'The classic way to authenticate',
+                    },
+                  ]}
+                  {...form.register('authProvider')}
+                />
+              </InputWrapper>
+              <Controller
+                name="enableSignUp"
+                control={form.control}
+                render={({ field }) => (
+                  <InputSwitch
+                    label="Enable Sign Up"
+                    description="Allow users to sign up to the platform from login page."
+                    value={field.value}
+                    onCheckedChange={field.onChange}
+                    checked={!!field.value}
+                    loading={isLoadingEnvironment}
+                  />
+                )}
               />
             </div>
           </CardContent>

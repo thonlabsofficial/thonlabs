@@ -24,7 +24,7 @@ export default function CustomDomainStatusCard({ environmentID }: Props) {
     environmentID,
   });
   const authDomain = React.useMemo(() => {
-    return `${environment?.id.split('-').reverse()[0]}.auth.thonlabs.io`;
+    return `${environment?.id?.split('-')?.reverse()?.[0]}.auth.thonlabs.io`;
   }, [environment]);
 
   React.useEffect(() => {
