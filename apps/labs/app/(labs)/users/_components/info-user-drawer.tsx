@@ -73,6 +73,7 @@ export default function InfoUserDrawer({
                 }
               />
               <BoxKeyValue label="Last Sign In" value={user?.lastSignIn} date />
+              <BoxKeyValue label="Invited At" value={user?.invitedAt} date />
               <BoxKeyValue label="Created At" value={user?.createdAt} date />
               <BoxKeyValue label="Updated At" value={user?.updatedAt} date />
             </div>

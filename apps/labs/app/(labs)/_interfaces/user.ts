@@ -8,4 +8,5 @@ export interface User {
   lastSignIn: Date;
   updatedAt: Date;
   profilePicture?: string;
+  invitedAt?: Date;
 }

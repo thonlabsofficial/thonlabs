@@ -75,12 +75,14 @@ function DropdownMenuItemAction({
       return (
         <DropdownMenuItem
           onSelect={async () => {
-            toast({ title: 'Resending invitation...' });
+            toast({
+              title: `${user.invitedAt ? 'Resending' : 'Sending'} invitation...`,
+            });
             await resendInvitation(user.id);
           }}
         >
           <LuMails className="mr-2 h-4 w-4" />
-          <span>Resend invitation</span>
+          <span>{user.invitedAt ? 'Resend' : 'Send'} invitation</span>
         </DropdownMenuItem>
       );
   }

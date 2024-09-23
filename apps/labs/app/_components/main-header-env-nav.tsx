@@ -54,7 +54,9 @@ const ProjectEnvButton = React.forwardRef<HTMLButtonElement, { label: string }>(
 export default function MainHeaderEnvNav({ environment }: Props) {
   const { environment: clientEnvironment } = useUserSession();
   const pathname = usePathname();
-  const { projects, isLoadingProjects } = useProjects();
+  const { projects, isLoadingProjects } = useProjects({
+    revalidateOnFocus: false,
+  });
   const projectEnvironments = projects.find(
     (project) => project.id === (clientEnvironment || environment)?.project?.id,
   )?.environments;

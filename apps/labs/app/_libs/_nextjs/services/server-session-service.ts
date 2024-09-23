@@ -5,6 +5,10 @@ import { SessionData } from '../interfaces/session-data';
 
 const ServerSessionService = {
   create(data: SessionData) {
+    if (!data) {
+      return;
+    }
+
     const expires = new Date(data.tokenExpiresIn);
     cookies().set('tl_session', data.token, {
       path: '/',
@@ -97,11 +101,11 @@ const ServerSessionService = {
     );
     const data = await response.json();
 
-    if (data.statusCode) {
+    if (data.statusCode || data.error) {
       console.log('Error "validateRefreshToken": ', data);
 
       return {
-        statusCode: data.statusCode,
+        statusCode: 401,
         error: data?.error || data?.message,
       };
     }
