@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '@repo/ui/core/utils';
 import dynamic from 'next/dynamic';
 import { Button } from '@repo/ui/button';
+import JoinWaitlistDialog from './join-waitlist-dialog';
 
 const Logo = dynamic(() => import('@repo/ui/logo'), { ssr: false });
 
@@ -22,7 +23,9 @@ export default function MainHeader({
         <Logo />
       </div>
 
-      <Button className="hidden lg:flex">Join Waitlist</Button>
+      <JoinWaitlistDialog
+        trigger={<Button className="hidden lg:flex">Join Waitlist</Button>}
+      />
     </header>
   );
 }

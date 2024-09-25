@@ -4,6 +4,7 @@ import LandingGrid from '@repo/ui/landing-grid';
 import { Typo } from '@repo/ui/typo';
 import { Metadata } from 'next';
 import { SiGithub } from 'react-icons/si';
+import JoinWaitlistDialog from './_components/join-waitlist-dialog';
 
 export const metadata: Metadata = {
   title: {
@@ -30,20 +31,26 @@ export default function Home() {
           </Typo>
         </div>
         <div className="flex items-center justify-center">
-          <Button
-            className="group hidden lg:flex"
-            variant={'linkGhost'}
-            size={'sm'}
-          >
-            Press{' '}
-            <Button size={'xs'} variant={'outline'}>
-              W
-            </Button>{' '}
-            to join waitlist
-          </Button>
-          <Button className="group flex lg:hidden" size={'lg'}>
-            Join Waitlist
-          </Button>
+          <JoinWaitlistDialog
+            trigger={
+              <div>
+                <Button
+                  className="group hidden lg:flex"
+                  variant={'linkGhost'}
+                  size={'sm'}
+                >
+                  Press{' '}
+                  <Button size={'xs'} variant={'outline'}>
+                    W
+                  </Button>{' '}
+                  to join waitlist
+                </Button>
+                <Button className="group flex lg:hidden" size={'lg'}>
+                  Join Waitlist
+                </Button>
+              </div>
+            }
+          />
         </div>
         <div className="mx-auto w-20 h-px bg-border my-8" />
         <div className="flex gap-3 items-center justify-center">

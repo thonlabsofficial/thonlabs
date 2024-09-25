@@ -5,7 +5,7 @@ export default function LandingGrid() {
     <div
       className={cn(
         `
-          absolute inset-0 z-[-1] -left-px opacity-60 
+          absolute inset-0 z-[-1] -left-px 
           [mask-image:linear-gradient(transparent_1%,white,transparent_43%)]
         `,
       )}
