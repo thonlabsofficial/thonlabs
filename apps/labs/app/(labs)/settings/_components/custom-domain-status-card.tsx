@@ -151,7 +151,7 @@ export default function CustomDomainStatusCard({ environmentID }: Props) {
               <TableCell withCopy>_tl_verify</TableCell>
               <TableCell>TXT</TableCell>
               <TableCell withCopy>{environment?.customDomainTXT}</TableCell>
-              <TableCell>-</TableCell>
+              <TableCell>60</TableCell>
               <TableCell>
                 {environment?.customDomainTXTStatus ===
                   CustomDomainStatus.Verifying && (
