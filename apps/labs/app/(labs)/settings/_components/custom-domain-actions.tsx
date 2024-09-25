@@ -39,7 +39,9 @@ export default function CustomDomainActions({ environmentID }: Props) {
       )}
       {environment?.customDomain && (
         <>
-          {environment.customDomainStatus === CustomDomainStatus.Failed && (
+          {(environment.customDomainStatus === CustomDomainStatus.Failed ||
+            environment.customDomainTXTStatus ===
+              CustomDomainStatus.Failed) && (
             <Button
               type="button"
               size={'sm'}

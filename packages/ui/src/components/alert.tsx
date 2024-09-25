@@ -5,7 +5,7 @@ import { cn } from '../core/utils';
 
 const alertVariants = cva(
   `
-    relative w-full rounded-lg border px-4 py-3 text-sm  
+    relative w-full rounded-lg border  
     text-gray-900 dark:text-white [&>svg]:text-gray-900 dark:[&>svg]:text-white
     [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 
     [&>svg~*]:pl-7
@@ -19,9 +19,14 @@ const alertVariants = cva(
         destructive:
           'bg-destructive/10 dark:bg-destructive/20 border-destructive/50 dark:border-destructive',
       },
+      size: {
+        sm: 'text-xs p-2',
+        md: 'text-sm px-4 py-3',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'md',
     },
   },
 );
@@ -29,11 +34,11 @@ const alertVariants = cva(
 const Alert = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
->(({ className, variant, ...props }, ref) => (
+>(({ className, variant, size, ...props }, ref) => (
   <div
     ref={ref}
     role="alert"
-    className={cn(alertVariants({ variant }), className)}
+    className={cn(alertVariants({ variant, size }), className)}
     {...props}
   />
 ));

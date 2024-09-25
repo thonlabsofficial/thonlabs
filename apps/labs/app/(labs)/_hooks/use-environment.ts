@@ -375,6 +375,7 @@ export default function useEnvironment(
           populateCache: (_, environment) => ({
             ...environment,
             customDomainStatus: data.customDomainStatus,
+            customDomainTXTStatus: data.customDomainTXTStatus,
           }),
         },
       ]);

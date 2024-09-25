@@ -1,5 +1,6 @@
 import * as React from 'react';
-
+import { Clipboard } from './clipboard';
+import { LuCopy, LuCheck } from 'react-icons/lu';
 import { cn } from '../core/utils';
 
 const Table = React.forwardRef<
@@ -90,8 +91,8 @@ TableHead.displayName = 'TableHead';
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
+  { withCopy?: boolean } & React.TdHTMLAttributes<HTMLTableCellElement>
+>(({ withCopy, children, className, ...props }, ref) => (
   <td
     ref={ref}
     className={cn(
@@ -99,7 +100,19 @@ const TableCell = React.forwardRef<
       className,
     )}
     {...props}
-  />
+  >
+    <div className="flex items-center gap-1">
+      {children}
+      {withCopy && (
+        <Clipboard
+          size="xs"
+          variant="outline"
+          value={children?.toString() as string}
+          labels={[LuCopy, LuCheck]}
+        />
+      )}
+    </div>
+  </td>
 ));
 TableCell.displayName = 'TableCell';
 

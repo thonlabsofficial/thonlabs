@@ -1,14 +1,21 @@
 import React from 'react';
 import useEnvironment from '@labs/_hooks/use-environment';
 import { CustomDomainStatus } from '@/(labs)/_interfaces/environment';
-import BoxKeyValue from '@/(labs)/_components/box-key-value';
-import SeparatorLine from '@/(labs)/_components/separator-line';
 import { Badge } from '@repo/ui/badge';
 import { Card } from '@repo/ui/card';
 import { cn } from '@repo/ui/core/utils';
 import { Typo } from '@repo/ui/typo';
 import Utils from '@repo/utils';
-import { LuCircleDotDashed, LuCheck, LuX } from 'react-icons/lu';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@repo/ui/table';
+import { Alert } from '@repo/ui/alert';
+import { Check, Loader, X } from 'lucide-react';
 
 interface Props {
   environmentID: string;
@@ -28,10 +35,39 @@ export default function CustomDomainStatusCard({ environmentID }: Props) {
   }, [environment]);
 
   React.useEffect(() => {
-    if (environment?.customDomain) {
+    if (environment?.customDomain && isCustomDomainVerifying()) {
       reverifyCustomDomain(environmentID);
     }
   }, [environment, isValidatingEnvironment]);
+
+  function isCustomDomainVerifying() {
+    return (
+      environment?.customDomainStatus === CustomDomainStatus.Verifying ||
+      environment?.customDomainTXTStatus === CustomDomainStatus.Verifying
+    );
+  }
+
+  function isCustomDomainVerified() {
+    if (isCustomDomainVerifying()) {
+      return false;
+    }
+
+    return (
+      environment?.customDomainStatus === CustomDomainStatus.Verified &&
+      environment?.customDomainTXTStatus === CustomDomainStatus.Verified
+    );
+  }
+
+  function isCustomDomainFailed() {
+    if (isCustomDomainVerifying()) {
+      return false;
+    }
+
+    return (
+      environment?.customDomainStatus === CustomDomainStatus.Failed ||
+      environment?.customDomainTXTStatus === CustomDomainStatus.Failed
+    );
+  }
 
   return (
     !isLoadingEnvironment &&
@@ -42,65 +78,61 @@ export default function CustomDomainStatusCard({ environmentID }: Props) {
             className={cn(
               'flex-none basis-8 h-8 rounded-md flex items-center justify-center border ',
               {
-                'bg-warning/10 border-warning/40':
-                  environment?.customDomainStatus ===
-                  CustomDomainStatus.Verifying,
-                'bg-success/10 border-success/40':
-                  environment?.customDomainStatus ===
-                  CustomDomainStatus.Verified,
+                'bg-warning/10 border-warning/40': isCustomDomainVerifying(),
+                'bg-success/10 border-success/40': isCustomDomainVerified(),
                 'bg-destructive/10 border-destructive/40':
-                  environment?.customDomainStatus === CustomDomainStatus.Failed,
+                  isCustomDomainFailed(),
               },
             )}
           >
-            {environment?.customDomainStatus ===
-              CustomDomainStatus.Verifying && (
-              <LuCircleDotDashed className="w-4 h-4 animate-spin" />
+            {isCustomDomainVerifying() && (
+              <Loader className="w-4 h-4 animate-spin" />
             )}
-            {environment?.customDomainStatus ===
-              CustomDomainStatus.Verified && <LuCheck className="w-4 h-4" />}
-            {environment?.customDomainStatus === CustomDomainStatus.Failed && (
-              <LuX className="w-4 h-4" />
-            )}
+            {isCustomDomainVerified() && <Check className="w-4 h-4" />}
+            {isCustomDomainFailed() && <X className="w-4 h-4" />}
           </div>
           <Typo variant={'sm'}>
-            {environment?.customDomainStatus ===
-              CustomDomainStatus.Verifying && (
+            {isCustomDomainVerifying() && (
               <>
-                Go to the DNS settings page of your DNS provider and add the
-                following DNS record to the records section. We&apos;ll verify
-                the DNS every 5 minutes over the next 5 hours.
+                Please navigate to the DNS settings page of your DNS provider
+                and add the following DNS record to the records section.
+                We&apos;ll check the DNS settings every 5 minutes for the next 5
+                hours.
               </>
             )}
-            {environment?.customDomainStatus ===
-              CustomDomainStatus.Verified && (
+            {isCustomDomainVerified() && (
               <>
                 Great job! Domain successfully verified. Your environment is now
                 accessible via the custom domain above.
               </>
             )}
-            {environment?.customDomainStatus === CustomDomainStatus.Failed && (
+            {isCustomDomainFailed() && (
               <>
-                We could not verify the DNS. Please double-check your DNS
-                provider settings to ensure all records are accurate.
+                We could not verify the DNS completely. Please double-check your
+                DNS provider settings to ensure all records are accurate.
               </>
             )}
           </Typo>
         </div>
-        <SeparatorLine className="!my-2" />
-        <div className="flex gap-10">
-          <BoxKeyValue
-            label="Name"
-            value={Utils.getSubDomains(environment?.customDomain)}
-            withCopy
-          />
-          <BoxKeyValue label="Type" value="CNAME" />
-          <BoxKeyValue label="Value" value={authDomain} withCopy />
-          <BoxKeyValue label="TTL" value="60" />
-          <BoxKeyValue
-            label="Status"
-            value={
-              <>
+        <Table className="rounded overflow-hidden mt-3">
+          <TableHeader>
+            <TableRow header withHover={false}>
+              <TableHead className="select-none">Name</TableHead>
+              <TableHead className="select-none">Type</TableHead>
+              <TableHead className="select-none">Value</TableHead>
+              <TableHead className="select-none">TTL</TableHead>
+              <TableHead className="select-none">Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow className="group">
+              <TableCell withCopy>
+                {Utils.getSubDomains(environment?.customDomain)}
+              </TableCell>
+              <TableCell>CNAME</TableCell>
+              <TableCell withCopy>{authDomain}</TableCell>
+              <TableCell>60</TableCell>
+              <TableCell>
                 {environment?.customDomainStatus ===
                   CustomDomainStatus.Verifying && (
                   <Badge variant={'warning'}>Verifying</Badge>
@@ -113,10 +145,37 @@ export default function CustomDomainStatusCard({ environmentID }: Props) {
                   CustomDomainStatus.Failed && (
                   <Badge variant={'destructive'}>Failed</Badge>
                 )}
-              </>
-            }
-          />
-        </div>
+              </TableCell>
+            </TableRow>
+            <TableRow className="group">
+              <TableCell withCopy>_tl_verify</TableCell>
+              <TableCell>TXT</TableCell>
+              <TableCell withCopy>{environment?.customDomainTXT}</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>
+                {environment?.customDomainTXTStatus ===
+                  CustomDomainStatus.Verifying && (
+                  <Badge variant={'warning'}>Verifying</Badge>
+                )}
+                {environment?.customDomainTXTStatus ===
+                  CustomDomainStatus.Verified && (
+                  <Badge variant={'success'}>Verified</Badge>
+                )}
+                {environment?.customDomainTXTStatus ===
+                  CustomDomainStatus.Failed && (
+                  <Badge variant={'destructive'}>Failed</Badge>
+                )}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+
+        {isCustomDomainVerifying() && (
+          <Alert variant={'info'} className="mt-2 font-semibold" size={'sm'}>
+            Keep in mind that DNS propagation can take some time, so please be
+            patient as the changes take effect.
+          </Alert>
+        )}
       </Card>
     )
   );

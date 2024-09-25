@@ -27,4 +27,6 @@ export interface EnvironmentDetail extends Environment, EnvironmentData {
   customDomainStatus?: string;
   customDomainStartValidationAt?: Date;
   customDomainLastValidationAt?: Date;
+  customDomainTXT?: string;
+  customDomainTXTStatus?: string;
 }
