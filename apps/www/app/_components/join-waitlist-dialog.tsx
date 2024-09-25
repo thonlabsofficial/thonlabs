@@ -27,13 +27,11 @@ import {
 } from '@repo/ui/input-select';
 import { competitorsAuthProvidersMapper } from '@/_constants/competitors-auth-providers';
 
-type Props = {
-  trigger: React.ReactNode;
-};
+interface Props extends React.ComponentProps<typeof Dialog> {
+  trigger?: React.ReactNode;
+}
 
-export default function JoinWaitlistDialog({
-  trigger,
-}: Props & React.HTMLAttributes<HTMLElement>) {
+export default function JoinWaitlistDialog({ trigger, ...props }: Props) {
   const form = useForm<JoinWaitlistFormData>({
     resolver: zodResolver(joinWaitlistFormSchema),
   });
@@ -50,11 +48,19 @@ export default function JoinWaitlistDialog({
     form.reset();
   }
 
+  React.useEffect(() => {
+    if (props.open) {
+      handleReset();
+    }
+  }, [props.open]);
+
   return (
-    <Dialog>
-      <DialogTrigger asChild onClick={handleReset}>
-        {trigger}
-      </DialogTrigger>
+    <Dialog {...props}>
+      {trigger && (
+        <DialogTrigger asChild onClick={handleReset}>
+          {trigger}
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Join Waitlist</DialogTitle>

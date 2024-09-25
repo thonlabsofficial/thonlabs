@@ -80,7 +80,11 @@ const InputSelectTrigger = React.forwardRef<
       {!loading ? (
         <SelectPrimitive.Trigger
           ref={ref}
-          className={inputSelectTriggerVariants({ state, size, className })}
+          className={inputSelectTriggerVariants({
+            state: error ? 'error' : state,
+            size,
+            className,
+          })}
           {...props}
         >
           {children}
