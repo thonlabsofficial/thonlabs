@@ -14,7 +14,7 @@ const typoVariants = cva('font-sans text-text', {
       blockquote: 'mt-6 border-l-2 pl-6 italic',
       inlineCode:
         'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
-      lead: 'text-xl text-muted-foreground',
+      lead: 'text-lg text-muted-foreground',
       lg: 'text-lg font-semibold',
       md: 'text-lg font-medium',
       sm: 'text-sm font-medium',

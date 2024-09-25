@@ -16,14 +16,14 @@ const buttonVariants = cva(
         opposite: 'bg-foreground text-secondary shadow hover:bg-foreground/90',
         destructive:
           'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
-        outline:
-          'border border-input text-foreground bg-transparent border-foreground/20 hover:bg-card hover:text-accent-foreground',
+        outline: `border border-input text-foreground bg-transparent border-foreground/20 
+           hover:bg-card hover:text-accent-foreground group-hover:bg-card group-hover:text-accent-foreground`,
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'text-text hover:bg-foreground/10 hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         linkGhost:
-          'text-zinc-500 hover:bg-accent hover:text-accent-foreground hover:text-zinc-600 dark:hover:text-zinc-300',
+          'text-accent-foreground/70 hover:bg-accent hover:text-foreground',
         success: 'bg-success shadow-sm hover:bg-success/90',
         info: 'bg-info shadow-sm hover:bg-info/90',
       },
@@ -31,7 +31,7 @@ const buttonVariants = cva(
         xs: 'py-1 px-2 text-xs gap-1',
         sm: 'py-1 px-2 text-sm gap-1',
         md: 'px-4 py-2 text-base gap-1.5',
-        lg: 'py-4 px-6 text-base gap-2',
+        lg: 'py-4 px-6 text-lg gap-2',
       },
     },
     defaultVariants: {
