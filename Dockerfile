@@ -3,50 +3,34 @@
 #######################
 ### PROD DOCKERFILE ###
 #######################
-
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=20.17.0
-
-FROM node:20.17-slim as base
+FROM node:20.17-slim AS builder
 
 WORKDIR /app
 
 ARG PROJECT
 
-LABEL fly_launch_runtime="NodeJS"
+RUN npm i -g turbo pnpm
 
-RUN npm i -g turbo
+COPY . ./source
 
-COPY . .
-
+WORKDIR /app/source
 RUN turbo prune --scope=${PROJECT} --docker
 
-# -------------------------------------------------- #
-FROM base as builder
-
 WORKDIR /app
-
-ARG PROJECT
-
-ENV NODE_ENV=production
-
-COPY --from=pruner /app/out/pnpm-lock.json ./pnpm-lock.json
-COPY --from=pruner /app/out/json/ .
+RUN mv /app/source/out/pnpm-lock.yaml /app/pnpm-lock.yaml && \
+    mv /app/source/out/full/* /app/ && \
+    rm -rf /app/source
 
 RUN pnpm install
 
-COPY --from=pruner /app/out/full/ .
+ENV NODE_ENV=production
 
 RUN turbo build --filter=${PROJECT}
 
 RUN pnpm prune --prod && \
   pnpm store prune
-
-RUN rm -rf ./**/*/src
-
 # -------------------------------------------------- #
-# Final stage for app image
-FROM base AS runner
+FROM node:20.17-slim AS runner
 
 WORKDIR /app
 
@@ -63,4 +47,4 @@ COPY --from=builder --chown=thonlabs:nodejs /app .
 
 WORKDIR /app/apps/${PROJECT}
 
-CMD ["node", "dist/index.js"]
+CMD ["npm", "start"]
