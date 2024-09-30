@@ -23,7 +23,7 @@ export default function ToasterObservable() {
     if (message) {
       Utils.delay(1).then(() => {
         toast({
-          title: message,
+          description: message,
           duration: 2800,
           variant: reason ? 'destructive' : 'default',
         });

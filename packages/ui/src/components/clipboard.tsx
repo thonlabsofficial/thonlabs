@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { Button } from './button';
-import Utils from '@repo/utils';
 import { useToast } from '../hooks/use-toast';
 import { cn } from '../core/utils';
 import { ButtonIcon } from './button-icon';
 import { IconType } from 'react-icons';
+import { LucideProps } from 'lucide-react';
+
+type LucideIconType = ForwardRefExoticComponent<
+  Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+>;
 
 type Props = {
   value: string;
-  labels?: React.ReactNode[] | IconType[];
+  labels?: (React.ReactNode | IconType | LucideIconType)[];
   onCopied?: () => void;
   onCopyFinished?: () => void;
+  iconLabels?: boolean;
 };
 
 function Clipboard({
   value,
   labels = ['Copy', 'Copied'],
   className,
+  iconLabels,
   onCopied,
   onCopyFinished,
   ...props
@@ -24,27 +30,30 @@ function Clipboard({
   const [idle, after] = labels;
   const [copied, setCopied] = React.useState(false);
   const { toast } = useToast();
-  const isIcon = (idle as any)?.toString()?.trim()?.startsWith('function Lu');
+  const isTextLabel = typeof idle === 'string';
 
-  async function handleClick() {
+  const handleClick = React.useCallback(() => {
     if (copied) {
       return;
     }
+    setCopied(true);
 
     navigator.clipboard.writeText(value);
     onCopied?.();
 
-    setCopied(true);
     toast({
       description: 'Copied to clipboard',
     });
 
-    await Utils.delay(3000);
-    setCopied(false);
-    onCopyFinished?.();
-  }
+    const timer = setTimeout(() => {
+      setCopied(false);
+      onCopyFinished?.();
+    }, 3000);
 
-  return !isIcon ? (
+    return () => clearTimeout(timer);
+  }, [copied, value, onCopied, onCopyFinished, toast]);
+
+  return isTextLabel ? (
     <Button
       type="button"
       onClick={handleClick}

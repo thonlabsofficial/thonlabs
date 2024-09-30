@@ -3,7 +3,7 @@ import { api } from '../services/api';
 import { ThonLabsGeneralProvider } from './thonlabs-general-provider';
 import { ThonLabsSessionProvider } from './thonlabs-session-provider';
 import { ThonLabsInternalProvider } from './thonlabs-internal-provider';
-import ToasterObservable from '../pages/components/toaster-observable';
+import ToasterObservableWrapper from '../pages/components/toaster-observable-wrapper';
 
 /*
   This is a wrapper to get environment data from backend and forward to frontend.
@@ -27,11 +27,11 @@ export async function ThonLabsWrapper({
   publicKey,
 }: ThonLabsWrapperProps) {
   if (!environmentId) {
-    throw new Error('ThonLabs Error: Environment ID is required.');
+    console.error('ThonLabs Error: Environment ID is required.');
   }
 
   if (!publicKey) {
-    throw new Error('ThonLabs Error: Public key is required.');
+    console.error('ThonLabs Error: Public key is required.');
   }
 
   const environmentData = await api<EnvironmentData>(
@@ -50,7 +50,7 @@ export async function ThonLabsWrapper({
 
   return (
     <ThonLabsInternalProvider>
-      <ToasterObservable />
+      <ToasterObservableWrapper />
       <ThonLabsSessionProvider
         environmentData={environmentData}
         environmentId={environmentId}

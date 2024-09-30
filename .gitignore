@@ -23,6 +23,7 @@ node_modules
 .turbo
 .idea
 .vscode
+fly.*.toml
 
 # debug
 npm-debug.log*

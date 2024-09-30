@@ -10,9 +10,7 @@ import { Typo } from '@repo/ui/typo';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
 import {
-  LuCheck,
   LuCheckCircle,
-  LuCopy,
   LuFileEdit,
   LuMails,
   LuMoreHorizontal,
@@ -38,6 +36,7 @@ import EditUserDrawer from './edit-user-drawer';
 import useUser from '@/(labs)/_hooks/use-user';
 import { AlertDialog } from '@repo/ui/alert-dialog';
 import { useToast } from '@repo/ui/hooks/use-toast';
+import { Copy, Check } from 'lucide-react';
 
 function DropdownMenuItemAction({
   type,
@@ -54,7 +53,7 @@ function DropdownMenuItemAction({
       return (
         <DropdownMenuItem
           onSelect={async () => {
-            toast({ title: 'Updating status...' });
+            toast({ description: 'Updating status...' });
             await updateStatus(user.id, { active: !user.active });
           }}
         >
@@ -76,7 +75,7 @@ function DropdownMenuItemAction({
         <DropdownMenuItem
           onSelect={async () => {
             toast({
-              title: `${user.invitedAt ? 'Resending' : 'Sending'} invitation...`,
+              description: `${user.invitedAt ? 'Resending' : 'Sending'} invitation...`,
             });
             await resendInvitation(user.id);
           }}
@@ -129,8 +128,9 @@ const columns = ({
                 size="xs"
                 variant="outline"
                 value={id}
-                labels={[LuCopy, LuCheck]}
                 className="opacity-0 group-hover:opacity-100"
+                labels={[Copy, Check]}
+                iconLabels
               />
             </div>
           </div>
@@ -159,7 +159,8 @@ const columns = ({
             size="xs"
             variant="outline"
             value={email}
-            labels={[LuCopy, LuCheck]}
+            labels={[Copy, Check]}
+            iconLabels
             className="opacity-0 group-hover:opacity-100"
           />
         </div>

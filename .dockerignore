@@ -1,5 +1,9 @@
-fly.toml
+fly.*.toml
 Dockerfile
 .dockerignore
 node_modules
 .git
+.env
+.turbo
+.idea
+.vscode

@@ -9,6 +9,8 @@ export const metadata: Metadata = {
 
 export default function AuthNestedLayout({
   children,
-}: React.HTMLAttributes<HTMLElement>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return children;
 }

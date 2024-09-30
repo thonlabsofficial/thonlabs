@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Clipboard } from './clipboard';
-import { LuCopy, LuCheck } from 'react-icons/lu';
 import { cn } from '../core/utils';
+import { Copy, Check } from 'lucide-react';
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -91,8 +91,11 @@ TableHead.displayName = 'TableHead';
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
-  { withCopy?: boolean } & React.TdHTMLAttributes<HTMLTableCellElement>
->(({ withCopy, children, className, ...props }, ref) => (
+  {
+    withCopy?: boolean;
+    loading?: boolean;
+  } & React.TdHTMLAttributes<HTMLTableCellElement>
+>(({ withCopy, children, className, loading, ...props }, ref) => (
   <td
     ref={ref}
     className={cn(
@@ -101,14 +104,15 @@ const TableCell = React.forwardRef<
     )}
     {...props}
   >
-    <div className="flex items-center gap-1">
+    <div className={cn({ 'flex items-center gap-1': !loading })}>
       {children}
       {withCopy && (
         <Clipboard
           size="xs"
           variant="outline"
           value={children?.toString() as string}
-          labels={[LuCopy, LuCheck]}
+          labels={[Copy, Check]}
+          iconLabels
         />
       )}
     </div>

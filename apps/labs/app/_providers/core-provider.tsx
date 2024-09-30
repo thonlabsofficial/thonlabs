@@ -22,8 +22,10 @@ export default function CoreProvider({
         enableSystem
         disableTransitionOnChange
       >
-        <SkeletonProvider>{children}</SkeletonProvider>
-        <Toaster />
+        <SkeletonProvider>
+          {children}
+          <Toaster />
+        </SkeletonProvider>
       </ThemeProvider>
     </SWRConfig>
   );

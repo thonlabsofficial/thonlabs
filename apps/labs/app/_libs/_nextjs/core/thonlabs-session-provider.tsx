@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Cookies from 'js-cookie';
 import ClientSessionService from '../services/client-session-service';
 import { EnvironmentData } from '../interfaces/environment-data';
 import { User } from '../interfaces/user';
@@ -43,7 +44,8 @@ export function ThonLabsSessionProvider({
   environmentId,
   publicKey,
 }: ThonLabsSessionProviderProps) {
-  const user = ClientSessionService.getSession();
+  const token = Cookies.get('tl_session');
+  const user = React.useMemo(() => ClientSessionService.getSession(), [token]);
   const { data: clientEnvironmentData } = useSWR<EnvironmentData>(
     `/environments/${environmentId}/data`,
     fetcher({
@@ -51,11 +53,15 @@ export function ThonLabsSessionProvider({
       publicKey,
     }),
   );
+  const memoClientEnvironmentData = React.useMemo(
+    () => clientEnvironmentData || environmentData,
+    [environmentId, publicKey],
+  );
 
   return (
     <ThonLabsSessionContext.Provider
       value={{
-        environmentData: clientEnvironmentData || environmentData,
+        environmentData: memoClientEnvironmentData || environmentData,
         user,
       }}
     >

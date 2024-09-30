@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ServerSessionService from '../services/server-session-service';
-import { forwardSearchParams } from '../utils/helpers';
+import { forwardSearchParams, getURLFromHost } from '../utils/helpers';
 
 export function isAuthRoute(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
@@ -49,7 +49,8 @@ export async function validateSession(req: NextRequest) {
       );
     }
 
-    const isPageRefresh = req.headers.get('referer') === req.url;
+    const isPageRefresh =
+      req.headers.get('referer') === getURLFromHost(req, false).toString();
 
     if (isPageRefresh) {
       // Validates the session status and redirects to regenerate
@@ -71,10 +72,10 @@ export async function validateSession(req: NextRequest) {
           status,
         );
 
-        const { pathname } = new URL(req.url);
+        const url = getURLFromHost(req);
 
         return NextResponse.redirect(
-          new URL(`/api/auth/refresh?dest=${pathname}`, req.url),
+          new URL(`/api/auth/refresh?dest=${url.pathname}`, url.toString()),
         );
       }
     }

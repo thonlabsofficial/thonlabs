@@ -8,6 +8,15 @@ FROM node:20.17-slim AS builder
 WORKDIR /app
 
 ARG PROJECT
+ARG TL_API
+ARG TL_AUTH_API
+ARG TL_ENV_ID
+ARG TL_PK
+
+ENV NEXT_PUBLIC_TL_API=$TL_API
+ENV NEXT_PUBLIC_TL_AUTH_API=$TL_AUTH_API
+ENV NEXT_PUBLIC_TL_ENV_ID=$TL_ENV_ID
+ENV NEXT_PUBLIC_TL_PK=$TL_PK
 
 RUN npm i -g turbo pnpm
 
@@ -15,6 +24,7 @@ COPY . ./source
 
 WORKDIR /app/source
 RUN turbo prune --scope=${PROJECT} --docker
+RUN find . -name '.env' -type f -delete
 
 WORKDIR /app
 RUN mv /app/source/out/pnpm-lock.yaml /app/pnpm-lock.yaml && \

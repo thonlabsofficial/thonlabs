@@ -2,8 +2,8 @@ import React from 'react';
 import { cn } from '@repo/ui/core/utils';
 import { Typo } from '@repo/ui/typo';
 import { Clipboard } from '@repo/ui/clipboard';
-import { LuCheck, LuCopy } from 'react-icons/lu';
 import { format } from 'date-fns/format';
+import { Copy, Check } from 'lucide-react';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   label: React.ReactNode;
@@ -36,7 +36,8 @@ export default function BoxKeyValue({
             size="xs"
             variant="outline"
             value={value?.toString() as string}
-            labels={[LuCopy, LuCheck]}
+            labels={[Copy, Check]}
+            iconLabels
           />
         )}
       </Typo>

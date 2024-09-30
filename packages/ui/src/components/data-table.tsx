@@ -24,6 +24,7 @@ import { Input } from '@repo/ui/input';
 import Utils from '@repo/utils';
 import { LuArrowUp } from 'react-icons/lu';
 import { Skeleton } from './skeleton';
+import { Clipboard } from './clipboard';
 
 function DataTableHeaderCell({
   accessorKey,
@@ -66,7 +67,7 @@ function DataTableLoaderCell({
     <TableRow header key={headerGroup.id} withHover={false}>
       {headerGroup.headers.map((header) => {
         return (
-          <TableCell key={`loading-${header.id}`} className="py-3">
+          <TableCell loading key={`loading-${header.id}`} className="py-3">
             <Skeleton className="!w-3/4 h-6" />
           </TableCell>
         );
@@ -104,9 +105,12 @@ function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>(defaultSorting);
   const [globalFilter, setGlobalFilter] = React.useState(defaultSearch);
 
+  const memoizedColumns = React.useMemo(() => columns, [columns]);
+  const memoizedData = React.useMemo(() => data, [data]);
+
   const table = useReactTable({
-    data,
-    columns,
+    data: memoizedData,
+    columns: memoizedColumns,
     globalFilterFn:
       searchFields.length > 0 ? ('fuzzy' as FilterFnOption<TData>) : undefined,
     state: {
@@ -130,6 +134,13 @@ function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
   });
 
+  const handleGlobalFilterChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setGlobalFilter(String(e.target.value));
+    },
+    [],
+  );
+
   return (
     <div {...props}>
       {searchFields.length > 0 && (
@@ -139,7 +150,7 @@ function DataTable<TData, TValue>({
               placeholder={searchPlaceholder}
               size={'sm'}
               value={globalFilter ?? ''}
-              onChange={(e) => setGlobalFilter(String(e.target.value))}
+              onChange={handleGlobalFilterChange}
             />
           </div>
           {actions && <div className="flex items-center gap-2">{actions}</div>}
@@ -201,12 +212,14 @@ function DataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : (
-              <TableRow>
+              <TableRow withHover={false}>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {noResultsMessage}
+                  <div className="w-full flex justify-center items-center">
+                    {noResultsMessage}
+                  </div>
                 </TableCell>
               </TableRow>
             )}
@@ -217,7 +230,9 @@ function DataTable<TData, TValue>({
   );
 }
 
-// export type DataTableColumnDef<TData, TValue> = ColumnDef<TData, TValue>;
+const MemoizedDataTable = React.memo(DataTable) as typeof DataTable;
 
-export { DataTable, DataTableHeaderCell };
-export type { ColumnDef };
+type DataTableColumnDef<TData, TValue> = ColumnDef<TData, TValue>;
+
+export { MemoizedDataTable as DataTable, DataTableHeaderCell };
+export type { DataTableColumnDef, ColumnDef };
