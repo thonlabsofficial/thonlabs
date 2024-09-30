@@ -31,6 +31,7 @@ type Props = {
 export default function EditUserDrawer({
   trigger,
   user,
+  onOpenChange,
   ...props
 }: Props & React.ComponentProps<typeof Drawer>) {
   const form = useForm<UpdateUserGeneralDataFormData>({
@@ -49,6 +50,7 @@ export default function EditUserDrawer({
   function onSubmit(payload: UpdateUserGeneralDataFormData) {
     startSavingTransition(async () => {
       await updateGeneralData(user.id, payload);
+      onOpenChange?.(false);
     });
   }
 

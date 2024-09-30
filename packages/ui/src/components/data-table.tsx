@@ -22,9 +22,8 @@ import { cn } from '@repo/ui/core/utils';
 import React from 'react';
 import { Input } from '@repo/ui/input';
 import Utils from '@repo/utils';
-import { LuArrowUp } from 'react-icons/lu';
 import { Skeleton } from './skeleton';
-import { Clipboard } from './clipboard';
+import { ArrowUp } from 'lucide-react';
 
 function DataTableHeaderCell({
   accessorKey,
@@ -47,7 +46,7 @@ function DataTableHeaderCell({
       {columnDef.table
         .getState()
         .sorting.some((s: any) => s.id === accessorKey) && (
-        <LuArrowUp
+        <ArrowUp
           className={cn(
             'w-3 h-3',
             columnDef.column.getIsSorted() === 'asc' ? '' : 'rotate-180',

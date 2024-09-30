@@ -28,19 +28,21 @@ function useToast() {
     description,
     variant = 'default',
     duration = 2000,
+    position = 'top-right',
   }: {
     title?: string;
     description: string;
     variant?: 'default' | 'destructive' | 'info' | 'success';
     duration?: number;
+    position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
   }) {
     const { type } = variantMapper[variant];
 
     return sonner.toast[type](title, {
       description,
-      position: 'bottom-right',
       closeButton: true,
       richColors: true,
+      position,
       duration,
     });
   }

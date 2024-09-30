@@ -15,7 +15,7 @@ import { Button } from '@repo/ui/button';
 import ProjectSettingsDrawer from './project-settings-drawer';
 import { Skeleton } from '@repo/ui/skeleton';
 import { cn } from '@repo/ui/core/utils';
-import { LuArrowRight, LuSettings } from 'react-icons/lu';
+import { ArrowRight, Settings } from 'lucide-react';
 
 function ProjectSection({
   project,
@@ -41,7 +41,7 @@ function ProjectSection({
             {!loading ? (
               <ProjectSettingsDrawer
                 trigger={
-                  <Button variant={'ghost'} size={'sm'} icon={LuSettings}>
+                  <Button variant={'ghost'} size={'sm'} icon={Settings}>
                     Settings
                   </Button>
                 }
@@ -120,7 +120,7 @@ function ProjectSection({
                   </div>
                   <div className="flex items-center">
                     {!loading && (
-                      <LuArrowRight
+                      <ArrowRight
                         className={`
                   w-5 h-5 opacity-0 invisible 
                   group-hover:opacity-100 group-hover:visible 

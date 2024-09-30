@@ -4,7 +4,7 @@ import { buttonVariants } from '@repo/ui/button';
 import Link from 'next/link';
 import useUserSession from '../_hooks/use-user-session';
 import { Environment } from '@/(labs)/_interfaces/environment';
-import { LuArrowRight } from 'react-icons/lu';
+import { ArrowRight } from 'lucide-react';
 
 type Props = {
   environment: Environment;
@@ -33,7 +33,7 @@ export default function ProjectEnvNav({ environment }: Props) {
               {(clientEnvironment || environment).name}
             </span>
           </span>
-          <LuArrowRight
+          <ArrowRight
             className={`
               w-3 h-3 opacity-0 invisible 
               group-hover:opacity-100 group-hover:visible 

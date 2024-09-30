@@ -6,7 +6,6 @@ import { Environment } from '@labs/_interfaces/environment';
 import useUserSession from '@labs/_hooks/use-user-session';
 import BreadcrumbSlashDivider from '@/_components/breadcrumb-slash-divider';
 import { usePathname } from 'next/navigation';
-import { LuChevronsUpDown } from 'react-icons/lu';
 import { ScrollArea } from '@repo/ui/scroll-area';
 import { useProjects } from '@/(labs)/_hooks/use-projects';
 import {
@@ -18,7 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from '@repo/ui/dropdown';
-import { Grid2X2, Plus } from 'lucide-react';
+import { ChevronsUpDown, Grid2X2, Plus, Settings } from 'lucide-react';
 import { Skeleton } from '@repo/ui/skeleton';
 import Link from 'next/link';
 
@@ -41,7 +40,7 @@ const ProjectEnvButton = React.forwardRef<HTMLButtonElement, { label: string }>(
         {...props}
       >
         {label}
-        <LuChevronsUpDown
+        <ChevronsUpDown
           className={`w-3.5 h-3.5 -mt-0.5
           text-foreground/60 group-hover:text-zinc-900 dark:group-hover:text-zinc-50
           transition-default`}
@@ -95,6 +94,10 @@ export default function MainHeaderEnvNav({ environment }: Props) {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
+                <DropdownMenuItem onSelect={() => {}}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Project settings
+                </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => {}}>
                   <Plus className="mr-2 h-4 w-4" />
                   New project

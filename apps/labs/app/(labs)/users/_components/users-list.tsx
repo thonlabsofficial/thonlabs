@@ -9,15 +9,6 @@ import { Badge } from '@repo/ui/badge';
 import { Typo } from '@repo/ui/typo';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
-import {
-  LuCheckCircle,
-  LuFileEdit,
-  LuMails,
-  LuMoreHorizontal,
-  LuTrash2,
-  LuView,
-  LuXCircle,
-} from 'react-icons/lu';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import InfoUserDrawer from './info-user-drawer';
 import { Button } from '@repo/ui/button';
@@ -36,7 +27,17 @@ import EditUserDrawer from './edit-user-drawer';
 import useUser from '@/(labs)/_hooks/use-user';
 import { AlertDialog } from '@repo/ui/alert-dialog';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { Copy, Check } from 'lucide-react';
+import {
+  Copy,
+  Check,
+  TableOfContents,
+  FileEdit,
+  Trash2,
+  CheckCircle,
+  XCircle,
+  Mails,
+  MoreHorizontal,
+} from 'lucide-react';
 
 function DropdownMenuItemAction({
   type,
@@ -59,12 +60,12 @@ function DropdownMenuItemAction({
         >
           {user.active ? (
             <>
-              <LuXCircle className="mr-2 h-4 w-4" />
+              <XCircle className="mr-2 h-4 w-4" />
               <span>Deactivate</span>
             </>
           ) : (
             <>
-              <LuCheckCircle className="mr-2 h-4 w-4" />
+              <CheckCircle className="mr-2 h-4 w-4" />
               <span>Activate</span>
             </>
           )}
@@ -80,7 +81,7 @@ function DropdownMenuItemAction({
             await resendInvitation(user.id);
           }}
         >
-          <LuMails className="mr-2 h-4 w-4" />
+          <Mails className="mr-2 h-4 w-4" />
           <span>{user.invitedAt ? 'Resend' : 'Send'} invitation</span>
         </DropdownMenuItem>
       );
@@ -242,7 +243,7 @@ const columns = ({
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <ButtonIcon variant="outline" icon={LuMoreHorizontal} />
+              <ButtonIcon variant="outline" icon={MoreHorizontal} size={'sm'} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuGroup>
@@ -252,7 +253,7 @@ const columns = ({
                     setOpen('info-user-drawer');
                   }}
                 >
-                  <LuView className="mr-2 h-4 w-4" />
+                  <TableOfContents className="mr-2 h-4 w-4" />
                   <span>View info</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -262,7 +263,7 @@ const columns = ({
                     setOpen('edit-user-drawer');
                   }}
                 >
-                  <LuFileEdit className="mr-2 h-4 w-4" />
+                  <FileEdit className="mr-2 h-4 w-4" />
                   <span>Edit</span>
                 </DropdownMenuItem>
                 {user.active && !user.emailConfirmed && (
@@ -284,7 +285,7 @@ const columns = ({
                         setOpen('delete-user');
                       }}
                     >
-                      <LuTrash2 className="mr-2 h-4 w-4" />
+                      <Trash2 className="mr-2 h-4 w-4" />
                       <span>Delete</span>
                     </DropdownMenuItem>
                   </>
