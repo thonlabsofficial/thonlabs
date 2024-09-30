@@ -53,14 +53,10 @@ const iconVariants = cva('', {
   },
 });
 
-type LucideIconType = React.ForwardRefExoticComponent<
-  Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
->;
-
 export interface ButtonIconProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonIconVariants> {
-  icon: React.ReactNode | IconType | LucideIconType;
+  icon: any;
   loading?: boolean;
 }
 
