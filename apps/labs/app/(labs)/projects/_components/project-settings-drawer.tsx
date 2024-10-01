@@ -25,14 +25,15 @@ import useProject from '@/(labs)/_hooks/use-project';
 import DeleteProjectDialog from './delete-project-dialog';
 
 type Props = {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   project: Project;
 };
 
 export default function ProjectSettingsDrawer({
   trigger,
   project,
-}: Props & React.HTMLAttributes<HTMLElement>) {
+  ...props
+}: Props & React.ComponentProps<typeof Drawer>) {
   const form = useForm<UpdateProjectGeneralInfoFormData>({
     resolver: zodResolver(UpdateProjectGeneralInfoFormSchema),
   });
@@ -42,6 +43,7 @@ export default function ProjectSettingsDrawer({
   function onSubmit(payload: UpdateProjectGeneralInfoFormData) {
     startSavingTransition(async () => {
       await updateGeneralInfo(project.id, payload);
+      props.onOpenChange?.(false);
     });
   }
 
@@ -50,17 +52,24 @@ export default function ProjectSettingsDrawer({
     form.setValue('appName', project.appName);
   }
 
+  React.useEffect(() => {
+    if (props.open) {
+      handleReset();
+    }
+  }, [props.open]);
+
   return (
-    <Drawer>
-      <DrawerTrigger asChild onClick={handleReset}>
-        {trigger}
-      </DrawerTrigger>
+    <Drawer {...props}>
+      {trigger && (
+        <DrawerTrigger asChild onClick={handleReset}>
+          {trigger}
+        </DrawerTrigger>
+      )}
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Project Settings</DrawerTitle>
           <DrawerDescription>
-            You can update the name of <strong>{project.appName}</strong>{' '}
-            project.
+            Update the name of <strong>{project?.appName}</strong> project.
           </DrawerDescription>
         </DrawerHeader>
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
@@ -71,7 +80,7 @@ export default function ProjectSettingsDrawer({
                   <Input
                     id="appName"
                     label="PID (Project ID)"
-                    value={project.id}
+                    value={project?.id}
                     readOnly
                     withCopy
                   />

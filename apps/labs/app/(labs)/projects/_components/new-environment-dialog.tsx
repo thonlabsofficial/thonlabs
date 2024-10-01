@@ -19,20 +19,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useUserSession from '@labs/_hooks/use-user-session';
 import { useRouter } from 'next/navigation';
 import { Project } from '@labs/_interfaces/project';
 import useEnvironment from '@/(labs)/_hooks/use-environment';
 
 type Props = {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   project: Project;
 };
 
 export default function NewEnvironmentDialog({
   trigger,
   project,
-}: Props & React.HTMLAttributes<HTMLElement>) {
+  ...props
+}: Props & React.ComponentProps<typeof Dialog>) {
   const form = useForm<NewEnvironmentFormData>({
     resolver: zodResolver(NewEnvironmentFormSchema),
   });
@@ -56,16 +56,18 @@ export default function NewEnvironmentDialog({
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild onClick={handleReset}>
-        {trigger}
-      </DialogTrigger>
+    <Dialog {...props}>
+      {trigger && (
+        <DialogTrigger asChild onClick={handleReset}>
+          {trigger}
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>New Environment</DialogTitle>
           <DialogDescription>
             Complete the information below to create a new environment for{' '}
-            <strong>{project.appName}</strong> project.
+            <strong>{project?.appName}</strong> project.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>

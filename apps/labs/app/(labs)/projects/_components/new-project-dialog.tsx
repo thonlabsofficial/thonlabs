@@ -23,12 +23,13 @@ import useProject from '@/(labs)/_hooks/use-project';
 import { useRouter } from 'next/navigation';
 
 type Props = {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
 };
 
 export default function NewProjectDialog({
   trigger,
-}: Props & React.HTMLAttributes<HTMLElement>) {
+  ...props
+}: Props & React.ComponentProps<typeof Dialog>) {
   const form = useForm<NewProjectFormData>({
     resolver: zodResolver(NewProjectFormSchema),
   });
@@ -52,10 +53,12 @@ export default function NewProjectDialog({
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild onClick={handleReset}>
-        {trigger}
-      </DialogTrigger>
+    <Dialog {...props}>
+      {trigger && (
+        <DialogTrigger asChild onClick={handleReset}>
+          {trigger}
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>New Project</DialogTitle>

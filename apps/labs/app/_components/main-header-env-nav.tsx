@@ -19,6 +19,10 @@ import {
 import { ChevronsUpDown, Grid2X2, Plus, Settings } from 'lucide-react';
 import { Skeleton } from '@repo/ui/skeleton';
 import Link from 'next/link';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import ProjectSettingsDrawer from '@/(labs)/projects/_components/project-settings-drawer';
+import NewProjectDialog from '@/(labs)/projects/_components/new-project-dialog';
+import NewEnvironmentDialog from '@/(labs)/projects/_components/new-environment-dialog';
 
 const ProjectEnvButton = React.forwardRef<
   HTMLButtonElement,
@@ -51,109 +55,159 @@ const ProjectEnvButton = React.forwardRef<
 });
 
 export default function MainHeaderEnvNav() {
-  const pathname = usePathname();
-
-  return !pathname.startsWith('/projects') && <MainHeaderEnvNavContent />;
-}
-
-function MainHeaderEnvNavContent() {
   const { projects, isLoadingProjects } = useProjects({
     revalidateOnFocus: false,
   });
   const { environment, isLoadingUserSession } = useUserSession();
+  const { toast } = useToast();
+  const pathname = usePathname();
+  const [dialogOpen, setDialogOpen] = React.useState('');
+
   const projectEnvironments = projects.find(
     (project) => project.id === environment?.project?.id,
   )?.environments;
-
+  const restPathname = pathname.split('/').slice(2).join('/');
   const isLoading = isLoadingProjects || isLoadingUserSession;
 
   return (
-    <div className="flex items-center ml-1">
-      <BreadcrumbSlashDivider />
-      <span className="flex items-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <ProjectEnvButton
-              label={environment?.project?.appName}
-              loading={isLoading}
-            />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-64" align="start">
-            <DropdownMenuLabel>Projects</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <ScrollArea className="max-h-[6.125rem]">
-                {!isLoading ? (
-                  projects.map((project) => (
-                    <DropdownMenuItem key={project.id} onSelect={() => {}}>
-                      {project.appName}
-                    </DropdownMenuItem>
-                  ))
-                ) : (
-                  <div className="flex flex-col gap-1">
-                    <Skeleton className="h-6 w-full" />
-                    <Skeleton className="h-6 w-full" />
-                    <Skeleton className="h-6 w-full" />
-                  </div>
-                )}
-              </ScrollArea>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onSelect={() => {}}>
-                <Settings className="mr-2 h-4 w-4" />
-                Project settings
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => {}}>
-                <Plus className="mr-2 h-4 w-4" />
-                New project
-              </DropdownMenuItem>
-              <Link href="/projects">
-                <DropdownMenuItem>
-                  <Grid2X2 className="mr-2 h-4 w-4" />
-                  See all projects
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
+    <>
+      <div className="flex items-center ml-1">
         <BreadcrumbSlashDivider />
+        <span className="flex items-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <ProjectEnvButton
+                label={environment?.project?.appName}
+                loading={isLoading}
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64" align="start">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Current Project</DropdownMenuLabel>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setDialogOpen('project-settings');
+                  }}
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>All Projects</DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <ScrollArea className="max-h-[6.125rem]">
+                  {!isLoading ? (
+                    projects.map((project) => (
+                      <Link
+                        href={`/${project.environments?.[0]?.id}`}
+                        key={project.id}
+                        onClick={() => {
+                          toast({
+                            title: 'Welcome back!',
+                            description: `You're now in ${project.environments?.[0]?.name} for project ${project.appName}.`,
+                            duration: 2400,
+                          });
+                        }}
+                      >
+                        <DropdownMenuItem>{project.appName}</DropdownMenuItem>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="flex flex-col gap-1">
+                      <Skeleton className="h-6 w-full" />
+                      <Skeleton className="h-6 w-full" />
+                      <Skeleton className="h-6 w-full" />
+                    </div>
+                  )}
+                </ScrollArea>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setDialogOpen('new-project');
+                  }}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  New project
+                </DropdownMenuItem>
+                <Link href="/projects">
+                  <DropdownMenuItem>
+                    <Grid2X2 className="mr-2 h-4 w-4" />
+                    See all projects
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <ProjectEnvButton label={environment?.name} loading={isLoading} />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-64" align="start">
-            <DropdownMenuLabel>Environments</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <ScrollArea className="max-h-[6.125rem]">
-                {!isLoading ? (
-                  projectEnvironments?.map((env) => (
-                    <DropdownMenuItem key={env.id} onSelect={() => {}}>
-                      {env.name}
-                    </DropdownMenuItem>
-                  ))
-                ) : (
-                  <div className="flex flex-col gap-1">
-                    <Skeleton className="h-6 w-full" />
-                    <Skeleton className="h-6 w-full" />
-                    <Skeleton className="h-6 w-full" />
-                  </div>
-                )}
-              </ScrollArea>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onSelect={() => {}}>
-                <Plus className="mr-2 h-4 w-4" />
-                New Environment
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </span>
-    </div>
+          <BreadcrumbSlashDivider />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <ProjectEnvButton label={environment?.name} loading={isLoading} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64" align="start">
+              <DropdownMenuLabel>
+                {environment?.project?.appName} Environments
+              </DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <ScrollArea className="max-h-[6.125rem]">
+                  {!isLoading ? (
+                    projectEnvironments?.map((env) => (
+                      <Link
+                        href={`/${env.id}/${restPathname}`}
+                        key={env.id}
+                        onClick={() => {
+                          toast({
+                            title: 'Environment changed',
+                            description: `You're now in ${env.name}.`,
+                            duration: 2400,
+                          });
+                        }}
+                      >
+                        <DropdownMenuItem>{env.name}</DropdownMenuItem>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="flex flex-col gap-1">
+                      <Skeleton className="h-6 w-full" />
+                      <Skeleton className="h-6 w-full" />
+                      <Skeleton className="h-6 w-full" />
+                    </div>
+                  )}
+                </ScrollArea>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setDialogOpen('new-environment');
+                  }}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Environment
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </span>
+      </div>
+      <ProjectSettingsDrawer
+        project={environment?.project}
+        open={dialogOpen === 'project-settings'}
+        onOpenChange={() => setDialogOpen('')}
+      />
+      <NewProjectDialog
+        open={dialogOpen === 'new-project'}
+        onOpenChange={() => setDialogOpen('')}
+      />
+      <NewEnvironmentDialog
+        project={environment?.project}
+        open={dialogOpen === 'new-environment'}
+        onOpenChange={() => setDialogOpen('')}
+      />
+    </>
   );
 }

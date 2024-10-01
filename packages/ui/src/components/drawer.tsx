@@ -5,7 +5,16 @@ import * as DrawerPrimitive from '@radix-ui/react-dialog';
 import { cn } from '../core/utils';
 import { X } from 'lucide-react';
 
-const Drawer = DrawerPrimitive.Root;
+const Drawer = ({
+  open,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Root>) => {
+  React.useEffect(() => {
+    window.document.body.style.pointerEvents = 'auto';
+  }, [open]);
+
+  return <DrawerPrimitive.Root open={open} {...props} />;
+};
 
 const DrawerTrigger = DrawerPrimitive.Trigger;
 

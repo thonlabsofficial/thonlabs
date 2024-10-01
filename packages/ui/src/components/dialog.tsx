@@ -6,7 +6,16 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 
 import { cn } from '../core/utils';
 
-const Dialog = DialogPrimitive.Root;
+const Dialog = ({
+  open,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>) => {
+  React.useEffect(() => {
+    window.document.body.style.pointerEvents = 'auto';
+  }, [open]);
+
+  return <DialogPrimitive.Root open={open} {...props} />;
+};
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
