@@ -14,7 +14,7 @@ import useOptimisticUpdate from './use-optmistic-update';
 import { useEnvironmentData } from '@/_libs/_nextjs';
 
 type Params = {
-  environmentID?: string;
+  environmentId?: string;
 };
 
 type Options = {
@@ -31,7 +31,7 @@ export default function useEnvironment(
     isValidating: isValidatingEnvironment,
     error: environmentError,
   } = useSWR<EnvironmentDetail>(
-    () => params.environmentID && `/environments/${params.environmentID}`,
+    () => params.environmentId && `/environments/${params.environmentId}`,
   );
   const environmentData = useEnvironmentData();
 

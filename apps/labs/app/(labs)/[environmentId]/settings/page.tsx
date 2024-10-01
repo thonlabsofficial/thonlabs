@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import PageWrapper from '@labs/_components/page-wrapper';
-import PageHeader from '../_components/page-header';
-import ServerAuthSessionService from '../_services/server-auth-session-service';
-import { Environment } from '../_interfaces/environment';
+import PageHeader from '../../_components/page-header';
+import ServerAuthSessionService from '../../_services/server-auth-session-service';
+import { Environment } from '../../_interfaces/environment';
 import GeneralSettings from './_components/general-settings';
 import AuthSettings from './_components/auth-settings';
 import React from 'react';
@@ -15,17 +15,13 @@ export const metadata: Metadata = {
   title: 'Settings',
 };
 
-export default function Settings() {
-  const sessionEnvironment = ServerAuthSessionService.getEnv();
-
+export default async function Settings() {
   return (
     <>
       <PageHeader title="Settings" icon={LuSettings} withContainer />
       <PageWrapper className="pt-4 grid gap-12">
         <section>
-          <GeneralSettings
-            sessionEnvironment={sessionEnvironment as Environment}
-          />
+          <GeneralSettings />
         </section>
 
         <section>
@@ -33,9 +29,7 @@ export default function Settings() {
             title="Authentication Settings"
             description="Configure authentication type and tokens expirations"
           />
-          <AuthSettings
-            sessionEnvironment={sessionEnvironment as Environment}
-          />
+          <AuthSettings />
         </section>
 
         <section>
@@ -45,15 +39,13 @@ export default function Settings() {
           />
 
           <div className="grid gap-1.5">
-            <APIKeysSettings
-              sessionEnvironment={sessionEnvironment as Environment}
-            />
+            <APIKeysSettings />
           </div>
         </section>
 
         <section>
           <SectionHeader title="Danger Zone" />
-          <DangerZone sessionEnvironment={sessionEnvironment as Environment} />
+          <DangerZone />
         </section>
       </PageWrapper>
     </>

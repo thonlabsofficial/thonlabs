@@ -1,38 +1,20 @@
-import { Environment } from '@/(labs)/_interfaces/environment';
-import { Project } from '@/(labs)/_interfaces/project';
+import React from 'react';
+import { useParams } from 'next/navigation';
 import { useSession } from '@/_libs/_nextjs';
-import { useCookies } from 'react-cookie';
+import { useEnvironments } from '@/(labs)/_hooks/use-environments';
+import { Environment } from '@labs/_interfaces/environment';
 
 export default function useUserSession() {
   const session = useSession();
-  const [cookies, setCookie, removeCookie] = useCookies(['tl_env']);
-  const environment: Environment = cookies.tl_env;
-
-  function setEnv({
-    environment,
-    project,
-  }: {
-    environment: Environment;
-    project: Project;
-  }) {
-    const data = {
-      ...environment,
-      project: {
-        id: project.id,
-        appName: project.appName,
-      },
-    };
-    setCookie('tl_env', JSON.stringify(data), { path: '/' });
-  }
-
-  function clearEnv() {
-    removeCookie('tl_env', { path: '/' });
-  }
+  const { environmentId } = useParams();
+  const { environments, isLoadingEnvironments } = useEnvironments();
+  const environment = React.useMemo(() => {
+    return environments.find((env) => env.id === environmentId);
+  }, [environments, environmentId]);
 
   return {
     user: session.user,
-    environment,
-    setEnv,
-    clearEnv,
+    environment: environment as Environment,
+    isLoadingUserSession: isLoadingEnvironments,
   };
 }

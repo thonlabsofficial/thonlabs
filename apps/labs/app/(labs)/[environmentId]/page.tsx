@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import PageWrapper from './_components/page-wrapper';
-import PageHeader from './_components/page-header';
+import PageWrapper from '../_components/page-wrapper';
+import PageHeader from '../_components/page-header';
 import { LuLayoutDashboard } from 'react-icons/lu';
 
 export const metadata: Metadata = {

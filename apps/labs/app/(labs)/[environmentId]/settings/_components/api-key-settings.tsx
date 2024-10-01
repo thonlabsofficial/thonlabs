@@ -7,19 +7,21 @@ import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
 import { Skeleton } from '@repo/ui/skeleton';
-import RegeneratePublicKeyDialog from '@labs/settings/_components/regenerate-public-key-dialog';
-import RegenerateSecretKeyDialog from '@labs/settings/_components/regenerate-secret-key-dialog';
-import CustomDomainStatusCard from '@labs/settings/_components/custom-domain-status-card';
-import CustomDomainActions from '@labs/settings/_components/custom-domain-actions';
+import RegeneratePublicKeyDialog from '@/(labs)/[environmentId]/settings/_components/regenerate-public-key-dialog';
+import RegenerateSecretKeyDialog from '@/(labs)/[environmentId]/settings/_components/regenerate-secret-key-dialog';
+import CustomDomainStatusCard from '@/(labs)/[environmentId]/settings/_components/custom-domain-status-card';
+import CustomDomainActions from '@/(labs)/[environmentId]/settings/_components/custom-domain-actions';
+import { useParams } from 'next/navigation';
 
 type Props = {
   sessionEnvironment: Environment;
 };
 
-export default function APIKeysSettings({ sessionEnvironment }: Props) {
+export default function APIKeysSettings() {
+  const { environmentId } = useParams();
   const { environment, isLoadingEnvironment, getEnvironmentSecretKey } =
     useEnvironment({
-      environmentID: sessionEnvironment.id,
+      environmentId: environmentId as string,
     });
   const [secretKey, setSecretKey] = React.useState('');
   const authDomain = React.useMemo(() => {
@@ -31,7 +33,7 @@ export default function APIKeysSettings({ sessionEnvironment }: Props) {
       return;
     }
 
-    const key = await getEnvironmentSecretKey(sessionEnvironment.id);
+    const key = await getEnvironmentSecretKey(environmentId as string);
 
     setSecretKey(key);
   }
@@ -53,11 +55,11 @@ export default function APIKeysSettings({ sessionEnvironment }: Props) {
               />
             </InputWrapper>
 
-            <CustomDomainStatusCard environmentID={sessionEnvironment.id} />
+            <CustomDomainStatusCard environmentID={environmentId as string} />
           </CardContent>
         </div>
         <CardFooter className="flex justify-end gap-2">
-          <CustomDomainActions environmentID={sessionEnvironment.id} />
+          <CustomDomainActions environmentID={environmentId as string} />
         </CardFooter>
       </Card>
       <Card>
@@ -82,7 +84,7 @@ export default function APIKeysSettings({ sessionEnvironment }: Props) {
             <Skeleton className="!w-44 h-8" />
           ) : (
             <RegeneratePublicKeyDialog
-              environmentID={sessionEnvironment.id}
+              environmentID={environmentId as string}
               trigger={
                 <Button
                   type="button"
@@ -119,7 +121,7 @@ export default function APIKeysSettings({ sessionEnvironment }: Props) {
             <Skeleton className="!w-44 h-8" />
           ) : (
             <RegenerateSecretKeyDialog
-              environmentID={sessionEnvironment.id}
+              environmentID={environmentId as string}
               trigger={
                 <Button
                   type="button"

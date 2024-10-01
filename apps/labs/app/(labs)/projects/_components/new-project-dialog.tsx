@@ -20,7 +20,6 @@ import {
   DialogTrigger,
 } from '@repo/ui/dialog';
 import useProject from '@/(labs)/_hooks/use-project';
-import useUserSession from '@/(labs)/_hooks/use-user-session';
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -35,7 +34,6 @@ export default function NewProjectDialog({
   });
   const { createProject } = useProject();
   const [isCreatingProject, startTransitionCreatingProject] = useTransition();
-  const { setEnv } = useUserSession();
   const router = useRouter();
 
   function onSubmit(payload: NewProjectFormData) {
@@ -43,8 +41,7 @@ export default function NewProjectDialog({
       const project = await createProject(payload);
 
       if (project) {
-        setEnv({ environment: project.environment, project });
-        router.push('/');
+        router.push(`/${project.environment.id}`);
       }
     });
   }

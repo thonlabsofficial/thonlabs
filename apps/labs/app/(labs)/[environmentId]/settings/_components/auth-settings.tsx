@@ -2,12 +2,10 @@
 
 import SeparatorLine from '@/(labs)/_components/separator-line';
 import useEnvironment from '@/(labs)/_hooks/use-environment';
-import { Environment } from '@/(labs)/_interfaces/environment';
 import {
   UpdateEnvironmentAuthSettingsFormData,
   UpdateEnvironmentAuthSettingsFormSchema,
 } from '@/(labs)/_validators/environments-validators';
-import { useEnvironmentData } from '@/_libs/_nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
@@ -15,21 +13,19 @@ import { Input, InputWrapper } from '@repo/ui/input';
 import { InputRadio } from '@repo/ui/input-radio';
 import { InputSwitch } from '@repo/ui/input-switch';
 import { Typo } from '@repo/ui/typo';
+import { useParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-type Props = {
-  sessionEnvironment: Environment;
-};
-
-export default function AuthSettings({ sessionEnvironment }: Props) {
+export default function AuthSettings() {
+  const { environmentId } = useParams();
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
   });
   const { environment, isLoadingEnvironment, updateEnvironmentAuthSettings } =
     useEnvironment(
       {
-        environmentID: sessionEnvironment.id,
+        environmentId: environmentId as string,
       },
       {
         onFetchComplete() {

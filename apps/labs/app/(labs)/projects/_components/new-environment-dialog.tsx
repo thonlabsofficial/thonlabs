@@ -38,7 +38,6 @@ export default function NewEnvironmentDialog({
   });
   const { createEnvironment } = useEnvironment();
   const [isCreating, startCreatingTransition] = useTransition();
-  const { setEnv } = useUserSession();
   const router = useRouter();
 
   function onSubmit(payload: NewEnvironmentFormData) {
@@ -46,8 +45,7 @@ export default function NewEnvironmentDialog({
       const environment = await createEnvironment(project.id, payload);
 
       if (environment) {
-        setEnv({ environment, project });
-        router.push('/');
+        router.push(`/${environment.id}`);
       }
     });
   }

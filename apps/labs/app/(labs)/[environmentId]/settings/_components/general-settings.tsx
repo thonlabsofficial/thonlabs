@@ -1,8 +1,6 @@
 'use client';
 
 import useEnvironment from '@/(labs)/_hooks/use-environment';
-import useUserSession from '@/(labs)/_hooks/use-user-session';
-import { Environment } from '@/(labs)/_interfaces/environment';
 import {
   UpdateEnvironmentGeneralSettingsFormData,
   UpdateEnvironmentGeneralSettingsFormSchema,
@@ -11,25 +9,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
+import { useParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
-type Props = {
-  sessionEnvironment: Environment;
-};
-
-export default function GeneralSettings({ sessionEnvironment }: Props) {
+export default function GeneralSettings() {
   const form = useForm<UpdateEnvironmentGeneralSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentGeneralSettingsFormSchema),
   });
-  const session = useUserSession();
+  const { environmentId } = useParams();
   const {
     environment,
     isLoadingEnvironment,
     updateEnvironmentGeneralSettings,
   } = useEnvironment(
     {
-      environmentID: sessionEnvironment.id,
+      environmentId: environmentId as string,
     },
     {
       onFetchComplete() {
@@ -48,13 +43,6 @@ export default function GeneralSettings({ sessionEnvironment }: Props) {
         form.reset({
           name: payload?.name || '',
           appURL: payload?.appURL || '',
-        });
-        session.setEnv({
-          environment: {
-            ...sessionEnvironment,
-            ...payload,
-          },
-          project: sessionEnvironment.project,
         });
       });
     });

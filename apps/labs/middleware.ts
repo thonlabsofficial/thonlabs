@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
   if (
     !isAuthRoute(req) &&
     !pathname.startsWith('/projects') &&
-    !ServerAuthSessionService.getEnv()
+    !pathname.startsWith('/env-')
   ) {
     console.log(
       '[MIDDLEWARE] No environment selected, redirecting to /projects',

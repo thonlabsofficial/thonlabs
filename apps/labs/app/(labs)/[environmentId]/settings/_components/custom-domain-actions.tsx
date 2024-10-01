@@ -3,7 +3,7 @@ import useEnvironment from '@labs/_hooks/use-environment';
 import { AlertDialog } from '@repo/ui/alert-dialog';
 import { Button } from '@repo/ui/button';
 import { Skeleton } from '@repo/ui/skeleton';
-import SetCustomDomainDialog from '@labs/settings/_components/set-custom-domain-dialog';
+import SetCustomDomainDialog from '@/(labs)/[environmentId]/settings/_components/set-custom-domain-dialog';
 import { CustomDomainStatus } from '@/(labs)/_interfaces/environment';
 
 interface Props {

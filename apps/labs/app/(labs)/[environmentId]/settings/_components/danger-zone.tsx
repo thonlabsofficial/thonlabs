@@ -1,19 +1,16 @@
 'use client';
 
 import useEnvironment from '@/(labs)/_hooks/use-environment';
-import { Environment } from '@/(labs)/_interfaces/environment';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardHeader } from '@repo/ui/card';
 import DeleteEnvironmentDialog from './delete-environment-dialog';
 import { Skeleton } from '@repo/ui/skeleton';
+import { useParams } from 'next/navigation';
 
-type Props = {
-  sessionEnvironment: Environment;
-};
-
-export default function DangerZone({ sessionEnvironment }: Props) {
+export default function DangerZone() {
+  const { environmentId } = useParams();
   const { environment, isLoadingEnvironment } = useEnvironment({
-    environmentID: sessionEnvironment.id,
+    environmentId: environmentId as string,
   });
 
   return (
