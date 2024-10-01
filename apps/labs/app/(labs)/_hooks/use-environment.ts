@@ -76,12 +76,12 @@ export default function useEnvironment(
   }
 
   async function updateEnvironmentGeneralSettings(
-    environmentID: string,
+    environmentId: string,
     payload: UpdateEnvironmentGeneralSettingsFormData,
   ) {
     try {
       await labsAPI.patch<Environment>(
-        `/environments/${environmentID}/general-settings`,
+        `/environments/${environmentId}/general-settings`,
         payload,
       );
 
@@ -90,7 +90,7 @@ export default function useEnvironment(
       */
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             ...payload,
@@ -104,7 +104,7 @@ export default function useEnvironment(
               (project: Project & { environments: Environment[] }) => ({
                 ...project,
                 environments: project.environments.map((e: Environment) =>
-                  e.id === environmentID ? { ...e, ...payload } : e,
+                  e.id === environmentId ? { ...e, ...payload } : e,
                 ),
               }),
             ),
@@ -131,18 +131,18 @@ export default function useEnvironment(
   }
 
   async function updateEnvironmentAuthSettings(
-    environmentID: string,
+    environmentId: string,
     payload: UpdateEnvironmentAuthSettingsFormData,
   ) {
     try {
       await labsAPI.patch<Environment>(
-        `/environments/${environmentID}/auth-settings`,
+        `/environments/${environmentId}/auth-settings`,
         payload,
       );
 
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             ...payload,
@@ -168,15 +168,15 @@ export default function useEnvironment(
     }
   }
 
-  async function regenerateEnvironmentPublicKey(environmentID: string) {
+  async function regenerateEnvironmentPublicKey(environmentId: string) {
     try {
       const { data } = await labsAPI.patch<{ publicKey: string }>(
-        `/environments/${environmentID}/public`,
+        `/environments/${environmentId}/public`,
       );
 
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             publicKey: data.publicKey,
@@ -197,15 +197,15 @@ export default function useEnvironment(
     }
   }
 
-  async function regenerateEnvironmentSecretKey(environmentID: string) {
+  async function regenerateEnvironmentSecretKey(environmentId: string) {
     try {
       const { data } = await labsAPI.patch<{ secretKey: string }>(
-        `/environments/${environmentID}/secret`,
+        `/environments/${environmentId}/secret`,
       );
 
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             secretKey: data.secretKey,
@@ -226,9 +226,9 @@ export default function useEnvironment(
     }
   }
 
-  async function getEnvironmentSecretKey(environmentID: string) {
+  async function getEnvironmentSecretKey(environmentId: string) {
     const { data } = await labsAPI.get<{ secretKey: string }>(
-      `/environments/${environmentID}/secret`,
+      `/environments/${environmentId}/secret`,
     );
 
     return data.secretKey;
@@ -273,10 +273,10 @@ export default function useEnvironment(
     }
   }
 
-  async function setCustomDomain(environmentID: string, customDomain: string) {
+  async function setCustomDomain(environmentId: string, customDomain: string) {
     try {
       const { data } = await labsAPI.patch(
-        `/environments/${environmentID}/domains`,
+        `/environments/${environmentId}/domains`,
         {
           customDomain,
         },
@@ -284,7 +284,7 @@ export default function useEnvironment(
 
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             ...data,
@@ -307,13 +307,13 @@ export default function useEnvironment(
     }
   }
 
-  async function deleteCustomDomain(environmentID: string) {
+  async function deleteCustomDomain(environmentId: string) {
     try {
-      await labsAPI.delete(`/environments/${environmentID}/domains`);
+      await labsAPI.delete(`/environments/${environmentId}/domains`);
 
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             customDomain: null,
@@ -338,15 +338,15 @@ export default function useEnvironment(
     }
   }
 
-  async function verifyCustomDomain(environmentID: string) {
+  async function verifyCustomDomain(environmentId: string) {
     try {
       const { data } = await labsAPI.post(
-        `/environments/${environmentID}/domains/verify`,
+        `/environments/${environmentId}/domains/verify`,
       );
 
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             ...data,
@@ -363,15 +363,15 @@ export default function useEnvironment(
     }
   }
 
-  async function reverifyCustomDomain(environmentID: string) {
+  async function reverifyCustomDomain(environmentId: string) {
     try {
       const { data } = await labsAPI.post(
-        `/environments/${environmentID}/domains/reverify`,
+        `/environments/${environmentId}/domains/reverify`,
       );
 
       makeMutations([
         {
-          cacheKey: `/environments/${environmentID}`,
+          cacheKey: `/environments/${environmentId}`,
           populateCache: (_, environment) => ({
             ...environment,
             customDomainStatus: data.customDomainStatus,

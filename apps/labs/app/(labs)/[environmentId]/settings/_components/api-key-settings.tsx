@@ -55,11 +55,11 @@ export default function APIKeysSettings() {
               />
             </InputWrapper>
 
-            <CustomDomainStatusCard environmentID={environmentId as string} />
+            <CustomDomainStatusCard environmentId={environmentId as string} />
           </CardContent>
         </div>
         <CardFooter className="flex justify-end gap-2">
-          <CustomDomainActions environmentID={environmentId as string} />
+          <CustomDomainActions environmentId={environmentId as string} />
         </CardFooter>
       </Card>
       <Card>
@@ -84,7 +84,7 @@ export default function APIKeysSettings() {
             <Skeleton className="!w-44 h-8" />
           ) : (
             <RegeneratePublicKeyDialog
-              environmentID={environmentId as string}
+              environmentId={environmentId as string}
               trigger={
                 <Button
                   type="button"
@@ -121,7 +121,7 @@ export default function APIKeysSettings() {
             <Skeleton className="!w-44 h-8" />
           ) : (
             <RegenerateSecretKeyDialog
-              environmentID={environmentId as string}
+              environmentId={environmentId as string}
               trigger={
                 <Button
                   type="button"

@@ -18,17 +18,17 @@ import { Alert } from '@repo/ui/alert';
 import { Check, Loader, X } from 'lucide-react';
 
 interface Props {
-  environmentID: string;
+  environmentId: string;
 }
 
-export default function CustomDomainStatusCard({ environmentID }: Props) {
+export default function CustomDomainStatusCard({ environmentId }: Props) {
   const {
     environment,
     isLoadingEnvironment,
     isValidatingEnvironment,
     reverifyCustomDomain,
   } = useEnvironment({
-    environmentID,
+    environmentId,
   });
   const authDomain = React.useMemo(() => {
     return `${environment?.id?.split('-')?.reverse()?.[0]}.auth.thonlabs.io`;
@@ -36,7 +36,7 @@ export default function CustomDomainStatusCard({ environmentID }: Props) {
 
   React.useEffect(() => {
     if (environment?.customDomain && isCustomDomainVerifying()) {
-      reverifyCustomDomain(environmentID);
+      reverifyCustomDomain(environmentId);
     }
   }, [environment, isValidatingEnvironment]);
 

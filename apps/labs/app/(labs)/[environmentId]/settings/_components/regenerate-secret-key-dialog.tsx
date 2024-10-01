@@ -17,13 +17,13 @@ import { Input, InputWrapper } from '@repo/ui/input';
 
 type Props = {
   trigger: React.ReactNode;
-  environmentID: string;
+  environmentId: string;
   onSecretKeyRegenerated: (newSecretKey: string) => void;
 };
 
 export default function RegenerateSecretKeyDialog({
   trigger,
-  environmentID,
+  environmentId,
   onSecretKeyRegenerated,
 }: Props & React.HTMLAttributes<HTMLElement>) {
   const [regenerated, setRegenerated] = React.useState(false);
@@ -33,7 +33,7 @@ export default function RegenerateSecretKeyDialog({
 
   async function handleRegenerateSecretKey() {
     try {
-      const key = await regenerateEnvironmentSecretKey(environmentID);
+      const key = await regenerateEnvironmentSecretKey(environmentId);
       setSecretKey(key);
       setRegenerated(true);
       onSecretKeyRegenerated(key);

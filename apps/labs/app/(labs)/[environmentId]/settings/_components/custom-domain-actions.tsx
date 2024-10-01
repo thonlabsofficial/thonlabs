@@ -7,17 +7,17 @@ import SetCustomDomainDialog from '@/(labs)/[environmentId]/settings/_components
 import { CustomDomainStatus } from '@/(labs)/_interfaces/environment';
 
 interface Props {
-  environmentID: string;
+  environmentId: string;
 }
 
-export default function CustomDomainActions({ environmentID }: Props) {
+export default function CustomDomainActions({ environmentId }: Props) {
   const {
     environment,
     isLoadingEnvironment,
     deleteCustomDomain,
     verifyCustomDomain,
   } = useEnvironment({
-    environmentID,
+    environmentId,
   });
   const [isDeleting, startDeletingTransition] = React.useTransition();
 
@@ -46,7 +46,7 @@ export default function CustomDomainActions({ environmentID }: Props) {
               type="button"
               size={'sm'}
               disabled={isLoadingEnvironment}
-              onClick={() => verifyCustomDomain(environmentID)}
+              onClick={() => verifyCustomDomain(environmentId)}
             >
               Verify Again
             </Button>
@@ -65,7 +65,7 @@ export default function CustomDomainActions({ environmentID }: Props) {
             isActing={isDeleting}
             onClick={async () => {
               startDeletingTransition(async () => {
-                await deleteCustomDomain(environmentID);
+                await deleteCustomDomain(environmentId);
               });
             }}
           />

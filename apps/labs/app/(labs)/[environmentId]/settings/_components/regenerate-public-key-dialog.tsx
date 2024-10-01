@@ -17,22 +17,22 @@ import { Input, InputWrapper } from '@repo/ui/input';
 
 type Props = {
   trigger: React.ReactNode;
-  environmentID: string;
+  environmentId: string;
 };
 
 export default function RegeneratePublicKeyDialog({
   trigger,
-  environmentID,
+  environmentId,
 }: Props & React.HTMLAttributes<HTMLElement>) {
   const [regenerated, setRegenerated] = React.useState(false);
   const { environment, regenerateEnvironmentPublicKey } = useEnvironment({
-    environmentID,
+    environmentId,
   });
   const [isRegenerating, startRegeneratingTransition] = useTransition();
 
   async function handleRegeneratePublicKey() {
     try {
-      await regenerateEnvironmentPublicKey(environmentID);
+      await regenerateEnvironmentPublicKey(environmentId);
       setRegenerated(true);
     } catch {}
   }
