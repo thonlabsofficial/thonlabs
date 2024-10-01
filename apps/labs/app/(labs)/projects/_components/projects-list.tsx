@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import { Card, CardContent } from '@repo/ui/card';
 import { Typo } from '@repo/ui/typo';
 import { useRouter } from 'next/navigation';
-import NewEnvironmentDialog from '@labs/projects/_components/new-environment-dialog';
+import NewEnvironmentDialog from '@/(labs)/projects/_components/new-environment-dialog';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Button } from '@repo/ui/button';
 import ProjectSettingsDrawer from './project-settings-drawer';

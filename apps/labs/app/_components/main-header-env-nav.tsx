@@ -51,8 +51,17 @@ const ProjectEnvButton = React.forwardRef<HTMLButtonElement, { label: string }>(
 );
 
 export default function MainHeaderEnvNav({ environment }: Props) {
-  const { environment: clientEnvironment } = useUserSession();
   const pathname = usePathname();
+
+  return (
+    !pathname.startsWith('/projects') && (
+      <MainHeaderEnvNavContent environment={environment} />
+    )
+  );
+}
+
+function MainHeaderEnvNavContent({ environment }: Props) {
+  const { environment: clientEnvironment } = useUserSession();
   const { projects, isLoadingProjects } = useProjects({
     revalidateOnFocus: false,
   });
@@ -61,7 +70,6 @@ export default function MainHeaderEnvNav({ environment }: Props) {
   )?.environments;
 
   return (
-    !pathname.startsWith('/projects') &&
     (clientEnvironment || environment) && (
       <div className="flex items-center ml-1">
         <BreadcrumbSlashDivider />

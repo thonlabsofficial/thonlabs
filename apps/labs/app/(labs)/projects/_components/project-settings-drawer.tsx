@@ -21,7 +21,7 @@ import {
   DrawerContentContainer,
 } from '@repo/ui/drawer';
 import { Project } from '@labs/_interfaces/project';
-import useProject from '../../_hooks/use-project';
+import useProject from '@/(labs)/_hooks/use-project';
 import DeleteProjectDialog from './delete-project-dialog';
 
 type Props = {

@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import {
   DeleteProjectFormSchema,
   DeleteProjectFormData,
-} from '../../_validators/projects-validators';
+} from '@labs/_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
