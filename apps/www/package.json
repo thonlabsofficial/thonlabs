@@ -13,6 +13,7 @@
     "@repo/ui": "workspace:*",
     "axios": "^1.6.8",
     "framer-motion": "^11.7.0",
+    "logrocket": "^9.0.0",
     "lucide-react": "^0.441.0",
     "next": "14.1.4",
     "next-themes": "^0.3.0",
