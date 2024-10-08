@@ -89,4 +89,8 @@
   body {
     @apply font-sans;
   }
+
+  :focus-visible {
+    @apply outline-none;
+  }
 }

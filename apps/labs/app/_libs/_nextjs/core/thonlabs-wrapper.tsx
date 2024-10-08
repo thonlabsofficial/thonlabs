@@ -28,10 +28,12 @@ export async function ThonLabsWrapper({
 }: ThonLabsWrapperProps) {
   if (!environmentId) {
     console.error('ThonLabs Error: Environment ID is required.');
+    return null;
   }
 
   if (!publicKey) {
     console.error('ThonLabs Error: Public key is required.');
+    return null;
   }
 
   const environmentData = await api<EnvironmentData>(
@@ -43,16 +45,17 @@ export async function ThonLabsWrapper({
   );
 
   if (!environmentData) {
-    throw new Error(
+    console.error(
       'ThonLabs Error: Environment data is unavailable. Please verify that the public key and environment settings are correct. You can find these values under "Settings" at https://app.thonlabs.io.',
     );
+    return null;
   }
 
   return (
     <ThonLabsInternalProvider>
       <ToasterObservableWrapper />
       <ThonLabsSessionProvider
-        environmentData={environmentData}
+        environmentData={environmentData as EnvironmentData}
         environmentId={environmentId}
         publicKey={publicKey}
       >

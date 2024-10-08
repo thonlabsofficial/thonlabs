@@ -106,7 +106,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </>
         )}
         {!loading ? (
-          <div className="relative">
+          <div className="w-full relative">
             <input
               id={props.name}
               type={type}

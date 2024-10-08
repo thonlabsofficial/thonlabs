@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../core/utils';
-import { IconType } from 'react-icons';
 import { Skeleton } from './skeleton';
-import { LucideProps } from 'lucide-react';
 
 const buttonIconVariants = cva(
   `inline-flex items-center justify-center whitespace-nowrap rounded-md font-semibold 
@@ -58,6 +56,7 @@ export interface ButtonIconProps
     VariantProps<typeof buttonIconVariants> {
   icon: any;
   loading?: boolean;
+  active?: boolean;
 }
 
 const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
@@ -70,6 +69,7 @@ const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
       disabled,
       children,
       icon: Icon,
+      active,
       ...props
     },
     ref,
@@ -80,6 +80,7 @@ const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
       <button
         className={cn(buttonIconVariants({ variant, size, className }), {
           'pointer-events-none opacity-50': loading || disabled,
+          'bg-foreground/10': active,
         })}
         ref={ref}
         {...props}

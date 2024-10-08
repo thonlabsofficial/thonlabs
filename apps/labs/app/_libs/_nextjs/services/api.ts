@@ -20,7 +20,9 @@ export const api = <T>(
         'tl-public-key': publicKey,
       },
     },
-  ).then((res) => res.json() as Promise<T>);
+  )
+    .then((res) => res.json() as Promise<T>)
+    .catch(() => {});
 
 export const fetcher =
   ({

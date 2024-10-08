@@ -11,7 +11,7 @@ export default function Emails() {
   return (
     <>
       <PageHeader title="Emails" icon={LuMail} />
-      <PageWrapper>Emails page</PageWrapper>
+      <PageWrapper withContainer={false}>Emails page</PageWrapper>
     </>
   );
 }
