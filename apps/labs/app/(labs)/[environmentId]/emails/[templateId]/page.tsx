@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function EmailTemplateDetails() {
   return (
     <>
-      <PageHeader title="Email Template Details" icon={LuMail} />
-      <PageWrapper withContainer={false}>
+      <PageHeader title="Email Template Details" icon={LuMail} withContainer />
+      <PageWrapper className="pt-4">
         {/* <RichTextEditor /> */}
         <EmailTemplateEditor />
       </PageWrapper>
