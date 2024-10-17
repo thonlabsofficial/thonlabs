@@ -11,7 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@repo/ui": "workspace:*",
-    "axios": "^1.6.8",
+    "axios": "^1.7.4",
     "framer-motion": "^11.7.0",
     "logrocket": "^9.0.0",
     "lucide-react": "^0.441.0",
