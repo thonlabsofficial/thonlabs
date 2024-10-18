@@ -1,7 +1,8 @@
 'use client';
 
 import { Separator } from '../separator';
-import { emailExtensions, slashExtension, slashItems } from './extensions';
+import { dragNDropExtension, emailExtensions } from './extensions';
+import { slashItems, slashExtension } from './slash-items';
 import {
   EditorRoot,
   EditorContent,
@@ -14,6 +15,8 @@ import {
 } from 'novel';
 import { handleCommandNavigation } from 'novel/extensions';
 import {
+  ImageAlignBlock,
+  ImageBlock,
   LinkBlock,
   TextAlignBlock,
   TextFormatBlock,
@@ -21,6 +24,7 @@ import {
 } from './bubble-blocks';
 import { ScrollArea } from '../scroll-area';
 import { Typo } from '../typo';
+import { ImageResizer } from './custom-extensions/image-resizer';
 
 interface EditorProp {
   initialValue?: JSONContent;
@@ -32,16 +36,16 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
     <EditorRoot>
       <EditorContent
         {...(initialValue && { initialContent: initialValue })}
-        extensions={[...emailExtensions, slashExtension]}
+        extensions={[...emailExtensions, ...dragNDropExtension, slashExtension]}
         editorProps={{
           handleDOMEvents: {
             keydown: (_view, event) => handleCommandNavigation(event),
           },
         }}
         onUpdate={({ editor }) => {
-          console.log(editor.getJSON());
           onChange(editor.getJSON());
         }}
+        slotAfter={<ImageResizer />}
       >
         <EditorBubble
           tippyOptions={{
@@ -69,13 +73,36 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
             </div>
           </div>
         </EditorBubble>
-        <EditorCommand className="z-50 h-auto rounded-md p-1 bg-muted border border-foreground/[0.07] shadow-md transition-all">
+        <EditorBubble
+          tippyOptions={{
+            maxWidth: '500px',
+          }}
+          shouldShow={({ editor }) => editor.isActive('image')}
+        >
+          <div className="flex flex-col gap-1 w-full p-1 rounded-md bg-muted border border-foreground/[0.07] shadow-md">
+            <div className="flex items-center gap-1">
+              <ImageBlock />
+              <Separator
+                orientation="vertical"
+                className="h-7 bg-foreground/[0.07]"
+              />
+              <ImageAlignBlock />
+              <Separator
+                orientation="vertical"
+                className="h-7 bg-foreground/[0.07]"
+              />
+              <LinkBlock />
+            </div>
+          </div>
+        </EditorBubble>
+
+        <EditorCommand className="min-w-64 z-50 h-auto rounded-md p-1 bg-muted border border-foreground/[0.07] shadow-md transition-all">
           <ScrollArea
-            className="max-h-[330px] pr-3"
+            className="max-h-[330px]"
             scrollBackground="bg-foreground/10"
             forceMount
           >
-            <EditorCommandEmpty className="px-2 text-muted-foreground">
+            <EditorCommandEmpty className="p-2 text-muted-foreground flex items-center">
               No results
             </EditorCommandEmpty>
             <EditorCommandList>

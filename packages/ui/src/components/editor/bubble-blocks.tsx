@@ -33,6 +33,7 @@ import {
   SquareDashedBottomCode as SquareDashedBottomCodeIcon,
   Heading4 as Heading4Icon,
   List as ListIcon,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { ButtonIcon } from '../button-icon';
 import { useForm } from 'react-hook-form';
@@ -243,20 +244,20 @@ export function TextAlignBlock() {
   );
 }
 
-const editorFormSchema = z.object({
+const linkFormSchema = z.object({
   link: z.string().url({ message: 'Enter a valid link' }),
 });
-type EditorFormData = z.infer<typeof editorFormSchema>;
+type LinkFormData = z.infer<typeof linkFormSchema>;
 
 export function LinkBlock() {
   const { editor } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
-  const form = useForm<EditorFormData>({
+  const form = useForm<LinkFormData>({
     defaultValues: {
       link: '',
     },
     mode: 'onChange',
-    resolver: zodResolver(editorFormSchema),
+    resolver: zodResolver(linkFormSchema),
   });
   const formLink = form.watch('link');
 
@@ -353,5 +354,131 @@ export function LinkBlock() {
         </Command>
       </PopoverContent>
     </Popover>
+  );
+}
+
+const imageFormSchema = z.object({
+  href: z.string().url({ message: 'Please enter a valid URL' }),
+});
+type ImageFormData = z.infer<typeof imageFormSchema>;
+
+export function ImageBlock() {
+  const { editor } = useEditor();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const form = useForm<ImageFormData>({
+    defaultValues: {
+      href: '',
+    },
+    mode: 'onChange',
+    resolver: zodResolver(imageFormSchema),
+  });
+  const formHref = form.watch('href');
+
+  if (!editor) {
+    return null;
+  }
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputRef]);
+
+  const setImageOnEditor = useCallback(
+    (url: string) => {
+      if (!editor) {
+        return;
+      }
+
+      editor.chain().focus().setImage({ src: url }).run();
+
+      form.setValue('href', '');
+    },
+    [editor, form],
+  );
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <ButtonIcon
+          variant={'ghost'}
+          icon={ImageIcon}
+          size={'sm'}
+          active={editor.isActive('image')}
+        />
+      </PopoverTrigger>
+      <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
+        <Command className="bg-transparent" shouldFilter={false}>
+          <CommandInput
+            placeholder="Enter or paste the URL"
+            onValueChange={(value) => {
+              form.setValue('href', value, {
+                shouldValidate: true,
+              });
+            }}
+          />
+          <CommandList>
+            {formHref && (
+              <CommandGroup>
+                <>
+                  <CommandItem
+                    className="items-start data-[selected='true']:bg-foreground/10"
+                    onSelect={() => {
+                      setImageOnEditor(form.getValues('href'));
+                    }}
+                  >
+                    <GlobeIcon className="mr-2 mt-0.5 h-4 w-4" />
+                    <div className="flex flex-col">
+                      <Typo variant={'sm'} className="max-w-40 truncate">
+                        {formHref}
+                      </Typo>
+                      <Typo variant={'mutedXs'}>
+                        {form.formState.errors.href
+                          ? form.formState.errors.href?.message
+                          : 'Show an image from this URL'}
+                      </Typo>
+                    </div>
+                  </CommandItem>
+                </>
+              </CommandGroup>
+            )}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+export function ImageAlignBlock() {
+  const { editor } = useEditor();
+
+  if (!editor) {
+    return null;
+  }
+
+  return (
+    <>
+      <ButtonIcon
+        variant={'ghost'}
+        icon={AlignLeftIcon}
+        size={'sm'}
+        onClick={() => editor.chain().focus().setImageAlign('left').run()}
+        active={editor.isActive('image', { imageAlign: 'left' })}
+      />
+      <ButtonIcon
+        variant={'ghost'}
+        icon={AlignCenterIcon}
+        size={'sm'}
+        onClick={() => editor.chain().focus().setImageAlign('center').run()}
+        active={editor.isActive('image', { imageAlign: 'center' })}
+      />
+      <ButtonIcon
+        variant={'ghost'}
+        icon={AlignRightIcon}
+        size={'sm'}
+        onClick={() => editor.chain().focus().setImageAlign('right').run()}
+        active={editor.isActive('image', { imageAlign: 'right' })}
+      />
+    </>
   );
 }
