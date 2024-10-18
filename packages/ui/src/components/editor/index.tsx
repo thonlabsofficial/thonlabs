@@ -15,6 +15,7 @@ import {
 } from 'novel';
 import { handleCommandNavigation } from 'novel/extensions';
 import {
+  ButtonLinkAlignBlock,
   ImageAlignBlock,
   ImageBlock,
   LinkBlock,
@@ -25,6 +26,7 @@ import {
 import { ScrollArea } from '../scroll-area';
 import { Typo } from '../typo';
 import { ImageResizer } from './custom-extensions/image-resizer';
+import { isTextSelection } from '@tiptap/core';
 
 interface EditorProp {
   initialValue?: JSONContent;
@@ -50,6 +52,30 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
         <EditorBubble
           tippyOptions={{
             maxWidth: '500px',
+          }}
+          shouldShow={({ state, from, to, view, editor }) => {
+            const { doc, selection } = state;
+            const { empty } = selection;
+
+            const isEmptyTextBlock =
+              !doc.textBetween(from, to).length &&
+              isTextSelection(state.selection);
+
+            const hasEditorFocus = view.hasFocus();
+            const notAllowedElements =
+              editor.isActive('buttonLink') || editor.isActive('image');
+
+            if (
+              !hasEditorFocus ||
+              empty ||
+              isEmptyTextBlock ||
+              !editor.isEditable ||
+              notAllowedElements
+            ) {
+              return false;
+            }
+
+            return true;
           }}
         >
           <div className="flex flex-col gap-1 w-full p-1 rounded-md bg-muted border border-foreground/[0.07] shadow-md">
@@ -92,6 +118,28 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
                 className="h-7 bg-foreground/[0.07]"
               />
               <LinkBlock />
+            </div>
+          </div>
+        </EditorBubble>
+        <EditorBubble
+          tippyOptions={{
+            maxWidth: '500px',
+          }}
+          shouldShow={({ editor }) => editor.isActive('buttonLink')}
+        >
+          <div className="flex flex-col gap-1 w-full p-1 rounded-md bg-muted border border-foreground/[0.07] shadow-md">
+            <div className="flex items-center gap-1">
+              <TextFormatBlock options={['bold', 'italic', 'underline']} />
+              <Separator
+                orientation="vertical"
+                className="h-7 bg-foreground/[0.07]"
+              />
+              <ButtonLinkAlignBlock />
+              <Separator
+                orientation="vertical"
+                className="h-7 bg-foreground/[0.07]"
+              />
+              <LinkBlock buttonLink />
             </div>
           </div>
         </EditorBubble>

@@ -8,9 +8,7 @@ export default function EmailTemplateEditor() {
 
   return (
     <div className=" mx-auto rounded-sm overflow-hidden bg-foreground px-6 py-3 text-black">
-      <div className="w-[37.5rem] mx-auto p-2 bg-zinc-100">
-        <Editor initialValue={value} onChange={setValue} />
-      </div>
+      <Editor initialValue={value} onChange={setValue} />
     </div>
   );
 }

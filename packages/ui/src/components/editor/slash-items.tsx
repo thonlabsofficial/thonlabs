@@ -9,6 +9,7 @@ import {
   Heading4 as Heading4Icon,
   List as ListIcon,
   Image as ImageIcon,
+  ExternalLink as ExternalLinkIcon,
 } from 'lucide-react';
 import {
   createSuggestionItems,
@@ -146,6 +147,16 @@ export const slashItems = createSuggestionItems([
       const { tr } = editor.state;
       const imagePos = tr.selection.$anchor.pos - 1;
       editor.commands.setNodeSelection(imagePos);
+    },
+  },
+  {
+    title: 'Button Link',
+    description: 'Insert a button with link behaviour.',
+    searchTerms: ['button', 'link'],
+    icon: <ExternalLinkIcon size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).setButtonLink({}).run();
+      // editor.chain().focus().insertContent('The button').run();
     },
   },
 ]);

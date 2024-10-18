@@ -162,7 +162,9 @@ export function TextTypeBlock() {
   );
 }
 
-export function TextFormatBlock() {
+export function TextFormatBlock(props: { options?: string[] }) {
+  const defaultOptions = { options: ['bold', 'italic', 'underline', 'code'] };
+  const { options } = { ...defaultOptions, ...props };
   const { editor } = useEditor();
 
   if (!editor) {
@@ -171,34 +173,42 @@ export function TextFormatBlock() {
 
   return (
     <>
-      <ButtonIcon
-        variant={'ghost'}
-        icon={BoldIcon}
-        size={'sm'}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        active={editor.isActive('bold')}
-      />
-      <ButtonIcon
-        variant={'ghost'}
-        icon={ItalicIcon}
-        size={'sm'}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        active={editor.isActive('italic')}
-      />
-      <ButtonIcon
-        variant={'ghost'}
-        icon={UnderlineIcon}
-        size={'sm'}
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        active={editor.isActive('underline')}
-      />
-      <ButtonIcon
-        variant={'ghost'}
-        icon={CodeIcon}
-        size={'sm'}
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        active={editor.isActive('code')}
-      />
+      {options.includes('bold') && (
+        <ButtonIcon
+          variant={'ghost'}
+          icon={BoldIcon}
+          size={'sm'}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          active={editor.isActive('bold')}
+        />
+      )}
+      {options.includes('italic') && (
+        <ButtonIcon
+          variant={'ghost'}
+          icon={ItalicIcon}
+          size={'sm'}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          active={editor.isActive('italic')}
+        />
+      )}
+      {options.includes('underline') && (
+        <ButtonIcon
+          variant={'ghost'}
+          icon={UnderlineIcon}
+          size={'sm'}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          active={editor.isActive('underline')}
+        />
+      )}
+      {options.includes('code') && (
+        <ButtonIcon
+          variant={'ghost'}
+          icon={CodeIcon}
+          size={'sm'}
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          active={editor.isActive('code')}
+        />
+      )}
     </>
   );
 }
@@ -249,7 +259,7 @@ const linkFormSchema = z.object({
 });
 type LinkFormData = z.infer<typeof linkFormSchema>;
 
-export function LinkBlock() {
+export function LinkBlock({ buttonLink = false }: { buttonLink?: boolean }) {
   const { editor } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
   const form = useForm<LinkFormData>({
@@ -277,20 +287,27 @@ export function LinkBlock() {
         return;
       }
 
-      if (url === '') {
+      if (url === '' && !buttonLink) {
         editor.chain().focus().extendMarkRange('link').unsetLink().run();
         return;
       }
 
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange('link')
-        .setLink({ href: url })
-        .run();
+      if (buttonLink) {
+        editor.chain().focus().setButtonLink({ href: url }).run();
+      } else {
+        editor
+          .chain()
+          .focus()
+          .extendMarkRange('link')
+          .setLink({ href: url })
+          .run();
+      }
     },
-    [editor],
+    [editor, buttonLink],
   );
+
+  const isActive =
+    editor.isActive('link') || editor.isActive('buttonLink', { hasLink: true });
 
   return (
     <Popover>
@@ -299,7 +316,7 @@ export function LinkBlock() {
           variant={'ghost'}
           icon={LinkIcon}
           size={'sm'}
-          active={editor.isActive('link')}
+          active={isActive}
         />
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
@@ -335,7 +352,7 @@ export function LinkBlock() {
                     </div>
                   </CommandItem>
 
-                  {editor.isActive('link') && (
+                  {isActive && (
                     <CommandItem
                       className="data-[selected='true']:bg-foreground/10"
                       onSelect={() => {
@@ -400,12 +417,7 @@ export function ImageBlock() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <ButtonIcon
-          variant={'ghost'}
-          icon={ImageIcon}
-          size={'sm'}
-          active={editor.isActive('image')}
-        />
+        <ButtonIcon variant={'ghost'} icon={ImageIcon} size={'sm'} />
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
         <Command className="bg-transparent" shouldFilter={false}>
@@ -478,6 +490,42 @@ export function ImageAlignBlock() {
         size={'sm'}
         onClick={() => editor.chain().focus().setImageAlign('right').run()}
         active={editor.isActive('image', { imageAlign: 'right' })}
+      />
+    </>
+  );
+}
+
+export function ButtonLinkAlignBlock() {
+  const { editor } = useEditor();
+
+  if (!editor) {
+    return null;
+  }
+
+  return (
+    <>
+      <ButtonIcon
+        variant={'ghost'}
+        icon={AlignLeftIcon}
+        size={'sm'}
+        onClick={() => editor.chain().focus().setButtonLinkAlign('left').run()}
+        active={editor.isActive('buttonLink', { buttonLinkAlign: 'left' })}
+      />
+      <ButtonIcon
+        variant={'ghost'}
+        icon={AlignCenterIcon}
+        size={'sm'}
+        onClick={() =>
+          editor.chain().focus().setButtonLinkAlign('center').run()
+        }
+        active={editor.isActive('buttonLink', { buttonLinkAlign: 'center' })}
+      />
+      <ButtonIcon
+        variant={'ghost'}
+        icon={AlignRightIcon}
+        size={'sm'}
+        onClick={() => editor.chain().focus().setButtonLinkAlign('right').run()}
+        active={editor.isActive('buttonLink', { buttonLinkAlign: 'right' })}
       />
     </>
   );

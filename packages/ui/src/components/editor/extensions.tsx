@@ -21,6 +21,7 @@ import Code from '@tiptap/extension-code';
 import GlobalDragHandle from 'tiptap-extension-global-drag-handle';
 import AutoJoiner from 'tiptap-extension-auto-joiner';
 import { Image } from './custom-extensions/image-extension';
+import { ButtonLink } from './custom-extensions/button-link';
 
 const emailDefaultStyles = {
   font: 'font-family:ui-sanserif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;line-height:1.625;color:#000;',
@@ -39,27 +40,28 @@ export const emailExtensions = [
   Placeholder.configure({
     placeholder: "Press '/' for commands",
   }),
-  Link.configure({
-    openOnClick: false,
-    autolink: true,
-    defaultProtocol: 'https',
-  }).extend({
+  ButtonLink.extend({
     name: 'buttonLink',
-    parseHTML() {
-      return [{ tag: 'a' }];
-    },
     renderHTML({ HTMLAttributes }) {
+      const { style, ...rest } = HTMLAttributes;
+
       return [
-        'a',
-        mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
-          style: `${emailDefaultStyles.font}color:#fff;text-decoration:none;
+        'div',
+        {
+          style: `margin-top:4px;margin-bottom:4px;${style}`,
+        },
+        [
+          'a',
+          mergeAttributes(this.options.HTMLAttributes, rest, {
+            style: `${emailDefaultStyles.font}color:#fff;text-decoration:none;
           vertical-align:middle;white-space:nowrap;border-radius:6px;
           font-size:14px;line-height:20px;font-weight:700;text-decoration-line:none;
-          background-color:#15172a;
+          background-color:#15172a;display:inline-block;
           box-shadow:0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0,0,0,0.1), 0 1px 2px -1px rgb(0,0,0,0.1);
           height:46px;padding-left:16px;padding-right:16px;padding-top:12px;padding-bottom:12px`,
-        }),
-        'The button',
+          }),
+          0,
+        ],
       ];
     },
   }),
