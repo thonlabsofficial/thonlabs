@@ -4,11 +4,22 @@ import React from 'react';
 import Editor, { JSONContent } from '@repo/ui/editor';
 
 export default function EmailTemplateEditor() {
-  const [value, setValue] = React.useState<JSONContent>({});
+  const [value, setValue] = React.useState<JSONContent>(
+    JSON.parse(window.localStorage.getItem('template') || '{}') || {},
+  );
 
   return (
     <div className=" mx-auto rounded-sm overflow-hidden bg-foreground px-6 py-3 text-black">
-      <Editor initialValue={value} onChange={setValue} />
+      <Editor
+        initialValue={value}
+        onUpdate={({ editor }) => {
+          setValue(editor.getJSON());
+          window.localStorage.setItem(
+            'template',
+            JSON.stringify(editor.getJSON()),
+          );
+        }}
+      />
     </div>
   );
 }

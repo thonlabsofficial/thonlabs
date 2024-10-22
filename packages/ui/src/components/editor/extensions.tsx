@@ -18,6 +18,9 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import ListItem from '@tiptap/extension-list-item';
 import Code from '@tiptap/extension-code';
+import { Color } from '@tiptap/extension-color';
+import TextStyle from '@tiptap/extension-text-style';
+import Highlight from '@tiptap/extension-highlight';
 import GlobalDragHandle from 'tiptap-extension-global-drag-handle';
 import AutoJoiner from 'tiptap-extension-auto-joiner';
 import { Image } from './custom-extensions/image-extension';
@@ -37,6 +40,11 @@ export const emailExtensions = [
   TableRow,
   Underline,
   FontFamily,
+  TextStyle,
+  Color,
+  Highlight.configure({
+    multicolor: true,
+  }),
   Placeholder.configure({
     placeholder: "Press '/' for commands",
   }),
@@ -89,10 +97,10 @@ export const emailExtensions = [
     renderHTML({ node, HTMLAttributes }) {
       const level = node.attrs.level;
       const mapper = {
-        1: `${emailDefaultStyles.font}font-size:40px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:20px;`,
-        2: `${emailDefaultStyles.font}font-size:32px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:20px;`,
-        3: `${emailDefaultStyles.font}font-size:28px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:20px;`,
-        4: `${emailDefaultStyles.font}font-size:24px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:20px;`,
+        1: `${emailDefaultStyles.font}font-size:40px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:8px;`,
+        2: `${emailDefaultStyles.font}font-size:32px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:8px;`,
+        3: `${emailDefaultStyles.font}font-size:28px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:8px;`,
+        4: `${emailDefaultStyles.font}font-size:24px;font-weight:700;line-height:2rem;margin-top:8px;margin-bottom:8px;`,
       };
 
       return [
@@ -105,7 +113,7 @@ export const emailExtensions = [
     },
   }),
   Paragraph.extend({
-    renderHTML({ HTMLAttributes, node }) {
+    renderHTML({ HTMLAttributes }) {
       return [
         'p',
         mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
@@ -195,7 +203,7 @@ export const emailExtensions = [
       return [
         'img',
         mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
-          style: `display:block;outline:none;border:none;text-decoration:none;`,
+          style: `display:block;outline:none;border:none;text-decoration:none;margin-top:8px;margin-bottom:8px;`,
         }),
       ];
     },
