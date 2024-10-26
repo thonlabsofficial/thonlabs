@@ -23,8 +23,10 @@ import TextStyle from '@tiptap/extension-text-style';
 import Highlight from '@tiptap/extension-highlight';
 import GlobalDragHandle from 'tiptap-extension-global-drag-handle';
 import AutoJoiner from 'tiptap-extension-auto-joiner';
-import { Image } from './custom-extensions/image-extension';
-import { ButtonLink } from './custom-extensions/button-link';
+import { Image } from './extensions/image-extension';
+import { ButtonLink } from './extensions/button-link';
+import { Container } from './extensions/container-extension';
+import { Empty } from './extensions/empty-extension';
 
 const emailDefaultStyles = {
   font: 'font-family:ui-sanserif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;line-height:1.625;color:#000;',
@@ -34,10 +36,6 @@ const emailDefaultStyles = {
 
 export const emailExtensions = [
   StarterKit,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
   Underline,
   FontFamily,
   TextStyle,
@@ -208,6 +206,12 @@ export const emailExtensions = [
       ];
     },
   }),
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
+  Empty,
+  Container,
 ];
 
 export const dragNDropExtension = [GlobalDragHandle, AutoJoiner];

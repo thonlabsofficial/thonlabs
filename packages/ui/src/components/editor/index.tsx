@@ -1,5 +1,6 @@
 'use client';
 
+import 'tippy.js/animations/scale.css';
 import { Separator } from '../separator';
 import { dragNDropExtension, emailExtensions } from './extensions';
 import { slashItems, slashExtension } from './slash-items';
@@ -14,21 +15,19 @@ import {
   type JSONContent,
 } from 'novel';
 import { handleCommandNavigation } from 'novel/extensions';
-import {
-  ButtonLinkAlignBlock,
-  ColorBlock,
-  ImageAlignBlock,
-  ImageBlock,
-  LinkBlock,
-  TextAlignBlock,
-  TextFormatBlock,
-  TextTypeBlock,
-} from './bubble-blocks';
 import { ScrollArea } from '../scroll-area';
 import { Typo } from '../typo';
-import { ImageResizer } from './custom-extensions/image-resizer';
+import { ImageResizer } from './extensions/image-resizer';
 import { isTextSelection } from '@tiptap/core';
-import { CommandGroup } from '../command';
+import { ColorBlock } from './bubble-blocks/color-bubble-block';
+import { ImageBlock } from './bubble-blocks/image-bubble-block';
+import { LinkBlock } from './bubble-blocks/link-bubble-block';
+import { TextAlignBlock } from './bubble-blocks/text-align-bubble-block';
+import { TextFormatBlock } from './bubble-blocks/text-format-bubble-block';
+import { TextTypeBlock } from './bubble-blocks/text-type-bubble-block';
+import { ImageAlignBlock } from './bubble-blocks/image-align-bubble-block';
+import { ButtonLinkAlignBlock } from './bubble-blocks/button-link-align-bubble-block';
+import { ContainerBubble } from './bubble-blocks/container-bubble-block';
 
 interface EditorProp {
   initialValue?: JSONContent;
@@ -52,6 +51,8 @@ const Editor = ({ initialValue, onUpdate }: EditorProp) => {
         <EditorBubble
           tippyOptions={{
             maxWidth: '1000px',
+            animation: 'scale',
+            duration: 70,
           }}
           shouldShow={({ state, from, to, view, editor }) => {
             const { doc, selection } = state;
@@ -107,7 +108,9 @@ const Editor = ({ initialValue, onUpdate }: EditorProp) => {
         </EditorBubble>
         <EditorBubble
           tippyOptions={{
-            maxWidth: '500px',
+            maxWidth: '1000px',
+            animation: 'scale',
+            duration: 70,
           }}
           shouldShow={({ editor }) => editor.isActive('image')}
         >
@@ -129,7 +132,9 @@ const Editor = ({ initialValue, onUpdate }: EditorProp) => {
         </EditorBubble>
         <EditorBubble
           tippyOptions={{
-            maxWidth: '500px',
+            maxWidth: '1000px',
+            animation: 'scale',
+            duration: 70,
           }}
           shouldShow={({ editor }) => editor.isActive('buttonLink')}
         >
@@ -149,8 +154,9 @@ const Editor = ({ initialValue, onUpdate }: EditorProp) => {
             </div>
           </div>
         </EditorBubble>
+        <ContainerBubble />
 
-        <EditorCommand className="min-w-64 z-50 h-auto rounded-md p-0.5 bg-muted border border-foreground/[0.07] shadow-md transition-all">
+        <EditorCommand className="min-w-64 z-50 h-auto rounded-md p-1 bg-muted border border-foreground/[0.07] shadow-md transition-all">
           <ScrollArea
             className="max-h-[330px]"
             scrollBackground="bg-foreground/10"

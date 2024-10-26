@@ -10,6 +10,7 @@ import {
   List as ListIcon,
   Image as ImageIcon,
   ExternalLink as ExternalLinkIcon,
+  Rows2 as Rows2Icon,
 } from 'lucide-react';
 import {
   createSuggestionItems,
@@ -156,7 +157,43 @@ export const slashItems = createSuggestionItems([
     icon: <ExternalLinkIcon size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).setButtonLink({}).run();
-      // editor.chain().focus().insertContent('The button').run();
+    },
+  },
+  {
+    title: 'Container',
+    description: 'Insert a centered container.',
+    searchTerms: ['container'],
+    icon: <Rows2Icon size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).setContainer({}).run();
+
+      let activeContainerId;
+
+      const { state, view } = editor;
+      const { selection } = state;
+      const { $from } = selection;
+
+      for (let d = $from.depth; d > 0; d--) {
+        const node = $from.node(d);
+        if (node.type.name === 'container') {
+          const dom = view.nodeDOM($from.before(d)) as HTMLElement;
+          if (dom) {
+            activeContainerId = dom.id;
+            break;
+          }
+        }
+      }
+
+      if (activeContainerId) {
+        editor
+          .chain()
+          .focus()
+          .setContainerBackgroundColor({
+            containerId: activeContainerId,
+            color: '#f4f4f5',
+          })
+          .run();
+      }
     },
   },
 ]);

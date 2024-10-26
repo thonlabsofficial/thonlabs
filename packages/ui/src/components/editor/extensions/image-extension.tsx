@@ -150,13 +150,10 @@ export const Image = Node.create<ImageOptions>({
               break;
           }
 
-          return commands.insertContent({
-            type: this.name,
-            attrs: {
-              ...node?.attrs,
-              style: imageInfo.getAttribute('style'),
-              imageAlign: alignment,
-            },
+          return commands.updateAttributes(this.name, {
+            ...node?.attrs,
+            style: imageInfo.getAttribute('style'),
+            imageAlign: alignment,
           });
         },
       setImageSize:
@@ -170,12 +167,8 @@ export const Image = Node.create<ImageOptions>({
           imageInfo.style.width = `${width}px`;
           imageInfo.style.height = `${height}px`;
 
-          return commands.insertContent({
-            type: this.name,
-            attrs: {
-              ...node?.attrs,
-              style: imageInfo.getAttribute('style'),
-            },
+          return commands.updateAttributes(this.name, {
+            style: imageInfo.getAttribute('style'),
           });
         },
     };

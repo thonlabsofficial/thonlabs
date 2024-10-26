@@ -229,7 +229,7 @@ export const ButtonLink = Node.create<ButtonLinkOptions>({
     if (!isAllowedUri(HTMLAttributes.href, this.options.protocols)) {
       // strip out the href
       return [
-        'p',
+        'div',
         mergeAttributes({
           style: `margin-top:4px;margin-bottom:4px;${style}`,
         }),
@@ -244,7 +244,7 @@ export const ButtonLink = Node.create<ButtonLinkOptions>({
     }
 
     return [
-      'p',
+      'div',
       {
         style: 'margin-top:4px;margin-bottom:4px;',
       },
