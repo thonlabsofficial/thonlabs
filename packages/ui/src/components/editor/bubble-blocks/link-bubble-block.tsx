@@ -24,7 +24,13 @@ const linkFormSchema = z.object({
 });
 type LinkFormData = z.infer<typeof linkFormSchema>;
 
-export function LinkBlock({ buttonLink = false }: { buttonLink?: boolean }) {
+export function LinkBlock({
+  buttonLink = false,
+  image = false,
+}: {
+  buttonLink?: boolean;
+  image?: boolean;
+}) {
   const { editor } = useEditor();
   const inputRef = useRef<HTMLInputElement>(null);
   const form = useForm<LinkFormData>({
@@ -40,11 +46,28 @@ export function LinkBlock({ buttonLink = false }: { buttonLink?: boolean }) {
     return null;
   }
 
+  const isActive =
+    editor.isActive('link') ||
+    editor.isActive('buttonLink', { hasLink: true }) ||
+    editor.isActive('image', { hasLink: true });
+  const allowRemove =
+    editor.isActive('link') || editor.isActive('image', { hasLink: true });
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [inputRef]);
+
+  useEffect(() => {
+    const currentLink =
+      editor.getAttributes('link')?.href ||
+      editor.getAttributes('buttonLink')?.href ||
+      editor.getAttributes('image')?.href ||
+      '';
+
+    form.setValue('link', currentLink);
+  }, [editor, isActive]);
 
   const setLinkOnEditor = useCallback(
     (url: string) => {
@@ -52,13 +75,21 @@ export function LinkBlock({ buttonLink = false }: { buttonLink?: boolean }) {
         return;
       }
 
-      if (url === '' && !buttonLink) {
-        editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      // Remove link
+      if (url === '') {
+        if (image) {
+          editor.chain().focus().unsetImageLink().run();
+        } else {
+          editor.chain().focus().extendMarkRange('link').unsetLink().run();
+        }
         return;
       }
 
+      // Insert link
       if (buttonLink) {
         editor.chain().focus().setButtonLink({ href: url }).run();
+      } else if (image) {
+        editor.chain().focus().setImageLink(url).run();
       } else {
         editor
           .chain()
@@ -70,9 +101,6 @@ export function LinkBlock({ buttonLink = false }: { buttonLink?: boolean }) {
     },
     [editor, buttonLink],
   );
-
-  const isActive =
-    editor.isActive('link') || editor.isActive('buttonLink', { hasLink: true });
 
   return (
     <Popover>
@@ -117,7 +145,7 @@ export function LinkBlock({ buttonLink = false }: { buttonLink?: boolean }) {
                     </div>
                   </CommandItem>
 
-                  {isActive && (
+                  {allowRemove && (
                     <CommandItem
                       className="data-[selected='true']:bg-foreground/10"
                       onSelect={() => {

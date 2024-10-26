@@ -9,7 +9,7 @@ export default function EmailTemplateEditor() {
   );
 
   return (
-    <div className=" mx-auto rounded-sm overflow-hidden bg-foreground px-6 py-3 text-black">
+    <div className=" mx-auto rounded-sm overflow-hidden bg-foreground p-6 text-black">
       <Editor
         initialValue={value}
         onUpdate={({ editor }) => {

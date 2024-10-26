@@ -27,6 +27,7 @@ const inputVariants = cva(
         error: 'border-red-500 focus:border-red-500',
       },
       size: {
+        xs: 'px-1.5 py-0.5 text-xs h-7',
         sm: 'px-2.5 py-1 text-sm h-9',
         md: 'px-3 py-1.5 text-base h-11',
         lg: 'px-4 py-2 text-base h-14',
@@ -53,6 +54,7 @@ export interface InputProps
 }
 
 const loadingSizeMapper = {
+  xs: '1.5rem',
   sm: '2.25rem',
   md: '3rem',
   lg: '3.5rem',

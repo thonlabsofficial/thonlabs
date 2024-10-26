@@ -50,9 +50,11 @@ const Utils = {
     return parts.slice(0, -2).join('.');
   },
 
-  getDOMAttributes(element: HTMLElement) {
+  getDOMAttributes(element: HTMLElement, exclude: string[] = []) {
     return Object.fromEntries(
-      Array.from(element.attributes).map((attr) => [attr.name, attr.value]),
+      Array.from(element.attributes)
+        .filter((attr) => !exclude.includes(attr.name))
+        .map((attr) => [attr.name, attr.value]),
     );
   },
 };

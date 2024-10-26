@@ -28,6 +28,16 @@ declare module '@tiptap/core' {
         containerId: string;
       }) => ReturnType;
 
+      setContainerWidth: (attributes: {
+        containerId: string;
+        width: number;
+      }) => ReturnType;
+
+      setContainerBorderRadius: (attributes: {
+        containerId: string;
+        borderRadius: number;
+      }) => ReturnType;
+
       deleteContainer: () => ReturnType;
     };
   }
@@ -47,13 +57,15 @@ export const Container = Node.create<ContainerOptions>({
   addAttributes() {
     return {
       id: {
-        default: null,
-      },
-      width: {
-        default: 600,
+        default: `container-${Utils.randString(1)}`,
       },
       style: {
-        default: null,
+        default:
+          'border-collapse:separate;width:100%;margin-left:auto;margin-right:auto;margin-top:8px;margin-bottom:8px;',
+      },
+      tdStyle: {
+        default:
+          'padding-top: 10px;padding-bottom: 10px;padding-left: 10px;padding-right: 10px;',
       },
     };
   },
@@ -63,21 +75,19 @@ export const Container = Node.create<ContainerOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    const { width, backgroundColor, ...rest } = HTMLAttributes;
-
+    const { style, tdStyle, ...attrs } = HTMLAttributes;
     return [
       'table',
-      mergeAttributes(rest, {
-        id: `container-${Utils.randString(1)}`,
+      mergeAttributes(attrs, {
         align: 'center',
-        style: `max-width:${width}px;width:100%;margin-left:auto;margin-right:auto;margin-top:8px;margin-bottom:8px;`,
+        style,
       }),
       [
         'tr',
         [
           'td',
           {
-            style: `padding-top: 10px;padding-bottom: 10px;padding-left: 10px;padding-right: 10px;`,
+            style: tdStyle,
           },
           0,
         ],
@@ -159,6 +169,42 @@ export const Container = Node.create<ContainerOptions>({
           ) as HTMLTableElement;
 
           containerNode.style.border = '';
+
+          return commands.updateAttributes(
+            this.name,
+            Utils.getDOMAttributes(containerNode),
+          );
+        },
+
+      setContainerWidth:
+        ({ containerId, width }: { containerId: string; width: number }) =>
+        ({ commands }) => {
+          const containerNode = document.querySelector(
+            `#${containerId}`,
+          ) as HTMLTableElement;
+
+          containerNode.style.maxWidth = `${width}px`;
+
+          return commands.updateAttributes(
+            this.name,
+            Utils.getDOMAttributes(containerNode),
+          );
+        },
+
+      setContainerBorderRadius:
+        ({
+          containerId,
+          borderRadius,
+        }: {
+          containerId: string;
+          borderRadius: number;
+        }) =>
+        ({ commands }) => {
+          const containerNode = document.querySelector(
+            `#${containerId}`,
+          ) as HTMLTableElement;
+
+          containerNode.style.borderRadius = `${borderRadius}px`;
 
           return commands.updateAttributes(
             this.name,

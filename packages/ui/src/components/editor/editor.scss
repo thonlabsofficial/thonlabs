@@ -6,6 +6,12 @@
       h-0 
       pointer-events-none;
   }
+
+  table[id^='container-'] {
+    td {
+      @apply relative;
+    }
+  }
 }
 
 .drag-handle {

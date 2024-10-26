@@ -28,7 +28,7 @@ export interface ButtonLinkOptions {
 
   /**
    * Default protocol to use when no protocol is specified.
-   * @default 'http'
+   * @default 'https'
    */
   defaultProtocol: string;
 
@@ -248,7 +248,7 @@ export const ButtonLink = Node.create<ButtonLinkOptions>({
       {
         style: 'margin-top:4px;margin-bottom:4px;',
       },
-      ['a', mergeAttributes(rest), 0],
+      ['a', mergeAttributes({ hasLink: true, ...rest }), 0],
     ];
   },
 

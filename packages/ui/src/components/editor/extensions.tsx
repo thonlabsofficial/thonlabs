@@ -24,7 +24,7 @@ import Highlight from '@tiptap/extension-highlight';
 import GlobalDragHandle from 'tiptap-extension-global-drag-handle';
 import AutoJoiner from 'tiptap-extension-auto-joiner';
 import { Image } from './extensions/image-extension';
-import { ButtonLink } from './extensions/button-link';
+import { ButtonLink } from './extensions/button-link-extension';
 import { Container } from './extensions/container-extension';
 import { Empty } from './extensions/empty-extension';
 
@@ -76,6 +76,8 @@ export const emailExtensions = [
     autolink: true,
     defaultProtocol: 'https',
   }).extend({
+    inclusive: false,
+
     renderHTML({ HTMLAttributes }) {
       return [
         'a',
@@ -195,16 +197,8 @@ export const emailExtensions = [
     },
   }),
   Image.configure({
-    allowBase64: true,
-  }).extend({
-    renderHTML({ HTMLAttributes }) {
-      return [
-        'img',
-        mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
-          style: `display:block;outline:none;border:none;text-decoration:none;margin-top:8px;margin-bottom:8px;`,
-        }),
-      ];
-    },
+    emailTemplate: true,
+    openOnClick: false,
   }),
   Table,
   TableCell,

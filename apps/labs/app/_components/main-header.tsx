@@ -25,8 +25,8 @@ export default function MainHeader({
     <header
       {...props}
       className={cn(
-        `fixed top-0 left-0 z-40 px-4 py-3 border-b border-collapse w-full flex items-center 
-         justify-between bg-background`,
+        `fixed top-0 left-0 px-4 py-3 border-b border-collapse w-full flex items-center 
+         justify-between bg-background z-50`,
         className,
       )}
     >

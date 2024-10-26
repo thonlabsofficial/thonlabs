@@ -48,7 +48,7 @@ export function ImageBlock() {
         return;
       }
 
-      editor.chain().focus().setImage({ src: url }).run();
+      editor.chain().focus().setImageSource(url).run();
 
       form.setValue('href', '');
     },

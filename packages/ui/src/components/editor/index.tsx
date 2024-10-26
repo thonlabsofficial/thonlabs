@@ -126,7 +126,7 @@ const Editor = ({ initialValue, onUpdate }: EditorProp) => {
                 orientation="vertical"
                 className="h-7 bg-foreground/[0.07]"
               />
-              <LinkBlock />
+              <LinkBlock image />
             </div>
           </div>
         </EditorBubble>

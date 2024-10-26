@@ -1,6 +1,24 @@
 import { useCurrentEditor } from '@tiptap/react';
 import Moveable from 'react-moveable';
 
+function getImageElement() {
+  const element = document.querySelector(
+    '.ProseMirror-selectednode',
+  ) as HTMLImageElement;
+
+  if (!element) {
+    return null;
+  }
+
+  if (element.tagName === 'A') {
+    return document.querySelector(
+      '.ProseMirror-selectednode img',
+    ) as HTMLImageElement;
+  }
+
+  return element;
+}
+
 export function ImageResizer() {
   const { editor } = useCurrentEditor();
 
@@ -9,9 +27,7 @@ export function ImageResizer() {
   }
 
   const updateMediaSize = () => {
-    const imageInfo = document.querySelector(
-      '.ProseMirror-selectednode',
-    ) as HTMLImageElement;
+    const imageInfo = getImageElement();
 
     if (imageInfo) {
       const selection = editor.state.selection;
@@ -26,41 +42,25 @@ export function ImageResizer() {
 
   return (
     <Moveable
-      target={
-        document.querySelector('.ProseMirror-selectednode') as HTMLDivElement
-      }
+      target={getImageElement()}
       container={null}
       origin={false}
-      /* Resize event edges */
       edge={false}
       throttleDrag={0}
-      /* When resize or scale, keeps a ratio of the width, height. */
       keepRatio={true}
-      /* resizable*/
-      /* Only one of resizable, scalable, warpable can be used. */
       resizable={true}
       throttleResize={0}
       onResize={({ target, width, height, delta }) => {
         if (delta[0]) target.style.width = `${width}px`;
         if (delta[1]) target.style.height = `${height}px`;
       }}
-      // { target, isDrag, clientX, clientY }: any
       onResizeEnd={() => {
         updateMediaSize();
       }}
-      /* scalable */
-      /* Only one of resizable, scalable, warpable can be used. */
       scalable={true}
       throttleScale={0}
-      /* Set the direction of resizable */
       renderDirections={['w', 'e']}
-      onScale={({
-        target,
-        // scale,
-        // dist,
-        // delta,
-        transform,
-      }) => {
+      onScale={({ target, transform }) => {
         target.style.transform = transform;
       }}
     />
