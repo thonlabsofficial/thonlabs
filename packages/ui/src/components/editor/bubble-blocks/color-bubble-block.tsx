@@ -147,7 +147,7 @@ export function ColorBlock({
   if (containerId) {
     currentColor = (
       document.querySelector(`#${containerId}`) as HTMLTableElement
-    ).style[labelsMapper[type].attribute as keyof CSSStyleDeclaration];
+    )?.style[labelsMapper[type]?.attribute as keyof CSSStyleDeclaration];
   } else {
     currentColor = editor.getAttributes(labelsMapper[type].attribute).color;
   }

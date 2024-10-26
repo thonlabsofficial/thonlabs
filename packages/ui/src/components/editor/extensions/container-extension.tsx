@@ -1,5 +1,6 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import Utils from '@repo/utils';
+import { EditorState, Transaction } from '@tiptap/pm/state';
 
 export interface ContainerOptions {}
 
@@ -43,6 +44,45 @@ declare module '@tiptap/core' {
   }
 }
 
+function updateContainerStyle({
+  containerId,
+  state,
+  tr,
+  property,
+  value,
+}: {
+  containerId: string;
+  state: EditorState;
+  tr: Transaction;
+  property: keyof CSSStyleDeclaration;
+  value: string;
+}) {
+  let hasUpdated = false;
+
+  // Find and update only the specific container
+  state.doc.descendants((node, pos) => {
+    if (
+      node.type.name === 'container' &&
+      node.attrs.containerId === containerId
+    ) {
+      const containerNode = document.querySelector(
+        `#${containerId}`,
+      ) as HTMLTableElement;
+
+      containerNode.style[property as any] = value;
+
+      tr.setNodeMarkup(pos, undefined, {
+        containerId,
+        ...Utils.getDOMAttributes(containerNode),
+      });
+      hasUpdated = true;
+      return false; // Stop searching once found
+    }
+  });
+
+  return hasUpdated;
+}
+
 export const Container = Node.create<ContainerOptions>({
   name: 'container',
 
@@ -57,7 +97,10 @@ export const Container = Node.create<ContainerOptions>({
   addAttributes() {
     return {
       id: {
-        default: `container-${Utils.randString(1)}`,
+        default: null,
+      },
+      containerId: {
+        default: null,
       },
       style: {
         default:
@@ -71,16 +114,18 @@ export const Container = Node.create<ContainerOptions>({
   },
 
   parseHTML() {
-    return [{ tag: 'table' }];
+    return [{ tag: 'table[data-container-id]' }];
   },
 
   renderHTML({ HTMLAttributes }) {
-    const { style, tdStyle, ...attrs } = HTMLAttributes;
+    const { containerId, style, tdStyle, ...attrs } = HTMLAttributes;
+
     return [
       'table',
       mergeAttributes(attrs, {
         align: 'center',
         style,
+        id: containerId,
       }),
       [
         'tr',
@@ -98,16 +143,18 @@ export const Container = Node.create<ContainerOptions>({
   addCommands() {
     return {
       setContainer:
-        (attributes) =>
-        ({ chain }) => {
-          return chain()
-            .insertContent({
-              type: this.name,
-              attrs: attributes,
-              content: [{ type: 'empty' }, { type: 'paragraph' }],
-            })
-            .focus()
-            .run();
+        (attrs) =>
+        ({ commands }) => {
+          const containerId = `container-${Utils.randString(1)}`;
+
+          return commands.insertContent({
+            type: this.name,
+            attrs: {
+              ...attrs,
+              containerId,
+            },
+            content: [{ type: 'empty' }, { type: 'paragraph' }],
+          });
         },
 
       deleteContainer:
@@ -118,77 +165,62 @@ export const Container = Node.create<ContainerOptions>({
 
       setContainerBackgroundColor:
         ({ containerId, color }: { containerId: string; color: string }) =>
-        ({ commands }) => {
-          const containerNode = document.querySelector(
-            `#${containerId}`,
-          ) as HTMLTableElement;
-
-          containerNode.style.backgroundColor = color;
-
-          return commands.updateAttributes(
-            this.name,
-            Utils.getDOMAttributes(containerNode),
-          );
+        ({ tr, state }) => {
+          return updateContainerStyle({
+            containerId,
+            state,
+            tr,
+            property: 'backgroundColor',
+            value: color,
+          });
         },
 
       unsetContainerBackgroundColor:
         ({ containerId }: { containerId: string }) =>
-        ({ commands }) => {
-          const containerNode = document.querySelector(
-            `#${containerId}`,
-          ) as HTMLTableElement;
-
-          containerNode.style.backgroundColor = '';
-
-          return commands.updateAttributes(
-            this.name,
-            Utils.getDOMAttributes(containerNode),
-          );
+        ({ state, tr }) => {
+          return updateContainerStyle({
+            containerId,
+            state,
+            tr,
+            property: 'backgroundColor',
+            value: '',
+          });
         },
 
       setContainerBorderColor:
         ({ containerId, color }: { containerId: string; color: string }) =>
-        ({ commands }) => {
-          const containerNode = document.querySelector(
-            `#${containerId}`,
-          ) as HTMLTableElement;
-
-          containerNode.style.border = `1px solid ${color}`;
-
-          return commands.updateAttributes(
-            this.name,
-            Utils.getDOMAttributes(containerNode),
-          );
+        ({ state, tr }) => {
+          return updateContainerStyle({
+            containerId,
+            state,
+            tr,
+            property: 'borderColor',
+            value: color,
+          });
         },
 
       unsetContainerBorderColor:
         ({ containerId }: { containerId: string }) =>
-        ({ commands }) => {
-          const containerNode = document.querySelector(
-            `#${containerId}`,
-          ) as HTMLTableElement;
-
-          containerNode.style.border = '';
-
-          return commands.updateAttributes(
-            this.name,
-            Utils.getDOMAttributes(containerNode),
-          );
+        ({ state, tr }) => {
+          return updateContainerStyle({
+            containerId,
+            state,
+            tr,
+            property: 'borderColor',
+            value: '',
+          });
         },
 
       setContainerWidth:
         ({ containerId, width }: { containerId: string; width: number }) =>
-        ({ commands }) => {
-          const containerNode = document.querySelector(
-            `#${containerId}`,
-          ) as HTMLTableElement;
-
-          containerNode.style.maxWidth = `${width}px`;
-
-          return commands.updateAttributes(
-            this.name,
-            Utils.getDOMAttributes(containerNode),
-          );
+        ({ state, tr }) => {
+          return updateContainerStyle({
+            containerId,
+            state,
+            tr,
+            property: 'maxWidth',
+            value: `${width}px`,
+          });
         },
 
       setContainerBorderRadius:
@@ -199,17 +231,14 @@ export const Container = Node.create<ContainerOptions>({
           containerId: string;
           borderRadius: number;
         }) =>
-        ({ commands }) => {
-          const containerNode = document.querySelector(
-            `#${containerId}`,
-          ) as HTMLTableElement;
-
-          containerNode.style.borderRadius = `${borderRadius}px`;
-
-          return commands.updateAttributes(
-            this.name,
-            Utils.getDOMAttributes(containerNode),
-          );
+        ({ state, tr }) => {
+          return updateContainerStyle({
+            containerId,
+            state,
+            tr,
+            property: 'borderRadius',
+            value: `${borderRadius}px`,
+          });
         },
     };
   },
