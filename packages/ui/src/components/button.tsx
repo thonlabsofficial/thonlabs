@@ -57,6 +57,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   loading?: boolean;
   icon?: any;
+  active?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -69,6 +70,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       children,
       icon: Icon,
+      active,
       ...props
     },
     ref,
@@ -77,6 +79,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         className={cn(buttonVariants({ variant, size, className }), {
           'pointer-events-none opacity-50': loading || disabled,
+          'bg-foreground/10': active,
         })}
         ref={ref}
         {...props}
