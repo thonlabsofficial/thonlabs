@@ -70,7 +70,11 @@ function updateContainerStyle({
         `#${containerId}`,
       ) as HTMLTableElement;
 
-      containerNode.style[property as any] = value;
+      if (property === 'borderColor') {
+        containerNode.style.border = value ? `1px solid ${value}` : '';
+      } else {
+        containerNode.style[property as any] = value;
+      }
 
       tr.setNodeMarkup(pos, undefined, {
         containerId,

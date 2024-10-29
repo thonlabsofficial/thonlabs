@@ -9,16 +9,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuLabel,
-} from '../../dropdown';
 import Utils from '@repo/utils';
+import { ButtonGroup } from '../../button-group';
 
 const containerFormSchema = z.object({
+  isLocked: z.boolean(),
   width: z
     .number()
     .min(0, { message: 'Width must be greater than 0' })
@@ -38,6 +33,7 @@ export function ContainerBubble() {
       width: 100,
       borderRadius: 0,
       widthUnit: '%',
+      isLocked: false,
     },
     mode: 'onChange',
     resolver: zodResolver(containerFormSchema),
@@ -54,7 +50,7 @@ export function ContainerBubble() {
     | undefined
   >(undefined);
   const [isFocused, setIsFocused] = useState(false);
-  const [isLocked, setIsLocked] = useState(false);
+  const isLocked = form.watch('isLocked');
 
   useEffect(() => {
     if (activeDOM) {
@@ -171,8 +167,13 @@ export function ContainerBubble() {
 
   useEffect(() => {
     const handleBlur = async () => {
+      await Utils.delay(100);
+
+      const isLocked =
+        (document.getElementById('is-locked') as HTMLInputElement)?.value ===
+        'true';
+
       if (!isLocked) {
-        await Utils.delay(100);
         setIsFocused(false);
       }
     };
@@ -184,7 +185,7 @@ export function ContainerBubble() {
         editor.off('blur', handleBlur);
       };
     }
-  }, [editor, isLocked]);
+  }, [editor]);
 
   const bubbleGutter = 38; // Height + margin
   const bubbleWidth = 34;
@@ -204,6 +205,7 @@ export function ContainerBubble() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.07 }}
       >
+        <input id="is-locked" type="hidden" {...form.register('isLocked')} />
         <div className="flex items-center gap-0.5">
           <div className="flex px-1 gap-2">
             <div className="flex items-center gap-0.5">
@@ -213,31 +215,49 @@ export function ContainerBubble() {
                 className="w-14"
                 size={'xs'}
                 maxLength={4}
-                {...form.register('width')}
+                onFocus={() => {
+                  form.setValue('isLocked', true);
+                }}
+                {...form.register('width', {
+                  onBlur: () => {
+                    form.setValue('isLocked', false);
+                  },
+                })}
               />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="xs" className="px-1">
-                    {widthUnit}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Unit</DropdownMenuLabel>
-                  {['px', '%'].map((unit) => (
-                    <DropdownMenuItem
-                      key={unit}
-                      onSelect={() => {
-                        form.setValue(
-                          'widthUnit',
-                          unit as ContainerFormData['widthUnit'],
-                        );
-                      }}
-                    >
-                      {unit}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <ButtonGroup variant="outline">
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  className="px-1"
+                  onClick={async () => {
+                    form.setValue('isLocked', true);
+                    form.setValue('widthUnit', 'px');
+
+                    await Utils.delay(100);
+                    editor.chain().focus().run();
+                    form.setValue('isLocked', false);
+                  }}
+                  active={widthUnit === 'px'}
+                >
+                  px
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  className="px-1"
+                  onClick={async () => {
+                    form.setValue('isLocked', true);
+                    form.setValue('widthUnit', '%');
+
+                    await Utils.delay(100);
+                    editor.chain().focus().run();
+                    form.setValue('isLocked', false);
+                  }}
+                  active={widthUnit === '%'}
+                >
+                  %
+                </Button>
+              </ButtonGroup>
             </div>
             <Separator
               orientation="vertical"
@@ -263,7 +283,14 @@ export function ContainerBubble() {
                 className="w-14"
                 size={'xs'}
                 maxLength={4}
-                {...form.register('borderRadius')}
+                onFocus={() => {
+                  form.setValue('isLocked', true);
+                }}
+                {...form.register('borderRadius', {
+                  onBlur: () => {
+                    form.setValue('isLocked', false);
+                  },
+                })}
               />
             </div>
           </div>
@@ -271,8 +298,28 @@ export function ContainerBubble() {
             orientation="vertical"
             className="h-7 bg-foreground/[0.07]"
           />
-          <ColorBlock type="containerBackground" containerId={activeDOM.id} />
-          <ColorBlock type="containerBorder" containerId={activeDOM.id} />
+          <ColorBlock
+            type="containerBackground"
+            containerId={activeDOM.id}
+            onOpenChange={({ isOpen }) => {
+              form.setValue('isLocked', isOpen);
+
+              if (!isOpen) {
+                editor.chain().focus().run();
+              }
+            }}
+          />
+          <ColorBlock
+            type="containerBorder"
+            containerId={activeDOM.id}
+            onOpenChange={({ isOpen }) => {
+              form.setValue('isLocked', isOpen);
+
+              if (!isOpen) {
+                editor.chain().focus().run();
+              }
+            }}
+          />
           <Separator
             orientation="vertical"
             className="h-7 bg-foreground/[0.07]"
@@ -282,13 +329,13 @@ export function ContainerBubble() {
             size="sm"
             icon={Trash2Icon}
             onClick={async () => {
-              setIsLocked(true);
+              form.setValue('isLocked', true);
 
               await Utils.delay(50);
               editor.chain().focus().deleteContainer().run();
 
               await Utils.delay(400);
-              setIsLocked(false);
+              form.setValue('isLocked', false);
             }}
           >
             <span className="sr-only">Delete</span>

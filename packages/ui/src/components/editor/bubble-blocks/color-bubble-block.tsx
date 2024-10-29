@@ -13,9 +13,11 @@ import { useState } from 'react';
 export function ColorBlock({
   type = 'color',
   containerId,
+  onOpenChange,
 }: {
   type?: 'color' | 'highlight' | 'containerBackground' | 'containerBorder';
   containerId?: string;
+  onOpenChange?: ({ isOpen }: { isOpen: boolean }) => void;
 }) {
   const { editor } = useEditor();
   const [isOpen, setIsOpen] = useState(false);
@@ -153,9 +155,24 @@ export function ColorBlock({
   }
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <Popover
+      open={isOpen}
+      onOpenChange={(isOpen) => {
+        setIsOpen(isOpen);
+        onOpenChange?.({ isOpen });
+      }}
+    >
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" icon={labelsMapper[type].icon}>
+        <Button
+          variant="ghost"
+          size="sm"
+          icon={labelsMapper[type].icon}
+          onClick={() => {
+            if (isOpen) {
+              onOpenChange?.({ isOpen: false });
+            }
+          }}
+        >
           <div
             className="h-4 w-4 rounded border border-gray-200"
             style={{
@@ -209,6 +226,7 @@ export function ColorBlock({
                         }
 
                         setIsOpen(false);
+                        onOpenChange?.({ isOpen: false });
                       }}
                     >
                       {labelsMapper[type].removeLabel}
@@ -256,6 +274,7 @@ export function ColorBlock({
                       }
 
                       setIsOpen(false);
+                      onOpenChange?.({ isOpen: false });
                     }}
                   >
                     <div
