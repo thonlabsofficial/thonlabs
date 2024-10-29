@@ -9,6 +9,14 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+} from '../../dropdown';
+import Utils from '@repo/utils';
 
 const containerFormSchema = z.object({
   width: z
@@ -19,6 +27,7 @@ const containerFormSchema = z.object({
     .number()
     .min(0, { message: 'Border radius must be greater than 0' })
     .max(9999, { message: 'Border radius must be less than 10000' }),
+  widthUnit: z.enum(['px', '%']),
 });
 type ContainerFormData = z.infer<typeof containerFormSchema>;
 
@@ -26,79 +35,156 @@ export function ContainerBubble() {
   const { editor } = useCurrentEditor();
   const form = useForm<ContainerFormData>({
     defaultValues: {
-      width: 0,
+      width: 100,
       borderRadius: 0,
+      widthUnit: '%',
     },
     mode: 'onChange',
     resolver: zodResolver(containerFormSchema),
   });
 
-  let activeContainerPosition;
-  let activeContainerId = '';
+  const [activeDOM, setActiveDOM] = useState<HTMLElement | undefined>(
+    undefined,
+  );
+  const [activeContainerPosition, setActiveContainerPosition] = useState<
+    | {
+        top: number;
+        right: number;
+      }
+    | undefined
+  >(undefined);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
 
-  const [activeContainerStyles, setActiveContainerStyles] = useState<
-    CSSStyleDeclaration | undefined
-  >();
   useEffect(() => {
-    if (activeContainerStyles) {
-      form.setValue('width', parseInt(activeContainerStyles.maxWidth || '0'));
-      form.setValue(
-        'borderRadius',
-        parseInt(activeContainerStyles.borderRadius || '0'),
-      );
+    if (activeDOM) {
+      const activeContainerStyles = activeDOM.style;
+
+      if (activeContainerStyles) {
+        form.setValue(
+          'width',
+          parseInt(activeContainerStyles.maxWidth || '100'),
+        );
+        form.setValue(
+          'widthUnit',
+          activeContainerStyles.maxWidth?.endsWith('px') ? 'px' : '%',
+        );
+        form.setValue(
+          'borderRadius',
+          parseInt(activeContainerStyles.borderRadius || '0'),
+        );
+      }
     }
-  }, [activeContainerStyles]);
+  }, [activeDOM]);
 
   const width = form.watch('width');
+  const widthUnit = form.watch('widthUnit');
   const borderRadius = form.watch('borderRadius');
   useEffect(() => {
     if (editor) {
-      if (width) {
+      if (width && widthUnit) {
         editor.commands.setContainerWidth({
-          containerId: activeContainerId as string,
+          containerId: activeDOM?.id as string,
           width,
+          unit: widthUnit as 'px' | '%',
         });
       }
       if (borderRadius) {
         editor.commands.setContainerBorderRadius({
-          containerId: activeContainerId as string,
+          containerId: activeDOM?.id as string,
           borderRadius,
         });
       }
     }
-  }, [editor, width, borderRadius]);
+  }, [editor, width, widthUnit, borderRadius]);
 
   if (!editor) {
     return null;
   }
 
-  const { state, view } = editor;
-  const { selection } = state;
-  const { $from } = selection;
+  const { view } = editor;
+  const { $from } = editor.state.selection;
+  useEffect(() => {
+    if (!isFocused) {
+      return;
+    }
 
-  // Check if there's a container node in the current selection
-  for (let d = $from.depth; d > 0; d--) {
-    const node = $from.node(d);
-    if (node.type.name === 'container') {
-      // Found a container, get its DOM element
-      const dom = view.nodeDOM($from.before(d)) as HTMLElement;
-      if (dom) {
-        // Calculate the top position
-        const rect = dom.getBoundingClientRect();
-        const editorRect = view.dom.getBoundingClientRect();
+    let found = false;
+    // Check if there's a container node in the current selection
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
 
-        activeContainerPosition = {
-          top: rect.top,
-          right: editorRect.right - rect.right,
-        };
-        activeContainerId = dom.id;
-        if (!activeContainerStyles) {
-          setActiveContainerStyles(dom.style);
+      if (node.type.name === 'container') {
+        // Found a container, get its DOM element
+        const dom = view.nodeDOM($from.before(d)) as HTMLElement;
+
+        if (dom) {
+          // Calculate the top position
+          const rect = dom.getBoundingClientRect();
+          const editorRect = view.dom.getBoundingClientRect();
+
+          setActiveContainerPosition({
+            top: rect.top,
+            right: editorRect.right - rect.right,
+          });
+          setActiveDOM(dom);
+
+          found = true;
+          break;
         }
-        break;
       }
     }
-  }
+
+    if (!found) {
+      setActiveDOM(undefined);
+      setActiveContainerPosition(undefined);
+    }
+  }, [$from, isFocused]);
+
+  useEffect(() => {
+    const handleClick = () => {
+      setIsFocused(true);
+    };
+
+    if (editor) {
+      editor.on('focus', handleClick);
+
+      return () => {
+        editor.off('focus', handleClick);
+      };
+    }
+  }, [editor]);
+
+  useEffect(() => {
+    const handleSelectionUpdate = () => {
+      setIsFocused(true);
+    };
+
+    if (editor) {
+      editor.on('selectionUpdate', handleSelectionUpdate);
+
+      return () => {
+        editor.off('selectionUpdate', handleSelectionUpdate);
+      };
+    }
+  }, [editor]);
+
+  useEffect(() => {
+    const handleBlur = async () => {
+      if (!isLocked) {
+        await Utils.delay(100);
+        setIsFocused(false);
+      }
+    };
+
+    if (editor) {
+      editor.on('blur', handleBlur);
+
+      return () => {
+        editor.off('blur', handleBlur);
+      };
+    }
+  }, [editor, isLocked]);
 
   const bubbleGutter = 38; // Height + margin
   const bubbleWidth = 34;
@@ -106,8 +192,8 @@ export function ContainerBubble() {
   return (
     editor.isActive('container') &&
     activeContainerPosition &&
-    activeContainerId &&
-    activeContainerStyles && (
+    activeDOM &&
+    isFocused && (
       <motion.div
         className="absolute flex flex-col gap-1 p-1 rounded-md bg-muted border border-foreground/[0.07] shadow-md"
         style={{
@@ -129,7 +215,34 @@ export function ContainerBubble() {
                 maxLength={4}
                 {...form.register('width')}
               />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="xs" className="px-1">
+                    {widthUnit}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Unit</DropdownMenuLabel>
+                  {['px', '%'].map((unit) => (
+                    <DropdownMenuItem
+                      key={unit}
+                      onSelect={() => {
+                        form.setValue(
+                          'widthUnit',
+                          unit as ContainerFormData['widthUnit'],
+                        );
+                      }}
+                    >
+                      {unit}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
+            <Separator
+              orientation="vertical"
+              className="h-7 bg-foreground/[0.07]"
+            />
             <div className="flex items-center gap-0.5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -158,11 +271,8 @@ export function ContainerBubble() {
             orientation="vertical"
             className="h-7 bg-foreground/[0.07]"
           />
-          <ColorBlock
-            type="containerBackground"
-            containerId={activeContainerId}
-          />
-          <ColorBlock type="containerBorder" containerId={activeContainerId} />
+          <ColorBlock type="containerBackground" containerId={activeDOM.id} />
+          <ColorBlock type="containerBorder" containerId={activeDOM.id} />
           <Separator
             orientation="vertical"
             className="h-7 bg-foreground/[0.07]"
@@ -171,8 +281,14 @@ export function ContainerBubble() {
             variant="ghost"
             size="sm"
             icon={Trash2Icon}
-            onClick={() => {
+            onClick={async () => {
+              setIsLocked(true);
+
+              await Utils.delay(50);
               editor.chain().focus().deleteContainer().run();
+
+              await Utils.delay(400);
+              setIsLocked(false);
             }}
           >
             <span className="sr-only">Delete</span>

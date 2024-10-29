@@ -32,6 +32,7 @@ declare module '@tiptap/core' {
       setContainerWidth: (attributes: {
         containerId: string;
         width: number;
+        unit: 'px' | '%';
       }) => ReturnType;
 
       setContainerBorderRadius: (attributes: {
@@ -212,14 +213,22 @@ export const Container = Node.create<ContainerOptions>({
         },
 
       setContainerWidth:
-        ({ containerId, width }: { containerId: string; width: number }) =>
+        ({
+          containerId,
+          width,
+          unit,
+        }: {
+          containerId: string;
+          width: number;
+          unit: 'px' | '%';
+        }) =>
         ({ state, tr }) => {
           return updateContainerStyle({
             containerId,
             state,
             tr,
             property: 'maxWidth',
-            value: `${width}px`,
+            value: `${width}${unit}`,
           });
         },
 
