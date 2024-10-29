@@ -1,4 +1,6 @@
 .tiptap {
+  @apply text-sm;
+
   p.is-empty::before {
     @apply text-zinc-400 
       content-[attr(data-placeholder)] 
@@ -11,6 +13,10 @@
     td {
       @apply relative;
     }
+  }
+
+  .ProseMirror-trailingBreak {
+    @apply hidden;
   }
 }
 

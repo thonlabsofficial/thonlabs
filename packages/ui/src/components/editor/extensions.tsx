@@ -117,7 +117,7 @@ export const emailExtensions = [
       return [
         'p',
         mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
-          style: `${emailDefaultStyles.font}font-size:inherit;color:inherit;margin-top:4px;margin-bottom:4px;`,
+          style: `${emailDefaultStyles.font}font-size:inherit;color:inherit;margin-top:4px;margin-bottom:4px;min-height:16px;`,
         }),
         0,
       ];
