@@ -2,19 +2,22 @@ import { Metadata } from 'next';
 import PageWrapper from '@labs/_components/page-wrapper';
 import PageHeader from '@labs/_components/page-header';
 import { LuMail } from 'react-icons/lu';
-import EmailTemplateEditor from './_components/email-template-editor';
+import EditEmailTemplate from '@labs/[environmentId]/emails/_components/edit-email-template';
 
 export const metadata: Metadata = {
-  title: 'Email Template Details',
+  title: 'Email Detail',
 };
 
-export default function EmailTemplateDetails() {
+export default function EmailDetail({
+  params: { templateId },
+}: {
+  params: { templateId: string };
+}) {
   return (
     <>
-      <PageHeader title="Email Template Details" icon={LuMail} withContainer />
-      <PageWrapper className="pt-4">
-        {/* <RichTextEditor /> */}
-        <EmailTemplateEditor />
+      <PageHeader title="Email Detail" icon={LuMail} withContainer={false} />
+      <PageWrapper withContainer={false}>
+        <EditEmailTemplate templateId={templateId} />
       </PageWrapper>
     </>
   );

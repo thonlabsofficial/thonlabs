@@ -50,8 +50,8 @@ const DrawerContent = React.forwardRef<
       ref={ref}
       className={cn(
         `
-        fixed w-[26rem] top-0 right-0 z-50 flex h-screen 
-        flex-col border-l bg-card !select-auto !cursor-auto 
+        fixed w-[26rem] top-0 z-50 flex
+        flex-col bg-card !select-auto !cursor-auto 
         inset-y-0 right-0 h-full border-l sm:max-w-sm
         data-[state=open]:animate-slide-fade-in-from-right 
         data-[state=closed]:animate-slide-fade-out-to-right
@@ -69,6 +69,78 @@ const DrawerContent = React.forwardRef<
   </DrawerPortal>
 ));
 DrawerContent.displayName = DrawerPrimitive.Content.displayName;
+
+const DrawerContentWrapper = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Content>,
+  DrawerContentProps
+>(({ className, children, ...props }, ref) => (
+  <DrawerPrimitive.Content
+    ref={ref}
+    className={cn(
+      `
+      fixed top-0 z-50 inset-y-0 right-0 h-full
+      data-[state=open]:animate-slide-fade-in-from-right 
+      data-[state=closed]:animate-slide-fade-out-to-right
+    `,
+      className,
+    )}
+    {...props}
+  >
+    <DrawerOverlay />
+    {children}
+  </DrawerPrimitive.Content>
+));
+DrawerContentWrapper.displayName = 'DrawerContentWrapper';
+
+const DrawerMainContent = React.forwardRef<
+  React.ElementRef<'div'>,
+  DrawerContentProps
+>(({ className, children, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      `
+      fixed w-[26rem] top-0 z-50 flex
+      flex-col bg-card !select-auto !cursor-auto 
+      inset-y-0 right-0 h-full border-l sm:max-w-sm
+      data-[state=open]:animate-slide-fade-in-from-right 
+      data-[state=closed]:animate-slide-fade-out-to-right
+    `,
+      className,
+    )}
+    {...props}
+  >
+    {children}
+    <DrawerPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+      <X className="h-4 w-4" />
+      <span className="sr-only">Close</span>
+    </DrawerPrimitive.Close>
+  </div>
+));
+DrawerMainContent.displayName = 'DrawerMainContent';
+
+const DrawerComplementaryContent = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Content>,
+  DrawerContentProps
+>(({ className, children, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      `
+      fixed w-[60vw] top-0 right-[24rem] z-50 flex
+      flex-col bg-card !select-auto !cursor-auto 
+      inset-y-0 h-full p-4
+      data-[state=open]:animate-slide-fade-in-from-right 
+      data-[state=closed]:animate-slide-fade-out-to-right
+    `,
+      className,
+    )}
+    {...props}
+  >
+    {children}
+  </div>
+));
+DrawerComplementaryContent.displayName = 'DrawerComplementaryContent';
 
 const DrawerHeader = ({
   className,
@@ -166,4 +238,7 @@ export {
   DrawerDescription,
   DrawerScrollArea,
   DrawerContentContainer,
+  DrawerContentWrapper,
+  DrawerMainContent,
+  DrawerComplementaryContent,
 };

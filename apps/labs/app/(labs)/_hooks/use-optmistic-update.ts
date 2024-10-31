@@ -2,7 +2,11 @@ import { useSWRConfig } from 'swr';
 import { MutatorOptions } from 'swr/_internal';
 
 export default function useOptimisticUpdate() {
-  const { mutate: swrMutate } = useSWRConfig();
+  const { cache, mutate: swrMutate } = useSWRConfig();
+
+  function hasCache(cacheKey: string) {
+    return cache.get(cacheKey) !== undefined;
+  }
 
   function makeMutations(
     data: {
@@ -11,10 +15,12 @@ export default function useOptimisticUpdate() {
     }[],
   ) {
     data.forEach(({ cacheKey, populateCache }) => {
-      swrMutate(cacheKey, null, {
-        revalidate: false,
-        populateCache,
-      });
+      if (hasCache(cacheKey)) {
+        swrMutate(cacheKey, null, {
+          revalidate: false,
+          populateCache,
+        });
+      }
     });
   }
 

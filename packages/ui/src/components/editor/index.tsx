@@ -29,12 +29,15 @@ import { ImageAlignBlock } from './bubble-blocks/image-align-bubble-block';
 import { ButtonLinkAlignBlock } from './bubble-blocks/button-link-align-bubble-block';
 import { ContainerBubble } from './bubble-blocks/container-bubble-block';
 
+export type { EditorInstance } from 'novel';
+
 interface EditorProp {
   initialValue?: JSONContent;
   onUpdate: React.ComponentProps<typeof EditorContent>['onUpdate'];
+  onCreate?: React.ComponentProps<typeof EditorContent>['onCreate'];
 }
 
-const Editor = ({ initialValue, onUpdate }: EditorProp) => {
+const Editor = ({ initialValue, onUpdate, onCreate }: EditorProp) => {
   return (
     <EditorRoot>
       <EditorContent
@@ -46,6 +49,7 @@ const Editor = ({ initialValue, onUpdate }: EditorProp) => {
           },
         }}
         onUpdate={onUpdate}
+        onCreate={onCreate}
         slotAfter={<ImageResizer />}
       >
         <EditorBubble

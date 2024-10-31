@@ -7,7 +7,7 @@ const buttonIconGroupVariants = cva('inline-flex rounded-md shadow-sm', {
   variants: {
     variant: {
       default: 'bg-background',
-      outline: 'border border-input',
+      outline: 'border border-foreground/20',
       ghost: 'bg-transparent',
     },
   },
@@ -53,9 +53,9 @@ export const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
         {React.Children.map(children, (child, index) => {
           if (React.isValidElement<ButtonIconProps>(child)) {
             return React.cloneElement(child, {
+              variant: variant === 'outline' ? 'outline' : child.props.variant,
               active: index === internalActiveIndex,
               ...child.props,
-              variant: variant === 'outline' ? 'outline' : child.props.variant,
               className: cn(
                 child.props.className,
                 index === 0 && 'rounded-l-md rounded-r-none',

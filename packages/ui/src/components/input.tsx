@@ -179,7 +179,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
         )}
         {error && (
-          <Typo variant={'sm'} state={'error'}>
+          <Typo variant={size} state={'error'}>
             {error}
           </Typo>
         )}

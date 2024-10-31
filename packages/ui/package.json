@@ -11,6 +11,7 @@
     "./button": "./src/components/button.tsx",
     "./card": "./src/components/card.tsx",
     "./clipboard": "./src/components/clipboard.tsx",
+    "./color-picker": "./src/components/color-picker.tsx",
     "./command": "./src/components/command.tsx",
     "./data-table": "./src/components/data-table.tsx",
     "./dialog": "./src/components/dialog.tsx",

@@ -190,6 +190,7 @@ export const slashItems = createSuggestionItems([
           .setContainerWidth({
             containerId: activeContainerId,
             width: 600,
+            unit: 'px',
           })
           .setContainerBorderRadius({
             containerId: activeContainerId,

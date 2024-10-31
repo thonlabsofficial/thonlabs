@@ -29,9 +29,9 @@ import { Container } from './extensions/container-extension';
 import { Empty } from './extensions/empty-extension';
 
 const emailDefaultStyles = {
-  font: 'font-family:ui-sanserif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;line-height:1.625;color:#000;',
+  font: 'font-family:ui-sanserif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;line-height:1.625;color:inherit;',
   fontCode:
-    'font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;line-height:1.625;color:#000;',
+    'font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;line-height:1.625;color:inherit;',
 };
 
 export const emailExtensions = [
@@ -117,7 +117,7 @@ export const emailExtensions = [
       return [
         'p',
         mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
-          style: `${emailDefaultStyles.font}font-size:inherit;color:inherit;margin-top:4px;margin-bottom:4px;min-height:16px;`,
+          style: `${emailDefaultStyles.font}font-size:inherit;margin-top:4px;margin-bottom:4px;min-height:16px;`,
         }),
         0,
       ];
