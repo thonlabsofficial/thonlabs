@@ -28,3 +28,11 @@ export const updateEmailTemplateFormSchema = z.object({
 export type UpdateEmailTemplatePayload = z.infer<
   typeof updateEmailTemplateFormSchema
 >;
+
+export const updateEmailTemplateStatusFormSchema = z.object({
+  enabled: z.boolean(),
+});
+
+export type UpdateEmailTemplateStatusPayload = z.infer<
+  typeof updateEmailTemplateStatusFormSchema
+>;

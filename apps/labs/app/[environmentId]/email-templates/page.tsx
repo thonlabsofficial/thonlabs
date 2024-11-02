@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Emails() {
   return (
     <>
-      <PageHeader title="Emails" icon={Mail} />
+      <PageHeader title="Email Templates" icon={Mail} />
       <PageWrapper withContainer={false}>
         <EmailTemplatesList />
       </PageWrapper>

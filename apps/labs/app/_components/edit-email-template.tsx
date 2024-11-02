@@ -17,9 +17,9 @@ import { Typo } from '@repo/ui/typo';
 import { Plus } from 'lucide-react';
 import React, { useTransition } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { parseHtmlTemplate } from '../_services/parse-html-template';
 import { Skeleton } from '@repo/ui/skeleton';
 import { EmailTemplateTypes } from '@/_interfaces/email-template';
+import EmailTemplateService from '@/_services/email-template-service';
 
 const EmailInput = React.forwardRef<
   HTMLInputElement,
@@ -106,7 +106,10 @@ export default function EditEmailTemplate({
   }, [emailTemplate?.preview, emailTemplate?.replyTo]);
 
   function onSubmit(payload: UpdateEmailTemplatePayload) {
-    payload.content = parseHtmlTemplate(payload.content, payload.bodyStyles);
+    payload.content = EmailTemplateService.parseHtmlTemplate(
+      payload.content,
+      payload.bodyStyles,
+    );
 
     startSavingTransition(async () => {
       await updateEmailTemplate(templateId, payload);

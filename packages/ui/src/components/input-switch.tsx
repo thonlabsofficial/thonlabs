@@ -33,7 +33,7 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
       <label
         className={cn(
           `
-          flex gap-3 items-center rounded-md border p-3
+          flex gap-3 items-center rounded-md py-1
           cursor-pointer select-none
         `,
           className,

@@ -50,7 +50,6 @@ export function ContainerBubble() {
     | undefined
   >(undefined);
   const [isFocused, setIsFocused] = useState(false);
-  const isLocked = form.watch('isLocked');
 
   useEffect(() => {
     if (activeDOM) {
@@ -119,8 +118,10 @@ export function ContainerBubble() {
           const rect = dom.getBoundingClientRect();
           const editorRect = view.dom.getBoundingClientRect();
 
+          console.log(dom, dom.id, rect);
+
           setActiveContainerPosition({
-            top: rect.top,
+            top: rect.top + window.scrollY,
             right: editorRect.right - rect.right,
           });
           setActiveDOM(dom);
@@ -188,7 +189,7 @@ export function ContainerBubble() {
   }, [editor]);
 
   const bubbleGutter = 38; // Height + margin
-  const bubbleWidth = 34;
+  const bubbleWidth = 76;
 
   return (
     editor.isActive('container') &&

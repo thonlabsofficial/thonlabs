@@ -5,6 +5,7 @@ import { EmailTemplate } from '@/_interfaces/email-template';
 import PageHeader from '@/_components/page-header';
 import { MailOpen } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import EditEmailTemplateSettings from '@/_components/edit-email-template-settings';
 
 async function getEmailTemplate(environmentId: string, templateId: string) {
   const { data } = await serverLabsEnvAPI.get<EmailTemplate>(
@@ -28,7 +29,7 @@ export async function generateMetadata({
 }: Props) {
   const emailTemplate = await getEmailTemplate(environmentId, templateId);
 
-  return { title: `${emailTemplate.name} · Email Templates` };
+  return { title: `${emailTemplate.name} Template · Email Templates` };
 }
 
 export default async function EmailDetail({
@@ -39,12 +40,13 @@ export default async function EmailDetail({
   return (
     <>
       <PageHeader
-        title={emailTemplate.name}
+        title={`${emailTemplate.name} Template`}
         icon={MailOpen}
         withContainer={false}
       />
-      <PageWrapper withContainer={false}>
+      <PageWrapper withContainer={false} className="pt-4 grid gap-10">
         <EditEmailTemplate templateId={templateId} />
+        <EditEmailTemplateSettings templateId={templateId} />
       </PageWrapper>
     </>
   );

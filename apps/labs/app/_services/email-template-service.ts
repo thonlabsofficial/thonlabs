@@ -1,11 +1,10 @@
 import { UpdateEmailTemplatePayload } from '@/_validators/emails-validators';
 
-const shouldIncludeUnit = ['padding'];
-
-export function parseHtmlTemplate(
+function parseHtmlTemplate(
   content: string,
   bodyStyles: UpdateEmailTemplatePayload['bodyStyles'],
 ) {
+  const shouldIncludeUnit = ['padding'];
   let bodyInlineStyles = '';
 
   Object.entries(bodyStyles).forEach(([key, value]) => {
@@ -25,3 +24,9 @@ export function parseHtmlTemplate(
     '</html>',
   ].join('');
 }
+
+const EmailTemplateService = {
+  parseHtmlTemplate,
+};
+
+export default EmailTemplateService;

@@ -19,6 +19,8 @@ import { useEmailTemplates } from '@/_hooks/use-email-templates';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import useUserSession from '@/_hooks/use-user-session';
+import useEmailTemplate from '@/_hooks/use-email-template';
+import EmailTemplatesConstants from '@/_constants/email-templates-constants';
 
 function DropdownMenuItemAction({
   type,
@@ -27,6 +29,7 @@ function DropdownMenuItemAction({
   type: 'update-status';
   emailTemplate: EmailTemplate;
 }) {
+  const { updateStatus } = useEmailTemplate();
   const { toast } = useToast();
 
   switch (type) {
@@ -35,6 +38,9 @@ function DropdownMenuItemAction({
         <DropdownMenuItem
           onSelect={async () => {
             toast({ description: 'Updating status...' });
+            await updateStatus(emailTemplate.id, {
+              enabled: !emailTemplate.enabled,
+            });
           }}
         >
           {emailTemplate.enabled ? (
@@ -129,10 +135,14 @@ const columns: ColumnDef<EmailTemplate>[] = [
                     <span>Edit</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItemAction
-                  type="update-status"
-                  emailTemplate={emailTemplate}
-                />
+                {EmailTemplatesConstants.allowedStatusChange.includes(
+                  emailTemplate.type,
+                ) && (
+                  <DropdownMenuItemAction
+                    type="update-status"
+                    emailTemplate={emailTemplate}
+                  />
+                )}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>

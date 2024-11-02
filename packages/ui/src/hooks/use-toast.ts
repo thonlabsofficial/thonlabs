@@ -36,6 +36,8 @@ function useToast() {
     duration?: number;
     position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
   }) {
+    sonner.toast.dismiss();
+
     const { type } = variantMapper[variant];
 
     return sonner.toast[type](title, {
@@ -49,6 +51,7 @@ function useToast() {
 
   return {
     toast,
+    toastDismiss: sonner.toast.dismiss,
   };
 }
 
