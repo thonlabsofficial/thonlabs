@@ -3,7 +3,7 @@ import { cn } from '@repo/ui/core/utils';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import MainHeaderEnvNav from './main-header-env-nav';
-import { UserSession } from '@/(labs)/_services/server-auth-session-service';
+import { UserSession } from '@/_services/server-auth-session-service';
 import UserAvatar from '@/_components/user-avatar';
 
 const Logo = dynamic(() => import('./logo'), { ssr: false });

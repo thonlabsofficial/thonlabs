@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-
 import { cn } from '../core/utils';
-import { IconType } from 'react-icons';
 
 const buttonVariants = cva(
   `inline-flex items-center justify-center whitespace-nowrap rounded-md font-semibold 

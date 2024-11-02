@@ -9,6 +9,7 @@ import {
   getFilteredRowModel,
   useReactTable,
   FilterFnOption,
+  Row,
 } from '@tanstack/react-table';
 import {
   Table,
@@ -86,6 +87,8 @@ interface DataTableProps<TData, TValue> {
   searchFields?: string[];
   loading?: boolean;
   actions?: React.ReactNode;
+  onRowHover?: (e: React.MouseEvent, row: Row<TData>) => void;
+  onRowClick?: (e: React.MouseEvent, row: Row<TData>) => void;
 }
 
 function DataTable<TData, TValue>({
@@ -99,6 +102,8 @@ function DataTable<TData, TValue>({
   searchFields = [],
   loading,
   actions,
+  onRowHover,
+  onRowClick,
   ...props
 }: DataTableProps<TData, TValue> & React.HTMLAttributes<HTMLElement>) {
   const [sorting, setSorting] = React.useState<SortingState>(defaultSorting);
@@ -193,7 +198,23 @@ function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className="group"
+                  className={cn('group', {
+                    'cursor-pointer': onRowClick,
+                  })}
+                  onMouseEnter={(e) => {
+                    onRowHover?.(e, row);
+                  }}
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    const clickableElement = target.closest(
+                      '[data-dt-bypass-click]',
+                    );
+                    if (clickableElement) {
+                      return;
+                    }
+
+                    onRowClick?.(e, row);
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell

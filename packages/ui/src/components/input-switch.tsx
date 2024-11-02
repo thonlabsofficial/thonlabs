@@ -33,15 +33,18 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
       <label
         className={cn(
           `
-          flex gap-3 items-center justify-between rounded-md border p-4
+          flex gap-3 items-center rounded-md border p-3
           cursor-pointer select-none
-          border-zinc-200 dark:border-zinc-600 
-          hover:border-zinc-400 dark:hover:border-zinc-500
         `,
           className,
         )}
         {...props}
       >
+        <Switch
+          value={value}
+          onCheckedChange={onCheckedChange}
+          checked={checked}
+        />
         <div className="flex flex-col gap-0.5">
           <Typo variant={'sm'}>{label}</Typo>
           {description && (
@@ -50,11 +53,6 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
             </Typo>
           )}
         </div>
-        <Switch
-          value={value}
-          onCheckedChange={onCheckedChange}
-          checked={checked}
-        />
       </label>
     ) : (
       <Skeleton className="h-[4.75rem] w-full" />

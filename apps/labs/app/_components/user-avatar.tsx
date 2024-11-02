@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
-import { UserSession } from '@/(labs)/_services/server-auth-session-service';
+import { UserSession } from '@/_services/server-auth-session-service';
 import {
   DropdownMenu,
   DropdownMenuTrigger,

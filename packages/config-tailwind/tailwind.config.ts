@@ -93,12 +93,17 @@ const config: Omit<Config, 'content'> = {
           from: { transform: 'translateX(0)', opacity: 1 },
           to: { transform: 'translateX(0.375rem)', opacity: 0 },
         },
+        shimmer: {
+          '0%': { backgroundPosition: '100% 0' },
+          '100%': { backgroundPosition: '-100% 0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'slide-fade-in-from-right': 'slide-fade-in-from-right 0.2s ease-out',
         'slide-fade-out-to-right': 'slide-fade-out-to-right 0.2s ease-out',
+        shimmer: 'shimmer 1.5s infinite',
       },
     },
   },

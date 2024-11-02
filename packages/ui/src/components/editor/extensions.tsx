@@ -64,7 +64,7 @@ export const emailExtensions = [
           font-size:14px;line-height:20px;font-weight:700;text-decoration-line:none;
           background-color:#15172a;display:inline-block;
           box-shadow:0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0,0,0,0.1), 0 1px 2px -1px rgb(0,0,0,0.1);
-          height:46px;padding-left:16px;padding-right:16px;padding-top:12px;padding-bottom:12px`,
+          height:46px;padding-left:16px;padding-right:16px;padding-top:12px;padding-bottom:12px;box-sizing:border-box`,
           }),
           0,
         ],

@@ -29,16 +29,144 @@ import { ImageAlignBlock } from './bubble-blocks/image-align-bubble-block';
 import { ButtonLinkAlignBlock } from './bubble-blocks/button-link-align-bubble-block';
 import { ContainerBubble } from './bubble-blocks/container-bubble-block';
 
-export type { EditorInstance } from 'novel';
+function EditorLoader({
+  size = 172,
+  loadingText = 'Loading content...',
+}: {
+  size?: number;
+  loadingText?: string;
+}) {
+  return (
+    <div
+      className="flex flex-col items-center justify-center w-full h-full"
+      aria-label="Editor is loading"
+    >
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 100 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="hsl(0, 0%, 90%)" stopOpacity="1">
+              <animate
+                attributeName="stop-color"
+                values="hsl(0, 0%, 90%); hsl(0, 0%, 85%); hsl(0, 0%, 90%)"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+            </stop>
+            <stop offset="50%" stopColor="hsl(0, 0%, 85%)" stopOpacity="1">
+              <animate
+                attributeName="stop-color"
+                values="hsl(0, 0%, 85%); hsl(0, 0%, 90%); hsl(0, 0%, 85%)"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+            </stop>
+            <stop offset="100%" stopColor="hsl(0, 0%, 90%)" stopOpacity="1">
+              <animate
+                attributeName="stop-color"
+                values="hsl(0, 0%, 90%); hsl(0, 0%, 85%); hsl(0, 0%, 90%)"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+            </stop>
+          </linearGradient>
+        </defs>
+
+        {/* Editor outline */}
+        <rect
+          x="10"
+          y="10"
+          width="80"
+          height="80"
+          rx="4"
+          stroke="hsl(0, 0%, 90%)"
+          strokeWidth="4"
+        />
+
+        {/* Top bar */}
+        <rect
+          x="14"
+          y="14"
+          width="72"
+          height="8"
+          rx="2"
+          fill="url(#gradient)"
+        />
+
+        {/* Content lines */}
+        <rect
+          x="14"
+          y="30"
+          width="60"
+          height="4"
+          rx="1"
+          fill="url(#gradient)"
+        />
+        <rect
+          x="14"
+          y="40"
+          width="72"
+          height="4"
+          rx="1"
+          fill="url(#gradient)"
+        />
+        <rect
+          x="14"
+          y="50"
+          width="50"
+          height="4"
+          rx="1"
+          fill="url(#gradient)"
+        />
+        <rect
+          x="14"
+          y="60"
+          width="65"
+          height="4"
+          rx="1"
+          fill="url(#gradient)"
+        />
+
+        {/* Cursor */}
+        <rect x="14" y="70" width="2" height="12" fill="hsl(0, 0%, 85%)">
+          <animate
+            attributeName="opacity"
+            values="1;0;1"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+        </rect>
+      </svg>
+      <div
+        className="text-sm font-sans font-semibold animate-shimmer"
+        style={{
+          background:
+            'linear-gradient(90deg, hsl(0, 0%, 90%), hsl(0, 0%, 85%), hsl(0, 0%, 90%))',
+          backgroundSize: '200% 100%',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+      >
+        {loadingText}
+      </div>
+    </div>
+  );
+}
 
 interface EditorProp {
   initialValue?: JSONContent;
   onUpdate: React.ComponentProps<typeof EditorContent>['onUpdate'];
   onCreate?: React.ComponentProps<typeof EditorContent>['onCreate'];
+  loading?: boolean;
 }
 
-const Editor = ({ initialValue, onUpdate, onCreate }: EditorProp) => {
-  return (
+const Editor = ({ initialValue, onUpdate, onCreate, loading }: EditorProp) => {
+  return !loading ? (
     <EditorRoot>
       <EditorContent
         {...(initialValue && { initialContent: initialValue })}
@@ -196,9 +324,12 @@ const Editor = ({ initialValue, onUpdate, onCreate }: EditorProp) => {
         </EditorCommand>
       </EditorContent>
     </EditorRoot>
+  ) : (
+    <EditorLoader />
   );
 };
 
 export type { JSONContent };
+export type { EditorInstance } from 'novel';
 
 export default Editor;

@@ -11,6 +11,7 @@ const httpsAgent =
       })
     : null;
 
+// TODO: remove it and replace the lib usage to fetch
 const labsPublicAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
   headers: {
@@ -20,6 +21,7 @@ const labsPublicAPI = axios.create({
   httpsAgent,
 });
 
+// Used together with env ID and public key, not sure if will be necessary to this APP
 const labsAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
   headers: {
@@ -29,13 +31,18 @@ const labsAPI = axios.create({
   httpsAgent,
 });
 
+// Used together with env ID
 const labsEnvAPI = axios.create({
   baseURL: process.env.NEXT_PUBLIC_TL_API,
   httpsAgent,
 });
 
+// Calls internal APIs (BFF)
 const intAPI = axios.create();
 
+// This is used to fetch data in endpoints like /environments
+// I think it's possible to use only the "envFetcher" and in case of
+// doesn't have an envID I can use the env var
 const fetcher = (url: string) => labsAPI.get(url).then((res) => res.data);
 
 const envFetcher = (envID: string) => (url: string) =>
@@ -79,6 +86,7 @@ async function handleResponseError(error: any) {
   return Promise.reject(error);
 }
 
+// This is used to create different caches for each environment
 function envURL(url: string, envID: string, queryString: any = {}) {
   return `${url}${qs.stringify(
     {
@@ -89,6 +97,7 @@ function envURL(url: string, envID: string, queryString: any = {}) {
   )}`;
 }
 
+// This is used to add headers in POST, PATCH, PUT, DELETE requests
 function envHeaders(envID: string) {
   return {
     headers: {

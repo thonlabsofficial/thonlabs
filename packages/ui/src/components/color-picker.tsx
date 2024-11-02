@@ -5,6 +5,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from './command';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Input, inputVariants } from './input';
 import { cn } from '../core/utils';
+import { Skeleton } from './skeleton';
 
 const colors = {
   white: '#ffffff',
@@ -103,6 +104,7 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Popover> {
   defaultColor?: string;
   className?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  loading?: boolean;
   onSelect?: ({
     name,
     color,
@@ -115,6 +117,7 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Popover> {
 export function ColorPicker({
   defaultColor,
   size = 'md',
+  loading,
   onSelect,
   className,
   ...props
@@ -148,21 +151,25 @@ export function ColorPicker({
       }}
     >
       <PopoverTrigger asChild>
-        <div
-          className={inputVariants({
-            size,
-            className: cn(
-              'flex items-center gap-1 border-zinc-200 dark:border-zinc-600 hover:border-zinc-400 dark:hover:border-zinc-500 !bg-transparent cursor-pointer',
-              className,
-            ),
-          })}
-        >
+        {!loading ? (
           <div
-            className="flex-none basis-4 h-4 rounded border border-foreground/10"
-            style={{ backgroundColor: currentColor }}
-          />
-          {currentColor}
-        </div>
+            className={inputVariants({
+              size,
+              className: cn(
+                'flex items-center gap-1 border-zinc-200 dark:border-zinc-600 hover:border-zinc-400 dark:hover:border-zinc-500 !bg-transparent cursor-pointer',
+                className,
+              ),
+            })}
+          >
+            <div
+              className="flex-none basis-4 h-4 rounded border border-foreground/10"
+              style={{ backgroundColor: currentColor }}
+            />
+            {currentColor}
+          </div>
+        ) : (
+          <Skeleton className="!w-24 h-7 !rounded-md" />
+        )}
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
         <Command className="bg-transparent">

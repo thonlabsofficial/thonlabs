@@ -54,7 +54,7 @@ export interface InputProps
 }
 
 const loadingSizeMapper = {
-  xs: '1.5rem',
+  xs: '1.75rem',
   sm: '2.25rem',
   md: '3rem',
   lg: '3.5rem',

@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { buttonVariants } from '@repo/ui/button';
-import useUserSession from '@labs/_hooks/use-user-session';
+import useUserSession from '@/_hooks/use-user-session';
 import BreadcrumbSlashDivider from '@/_components/breadcrumb-slash-divider';
 import { usePathname } from 'next/navigation';
 import { ScrollArea } from '@repo/ui/scroll-area';
-import { useProjects } from '@/(labs)/_hooks/use-projects';
+import { useProjects } from '@/_hooks/use-projects';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -20,9 +20,9 @@ import { ChevronsUpDown, Grid2X2, Plus, Settings } from 'lucide-react';
 import { Skeleton } from '@repo/ui/skeleton';
 import Link from 'next/link';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import ProjectSettingsDrawer from '@/(labs)/projects/_components/project-settings-drawer';
-import NewProjectDialog from '@/(labs)/projects/_components/new-project-dialog';
-import NewEnvironmentDialog from '@/(labs)/projects/_components/new-environment-dialog';
+import ProjectSettingsDrawer from '@/projects/_components/project-settings-drawer';
+import NewProjectDialog from '@/projects/_components/new-project-dialog';
+import NewEnvironmentDialog from '@/projects/_components/new-environment-dialog';
 
 const ProjectEnvButton = React.forwardRef<
   HTMLButtonElement,
@@ -83,36 +83,39 @@ export default function MainHeaderEnvNav() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64" align="start">
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Current Project</DropdownMenuLabel>
                 <DropdownMenuItem
                   onSelect={() => {
                     setDialogOpen('project-settings');
                   }}
                 >
                   <Settings className="mr-2 h-4 w-4" />
-                  Settings
+                  Project Settings
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuLabel>All Projects</DropdownMenuLabel>
+              <DropdownMenuLabel>Other Projects</DropdownMenuLabel>
               <DropdownMenuGroup>
                 <ScrollArea className="max-h-[6.125rem]">
                   {!isLoading ? (
-                    projects.map((project) => (
-                      <Link
-                        href={`/${project.environments?.[0]?.id}`}
-                        key={project.id}
-                        onClick={() => {
-                          toast({
-                            title: 'Welcome back!',
-                            description: `You're now in ${project.environments?.[0]?.name} for project ${project.appName}.`,
-                            duration: 2400,
-                          });
-                        }}
-                      >
-                        <DropdownMenuItem>{project.appName}</DropdownMenuItem>
-                      </Link>
-                    ))
+                    projects
+                      .filter(
+                        (project) => project.id !== environment?.project?.id,
+                      )
+                      .map((project) => (
+                        <Link
+                          href={`/${project.environments?.[0]?.id}`}
+                          key={project.id}
+                          onClick={() => {
+                            toast({
+                              title: 'Welcome back!',
+                              description: `You're now in ${project.environments?.[0]?.name} for project ${project.appName}.`,
+                              duration: 2400,
+                            });
+                          }}
+                        >
+                          <DropdownMenuItem>{project.appName}</DropdownMenuItem>
+                        </Link>
+                      ))
                   ) : (
                     <div className="flex flex-col gap-1">
                       <Skeleton className="h-6 w-full" />

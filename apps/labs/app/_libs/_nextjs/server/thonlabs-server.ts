@@ -85,3 +85,7 @@ export async function validateSession(req: NextRequest) {
 export function getSession() {
   return ServerSessionService.getSession();
 }
+
+export function getTokens() {
+  return ServerSessionService.getSessionCookies();
+}

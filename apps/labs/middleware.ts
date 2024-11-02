@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ServerAuthSessionService from '@/(labs)/_services/server-auth-session-service';
 import { validateSession, isAuthRoute } from '@/_libs/_nextjs/server';
 import { forwardSearchParams } from '@/_libs/_nextjs/utils/helpers';
 

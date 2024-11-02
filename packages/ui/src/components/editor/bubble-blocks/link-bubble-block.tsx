@@ -20,7 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 const linkFormSchema = z.object({
-  link: z.string().url({ message: 'Enter a valid link' }),
+  link: z.string(),
 });
 type LinkFormData = z.infer<typeof linkFormSchema>;
 
@@ -137,11 +137,7 @@ export function LinkBlock({
                       <Typo variant={'sm'} className="max-w-40 truncate">
                         {formLink}
                       </Typo>
-                      <Typo variant={'mutedXs'}>
-                        {form.formState.errors.link
-                          ? form.formState.errors.link?.message
-                          : 'Link to this website'}
-                      </Typo>
+                      <Typo variant={'mutedXs'}>Link to this website</Typo>
                     </div>
                   </CommandItem>
 
