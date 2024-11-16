@@ -505,6 +505,9 @@ importers:
 
   packages/utils:
     dependencies:
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       typescript:
         specifier: 5.3.3
         version: 5.3.3

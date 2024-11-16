@@ -10,12 +10,14 @@
     ".": "./src/utils.ts",
     "./validation-patterns": "./src/validation-patterns.ts",
     "./errors-metadata": "./src/errors-metadata.ts",
-    "./data-return": "./src/data-return.ts"
+    "./data-return": "./src/data-return.ts",
+    "./log": "./src/log.ts"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
+    "date-fns": "^3.6.0",
     "typescript": "5.3.3"
   }
 }

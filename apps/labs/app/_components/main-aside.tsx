@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { cn } from '@repo/ui/core/utils';
 import {
-  BookUser,
   Building,
   DatabaseZap,
   Earth,
@@ -67,23 +66,13 @@ export default function MainAside() {
               href={`/${environmentId}/dashboard`}
               icon={LayoutDashboard}
             />
-            <NavItem
-              label="API Keys"
-              href={`/${environmentId}/api-keys`}
-              icon={LockKeyhole}
-            />
-            <NavItem
-              label="Settings"
-              href={`/${environmentId}/settings`}
-              icon={Settings}
-            />
           </section>
           <section className="flex flex-col gap-1 w-full">
             <Typo variant={'mutedXs'} className="px-2">
               Auth & User Management
             </Typo>
             <NavItem
-              label="Builder"
+              label="Auth Builder"
               href={`/${environmentId}/builder`}
               icon={ShieldEllipsis}
             />
@@ -126,6 +115,21 @@ export default function MainAside() {
               label="Translations"
               href={`/${environmentId}/translations`}
               icon={Earth}
+            />
+          </section>
+          <section className="flex flex-col gap-1 w-full">
+            <Typo variant={'mutedXs'} className="px-2">
+              Configuration
+            </Typo>
+            <NavItem
+              label="API Keys"
+              href={`/${environmentId}/api-keys`}
+              icon={LockKeyhole}
+            />
+            <NavItem
+              label="Settings"
+              href={`/${environmentId}/settings`}
+              icon={Settings}
             />
           </section>
         </div>

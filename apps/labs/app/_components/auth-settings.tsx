@@ -28,12 +28,12 @@ export default function AuthSettings() {
         environmentId: environmentId as string,
       },
       {
-        onFetchComplete() {
+        onFetchComplete(_environment) {
           form.reset({
-            authProvider: environment?.authProvider || '',
-            tokenExpiration: environment?.tokenExpiration || '',
-            refreshTokenExpiration: environment?.refreshTokenExpiration || '',
-            enableSignUp: environment?.enableSignUp || false,
+            authProvider: _environment?.authProvider || '',
+            tokenExpiration: _environment?.tokenExpiration || '',
+            refreshTokenExpiration: _environment?.refreshTokenExpiration || '',
+            enableSignUp: _environment?.enableSignUp || false,
           });
         },
       },

@@ -12,13 +12,14 @@ import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optimistic-update';
 import { useEnvironmentData } from '@/_libs/_nextjs';
+import { buildEnvDataMutation } from './use-environment-app-data';
 
 type Params = {
   environmentId?: string;
 };
 
 type Options = {
-  onFetchComplete?: () => void;
+  onFetchComplete?: (environment: EnvironmentDetail) => void;
 };
 
 export default function useEnvironment(
@@ -37,9 +38,6 @@ export default function useEnvironment(
 
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
-  React.useEffect(() => {
-    onFetchComplete && onFetchComplete();
-  }, [environment, environmentData]);
 
   const environmentMemo = React.useMemo(() => {
     if (!environment || !environmentData) {
@@ -48,6 +46,10 @@ export default function useEnvironment(
 
     return { ...environment, ...environmentData } as EnvironmentDetail;
   }, [environment, environmentData]);
+
+  React.useEffect(() => {
+    environmentMemo && onFetchComplete?.(environmentMemo);
+  }, [environmentMemo]);
 
   async function createEnvironment(
     projectId: string,
@@ -140,15 +142,22 @@ export default function useEnvironment(
         payload,
       );
 
-      makeMutations([
-        {
-          cacheKey: `/environments/${environmentId}`,
-          populateCache: (_, environment) => ({
-            ...environment,
-            ...payload,
-          }),
-        },
-      ]);
+      makeMutations(
+        buildEnvDataMutation([
+          {
+            environmentId,
+            key: 'authProvider',
+            value: payload.authProvider,
+            isSDKData: true,
+          },
+          {
+            environmentId,
+            key: 'enableSignUp',
+            value: payload.enableSignUp,
+            isSDKData: true,
+          },
+        ]),
+      );
 
       toast({
         title: 'Changes Saved',

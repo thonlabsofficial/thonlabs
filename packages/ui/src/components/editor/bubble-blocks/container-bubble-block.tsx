@@ -118,8 +118,6 @@ export function ContainerBubble() {
           const rect = dom.getBoundingClientRect();
           const editorRect = view.dom.getBoundingClientRect();
 
-          console.log(dom, dom.id, rect);
-
           setActiveContainerPosition({
             top: rect.top + window.scrollY,
             right: editorRect.right - rect.right,

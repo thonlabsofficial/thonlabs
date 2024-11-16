@@ -100,12 +100,18 @@ export function TextTypeBlock() {
     return null;
   }
 
-  const typoActiveItem = editor
-    ? textTypeItems.filter((item) => item.isActive(editor)).pop()
-    : {
-        name: 'Multiple',
-        icon: BookTypeIcon,
-      };
+  let typoActiveItem = textTypeItems
+    .filter((item) => item.isActive(editor))
+    .pop();
+
+  if (!typoActiveItem) {
+    typoActiveItem = {
+      name: 'Multiple',
+      icon: BookTypeIcon,
+      command: () => {},
+      isActive: () => false,
+    };
+  }
 
   return (
     <Popover>

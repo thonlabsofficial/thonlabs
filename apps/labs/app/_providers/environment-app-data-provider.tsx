@@ -5,17 +5,14 @@ import useSWR from 'swr';
 import { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 import { useParams } from 'next/navigation';
 import { intFetcher } from '@helpers/api';
-import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 
 export interface EnvironmentAppDataContextProps {
   environmentAppData: EnvironmentAppData | null;
-  buildEnvDataMutation: (environmentId: string, key: string, value: any) => any;
 }
 
 export const EnvironmentAppDataContext =
   React.createContext<EnvironmentAppDataContextProps>({
     environmentAppData: {} as EnvironmentAppData,
-    buildEnvDataMutation: () => [],
   });
 
 export interface EnvironmentAppDataProviderProps

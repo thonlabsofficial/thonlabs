@@ -21,6 +21,7 @@ import {
 } from '@repo/ui/dialog';
 import useProject from '@/_hooks/use-project';
 import { Project } from '@/_interfaces/project';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   trigger: React.ReactNode;
@@ -35,12 +36,14 @@ export default function DeleteProjectDialog({
     resolver: zodResolver(DeleteProjectFormSchema),
   });
   const { deleteProject } = useProject();
+  const router = useRouter();
   const [isDeleting, startDeletingTransition] = useTransition();
   const appName = form.watch('appName');
 
   function handleDelete() {
     startDeletingTransition(async () => {
       await deleteProject(project.id, project.appName);
+      router.replace('/projects');
     });
   }
 

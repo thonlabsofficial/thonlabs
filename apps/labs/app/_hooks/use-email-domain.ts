@@ -26,9 +26,15 @@ export default function useEmailDomain() {
         description: 'Email domain has been updated successfully',
       });
 
-      makeMutations([
-        buildEnvDataMutation(environmentId, 'emailTemplateDomain', data),
-      ]);
+      makeMutations(
+        buildEnvDataMutation([
+          {
+            environmentId,
+            key: 'emailTemplateDomain',
+            value: data,
+          },
+        ]),
+      );
 
       return data;
     } catch (error: any) {
@@ -53,9 +59,15 @@ export default function useEmailDomain() {
         description: 'Verification started...',
       });
 
-      makeMutations([
-        buildEnvDataMutation(environmentId, 'emailTemplateDomain', data),
-      ]);
+      makeMutations(
+        buildEnvDataMutation([
+          {
+            environmentId,
+            key: 'emailTemplateDomain',
+            value: data,
+          },
+        ]),
+      );
 
       return data;
     } catch (error: any) {

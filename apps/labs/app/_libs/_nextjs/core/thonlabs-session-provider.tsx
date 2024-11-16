@@ -55,7 +55,7 @@ export function ThonLabsSessionProvider({
   );
   const memoClientEnvironmentData = React.useMemo(
     () => clientEnvironmentData || environmentData,
-    [environmentId, publicKey],
+    [environmentId, publicKey, clientEnvironmentData],
   );
 
   return (
