@@ -112,8 +112,10 @@ export default function EditEmailTemplate({
     );
 
     startSavingTransition(async () => {
-      await updateEmailTemplate(templateId, payload);
-      form.reset();
+      try {
+        await updateEmailTemplate(templateId, payload);
+        form.reset();
+      } catch {}
     });
   }
 
@@ -176,6 +178,7 @@ export default function EditEmailTemplate({
                       <Badge variant={'outline'}>environment.id</Badge>
                       <Badge variant={'outline'}>environment.name</Badge>
                       <Badge variant={'outline'}>environment.appURL</Badge>
+                      <Badge variant={'outline'}>environment.emailDomain</Badge>
                       <Badge variant={'outline'}>environment.project.id</Badge>
                       <Badge variant={'outline'}>
                         environment.project.name
@@ -191,15 +194,8 @@ export default function EditEmailTemplate({
                           Inviter
                         </Typo>
                         <div className="flex-1 flex flex-wrap gap-2">
-                          <Badge variant={'outline'}>environment.id</Badge>
-                          <Badge variant={'outline'}>environment.name</Badge>
-                          <Badge variant={'outline'}>environment.appURL</Badge>
-                          <Badge variant={'outline'}>
-                            environment.project.id
-                          </Badge>
-                          <Badge variant={'outline'}>
-                            environment.project.name
-                          </Badge>
+                          <Badge variant={'outline'}>inviter.fullName</Badge>
+                          <Badge variant={'outline'}>inviter.email</Badge>
                         </div>
                       </section>
                     </>

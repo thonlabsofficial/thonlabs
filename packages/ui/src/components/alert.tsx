@@ -5,19 +5,21 @@ import { cn } from '../core/utils';
 
 const alertVariants = cva(
   `
-    relative w-full rounded-lg border  
+    relative w-full rounded-lg border flex gap-2
     text-gray-900 dark:text-white [&>svg]:text-gray-900 dark:[&>svg]:text-white
-    [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 
-    [&>svg~*]:pl-7
   `,
   {
     variants: {
       variant: {
         default:
           'bg-accent/70 dark:bg-accent/60 border-gray-400 dark:border-accent',
-        info: `bg-sky-100/70 dark:bg-sky-900/60 border-sky-300 dark:border-sky-900`,
+        info: `bg-info/20 dark:bg-info/40 border-info/50 dark:border-info/40`,
         destructive:
-          'bg-destructive/10 dark:bg-destructive/20 border-destructive/50 dark:border-destructive',
+          'bg-destructive/10 dark:bg-destructive/20 border-destructive/50 dark:border-destructive/20',
+        warning:
+          'bg-warning/10 dark:bg-warning/20 border-warning/50 dark:border-warning/20',
+        success:
+          'bg-success/10 dark:bg-success/20 border-success/50 dark:border-success/20',
       },
       size: {
         sm: 'text-xs p-2',
@@ -33,14 +35,18 @@ const alertVariants = cva(
 
 const Alert = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
->(({ className, variant, size, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> &
+    VariantProps<typeof alertVariants> & { icon?: any }
+>(({ className, variant, size, icon: Icon, children, ...props }, ref) => (
   <div
     ref={ref}
     role="alert"
     className={cn(alertVariants({ variant, size }), className)}
     {...props}
-  />
+  >
+    {Icon && <Icon className="w-4 h-4 -mt-px" />}
+    <div className="flex flex-col gap-0.5">{children}</div>
+  </div>
 ));
 Alert.displayName = 'Alert';
 
@@ -50,7 +56,7 @@ const AlertTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h5
     ref={ref}
-    className={cn('mb-1 font-semibold leading-none tracking-tight', className)}
+    className={cn('font-semibold leading-none tracking-tight', className)}
     {...props}
   />
 ));

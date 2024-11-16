@@ -93,31 +93,37 @@ const TableCell = React.forwardRef<
   HTMLTableCellElement,
   {
     withCopy?: boolean;
+    withCopyValue?: string;
     loading?: boolean;
   } & React.TdHTMLAttributes<HTMLTableCellElement>
->(({ withCopy, children, className, loading, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn(
-      'p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
-      className,
-    )}
-    {...props}
-  >
-    <div className={cn({ 'flex items-center gap-1': !loading })}>
-      {children}
-      {withCopy && (
-        <Clipboard
-          size="xs"
-          variant="outline"
-          value={children?.toString() as string}
-          labels={[Copy, Check]}
-          iconLabels
-        />
+>(
+  (
+    { withCopy, withCopyValue, children, className, loading, ...props },
+    ref,
+  ) => (
+    <td
+      ref={ref}
+      className={cn(
+        'p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        className,
       )}
-    </div>
-  </td>
-));
+      {...props}
+    >
+      <div className={cn({ 'flex items-center gap-1': !loading })}>
+        {children}
+        {withCopy && (
+          <Clipboard
+            size="xs"
+            variant="outline"
+            value={withCopyValue ?? (children?.toString() as string)}
+            labels={[Copy, Check]}
+            iconLabels
+          />
+        )}
+      </div>
+    </td>
+  ),
+);
 TableCell.displayName = 'TableCell';
 
 const TableCaption = React.forwardRef<

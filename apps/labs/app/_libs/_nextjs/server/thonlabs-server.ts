@@ -23,14 +23,21 @@ export function isAuthRoute(req: NextRequest) {
   return isPublicRoute;
 }
 
-export function bypassRoutes(req: NextRequest, routes: string[]) {
+export function shouldBypassRoute(req: NextRequest, routes: string[]) {
   const pathname = req.nextUrl.pathname;
   const shouldBypass = routes.some((route) => pathname.startsWith(route));
 
   return shouldBypass;
 }
 
-export async function validateSession(req: NextRequest) {
+export async function validateSession(
+  req: NextRequest,
+  bypassRoutes: string[] = [],
+) {
+  if (shouldBypassRoute(req, bypassRoutes)) {
+    return NextResponse.next();
+  }
+
   const isPublicRoute = isAuthRoute(req);
 
   if (!isPublicRoute) {

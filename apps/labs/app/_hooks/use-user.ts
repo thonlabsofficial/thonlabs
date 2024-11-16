@@ -6,7 +6,7 @@ import {
   UpdateUserGeneralDataFormData,
   UpdateUserStatusFormData,
 } from '@/_validators/users-validators';
-import useOptimisticUpdate from '@/_hooks/use-optmistic-update';
+import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import { User } from '@/_interfaces/user';
 import qs from 'qs';
 import useUserSession from '@/_hooks/use-user-session';

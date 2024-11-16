@@ -5,14 +5,14 @@ import React from 'react';
 import { Files } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Content Storage',
+  title: 'Content',
 };
 
-export default async function ContentStorage() {
+export default async function Content() {
   return (
     <>
-      <PageHeader title="Content Storage" icon={Files} />
-      <PageWrapper withContainer={false}>Content Storage page</PageWrapper>
+      <PageHeader title="Content" icon={Files} />
+      <PageWrapper withContainer={false}>Content page</PageWrapper>
     </>
   );
 }

@@ -10,7 +10,7 @@ import { APIErrors } from '@helpers/api/api-errors';
 import useSWR from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
-import useOptimisticUpdate from './use-optmistic-update';
+import useOptimisticUpdate from './use-optimistic-update';
 import { useEnvironmentData } from '@/_libs/_nextjs';
 
 type Params = {

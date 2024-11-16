@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { validateSession, isAuthRoute } from '@/_libs/_nextjs/server';
+import {
+  validateSession,
+  isAuthRoute,
+  shouldBypassRoute,
+} from '@/_libs/_nextjs/server';
 import { forwardSearchParams } from '@/_libs/_nextjs/utils/helpers';
 
 export const config = {
@@ -7,18 +11,16 @@ export const config = {
 };
 
 export async function middleware(req: NextRequest) {
-  const pathname = req.nextUrl.pathname;
-
   const shouldRedirectToLogin = await validateSession(req);
   if (shouldRedirectToLogin) {
     return shouldRedirectToLogin;
   }
 
-  if (
-    !isAuthRoute(req) &&
-    !pathname.startsWith('/projects') &&
-    !pathname.startsWith('/env-')
-  ) {
+  if (shouldBypassRoute(req, ['/projects', '/api/environments', '/env-'])) {
+    return NextResponse.next();
+  }
+
+  if (!isAuthRoute(req)) {
     console.log(
       '[MIDDLEWARE] No environment selected, redirecting to /projects',
     );

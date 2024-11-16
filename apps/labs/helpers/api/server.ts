@@ -17,6 +17,13 @@ const serverLabsEnvAPI = axios.create({
   httpsAgent,
 });
 
+const serverLabsInternalAPI = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_TL_API,
+  headers: {
+    'tl-int-key': process.env.TL_INTERNAL_API_KEY,
+  },
+});
+
 async function validateTokensInterceptor(
   config: InternalAxiosRequestConfig<any>,
 ) {
@@ -37,4 +44,4 @@ function serverEnvHeaders(envID: string) {
 
 serverLabsEnvAPI.interceptors.request.use(validateTokensInterceptor);
 
-export { serverLabsEnvAPI, serverEnvHeaders };
+export { serverLabsEnvAPI, serverEnvHeaders, serverLabsInternalAPI };

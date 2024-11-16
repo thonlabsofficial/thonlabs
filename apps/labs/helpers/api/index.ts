@@ -39,6 +39,7 @@ const labsEnvAPI = axios.create({
 
 // Calls internal APIs (BFF)
 const intAPI = axios.create();
+const intFetcher = (url: string) => intAPI.get(url).then((res) => res.data);
 
 // This is used to fetch data in endpoints like /environments
 // I think it's possible to use only the "envFetcher" and in case of
@@ -120,6 +121,7 @@ export {
   intAPI,
   labsEnvAPI,
   fetcher,
+  intFetcher,
   envFetcher,
   envURL,
   envHeaders,

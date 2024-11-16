@@ -9,7 +9,7 @@ import useEnvironment from '@/_hooks/use-environment';
 import { useMemo } from 'react';
 import { useParams } from 'next/navigation';
 
-export default function CustomDomainWrapper() {
+export default function CustomDomainSettings() {
   const { environmentId } = useParams();
   const { environment, isLoadingEnvironment } = useEnvironment({
     environmentId: environmentId as string,
@@ -22,7 +22,7 @@ export default function CustomDomainWrapper() {
     <Card>
       <div className="grid grid-cols-[19rem_1fr] gap-40">
         <CardHeader description="Use this domain for all authentication requests, including login, signup, password reset, and email confirmation.">
-          Domain
+          Authentication Domain
         </CardHeader>
         <CardContent className="flex-1 p-6">
           <InputWrapper>

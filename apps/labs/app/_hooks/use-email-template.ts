@@ -1,7 +1,7 @@
 import { envHeaders, envURL, labsEnvAPI } from '@helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
-import useOptimisticUpdate from '@/_hooks/use-optmistic-update';
+import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import useUserSession from '@/_hooks/use-user-session';
 import {
   UpdateEmailTemplatePayload,
@@ -86,6 +86,7 @@ export default function useEmailTemplate(
         description: error?.response?.data?.message || APIErrors.Generic,
         variant: 'destructive',
       });
+      throw error;
     }
   }
 

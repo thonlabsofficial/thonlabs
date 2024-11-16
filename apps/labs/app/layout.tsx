@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import CoreProvider from './_providers/core-provider';
 import { fonts } from '@repo/ui/core/fonts';
 import { ThonLabsWrapper } from '@/_libs/_nextjs';
+import { serverLabsInternalAPI } from '@helpers/api/server';
 
 export const metadata: Metadata = {
   title: {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-function RootLayout({
+async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

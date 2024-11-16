@@ -7,9 +7,9 @@ import { cn } from '@repo/ui/core/utils';
 import {
   BookUser,
   Building,
+  DatabaseZap,
   Earth,
-  Files,
-  Flag,
+  Folder,
   Globe,
   LayoutDashboard,
   LockKeyhole,
@@ -62,9 +62,6 @@ export default function MainAside() {
       <nav className="w-full flex flex-col justify-between h-[92vh]">
         <div className="flex flex-col gap-5 w-full">
           <section className="flex flex-col gap-1 w-full">
-            <Typo variant={'mutedXs'} className="px-2">
-              Environment
-            </Typo>
             <NavItem
               label="Dashboard"
               href={`/${environmentId}/dashboard`}
@@ -86,8 +83,8 @@ export default function MainAside() {
               Auth & User Management
             </Typo>
             <NavItem
-              label="Auth Builder"
-              href={`/${environmentId}/auth-builder`}
+              label="Builder"
+              href={`/${environmentId}/builder`}
               icon={ShieldEllipsis}
             />
             <NavItem
@@ -101,34 +98,29 @@ export default function MainAside() {
               icon={Building}
             />
             <NavItem
-              label="KYC Builder"
-              href={`/${environmentId}/kyc-builder`}
-              icon={BookUser}
-            />
-            <NavItem
               label="Email Templates"
               href={`/${environmentId}/email-templates`}
               icon={Mail}
             />
             <NavItem
-              label="Email Domains"
-              href={`/${environmentId}/email-domains`}
+              label="Domains"
+              href={`/${environmentId}/domains`}
               icon={Globe}
             />
           </section>
           <section className="flex flex-col gap-1 w-full">
             <Typo variant={'mutedXs'} className="px-2">
-              Dev Tools
+              Databases
             </Typo>
             <NavItem
-              label="Feature Flags"
-              href={`/${environmentId}/feature-flags`}
-              icon={Flag}
+              label="Key/Value"
+              href={`/${environmentId}/kv`}
+              icon={DatabaseZap}
             />
             <NavItem
-              label="Content Storage"
-              href={`/${environmentId}/content-storage`}
-              icon={Files}
+              label="Content"
+              href={`/${environmentId}/content`}
+              icon={Folder}
             />
             <NavItem
               label="Translations"

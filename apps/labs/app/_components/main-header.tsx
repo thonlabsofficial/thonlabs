@@ -5,6 +5,7 @@ import Link from 'next/link';
 import MainHeaderEnvNav from './main-header-env-nav';
 import { UserSession } from '@/_services/server-auth-session-service';
 import UserAvatar from '@/_components/user-avatar';
+import MainHeaderNav from '@/_components/main-header-nav';
 
 const Logo = dynamic(() => import('./logo'), { ssr: false });
 
@@ -36,6 +37,8 @@ export default function MainHeader({
         </Link>
         {withNav && <MainHeaderEnvNav />}
       </div>
+
+      {/* <MainHeaderNav /> */}
 
       <div className="flex items-center gap-2">
         <UserAvatar session={session} />

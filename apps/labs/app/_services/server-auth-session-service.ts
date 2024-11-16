@@ -9,11 +9,6 @@ const ServerAuthSessionService = {
   getSession(): UserSession {
     return getSession();
   },
-  async getEnv(environmentId: string) {
-    // const { data } = await labsAPI.get(`/environment/${environmentId}`);
-    // const env = cookies().get('tl_env');
-    // return data;
-  },
 };
 
 export default ServerAuthSessionService;

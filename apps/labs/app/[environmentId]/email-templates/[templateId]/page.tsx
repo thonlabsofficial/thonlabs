@@ -29,7 +29,7 @@ export async function generateMetadata({
 }: Props) {
   const emailTemplate = await getEmailTemplate(environmentId, templateId);
 
-  return { title: `${emailTemplate.name} Template · Email Templates` };
+  return { title: `${emailTemplate.name} Template · Emails` };
 }
 
 export default async function EmailDetail({

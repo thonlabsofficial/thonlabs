@@ -82,6 +82,7 @@ export default function MainHeaderEnvNav() {
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64" align="start">
+              <DropdownMenuLabel>Project</DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   onSelect={() => {
@@ -89,7 +90,7 @@ export default function MainHeaderEnvNav() {
                   }}
                 >
                   <Settings className="mr-2 h-4 w-4" />
-                  Project Settings
+                  Settings
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />

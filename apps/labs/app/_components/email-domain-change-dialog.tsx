@@ -16,32 +16,33 @@ import {
   DialogTrigger,
 } from '@repo/ui/dialog';
 import { EnvironmentDetail } from '@/_interfaces/environment';
+import { SetCustomDomainFormData } from '@/_validators/environments-validators';
+import useEmailDomain from '@/_hooks/use-email-domain';
 import {
-  SetCustomDomainFormData,
-  SetCustomDomainFormSchema,
-} from '@/_validators/environments-validators';
-import useEnvironment from '@/_hooks/use-environment';
+  ChangeEmailDomainFormData,
+  changeEmailDomainFormSchema,
+} from '@/_validators/emails-validators';
 
 type Props = {
   trigger: React.ReactNode;
   environment: EnvironmentDetail;
 };
 
-export default function SetCustomDomainDialog({
+export default function EmailDomainChangeDialog({
   trigger,
   environment,
 }: Props & React.ComponentProps<typeof Dialog>) {
-  const form = useForm<SetCustomDomainFormData>({
-    resolver: zodResolver(SetCustomDomainFormSchema),
+  const form = useForm<ChangeEmailDomainFormData>({
+    resolver: zodResolver(changeEmailDomainFormSchema),
   });
   const [isSaving, startSavingTransition] = useTransition();
-  const { setCustomDomain } = useEnvironment();
+  const { changeEmailDomain } = useEmailDomain();
   const [isOpen, setIsOpen] = React.useState(false);
 
-  function onSubmit(payload: SetCustomDomainFormData) {
+  function onSubmit(payload: ChangeEmailDomainFormData) {
     startSavingTransition(async () => {
       try {
-        await setCustomDomain(environment.id, payload.customDomain);
+        await changeEmailDomain(environment.id, payload.domain);
         setIsOpen(false);
       } catch {}
     });
@@ -59,20 +60,20 @@ export default function SetCustomDomainDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Custom Domain</DialogTitle>
+          <DialogTitle>Email Domain</DialogTitle>
           <DialogDescription>
-            Defining a custom domain makes your app accessible through that
-            domain instead of the ThonLabs domain provided.
+            Defining a email domain makes possible to send the template emails
+            from that domain.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid w-full items-center gap-3">
             <InputWrapper>
               <Input
-                label="Enter you custom domain"
-                placeholder="e.g.: auth.thonlabs.io"
-                error={form.formState.errors.customDomain?.message}
-                {...form.register('customDomain')}
+                label="Enter you email domain"
+                placeholder="e.g.: email.thonlabs.io"
+                error={form.formState.errors.domain?.message}
+                {...form.register('domain')}
               />
             </InputWrapper>
           </div>
@@ -83,7 +84,7 @@ export default function SetCustomDomainDialog({
               </Button>
             </DialogClose>
             <Button loading={isSaving}>
-              {isSaving ? 'Setting...' : 'Set Custom Domain'}
+              {isSaving ? 'Changing...' : 'Change Email Domain'}
             </Button>
           </DialogFooter>
         </form>
