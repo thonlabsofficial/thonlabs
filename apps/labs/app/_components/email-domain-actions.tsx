@@ -14,7 +14,7 @@ export default function EmailDomainActions({ environmentId }: Props) {
   const { environment, isLoadingEnvironment } = useEnvironment({
     environmentId,
   });
-  const { emailTemplateDomain } = useEmailDomain();
+  const { emailTemplateDomain, verifyEmailDomain } = useEmailDomain();
 
   if (isLoadingEnvironment) {
     return <Skeleton className="!w-44 h-8" />;
@@ -23,7 +23,12 @@ export default function EmailDomainActions({ environmentId }: Props) {
   return (
     <>
       {emailTemplateDomain.status !== EmailDomainStatus.Verifying && (
-        <Button type="button" size={'sm'} disabled={isLoadingEnvironment}>
+        <Button
+          type="button"
+          size={'sm'}
+          disabled={isLoadingEnvironment}
+          onClick={() => verifyEmailDomain(environmentId)}
+        >
           Verify Again
         </Button>
       )}

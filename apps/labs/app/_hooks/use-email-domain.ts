@@ -52,6 +52,7 @@ export default function useEmailDomain() {
     try {
       const { data } = await labsEnvAPI.post<EmailTemplateDomain>(
         `/emails/domains/verify`,
+        {},
         envHeaders(environmentId),
       );
 

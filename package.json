@@ -13,7 +13,7 @@
     "@repo/typescript-config": "workspace:*",
     "eslint-config": "^0.3.0",
     "prettier": "^3.2.5",
-    "turbo": "latest"
+    "turbo": "^2.3.2"
   },
   "engines": {
     "node": ">=18"

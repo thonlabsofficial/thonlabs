@@ -179,7 +179,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
         )}
         {error && (
-          <Typo variant={size} state={'error'}>
+          <Typo variant={size} state={'error'} className="text-sm">
             {error}
           </Typo>
         )}
@@ -195,10 +195,7 @@ function InputWrapper({
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <div
-      {...props}
-      className={cn('flex flex-col space-y-1.5 group', className)}
-    >
+    <div {...props} className={cn('flex flex-col gap-1 group', className)}>
       {children}
     </div>
   );

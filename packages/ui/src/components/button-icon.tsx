@@ -28,7 +28,7 @@ const buttonIconVariants = cva(
       },
       size: {
         xs: 'p-1',
-        sm: 'p-1.5',
+        sm: 'w-11 h-11 p-1.5',
         md: 'p-2',
         lg: 'p-4',
       },
