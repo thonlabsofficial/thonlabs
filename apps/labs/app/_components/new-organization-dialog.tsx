@@ -26,6 +26,8 @@ import {
 } from '@/_validators/organizations-validators';
 import { Badge } from '@repo/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
+import { InputSingleFile } from '@repo/ui/input-single-file';
+import { ImagePreview } from '@repo/ui/image-preview';
 
 type Props = {
   trigger: React.ReactNode;
@@ -45,14 +47,14 @@ export default function NewOrganizationDrawer({
     control: form.control,
     name: 'domains',
   });
-
+  const logo = form.watch('logo');
+  const logoPreview = logo?.[0] ? URL.createObjectURL(logo[0]) : '';
   const [isCreatingOrganization, startTransitionCreatingOrganization] =
     useTransition();
 
-  function onSubmit(payload) {
-    startTransitionCreatingOrganization(async () => {
-      // TODO: Implement
-    });
+  function onSubmit({ logo, ...payload }: NewOrganizationFormData) {
+    console.log(logo, payload);
+    startTransitionCreatingOrganization(async () => {});
   }
 
   function handleReset() {
@@ -92,7 +94,33 @@ export default function NewOrganizationDrawer({
                       Used in email templates and consumed from our APIs.
                       Recommended size is 1024px of width.
                     </Typo>
+                    {!logo && (
+                      <Alert variant="info" size={'sm'} className="mt-2">
+                        <AlertDescription>
+                          Max size: 50MB - Allowed files: PNG, JPG, JPEG, WEBP
+                          or SVG
+                        </AlertDescription>
+                      </Alert>
+                    )}
                   </header>
+
+                  <InputWrapper>
+                    <InputSingleFile
+                      form={form}
+                      allowedExtensions={['png', 'jpg', 'jpeg', 'webp', 'svg']}
+                      maxFileSizeInMB={50}
+                      replaceBy={
+                        <ImagePreview imageSRC={logoPreview}>
+                          <img
+                            src={logoPreview}
+                            alt="Logo"
+                            className="h-full object-contain"
+                          />
+                        </ImagePreview>
+                      }
+                      {...form.register('logo')}
+                    />
+                  </InputWrapper>
                 </section>
 
                 <section>

@@ -4,15 +4,12 @@ import { domain } from './custom-validators';
 export const newOrganizationFormSchema = z.object({
   name: z
     .string({ required_error: 'This field is required' })
-    .min(1, { message: 'This field is required' })
-    .refine((value) => value.trim().split(' ').length >= 2, {
-      message: 'Please enter the full name',
-    }),
+    .min(1, { message: 'This field is required' }),
   domains: z
     .object({
       domain: domain(),
     })
     .array(),
-  logo: z.instanceof(File).optional(),
+  logo: z.instanceof(FileList).optional(),
 });
 export type NewOrganizationFormData = z.infer<typeof newOrganizationFormSchema>;
