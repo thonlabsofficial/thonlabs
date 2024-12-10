@@ -28,6 +28,7 @@ import { Badge } from '@repo/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import { InputSingleFile } from '@repo/ui/input-single-file';
 import { ImagePreview } from '@repo/ui/image-preview';
+import useOrganization from '@/_hooks/use-organization';
 
 type Props = {
   trigger: React.ReactNode;
@@ -51,10 +52,15 @@ export default function NewOrganizationDrawer({
   const logoPreview = logo?.[0] ? URL.createObjectURL(logo[0]) : '';
   const [isCreatingOrganization, startTransitionCreatingOrganization] =
     useTransition();
+  const { createOrganization } = useOrganization();
 
-  function onSubmit({ logo, ...payload }: NewOrganizationFormData) {
-    console.log(logo, payload);
-    startTransitionCreatingOrganization(async () => {});
+  function onSubmit(payload: NewOrganizationFormData) {
+    startTransitionCreatingOrganization(async () => {
+      try {
+        await createOrganization(payload);
+        setOpen(false);
+      } catch {}
+    });
   }
 
   function handleReset() {
@@ -89,7 +95,12 @@ export default function NewOrganizationDrawer({
 
                 <section>
                   <header className="flex flex-col gap-0.5 mb-2">
-                    <Typo variant="lg">Logo</Typo>
+                    <Typo variant="lg" className="flex items-center gap-1">
+                      Logo{' '}
+                      <Badge variant="info" size={'sm'}>
+                        Optional
+                      </Badge>
+                    </Typo>
                     <Typo variant="muted">
                       Used in email templates and consumed from our APIs.
                       Recommended size is 1024px of width.

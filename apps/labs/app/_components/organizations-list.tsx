@@ -3,7 +3,7 @@
 import { DataTable } from '@repo/ui/data-table';
 import { Button } from '@repo/ui/button';
 import React from 'react';
-import NewOrganizationDialog from '@/_components/new-organization-dialog';
+import NewOrganizationDrawer from '@/_components/new-organization-drawer';
 
 export default function OrganizationsList() {
   return (
@@ -17,7 +17,7 @@ export default function OrganizationsList() {
         noResultsMessage="No organizations found"
         searchPlaceholder="Search by name..."
         actions={
-          <NewOrganizationDialog
+          <NewOrganizationDrawer
             trigger={<Button size={'sm'}>New Organization</Button>}
           />
         }
