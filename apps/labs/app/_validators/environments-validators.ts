@@ -30,6 +30,7 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
     required_error: ErrorMessages.RequiredField,
   }),
   enableSignUp: z.boolean(),
+  enableSignUpB2BOnly: z.boolean(),
 });
 
 export type UpdateEnvironmentAuthSettingsFormData = z.infer<

@@ -1,13 +1,15 @@
-import { labsAPI } from '../../helpers/api';
+import { envURL, labsAPI } from '../../helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { Environment } from '@/_interfaces/environment';
-import { Project } from '@/_interfaces/project';
 import { APIErrors } from '@helpers/api/api-errors';
 import { NewOrganizationFormData } from '@/_validators/organizations-validators';
 import { Organization } from '@/_interfaces/organization';
+import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
+import { useParams } from 'next/navigation';
 
 export default function useOrganization() {
   const { toast } = useToast();
+  const { makeMutations } = useOptimisticUpdate();
+  const { environmentId } = useParams();
 
   async function createOrganization({
     logo,
@@ -35,6 +37,16 @@ export default function useOrganization() {
         title: 'Organization Created',
         description: `Your organization ${payload.name} has been successfully created.`,
       });
+
+      makeMutations([
+        {
+          cacheKey: envURL('/organizations', environmentId as string),
+          populateCache: (_, organizations) => ({
+            ...organizations,
+            items: [...organizations.items, data],
+          }),
+        },
+      ]);
 
       return data;
     } catch (error: any) {

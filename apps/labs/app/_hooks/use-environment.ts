@@ -156,6 +156,12 @@ export default function useEnvironment(
             value: payload.enableSignUp,
             isSDKData: true,
           },
+          {
+            environmentId,
+            key: 'enableSignUpB2BOnly',
+            value: payload.enableSignUpB2BOnly,
+            isSDKData: true,
+          },
         ]),
       );
 

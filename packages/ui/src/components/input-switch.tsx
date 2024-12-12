@@ -12,6 +12,7 @@ export interface InputSwitchProps extends React.HTMLAttributes<HTMLElement> {
   description?: React.ReactNode;
   error?: React.ReactNode;
   loading?: boolean;
+  disabled?: boolean;
 }
 
 const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
@@ -25,6 +26,7 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
       value,
       onCheckedChange,
       checked,
+      disabled,
       ...props
     },
     _,
@@ -36,6 +38,9 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
           flex gap-3 items-center rounded-md py-1
           cursor-pointer select-none
         `,
+          {
+            'pointer-events-none opacity-50': disabled,
+          },
           className,
         )}
         {...props}
@@ -55,7 +60,7 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
         </div>
       </label>
     ) : (
-      <Skeleton className="h-[4.75rem] w-full" />
+      <Skeleton className="h-[3rem] w-full" />
     );
   },
 );

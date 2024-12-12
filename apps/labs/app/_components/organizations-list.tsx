@@ -54,7 +54,7 @@ const columns = ({
         <div className="flex flex-col gap-0.5 mt-px">
           <Typo className="font-semibold">{data}</Typo>
           <div className="flex gap-0.5">
-            <Badge variant={'outline'} size={'xs'} className="cursor-text">
+            <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
               OID: {id?.substring(0, 4)}...{id?.substring(id.length - 4)}
             </Badge>
             <Clipboard
@@ -87,19 +87,21 @@ const columns = ({
               key={domain.domain}
               variant={'outline'}
               size={'xs'}
-              className="cursor-text"
+              className="cursor-pointer"
             >
               {domain.domain}
             </Badge>
           ))}
           {rest > 0 && (
-            <Badge variant={'outline'} size={'xs'} className="cursor-text">
+            <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
               +{rest}
             </Badge>
           )}
         </div>
       ) : (
-        '-'
+        <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
+          No domain registered
+        </Badge>
       );
     },
   },

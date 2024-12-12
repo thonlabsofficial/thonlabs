@@ -17,7 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@repo/ui/drawer';
-import { Typo } from '@repo/ui/typo';
+import { Typo, typoVariants } from '@repo/ui/typo';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import { TrashIcon } from 'lucide-react';
 import {
@@ -143,7 +143,7 @@ export default function NewOrganizationDrawer({
                       </Badge>
                     </Typo>
                     <Typo variant="muted" className="text-sm">
-                      Allow sign-ups and invitations from email addresses with
+                      Allow sign up and invitation from email addresses with
                       these domains.
                     </Typo>
                   </header>
@@ -182,8 +182,13 @@ export default function NewOrganizationDrawer({
                     <Alert variant="info" size={'sm'} className="mt-2">
                       <AlertTitle>Good to Know</AlertTitle>
                       <AlertDescription>
-                        Without specified domains, users can only join through
-                        direct invitations.
+                        Without specified domains, users can only join{' '}
+                        <span
+                          className={typoVariants({ variant: 'underline' })}
+                        >
+                          through direct invitations
+                        </span>
+                        .
                       </AlertDescription>
                     </Alert>
                   )}

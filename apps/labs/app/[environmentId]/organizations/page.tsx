@@ -16,10 +16,6 @@ export default async function Organizations() {
       <PageHeader title="Organizations" icon={Building} />
       <PageWrapper withContainer={false} className="pt-4 grid gap-12">
         <OrganizationsList />
-
-        <section>
-          <SectionHeader title="Settings" />
-        </section>
       </PageWrapper>
     </>
   );

@@ -15,12 +15,18 @@ import { InputSwitch } from '@repo/ui/input-switch';
 import { Typo } from '@repo/ui/typo';
 import { useParams } from 'next/navigation';
 import { useTransition } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
+import { Label } from '@repo/ui/label';
 
 export default function AuthSettings() {
   const { environmentId } = useParams();
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
+  });
+  const enableSignUp = useWatch({
+    control: form.control,
+    name: 'enableSignUp',
   });
   const { environment, isLoadingEnvironment, updateEnvironmentAuthSettings } =
     useEnvironment(
@@ -34,6 +40,7 @@ export default function AuthSettings() {
             tokenExpiration: _environment?.tokenExpiration || '',
             refreshTokenExpiration: _environment?.refreshTokenExpiration || '',
             enableSignUp: _environment?.enableSignUp || false,
+            enableSignUpB2BOnly: _environment?.enableSignUpB2BOnly || false,
           });
         },
       },
@@ -48,6 +55,7 @@ export default function AuthSettings() {
           tokenExpiration: payload?.tokenExpiration || '',
           refreshTokenExpiration: payload?.refreshTokenExpiration || '',
           enableSignUp: payload?.enableSignUp || false,
+          enableSignUpB2BOnly: payload?.enableSignUpB2BOnly || false,
         });
       });
     });
@@ -82,20 +90,30 @@ export default function AuthSettings() {
                   {...form.register('authProvider')}
                 />
               </InputWrapper>
-              <Controller
-                name="enableSignUp"
-                control={form.control}
-                render={({ field }) => (
-                  <InputSwitch
-                    label="Enable Sign Up"
-                    description="Allow users to sign up to the platform from login page."
-                    value={field.value}
-                    onCheckedChange={field.onChange}
-                    checked={!!field.value}
-                    loading={isLoadingEnvironment}
-                  />
-                )}
-              />
+              <InputWrapper>
+                <Label loading={isLoadingEnvironment} withFocusWithin={false}>
+                  Sign Up Settings
+                </Label>
+                <Controller
+                  name="enableSignUp"
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSwitch
+                      label="Enable Sign Up"
+                      description="Allow users to sign up to the platform from login page."
+                      value={field.value}
+                      onCheckedChange={field.onChange}
+                      checked={!!field.value}
+                      loading={isLoadingEnvironment}
+                    />
+                  )}
+                />
+                <EnableSignUpB2BOnlySwitch
+                  form={form}
+                  loading={isLoadingEnvironment}
+                  disabled={!enableSignUp}
+                />
+              </InputWrapper>
             </div>
           </CardContent>
         </div>
