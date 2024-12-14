@@ -163,6 +163,7 @@ export default function NewOrganizationDrawer({
                           variant="destructive"
                           size="sm"
                           onClick={() => domainsFields.remove(index)}
+                          className="!basis-11 flex-none"
                         />
                       </div>
                     ))}

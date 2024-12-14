@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import SeparatorLine from '@/_components/separator-line';
 import useEnvironment from '@/_hooks/use-environment';
 import {
@@ -46,6 +47,12 @@ export default function AuthSettings() {
       },
     );
   const [isSaving, startSavingTransition] = useTransition();
+
+  React.useEffect(() => {
+    if (!enableSignUp) {
+      form.setValue('enableSignUpB2BOnly', false);
+    }
+  }, [enableSignUp]);
 
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
     startSavingTransition(() => {
