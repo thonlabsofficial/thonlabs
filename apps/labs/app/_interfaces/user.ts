@@ -1,3 +1,5 @@
+import { Organization } from './organization';
+
 export interface User {
   id: string;
   fullName: string;
@@ -9,4 +11,5 @@ export interface User {
   updatedAt: Date;
   profilePicture?: string;
   invitedAt?: Date;
+  organization?: Organization;
 }

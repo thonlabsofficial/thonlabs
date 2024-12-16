@@ -49,6 +49,10 @@ export default function InfoUserDrawer({
               <BoxKeyValue label="Full Name" value={user?.fullName} />
               <BoxKeyValue label="Email" value={user?.email} withCopy />
               <BoxKeyValue
+                label="Organization"
+                value={user?.organization?.name}
+              />
+              <BoxKeyValue
                 label="Status"
                 value={
                   <Badge

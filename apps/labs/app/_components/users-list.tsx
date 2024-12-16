@@ -38,6 +38,7 @@ import {
   ToggleRight,
   Delete,
 } from 'lucide-react';
+import { Organization } from '@/_interfaces/organization';
 
 function DropdownMenuItemAction({
   type,
@@ -170,6 +171,14 @@ const columns = ({
       );
     },
     sortingFn: 'alphanumeric',
+  },
+  {
+    accessorKey: 'organization',
+    header: 'Organization',
+    cell: ({ getValue }) => {
+      const data = getValue() as Organization;
+      return data?.name || '-';
+    },
   },
   {
     accessorKey: 'active',

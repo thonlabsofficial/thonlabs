@@ -24,6 +24,14 @@ import useUser from '@/_hooks/use-user';
 import Utils from '@repo/utils';
 import { useOrganizations } from '@/_hooks/use-organizations';
 import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
+import {
+  InputSelect,
+  InputSelectContent,
+  InputSelectItem,
+  InputSelectTrigger,
+  InputSelectValue,
+} from '@repo/ui/input-select';
+import { Badge } from '@repo/ui/badge';
 
 type Props = {
   trigger: React.ReactNode;
@@ -53,11 +61,13 @@ export default function NewUserDialog({
 
   function onSubmit(payload: NewUserFormData) {
     startTransitionCreatingUser(async () => {
-      const user = await createUser(payload);
+      try {
+        const user = await createUser(payload);
 
-      if (user) {
-        setOpen(false);
-      }
+        if (user) {
+          setOpen(false);
+        }
+      } catch {}
     });
   }
 
@@ -95,6 +105,44 @@ export default function NewUserDialog({
                 {...form.register('email')}
               />
             </InputWrapper>
+            {!envData?.enableSignUpB2BOnly && (
+              <InputWrapper className="z-60">
+                <Controller
+                  name="organizationId"
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSelect onValueChange={field.onChange} {...field}>
+                      <InputSelectTrigger
+                        label={
+                          <>
+                            Organization{' '}
+                            <Badge
+                              variant="info"
+                              size={'sm'}
+                              className="!text-text"
+                            >
+                              Optional
+                            </Badge>
+                          </>
+                        }
+                        error={form.formState.errors.organizationId?.message}
+                        onClear={() => field.onChange('')}
+                        value={field.value}
+                      >
+                        <InputSelectValue placeholder="Select an option" />
+                      </InputSelectTrigger>
+                      <InputSelectContent>
+                        {organizations.map(({ id, name }) => (
+                          <InputSelectItem key={id} value={id}>
+                            {name}
+                          </InputSelectItem>
+                        ))}
+                      </InputSelectContent>
+                    </InputSelect>
+                  )}
+                />
+              </InputWrapper>
+            )}
             <InputWrapper>
               <Controller
                 name="sendInvite"

@@ -30,6 +30,7 @@ export const NewUserFormSchema = ({
         { message: 'Email domain not matches any organization' },
       ),
     sendInvite: z.boolean().optional(),
+    organizationId: z.string().optional(),
   });
 export type NewUserFormData = z.infer<ReturnType<typeof NewUserFormSchema>>;
 
@@ -40,6 +41,7 @@ export const UpdateUserGeneralDataFormSchema = z.object({
     .refine((value) => value.trim().split(' ').length >= 2, {
       message: 'Please enter the full name',
     }),
+  organizationId: z.string().optional(),
 });
 export type UpdateUserGeneralDataFormData = z.infer<
   typeof UpdateUserGeneralDataFormSchema

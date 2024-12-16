@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
-import { Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, X } from 'lucide-react';
 
 import { cn } from '../core/utils';
 import { cva, VariantProps } from 'class-variance-authority';
@@ -57,6 +57,7 @@ export interface InputSelectProps
   label?: React.ReactNode;
   error?: React.ReactNode;
   loading?: boolean;
+  onClear?: () => void;
 }
 
 const InputSelectTrigger = React.forwardRef<
@@ -64,7 +65,17 @@ const InputSelectTrigger = React.forwardRef<
   InputSelectProps
 >(
   (
-    { className, children, state, size, label, loading, error, ...props },
+    {
+      className,
+      children,
+      state,
+      size,
+      label,
+      loading,
+      error,
+      onClear,
+      ...props
+    },
     ref,
   ) => (
     <>
@@ -88,9 +99,18 @@ const InputSelectTrigger = React.forwardRef<
           {...props}
         >
           {children}
-          <SelectPrimitive.Icon asChild>
-            <ChevronDown className="h-4 w-4 opacity-50" />
-          </SelectPrimitive.Icon>
+          <div className="flex items-center gap-2">
+            {props.value && onClear && (
+              <X
+                className="h-4 w-4 cursor-pointer opacity-50"
+                onClick={onClear}
+                data-state="closed"
+              />
+            )}
+            <SelectPrimitive.Icon asChild>
+              <ChevronDown className="h-4 w-4 opacity-50" />
+            </SelectPrimitive.Icon>
+          </div>
         </SelectPrimitive.Trigger>
       ) : (
         <Skeleton

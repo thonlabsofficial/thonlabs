@@ -47,6 +47,7 @@ export default function useUser() {
         description: error?.response?.data?.message || APIErrors.Generic,
         variant: 'destructive',
       });
+      throw error;
     }
   }
 
@@ -86,6 +87,7 @@ export default function useUser() {
         description: error?.response?.data?.message || APIErrors.Generic,
         variant: 'destructive',
       });
+      throw error;
     }
   }
 
