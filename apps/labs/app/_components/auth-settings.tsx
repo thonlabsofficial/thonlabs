@@ -48,12 +48,6 @@ export default function AuthSettings() {
     );
   const [isSaving, startSavingTransition] = useTransition();
 
-  React.useEffect(() => {
-    if (form.formState.isDirty && !enableSignUp) {
-      form.setValue('enableSignUpB2BOnly', false);
-    }
-  }, [enableSignUp, form]);
-
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
     startSavingTransition(() => {
       updateEnvironmentAuthSettings(environment!.id, payload).then(() => {
@@ -97,17 +91,24 @@ export default function AuthSettings() {
                   {...form.register('authProvider')}
                 />
               </InputWrapper>
+            </div>
+          </CardContent>
+        </div>
+        <SeparatorLine className="my-0" />
+        <div className="grid grid-cols-[19rem_1fr] gap-40">
+          <CardHeader description="Control who can access your app. Choose between open access or limit it to specific organization domains.">
+            User Creation
+          </CardHeader>
+          <CardContent className="flex-1 p-6">
+            <div className="grid gap-5">
               <InputWrapper>
-                <Label loading={isLoadingEnvironment} withFocusWithin={false}>
-                  Sign Up Settings
-                </Label>
                 <Controller
                   name="enableSignUp"
                   control={form.control}
                   render={({ field }) => (
                     <InputSwitch
                       label="Enable Sign Up"
-                      description="Allow users to sign up to the platform from login page."
+                      description="Allow users to sign up to the platform from login page. When disabled only invitations will be allowed."
                       value={field.value}
                       onCheckedChange={field.onChange}
                       checked={!!field.value}
@@ -115,16 +116,17 @@ export default function AuthSettings() {
                     />
                   )}
                 />
+              </InputWrapper>
+              <InputWrapper>
                 <EnableSignUpB2BOnlySwitch
                   form={form}
                   loading={isLoadingEnvironment}
-                  disabled={!enableSignUp}
                 />
               </InputWrapper>
             </div>
           </CardContent>
         </div>
-        <SeparatorLine />
+        <SeparatorLine className="my-0" />
         <div className="grid grid-cols-[19rem_1fr] gap-40">
           <CardHeader
             description={
