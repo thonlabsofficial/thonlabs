@@ -49,10 +49,10 @@ export default function AuthSettings() {
   const [isSaving, startSavingTransition] = useTransition();
 
   React.useEffect(() => {
-    if (!enableSignUp) {
+    if (form.formState.isDirty && !enableSignUp) {
       form.setValue('enableSignUpB2BOnly', false);
     }
-  }, [enableSignUp]);
+  }, [enableSignUp, form]);
 
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
     startSavingTransition(() => {

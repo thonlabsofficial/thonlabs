@@ -27,9 +27,8 @@ export default function useEmailDomain() {
       });
 
       makeMutations(
-        buildEnvDataMutation([
+        buildEnvDataMutation(environmentId, [
           {
-            environmentId,
             key: 'emailTemplateDomain',
             value: data,
           },
@@ -61,9 +60,8 @@ export default function useEmailDomain() {
       });
 
       makeMutations(
-        buildEnvDataMutation([
+        buildEnvDataMutation(environmentId, [
           {
-            environmentId,
             key: 'emailTemplateDomain',
             value: data,
           },

@@ -22,6 +22,8 @@ import {
 import { InputSwitch } from '@repo/ui/input-switch';
 import useUser from '@/_hooks/use-user';
 import Utils from '@repo/utils';
+import { useOrganizations } from '@/_hooks/use-organizations';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 
 type Props = {
   trigger: React.ReactNode;
@@ -31,15 +33,23 @@ export default function NewUserDialog({
   trigger,
 }: Props & React.ComponentProps<typeof Dialog>) {
   const [open, setOpen] = React.useState(false);
+  const [isCreatingUser, startTransitionCreatingUser] = useTransition();
+  const { createUser } = useUser();
+  const { organizations } = useOrganizations();
+  const envData = useEnvironmentAppData();
   const form = useForm<NewUserFormData>({
     defaultValues: {
       sendInvite: true,
     },
-    resolver: zodResolver(NewUserFormSchema),
+    resolver: zodResolver(
+      NewUserFormSchema({
+        envData,
+        domains: organizations.map(({ domains }) => domains).flat(),
+      }),
+    ),
   });
+
   const fullName = form.watch('fullName');
-  const [isCreatingUser, startTransitionCreatingUser] = useTransition();
-  const { createUser } = useUser();
 
   function onSubmit(payload: NewUserFormData) {
     startTransitionCreatingUser(async () => {

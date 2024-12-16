@@ -11,8 +11,10 @@ import useSWR from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optimistic-update';
-import { useEnvironmentData } from '@/_libs/_nextjs';
-import { buildEnvDataMutation } from './use-environment-app-data';
+import {
+  buildEnvDataMutation,
+  useEnvironmentAppData,
+} from '@/_hooks/use-environment-app-data';
 
 type Params = {
   environmentId?: string;
@@ -34,7 +36,7 @@ export default function useEnvironment(
   } = useSWR<EnvironmentDetail>(
     () => params.environmentId && `/environments/${params.environmentId}`,
   );
-  const environmentData = useEnvironmentData();
+  const environmentData = useEnvironmentAppData();
 
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
@@ -143,21 +145,18 @@ export default function useEnvironment(
       );
 
       makeMutations(
-        buildEnvDataMutation([
+        buildEnvDataMutation(environmentId, [
           {
-            environmentId,
             key: 'authProvider',
             value: payload.authProvider,
             isSDKData: true,
           },
           {
-            environmentId,
             key: 'enableSignUp',
             value: payload.enableSignUp,
             isSDKData: true,
           },
           {
-            environmentId,
             key: 'enableSignUpB2BOnly',
             value: payload.enableSignUpB2BOnly,
             isSDKData: true,

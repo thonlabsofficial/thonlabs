@@ -3,36 +3,46 @@ import { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 import { EnvironmentAppDataContext } from '@/_providers/environment-app-data-provider';
 
 type BuildEnvDataMutationOptions = {
-  environmentId: string;
   key: string;
   value: any;
   isSDKData?: boolean;
 };
 
 export function buildEnvDataMutation(
-  params: BuildEnvDataMutationOptions[],
+  environmentId: string,
+  items: BuildEnvDataMutationOptions[],
 ): any {
-  const appMutations = params.map(
-    ({ environmentId, key, value, isSDKData }) => ({
+  const appMutations: any = {};
+  const sdkMutations: any = {};
+
+  items.forEach(({ key, value }) => {
+    appMutations[key] = value;
+  });
+
+  items
+    .filter(({ isSDKData }) => isSDKData)
+    .forEach(({ key, value }) => {
+      sdkMutations[key] = value;
+    });
+
+  const mutations = [
+    {
       cacheKey: `/api/environments/${environmentId}/data/app`,
       populateCache: (_: any, cache: any) => ({
         ...cache,
-        [key]: { ...cache[key], ...value },
+        ...appMutations,
       }),
-    }),
-  );
-
-  const sdkMutations = params
-    .filter(({ isSDKData }) => isSDKData)
-    .map(({ environmentId, key, value }) => ({
-      cacheKey: `/api/environments/${environmentId}/data`,
+    },
+    {
+      cacheKey: `/environments/${environmentId}/data`,
       populateCache: (_: any, cache: any) => ({
         ...cache,
-        [key]: { ...cache[key], ...value },
+        ...sdkMutations,
       }),
-    }));
+    },
+  ];
 
-  return [...appMutations, ...sdkMutations];
+  return mutations;
 }
 
 export function useEnvironmentAppData() {
