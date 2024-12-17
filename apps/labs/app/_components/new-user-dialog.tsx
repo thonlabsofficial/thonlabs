@@ -32,13 +32,16 @@ import {
   InputSelectValue,
 } from '@repo/ui/input-select';
 import { Badge } from '@repo/ui/badge';
+import { Organization } from '@/_interfaces/organization';
 
 type Props = {
   trigger: React.ReactNode;
+  organization?: Organization;
 };
 
 export default function NewUserDialog({
   trigger,
+  organization,
 }: Props & React.ComponentProps<typeof Dialog>) {
   const [open, setOpen] = React.useState(false);
   const [isCreatingUser, startTransitionCreatingUser] = useTransition();
@@ -48,6 +51,7 @@ export default function NewUserDialog({
   const form = useForm<NewUserFormData>({
     defaultValues: {
       sendInvite: true,
+      organizationId: organization?.id,
     },
     resolver: zodResolver(
       NewUserFormSchema({
@@ -105,7 +109,7 @@ export default function NewUserDialog({
                 {...form.register('email')}
               />
             </InputWrapper>
-            {!envData?.enableSignUpB2BOnly && (
+            {!organization && !envData?.enableSignUpB2BOnly && (
               <InputWrapper className="z-60">
                 <Controller
                   name="organizationId"

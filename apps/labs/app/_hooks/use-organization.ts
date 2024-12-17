@@ -1,15 +1,37 @@
-import { envURL, labsAPI } from '../../helpers/api';
+import React from 'react';
+import useSWR from 'swr';
+import { envURL, labsAPI } from '@helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
 import { NewOrganizationFormData } from '@/_validators/organizations-validators';
-import { Organization } from '@/_interfaces/organization';
+import { Organization, OrganizationDetail } from '@/_interfaces/organization';
 import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import { useParams } from 'next/navigation';
 
-export default function useOrganization() {
+interface Params {
+  organizationId?: string;
+}
+
+export default function useOrganization(params: Params = {}) {
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
   const { environmentId } = useParams();
+  const {
+    data: organizationData,
+    isLoading: isLoadingOrganization,
+    isValidating: isValidatingOrganization,
+    error: organizationError,
+  } = useSWR<OrganizationDetail>(
+    () => params.organizationId && `/organizations/${params.organizationId}`,
+  );
+
+  const organization = React.useMemo(() => {
+    if (!organizationData) {
+      return null;
+    }
+
+    return organizationData;
+  }, [organizationData]);
 
   async function createOrganization({
     logo,
@@ -62,5 +84,9 @@ export default function useOrganization() {
 
   return {
     createOrganization,
+    organization,
+    isLoadingOrganization,
+    isValidatingOrganization,
+    organizationError,
   };
 }

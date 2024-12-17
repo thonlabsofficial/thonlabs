@@ -27,6 +27,8 @@ import {
 } from '@repo/ui/dropdown';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import { useOrganizations } from '@/_hooks/use-organizations';
+import InfoOrganizationDrawer from '@/_components/info-organization-drawer';
+import { useParams, useRouter } from 'next/navigation';
 
 const columns = ({
   setOpen,
@@ -100,7 +102,7 @@ const columns = ({
         </div>
       ) : (
         <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
-          No domain registered
+          No domains registered
         </Badge>
       );
     },
@@ -196,6 +198,8 @@ export default function OrganizationsList() {
   const [organization, setOrganization] = React.useState<Organization | null>(
     null,
   );
+  const router = useRouter();
+  const { environmentId } = useParams();
 
   return (
     <>
@@ -216,8 +220,10 @@ export default function OrganizationsList() {
           />
         }
         onRowClick={(_, row) => {
-          setOrganization(row.original);
-          setOpen('info-organization-drawer');
+          router.push(`/${environmentId}/organizations/${row.original.id}`);
+        }}
+        onRowHover={(_, row) => {
+          router.prefetch(`/${environmentId}/organizations/${row.original.id}`);
         }}
       />
     </>

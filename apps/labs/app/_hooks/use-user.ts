@@ -39,6 +39,18 @@ export default function useUser() {
         },
       ]);
 
+      if (payload.organizationId) {
+        makeMutations([
+          {
+            cacheKey: `/organizations/${payload.organizationId}`,
+            populateCache: (_, data) => ({
+              ...data,
+              users: [...data.users, user],
+            }),
+          },
+        ]);
+      }
+
       return user;
     } catch (error: any) {
       console.error('useUser.createUser', error);

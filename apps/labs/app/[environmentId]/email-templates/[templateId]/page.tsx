@@ -6,6 +6,7 @@ import PageHeader from '@/_components/page-header';
 import { MailOpen } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import EditEmailTemplateSettings from '@/_components/edit-email-template-settings';
+import EmailDomainStatusAlert from '@/_components/email-domain-status-alert';
 
 async function getEmailTemplate(environmentId: string, templateId: string) {
   const { data } = await serverLabsEnvAPI.get<EmailTemplate>(
@@ -29,7 +30,7 @@ export async function generateMetadata({
 }: Props) {
   const emailTemplate = await getEmailTemplate(environmentId, templateId);
 
-  return { title: `${emailTemplate.name} Template · Emails` };
+  return { title: `Email Template: ${emailTemplate.name} · Emails` };
 }
 
 export default async function EmailDetail({
@@ -39,8 +40,10 @@ export default async function EmailDetail({
 
   return (
     <>
+      <EmailDomainStatusAlert />
+
       <PageHeader
-        title={`${emailTemplate.name} Template`}
+        title={`Email Template: ${emailTemplate.name}`}
         icon={MailOpen}
         withContainer={false}
       />

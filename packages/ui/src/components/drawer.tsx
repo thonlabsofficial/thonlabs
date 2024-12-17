@@ -52,7 +52,7 @@ const DrawerContent = React.forwardRef<
         `
         fixed w-[26rem] top-0 z-50 flex
         flex-col bg-card !select-auto !cursor-auto 
-        inset-y-0 right-0 h-full border-l sm:max-w-sm
+        inset-y-0 right-0 h-full border-l
         data-[state=open]:animate-slide-fade-in-from-right 
         data-[state=closed]:animate-slide-fade-out-to-right
       `,

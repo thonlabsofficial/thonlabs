@@ -1,3 +1,4 @@
+'use client';
 import React, { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { Button } from './button';
 import { useToast } from '../hooks/use-toast';

@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 export default function Emails() {
   return (
     <>
-      <PageWrapper withContainer={false} className="mt-3">
-        <EmailDomainStatusAlert />
-      </PageWrapper>
+      <EmailDomainStatusAlert />
+
       <PageHeader title="Email Templates" icon={Mail} />
+
       <PageWrapper withContainer={false} className="grid gap-12">
         <section>
           <EmailTemplatesList />
