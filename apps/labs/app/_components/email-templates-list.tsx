@@ -152,15 +152,17 @@ const columns: ColumnDef<EmailTemplate>[] = [
   },
 ];
 
-export default function EmailTemplatesList() {
+interface Props {
+  emailTemplates: EmailTemplate[];
+}
+
+export default function EmailTemplatesList({ emailTemplates }: Props) {
   const { environmentId } = useUserSession();
-  const { emailTemplates, isLoadingEmailTemplates } = useEmailTemplates();
   const router = useRouter();
 
   return (
     <>
       <DataTable
-        loading={isLoadingEmailTemplates}
         columns={columns}
         data={emailTemplates}
         defaultSorting={[{ id: 'name', desc: false }]}

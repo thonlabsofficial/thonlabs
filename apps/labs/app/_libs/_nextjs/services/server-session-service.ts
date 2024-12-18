@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import * as jose from 'jose';
 import { User } from '../interfaces/user';
 import { SessionData } from '../interfaces/session-data';
+import Log from './log';
 
 const ServerSessionService = {
   create(data: SessionData) {
@@ -77,32 +78,36 @@ const ServerSessionService = {
     const refreshToken = cookies().get('tl_refresh');
 
     if (!refreshToken?.value) {
-      console.log('Error "validateRefreshToken": Invalid refresh token');
+      Log.info({
+        where: 'validateRefreshToken',
+        message: 'Invalid refresh token',
+      });
 
       return {
         statusCode: 401,
       };
     }
 
-    const response = await fetch(
-      // TODO: when create lib, make sure to call the prod domain
-      `${process.env.NEXT_PUBLIC_TL_API}/auth/refresh`,
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
-        } as HeadersInit & { 'tl-env-id': string },
-        body: JSON.stringify({
-          token: refreshToken.value,
-        }),
-      },
-    );
+    // TODO: when create lib, make sure to call the prod domain
+    const url = `${process.env.NEXT_PUBLIC_TL_API}/auth/refresh`;
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
+      } as HeadersInit & { 'tl-env-id': string },
+      body: JSON.stringify({
+        token: refreshToken.value,
+      }),
+    };
+    Log.info({ where: 'validateRefreshToken', url, options });
+
+    const response = await fetch(url, options);
     const data = await response.json();
 
     if (data.statusCode || data.error) {
-      console.log('Error "validateRefreshToken": ', data);
+      Log.info({ where: 'validateRefreshToken', data });
 
       return {
         statusCode: 401,

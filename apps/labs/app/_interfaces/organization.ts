@@ -8,7 +8,7 @@ export interface Organization {
   createdAt: Date;
   updatedAt: Date;
   environmentId: string;
-  // active: boolean;
+  active: boolean;
 }
 
 export interface OrganizationUser {

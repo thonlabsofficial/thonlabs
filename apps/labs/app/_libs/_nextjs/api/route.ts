@@ -77,14 +77,18 @@ export const GET = async (
 
       if (response.statusCode === 200) {
         const searchParams = req.nextUrl.searchParams;
-        const to = searchParams.get('to') || '/';
+        const to = searchParams.get('dest') || '/';
         return redirect(to, RedirectType.replace);
       }
 
       return redirect('/api/auth/logout', RedirectType.replace);
+
     case 'logout':
       ServerSessionService.logout();
       return redirect(forwardSearchParams(req, '/auth/login').toString());
+
+    case 'alive':
+      return Response.json('', { status: 200 });
   }
 
   return notFound();

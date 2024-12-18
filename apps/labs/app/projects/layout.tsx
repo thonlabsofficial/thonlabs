@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import ServerAuthSessionService from '@/_services/server-auth-session-service';
+import { getAuthSession } from '@/_services/server-auth-session-service';
 import MainHeader from '@/_components/main-header';
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default async function ProjectsNestedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = ServerAuthSessionService.getSession();
+  const session = await getAuthSession();
 
   return (
     <>

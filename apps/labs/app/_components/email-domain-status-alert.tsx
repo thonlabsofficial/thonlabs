@@ -19,7 +19,7 @@ export default function EmailDomainStatusAlert() {
   const { emailTemplateDomain } = useEmailDomain();
 
   function isEmailDomainVerifying() {
-    return emailTemplateDomain.status === EmailDomainStatus.Verifying;
+    return emailTemplateDomain?.status === EmailDomainStatus.Verifying;
   }
 
   function isEmailDomainFailed() {
@@ -27,7 +27,7 @@ export default function EmailDomainStatusAlert() {
       return false;
     }
 
-    return emailTemplateDomain.status === EmailDomainStatus.Failed;
+    return emailTemplateDomain?.status === EmailDomainStatus.Failed;
   }
 
   return (

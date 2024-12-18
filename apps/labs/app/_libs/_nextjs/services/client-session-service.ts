@@ -48,6 +48,8 @@ const ClientSessionService = {
   },
   async shouldKeepAlive() {
     try {
+      await Utils.delay(500);
+
       if (window.location.pathname.startsWith('/auth')) {
         return;
       }

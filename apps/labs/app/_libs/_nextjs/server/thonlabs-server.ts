@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import ServerSessionService from '../services/server-session-service';
-import { forwardSearchParams, getURLFromHost } from '../utils/helpers';
+import {
+  forwardSearchParams,
+  getURLFromHost,
+  removePathnameFromURL,
+} from '../utils/helpers';
+import Log from '../services/log';
 
 export function isAuthRoute(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
@@ -15,6 +20,7 @@ export function isAuthRoute(req: NextRequest) {
     '/auth/reset-password',
     '/auth/logout',
     '/auth/confirm-email',
+    '/auth/refresh',
   ];
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route),
@@ -50,14 +56,17 @@ export async function validateSession(
       (!keepAlive && !accessToken) ||
       (keepAlive && !accessToken && !refreshToken)
     ) {
-      console.log('ThonLabs Validate Session: Invalid session');
+      Log.info({
+        message: 'ThonLabs Validate Session: Invalid session',
+      });
       return NextResponse.redirect(
         forwardSearchParams(req, '/api/auth/logout'),
       );
     }
 
     const isPageRefresh =
-      req.headers.get('referer') === getURLFromHost(req, false).toString();
+      removePathnameFromURL(req.headers.get('referer') || '').toString() ===
+      getURLFromHost(req, false).toString();
 
     if (isPageRefresh) {
       // Validates the session status and redirects to regenerate
@@ -65,19 +74,17 @@ export async function validateSession(
       const { status } = await ServerSessionService.shouldKeepAlive();
 
       if (status === 'invalid_session') {
-        console.log(
-          'ThonLabs Validate Session: Invalid session from keep alive',
+        Log.info({
+          message: 'ThonLabs Validate Session: Invalid session from keep alive',
           status,
-        );
+        });
 
         return NextResponse.redirect(
           forwardSearchParams(req, '/api/auth/logout'),
         );
       } else if (status === 'needs_refresh') {
-        console.log(
-          'ThonLabs Validate Session: Needs refresh from keep alive',
-          status,
-        );
+        Log.info('ThonLabs Validate Session: Needs refresh from keep alive');
+        Log.info({ status });
 
         const url = getURLFromHost(req);
 

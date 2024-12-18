@@ -4,7 +4,7 @@ import { ColumnDef, DataTable, DataTableHeaderCell } from '@repo/ui/data-table';
 import { Button } from '@repo/ui/button';
 import React from 'react';
 import NewOrganizationDrawer from '@/_components/new-organization-drawer';
-import { Organization } from '@/_interfaces/organization';
+import { Organization, OrganizationDetail } from '@/_interfaces/organization';
 import { Typo } from '@repo/ui/typo';
 import { Badge } from '@repo/ui/badge';
 import { Clipboard } from '@repo/ui/clipboard';
@@ -27,8 +27,8 @@ import {
 } from '@repo/ui/dropdown';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import { useOrganizations } from '@/_hooks/use-organizations';
-import InfoOrganizationDrawer from '@/_components/info-organization-drawer';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const columns = ({
   setOpen,
@@ -145,6 +145,7 @@ const columns = ({
     id: 'actions',
     cell: ({ row }) => {
       const organization = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -161,14 +162,13 @@ const columns = ({
             data-dt-bypass-click="true"
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onSelect={() => {
-                  setOrganization(organization);
-                  setOpen('info-organization-drawer');
-                }}
-              >
-                <FileText className="mr-2 h-4 w-4" />
-                <span>View info</span>
+              <DropdownMenuItem asChild>
+                <Link
+                  href={`/${organization.environmentId}/organizations/${organization.id}`}
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>View info</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onSelect={() => {
@@ -192,8 +192,11 @@ const columns = ({
   },
 ];
 
-export default function OrganizationsList() {
-  const { organizations, isLoadingOrganizations } = useOrganizations();
+interface Props {
+  organizations: OrganizationDetail[];
+}
+
+export default function OrganizationsDataTable({ organizations }: Props) {
   const [open, setOpen] = React.useState<string>('');
   const [organization, setOrganization] = React.useState<Organization | null>(
     null,
@@ -204,7 +207,6 @@ export default function OrganizationsList() {
   return (
     <>
       <DataTable
-        loading={isLoadingOrganizations}
         columns={columns({
           setOpen,
           setOrganization,
@@ -216,7 +218,11 @@ export default function OrganizationsList() {
         searchPlaceholder="Search by name..."
         actions={
           <NewOrganizationDrawer
-            trigger={<Button size={'sm'}>New Organization</Button>}
+            trigger={
+              <Button size={'sm'} variant={'outline'}>
+                New Organization
+              </Button>
+            }
           />
         }
         onRowClick={(_, row) => {

@@ -14,38 +14,27 @@ import { Input, InputWrapper } from '@repo/ui/input';
 import { InputRadio } from '@repo/ui/input-radio';
 import { InputSwitch } from '@repo/ui/input-switch';
 import { Typo } from '@repo/ui/typo';
-import { useParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
-import { Label } from '@repo/ui/label';
+import { EnvironmentDetail } from '@/_interfaces/environment';
 
-export default function AuthSettings() {
-  const { environmentId } = useParams();
+interface Props {
+  environment: EnvironmentDetail;
+}
+
+export default function AuthSettings({ environment }: Props) {
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
+    defaultValues: {
+      authProvider: environment.authProvider || '',
+      tokenExpiration: environment.tokenExpiration || '',
+      refreshTokenExpiration: environment.refreshTokenExpiration || '',
+      enableSignUp: environment.enableSignUp || false,
+      enableSignUpB2BOnly: environment.enableSignUpB2BOnly || false,
+    },
   });
-  const enableSignUp = useWatch({
-    control: form.control,
-    name: 'enableSignUp',
-  });
-  const { environment, isLoadingEnvironment, updateEnvironmentAuthSettings } =
-    useEnvironment(
-      {
-        environmentId: environmentId as string,
-      },
-      {
-        onFetchComplete(_environment) {
-          form.reset({
-            authProvider: _environment?.authProvider || '',
-            tokenExpiration: _environment?.tokenExpiration || '',
-            refreshTokenExpiration: _environment?.refreshTokenExpiration || '',
-            enableSignUp: _environment?.enableSignUp || false,
-            enableSignUpB2BOnly: _environment?.enableSignUpB2BOnly || false,
-          });
-        },
-      },
-    );
+  const { updateEnvironmentAuthSettings } = useEnvironment();
   const [isSaving, startSavingTransition] = useTransition();
 
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
@@ -74,7 +63,6 @@ export default function AuthSettings() {
               <InputWrapper>
                 <InputRadio
                   label="Login Type"
-                  loading={isLoadingEnvironment}
                   options={[
                     {
                       value: 'MagicLogin',
@@ -112,16 +100,12 @@ export default function AuthSettings() {
                       value={field.value}
                       onCheckedChange={field.onChange}
                       checked={!!field.value}
-                      loading={isLoadingEnvironment}
                     />
                   )}
                 />
               </InputWrapper>
               <InputWrapper>
-                <EnableSignUpB2BOnlySwitch
-                  form={form}
-                  loading={isLoadingEnvironment}
-                />
+                <EnableSignUpB2BOnlySwitch form={form} />
               </InputWrapper>
             </div>
           </CardContent>
@@ -153,7 +137,6 @@ export default function AuthSettings() {
                   placeholder="e.g.: 1d"
                   label="Access Token Expiration"
                   maxLength={25}
-                  loading={isLoadingEnvironment}
                   error={form.formState.errors.tokenExpiration?.message}
                   {...form.register('tokenExpiration')}
                 />
@@ -163,7 +146,6 @@ export default function AuthSettings() {
                   id="appURL"
                   placeholder="e.g.: 30d"
                   label="Refresh Token Expiration"
-                  loading={isLoadingEnvironment}
                   error={form.formState.errors.refreshTokenExpiration?.message}
                   {...form.register('refreshTokenExpiration')}
                 />

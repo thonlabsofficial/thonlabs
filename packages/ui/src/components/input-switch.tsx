@@ -3,6 +3,7 @@ import { Typo } from './typo';
 import { Switch } from './switch';
 import { cn } from '../core/utils';
 import { Skeleton } from './skeleton';
+import { Spinner } from './spinner';
 
 export interface InputSwitchProps extends React.HTMLAttributes<HTMLElement> {
   label: React.ReactNode;
@@ -31,7 +32,7 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
     },
     _,
   ) => {
-    return !loading ? (
+    return (
       <label
         className={cn(
           `
@@ -45,11 +46,17 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
         )}
         {...props}
       >
-        <Switch
-          value={value}
-          onCheckedChange={onCheckedChange}
-          checked={checked}
-        />
+        <div className="w-11 flex justify-center">
+          {!loading ? (
+            <Switch
+              value={value}
+              onCheckedChange={onCheckedChange}
+              checked={checked}
+            />
+          ) : (
+            <Spinner className="h-6 w-6" />
+          )}
+        </div>
         <div className="flex flex-col gap-0.5">
           <Typo variant={'sm'}>{label}</Typo>
           {description && (
@@ -59,8 +66,6 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
           )}
         </div>
       </label>
-    ) : (
-      <Skeleton className="h-[3rem] w-full" />
     );
   },
 );

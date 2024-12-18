@@ -2,7 +2,7 @@
 
 import { buttonVariants } from '@repo/ui/button';
 import Link from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@repo/ui/core/utils';
 import {
   Building,
@@ -26,6 +26,7 @@ function NavItem({
   ...props
 }: { icon: any; label: string } & React.ComponentProps<typeof Link>) {
   const pathname = usePathname();
+  const router = useRouter();
   const href = props.href.toString();
 
   const splitHref = href.split('/');
@@ -47,6 +48,7 @@ function NavItem({
           className,
         ),
       })}
+      onMouseEnter={() => router.prefetch(href)}
     >
       {<Icon className="w-4 h-4" />} {label}
     </Link>

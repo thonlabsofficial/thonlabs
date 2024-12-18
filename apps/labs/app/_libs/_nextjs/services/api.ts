@@ -46,3 +46,5 @@ export const fetcher =
         },
       },
     ).then((res) => res.json());
+
+export const intFetcher = (url: string) => fetch(url).then((res) => res.json());

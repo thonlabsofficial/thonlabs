@@ -27,10 +27,10 @@ const buttonIconVariants = cva(
         info: 'bg-info shadow-sm hover:bg-info/90',
       },
       size: {
-        xs: 'p-1',
-        sm: 'p-1.5',
-        md: 'p-2',
-        lg: 'p-4',
+        xs: 'flex-none basis-6 w-6 h-6',
+        sm: 'flex-none basis-[2.125rem] w-[2.125rem] h-[2.125rem]',
+        md: 'flex-none basis-10 w-10 h-10',
+        lg: 'flex-none basis-12 w-12 h-12',
       },
     },
     defaultVariants: {

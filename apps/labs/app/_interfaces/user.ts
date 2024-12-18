@@ -11,5 +11,6 @@ export interface User {
   updatedAt: Date;
   profilePicture?: string;
   invitedAt?: Date;
+  environmentId: string;
   organization?: Organization;
 }

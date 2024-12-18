@@ -92,13 +92,13 @@ const ImagePreview = ({
       border="dashed"
       className={cn(
         `flex flex-col h-44 items-center justify-center w-full
-    p-2 overflow-hidden select-none`,
+          p-2 overflow-hidden select-none`,
         className,
       )}
     >
       <div
         className={cn(
-          'rounded w-full h-full p-1 flex items-center justify-center',
+          'rounded w-full h-full p-1 flex items-center justify-center relative',
           {
             'bg-accent': darkBackground && resolvedTheme === 'dark',
             'bg-accent-foreground':

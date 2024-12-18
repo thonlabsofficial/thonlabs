@@ -51,7 +51,6 @@ export default function NewUserDialog({
   const form = useForm<NewUserFormData>({
     defaultValues: {
       sendInvite: true,
-      organizationId: organization?.id,
     },
     resolver: zodResolver(
       NewUserFormSchema({
@@ -60,6 +59,12 @@ export default function NewUserDialog({
       }),
     ),
   });
+
+  React.useEffect(() => {
+    if (open) {
+      handleReset();
+    }
+  }, [open]);
 
   const fullName = form.watch('fullName');
 
@@ -78,6 +83,10 @@ export default function NewUserDialog({
   function handleReset() {
     form.clearErrors();
     form.reset();
+
+    if (organization) {
+      form.setValue('organizationId', organization.id);
+    }
   }
 
   return (

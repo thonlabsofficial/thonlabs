@@ -10,6 +10,7 @@ import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import { User } from '@/_interfaces/user';
 import qs from 'qs';
 import useUserSession from '@/_hooks/use-user-session';
+import { revalidateCache } from '@/_services/server-cache-service';
 
 export default function useUser() {
   const { environment } = useUserSession();
@@ -29,27 +30,12 @@ export default function useUser() {
         description: `${user.fullName} has been created successfully${sendInvite ? ' and an invite has been sent' : ''}`,
       });
 
-      makeMutations([
-        {
-          cacheKey: envURL(`/users`, environment.id),
-          populateCache: (_, data) => ({
-            ...data,
-            items: [...data.items, user],
-          }),
-        },
+      await revalidateCache([
+        envURL(`/users`, environment.id),
+        payload.organizationId
+          ? `/${environment.id}/organizations/${payload.organizationId}`
+          : '',
       ]);
-
-      if (payload.organizationId) {
-        makeMutations([
-          {
-            cacheKey: `/organizations/${payload.organizationId}`,
-            populateCache: (_, data) => ({
-              ...data,
-              users: [...data.users, user],
-            }),
-          },
-        ]);
-      }
 
       return user;
     } catch (error: any) {
@@ -79,17 +65,7 @@ export default function useUser() {
         description: `${data.fullName} has been updated successfully`,
       });
 
-      makeMutations([
-        {
-          cacheKey: envURL(`/users`, environment.id),
-          populateCache: (_, cache) => ({
-            ...cache,
-            items: cache.items.map((item: User) =>
-              item.id === userId ? { ...item, ...data } : item,
-            ),
-          }),
-        },
-      ]);
+      await revalidateCache([envURL(`/users`, environment.id)]);
 
       return data;
     } catch (error: any) {
@@ -119,17 +95,7 @@ export default function useUser() {
         description: `${data.fullName} has been ${payload.active ? 'activated' : 'deactivated'} successfully`,
       });
 
-      makeMutations([
-        {
-          cacheKey: envURL(`/users`, environment.id),
-          populateCache: (_, cache) => ({
-            ...cache,
-            items: cache.items.map((item: User) =>
-              item.id === userId ? { ...item, active: payload.active } : item,
-            ),
-          }),
-        },
-      ]);
+      await revalidateCache([envURL(`/users`, environment.id)]);
 
       return data;
     } catch (error: any) {
@@ -154,15 +120,7 @@ export default function useUser() {
         description: `${data.fullName} has been deleted successfully`,
       });
 
-      makeMutations([
-        {
-          cacheKey: envURL(`/users`, environment.id),
-          populateCache: (_, cache) => ({
-            ...cache,
-            items: cache.items.filter((item: User) => item.id !== userId),
-          }),
-        },
-      ]);
+      await revalidateCache([envURL(`/users`, environment.id)]);
 
       return data;
     } catch (error: any) {

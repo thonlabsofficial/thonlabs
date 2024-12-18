@@ -1,4 +1,4 @@
-import ServerEnvironmentAppDataService from '@/_services/server-environment-app-data';
+import { getAppData } from '@/_services/server-environment-app-data-service';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
@@ -6,9 +6,7 @@ export async function GET(
   { params }: { params: { environmentId: string } },
 ) {
   try {
-    const data = await ServerEnvironmentAppDataService.getAppData(
-      params.environmentId,
-    );
+    const data = await getAppData(params.environmentId);
 
     return NextResponse.json(data);
   } catch (error) {

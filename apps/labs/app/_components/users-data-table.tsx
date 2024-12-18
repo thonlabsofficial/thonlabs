@@ -10,8 +10,6 @@ import { Avatar, AvatarFallback } from '@repo/ui/avatar';
 import Utils from '@repo/utils';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import InfoUserDrawer from './info-user-drawer';
-import { Button } from '@repo/ui/button';
-import NewUserDialog from './new-user-dialog';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -36,8 +34,10 @@ import {
   ToggleLeft,
   ToggleRight,
   Delete,
+  Building,
 } from 'lucide-react';
 import { Organization } from '@/_interfaces/organization';
+import Link from 'next/link';
 
 function DropdownMenuItemAction({
   type,
@@ -299,6 +299,19 @@ const columns = ({
                 {authUser?.id !== user.id && (
                   <DropdownMenuItemAction type="update-status" user={user} />
                 )}
+                {!hideFields?.includes('organization') && user.organization && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link
+                        href={`/${user.environmentId}/organizations/${user.organization.id}`}
+                      >
+                        <Building className="mr-2 h-4 w-4" />
+                        <span>View organization</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
                 {authUser?.id !== user.id && (
                   <>
                     <DropdownMenuSeparator />
@@ -325,11 +338,17 @@ const columns = ({
 
 interface Props {
   users: User[];
-  loading: boolean;
+  loading?: boolean;
   hideFields?: string[];
+  actions?: React.ReactNode;
 }
 
-export default function UsersDataTable({ users, loading, hideFields }: Props) {
+export default function UsersDataTable({
+  users,
+  loading,
+  hideFields,
+  actions,
+}: Props) {
   const { exclude } = useUser();
   const [open, setOpen] = React.useState('');
   const [user, setUser] = React.useState<User | null>(null);
@@ -350,9 +369,7 @@ export default function UsersDataTable({ users, loading, hideFields }: Props) {
         searchFields={['id', 'fullName', 'email']}
         noResultsMessage="No users found"
         searchPlaceholder="Search by name, email or UID..."
-        actions={
-          <NewUserDialog trigger={<Button size={'sm'}>New User</Button>} />
-        }
+        actions={actions}
         onRowClick={(_, row) => {
           setUser(row.original);
           setOpen('info-user-drawer');

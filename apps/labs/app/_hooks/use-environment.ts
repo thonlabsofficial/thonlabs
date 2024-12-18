@@ -15,6 +15,7 @@ import {
   buildEnvDataMutation,
   useEnvironmentAppData,
 } from '@/_hooks/use-environment-app-data';
+import { revalidateCache } from '@/_services/server-cache-service';
 
 type Params = {
   environmentId?: string;
@@ -163,6 +164,8 @@ export default function useEnvironment(
           },
         ]),
       );
+
+      await revalidateCache([`/${environmentId}/builder`]);
 
       toast({
         title: 'Changes Saved',

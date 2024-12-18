@@ -6,7 +6,7 @@ import ClientSessionService from '../services/client-session-service';
 import { EnvironmentData } from '../interfaces/environment-data';
 import { User } from '../interfaces/user';
 import useSWR from 'swr';
-import { fetcher } from '../services/api';
+import { fetcher, intFetcher } from '../services/api';
 
 /*
   This is a session provider to spread the data to frontend,
@@ -44,6 +44,9 @@ export function ThonLabsSessionProvider({
   environmentId,
   publicKey,
 }: ThonLabsSessionProviderProps) {
+  // This is a check to keep the session alive by triggering the validateSession inside middleware
+  useSWR<EnvironmentData>(`/api/auth/alive`, intFetcher);
+
   const token = Cookies.get('tl_session');
   const user = React.useMemo(() => ClientSessionService.getSession(), [token]);
   const { data: clientEnvironmentData } = useSWR<EnvironmentData>(

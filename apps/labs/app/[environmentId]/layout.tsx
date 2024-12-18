@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import ServerAuthSessionService from '@/_services/server-auth-session-service';
+import { getAuthSession } from '@/_services/server-auth-session-service';
 import MainAside from '@/_components/main-aside';
 import MainHeader from '@/_components/main-header';
-import ServerEnvironmentAppDataService from '@/_services/server-environment-app-data';
+import { getAppData } from '@/_services/server-environment-app-data-service';
 import { EnvironmentAppDataProvider } from '@/_providers/environment-app-data-provider';
 
 export const metadata: Metadata = {
@@ -19,10 +19,8 @@ export default async function LabsNestedLayout({
   children: React.ReactNode;
   params: { environmentId: string };
 }>) {
-  const session = ServerAuthSessionService.getSession();
-  const environmentAppData = await ServerEnvironmentAppDataService.getAppData(
-    params.environmentId,
-  );
+  const session = await getAuthSession();
+  const environmentAppData = await getAppData(params.environmentId);
 
   return (
     <EnvironmentAppDataProvider environmentAppData={environmentAppData}>

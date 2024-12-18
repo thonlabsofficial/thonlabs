@@ -19,7 +19,6 @@ import React, { useTransition } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { Skeleton } from '@repo/ui/skeleton';
 import { EmailTemplateTypes } from '@/_interfaces/email-template';
-import EmailTemplateService from '@/_services/email-template-service';
 
 const EmailInput = React.forwardRef<
   HTMLInputElement,
@@ -62,10 +61,14 @@ export default function EditEmailTemplate({
 }: {
   templateId: string;
 }) {
-  const { emailTemplate, isLoadingEmailTemplate, updateEmailTemplate } =
-    useEmailTemplate({
-      templateId,
-    });
+  const {
+    emailTemplate,
+    isLoadingEmailTemplate,
+    updateEmailTemplate,
+    parseHTMLEmailTemplate,
+  } = useEmailTemplate({
+    templateId,
+  });
   const form = useForm<UpdateEmailTemplatePayload>({
     values: {
       bodyStyles: emailTemplate?.bodyStyles,
@@ -106,7 +109,7 @@ export default function EditEmailTemplate({
   }, [emailTemplate?.preview, emailTemplate?.replyTo]);
 
   function onSubmit(payload: UpdateEmailTemplatePayload) {
-    payload.content = EmailTemplateService.parseHtmlTemplate(
+    payload.content = parseHTMLEmailTemplate(
       payload.content,
       payload.bodyStyles,
     );

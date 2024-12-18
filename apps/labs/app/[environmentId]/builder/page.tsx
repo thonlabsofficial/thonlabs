@@ -5,12 +5,21 @@ import PageHeader from '@/_components/page-header';
 import { ShieldEllipsis } from 'lucide-react';
 import AuthSettings from '@/_components/auth-settings';
 import SectionHeader from '@/_components/section-header';
+import { getEnvironmentById } from '@/_services/environment-service';
 
 export const metadata: Metadata = {
   title: 'Auth Builder',
 };
 
-export default async function AuthBuilder() {
+interface Props {
+  params: {
+    environmentId: string;
+  };
+}
+
+export default async function AuthBuilder({ params }: Props) {
+  const environment = await getEnvironmentById(params.environmentId);
+
   return (
     <>
       <PageHeader
@@ -24,7 +33,7 @@ export default async function AuthBuilder() {
 
         <section>
           <SectionHeader title="Settings" />
-          <AuthSettings />
+          <AuthSettings environment={environment} />
         </section>
       </PageWrapper>
     </>

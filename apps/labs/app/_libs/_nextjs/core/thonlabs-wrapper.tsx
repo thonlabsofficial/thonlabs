@@ -1,6 +1,5 @@
 import { EnvironmentData } from '../interfaces/environment-data';
 import { api } from '../services/api';
-import { ThonLabsGeneralProvider } from './thonlabs-general-provider';
 import { ThonLabsSessionProvider } from './thonlabs-session-provider';
 import { ThonLabsInternalProvider } from './thonlabs-internal-provider';
 import ToasterObservableWrapper from '../pages/components/toaster-observable-wrapper';
@@ -59,7 +58,7 @@ export async function ThonLabsWrapper({
         environmentId={environmentId}
         publicKey={publicKey}
       >
-        <ThonLabsGeneralProvider>{children}</ThonLabsGeneralProvider>
+        {children}
       </ThonLabsSessionProvider>
     </ThonLabsInternalProvider>
   );
