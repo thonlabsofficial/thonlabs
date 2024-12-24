@@ -11,22 +11,22 @@ export default function CoreProvider({
   children,
 }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <SWRConfig
-      value={{
-        fetcher,
-      }}
-    >
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
+    <>
+      <SWRConfig
+        value={{
+          fetcher,
+        }}
       >
-        <SkeletonProvider>
-          {children}
-          <Toaster />
-        </SkeletonProvider>
-      </ThemeProvider>
-    </SWRConfig>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SkeletonProvider>{children}</SkeletonProvider>
+        </ThemeProvider>
+      </SWRConfig>
+      <Toaster />
+    </>
   );
 }

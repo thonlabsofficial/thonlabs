@@ -16,6 +16,7 @@ export function ImageAlignBlock() {
   return (
     <>
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignLeftIcon}
         size={'sm'}
@@ -23,6 +24,7 @@ export function ImageAlignBlock() {
         active={editor.isActive('image', { imageAlign: 'left' })}
       />
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignCenterIcon}
         size={'sm'}
@@ -30,6 +32,7 @@ export function ImageAlignBlock() {
         active={editor.isActive('image', { imageAlign: 'center' })}
       />
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignRightIcon}
         size={'sm'}

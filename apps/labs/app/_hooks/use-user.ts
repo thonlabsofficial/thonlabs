@@ -1,4 +1,4 @@
-import { envHeaders, envURL, labsEnvAPI } from '@helpers/api';
+import { envHeaders, labsEnvAPI } from '@helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
 import {
@@ -6,7 +6,6 @@ import {
   UpdateUserGeneralDataFormData,
   UpdateUserStatusFormData,
 } from '@/_validators/users-validators';
-import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import { User } from '@/_interfaces/user';
 import qs from 'qs';
 import useUserSession from '@/_hooks/use-user-session';
@@ -15,7 +14,6 @@ import { revalidateCache } from '@/_services/server-cache-service';
 export default function useUser() {
   const { environment } = useUserSession();
   const { toast } = useToast();
-  const { makeMutations } = useOptimisticUpdate();
 
   async function createUser({ sendInvite, ...payload }: NewUserFormData) {
     try {
@@ -31,7 +29,7 @@ export default function useUser() {
       });
 
       await revalidateCache([
-        envURL(`/users`, environment.id),
+        `/${environment.id}/users`,
         payload.organizationId
           ? `/${environment.id}/organizations/${payload.organizationId}`
           : '',
@@ -65,7 +63,7 @@ export default function useUser() {
         description: `${data.fullName} has been updated successfully`,
       });
 
-      await revalidateCache([envURL(`/users`, environment.id)]);
+      await revalidateCache([`/${environment.id}/users`]);
 
       return data;
     } catch (error: any) {
@@ -95,7 +93,7 @@ export default function useUser() {
         description: `${data.fullName} has been ${payload.active ? 'activated' : 'deactivated'} successfully`,
       });
 
-      await revalidateCache([envURL(`/users`, environment.id)]);
+      await revalidateCache([`/${environment.id}/users`]);
 
       return data;
     } catch (error: any) {
@@ -120,7 +118,7 @@ export default function useUser() {
         description: `${data.fullName} has been deleted successfully`,
       });
 
-      await revalidateCache([envURL(`/users`, environment.id)]);
+      await revalidateCache([`/${environment.id}/users`]);
 
       return data;
     } catch (error: any) {

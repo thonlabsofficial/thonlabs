@@ -20,6 +20,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
     <>
       {options.includes('bold') && (
         <ButtonIcon
+          type="button"
           variant={'ghost'}
           icon={BoldIcon}
           size={'sm'}
@@ -29,6 +30,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
       )}
       {options.includes('italic') && (
         <ButtonIcon
+          type="button"
           variant={'ghost'}
           icon={ItalicIcon}
           size={'sm'}
@@ -38,6 +40,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
       )}
       {options.includes('underline') && (
         <ButtonIcon
+          type="button"
           variant={'ghost'}
           icon={UnderlineIcon}
           size={'sm'}
@@ -47,6 +50,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
       )}
       {options.includes('code') && (
         <ButtonIcon
+          type="button"
           variant={'ghost'}
           icon={CodeIcon}
           size={'sm'}

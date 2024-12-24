@@ -3,6 +3,7 @@ module.exports = {
   transpilePackages: ['@repo/ui'],
   images: {
     formats: ['image/avif', 'image/webp'],
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',

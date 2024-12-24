@@ -58,7 +58,12 @@ export function ImageBlock() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <ButtonIcon variant={'ghost'} icon={ImageIcon} size={'sm'} />
+        <ButtonIcon
+          type="button"
+          variant={'ghost'}
+          icon={ImageIcon}
+          size={'sm'}
+        />
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
         <Command className="bg-transparent" shouldFilter={false}>

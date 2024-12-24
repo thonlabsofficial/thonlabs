@@ -14,7 +14,8 @@
     "./log": "./src/log.ts"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.10.2"
   },
   "dependencies": {
     "date-fns": "^3.6.0",

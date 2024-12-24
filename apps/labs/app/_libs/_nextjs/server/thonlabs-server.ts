@@ -6,22 +6,11 @@ import {
   removePathnameFromURL,
 } from '../utils/helpers';
 import Log from '../services/log';
+import { publicRoutes } from '@/_constants/routes-connstants';
 
 export function isAuthRoute(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  const publicRoutes = [
-    '/api/auth/logout',
-    '/api/auth/refresh',
-    '/api/auth/magic',
-    '/api/auth/confirm-email',
-    '/auth/login',
-    '/auth/sign-up',
-    '/auth/magic',
-    '/auth/reset-password',
-    '/auth/logout',
-    '/auth/confirm-email',
-    '/auth/refresh',
-  ];
+
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route),
   );

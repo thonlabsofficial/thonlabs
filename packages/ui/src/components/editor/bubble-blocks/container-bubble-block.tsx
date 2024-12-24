@@ -225,6 +225,7 @@ export function ContainerBubble() {
               />
               <ButtonGroup variant="outline">
                 <Button
+                  type="button"
                   variant="ghost"
                   size="xs"
                   className="px-1"
@@ -241,6 +242,7 @@ export function ContainerBubble() {
                   px
                 </Button>
                 <Button
+                  type="button"
                   variant="ghost"
                   size="xs"
                   className="px-1"
@@ -324,6 +326,7 @@ export function ContainerBubble() {
             className="h-7 bg-foreground/[0.07]"
           />
           <Button
+            type="button"
             variant="ghost"
             size="sm"
             icon={Trash2Icon}

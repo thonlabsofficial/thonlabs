@@ -164,6 +164,7 @@ export function ColorBlock({
     >
       <PopoverTrigger asChild>
         <Button
+          type="button"
           variant="ghost"
           size="sm"
           icon={labelsMapper[type].icon}
@@ -191,6 +192,7 @@ export function ColorBlock({
                   <div>{labelsMapper[type].headingLabel}</div>
                   {currentColor && (
                     <button
+                      type="button"
                       className="hover:text-foreground/80 transition-default"
                       onClick={() => {
                         switch (type) {

@@ -1,7 +1,13 @@
 import PageWrapper from '@/_components/page-wrapper';
 import { serverEnvHeaders, serverLabsEnvAPI } from '@helpers/api/server';
 import PageHeader from '@/_components/page-header';
-import { Building, Delete, MoreHorizontal } from 'lucide-react';
+import {
+  Building,
+  Delete,
+  FileEdit,
+  ImageUp,
+  MoreHorizontal,
+} from 'lucide-react';
 import { notFound } from 'next/navigation';
 import type {
   Organization,
@@ -20,10 +26,13 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/ui/dropdown';
 import { ButtonIcon } from '@repo/ui/button-icon';
-import Image from 'next/image';
+import EditOrganizationDrawer from '@/_components/edit-organization-drawer';
+import EditOrganizationLogoDrawer from '@/_components/edit-organization-logo-drawer';
+import OrganizationDeleteLogo from '@/_components/organization-delete-logo';
 
 async function getOrganization(environmentId: string, organizationId: string) {
   const { data } = await serverLabsEnvAPI.get<OrganizationDetail>(
@@ -66,20 +75,10 @@ export default async function OrganizationDetail({
         <div className="flex gap-8">
           <section>
             <ImagePreview
-              imageSRC={`${process.env.NEXT_PUBLIC_TL_EXT_FILES}/organizations/${organization?.id}/images/${organization?.logo}`}
+              src={organization?.logo}
               className="min-w-32 w-auto h-24"
             >
-              {organization?.logo ? (
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_TL_EXT_FILES}/organizations/${organization?.id}/images/${organization?.logo}`}
-                  alt="Logo"
-                  className="object-contain p-1"
-                  crossOrigin="anonymous"
-                  fill
-                />
-              ) : (
-                <Typo variant={'lg'}>No Logo</Typo>
-              )}
+              {!organization?.logo && 'No Logo'}
             </ImagePreview>
           </section>
           <section className="flex flex-1 justify-between mt-1">
@@ -134,9 +133,22 @@ export default async function OrganizationDetail({
             </div>
             <div>
               <div className="flex gap-1 justify-end">
-                <Button size={'sm'} variant={'outline'}>
-                  Edit
-                </Button>
+                <EditOrganizationDrawer
+                  trigger={
+                    <Button size={'sm'} variant={'outline'} icon={FileEdit}>
+                      Edit
+                    </Button>
+                  }
+                  organization={organization}
+                />
+                <EditOrganizationLogoDrawer
+                  trigger={
+                    <Button size={'sm'} variant={'outline'} icon={ImageUp}>
+                      {organization?.logo ? 'Change Logo' : 'Upload Logo'}
+                    </Button>
+                  }
+                  organization={organization}
+                />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <ButtonIcon
@@ -152,6 +164,14 @@ export default async function OrganizationDetail({
                     data-dt-bypass-click="true"
                   >
                     <DropdownMenuGroup>
+                      {organization.logo && (
+                        <>
+                          <OrganizationDeleteLogo
+                            organizationId={organization.id}
+                          />
+                          <DropdownMenuSeparator />
+                        </>
+                      )}
                       <DropdownMenuItem variant={'destructive'}>
                         <Delete className="mr-2 h-4 w-4" />
                         <span>Delete</span>

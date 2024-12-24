@@ -17,6 +17,7 @@ export function TextAlignBlock() {
   return (
     <>
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignLeftIcon}
         size={'sm'}
@@ -24,6 +25,7 @@ export function TextAlignBlock() {
         active={editor.isActive({ textAlign: 'left' })}
       />
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignCenterIcon}
         size={'sm'}
@@ -31,6 +33,7 @@ export function TextAlignBlock() {
         active={editor.isActive({ textAlign: 'center' })}
       />
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignRightIcon}
         size={'sm'}
@@ -38,6 +41,7 @@ export function TextAlignBlock() {
         active={editor.isActive({ textAlign: 'right' })}
       />
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignJustifyIcon}
         size={'sm'}

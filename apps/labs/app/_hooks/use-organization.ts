@@ -1,12 +1,16 @@
 import React from 'react';
 import useSWR from 'swr';
-import { envURL, labsAPI } from '@helpers/api';
+import { labsAPI } from '@helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
-import { NewOrganizationFormData } from '@/_validators/organizations-validators';
+import {
+  UpdateLogoOrganizationFormData,
+  EditOrganizationFormData,
+  NewOrganizationFormData,
+} from '@/_validators/organizations-validators';
 import { Organization, OrganizationDetail } from '@/_interfaces/organization';
-import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import { useParams } from 'next/navigation';
+import { revalidateCache } from '@/_services/server-cache-service';
 
 interface Params {
   organizationId?: string;
@@ -14,7 +18,6 @@ interface Params {
 
 export default function useOrganization(params: Params = {}) {
   const { toast } = useToast();
-  const { makeMutations } = useOptimisticUpdate();
   const { environmentId } = useParams();
   const {
     data: organizationData,
@@ -44,15 +47,7 @@ export default function useOrganization(params: Params = {}) {
       );
 
       if (logo && logo?.[0]) {
-        await labsAPI.patch<Organization>(
-          `/organizations/${data.id}/logo`,
-          { file: logo[0] },
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          },
-        );
+        await updateOrganizationLogo(data.id, { logo }, false);
       }
 
       toast({
@@ -60,15 +55,7 @@ export default function useOrganization(params: Params = {}) {
         description: `Your organization ${payload.name} has been successfully created.`,
       });
 
-      makeMutations([
-        {
-          cacheKey: envURL('/organizations', environmentId as string),
-          populateCache: (_, organizations) => ({
-            ...organizations,
-            items: [...organizations.items, data],
-          }),
-        },
-      ]);
+      await revalidateCache([`/${environmentId}/organizations`]);
 
       return data;
     } catch (error: any) {
@@ -82,8 +69,140 @@ export default function useOrganization(params: Params = {}) {
     }
   }
 
+  async function updateOrganization(
+    organizationId: string,
+    payload: EditOrganizationFormData,
+  ) {
+    try {
+      const { data } = await labsAPI.patch<Organization>(
+        `/organizations/${organizationId}`,
+        payload,
+      );
+
+      toast({
+        title: 'Organization Updated',
+        description: `Your organization ${payload.name} has been successfully updated.`,
+      });
+
+      await revalidateCache([
+        `/${environmentId}/organizations`,
+        `/${environmentId}/organizations/${organizationId}`,
+      ]);
+
+      return data;
+    } catch (error: any) {
+      console.error('useOrganization.updateOrganization', error);
+      toast({
+        title: 'Updating Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+      throw error;
+    }
+  }
+
+  async function updateOrganizationLogo(
+    organizationId: string,
+    payload: UpdateLogoOrganizationFormData,
+    showNotification = true,
+  ) {
+    // if (!payload.logo?.[0]) {
+    //   toast({
+    //     title: 'Error',
+    //     description: 'Please drop a file to upload.',
+    //     variant: 'destructive',
+    //   });
+    //   return;
+    // }
+
+    try {
+      await labsAPI.patch<Organization>(
+        `/organizations/${organizationId}/logo`,
+        { file: payload.logo?.[0] },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
+      await revalidateCache([
+        `/${environmentId}/organizations/${organizationId}`,
+      ]);
+
+      if (showNotification) {
+        toast({
+          title: 'Organization Logo Changed',
+          description: 'The logo has been successfully changed.',
+        });
+      }
+    } catch (error: any) {
+      console.error('useOrganization.updateLogo', error);
+      if (showNotification) {
+        toast({
+          title: 'Error',
+          description: error?.response?.data?.message || APIErrors.Generic,
+          variant: 'destructive',
+        });
+      }
+      throw error;
+    }
+  }
+
+  async function deleteOrganizationLogo(organizationId: string) {
+    try {
+      toast({
+        description: 'Deleting logo...',
+      });
+
+      await labsAPI.delete(`/organizations/${organizationId}/logo`);
+
+      await revalidateCache([
+        `/${environmentId}/organizations`,
+        `/${environmentId}/organizations/${organizationId}`,
+      ]);
+
+      toast({
+        title: 'Organization Logo Deleted',
+        description: 'The logo has been successfully deleted.',
+      });
+    } catch (error: any) {
+      console.error('useOrganization.deleteLogo', error);
+      toast({
+        title: 'Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+      throw error;
+    }
+  }
+
+  async function deleteOrganization(organizationId: string) {
+    try {
+      await labsAPI.delete(`/organizations/${organizationId}`);
+      await revalidateCache([`/${environmentId}/organizations`]);
+
+      toast({
+        title: 'Organization Deleted',
+        description: 'The organization has been successfully deleted.',
+      });
+    } catch (error: any) {
+      console.error('useOrganization.deleteOrganization', error);
+      toast({
+        title: 'Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+      throw error;
+    }
+  }
+
   return {
     createOrganization,
+    updateOrganizationLogo,
+    updateOrganization,
+    deleteOrganizationLogo,
+    deleteOrganization,
     organization,
     isLoadingOrganization,
     isValidatingOrganization,

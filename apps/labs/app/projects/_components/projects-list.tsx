@@ -55,9 +55,7 @@ function ProjectSection({
         <section>
           <header className="mb-1">
             {!loading ? (
-              <Typo variant={'muted'}>
-                Environment{project.environments.length === 1 ? '' : 's'}
-              </Typo>
+              <Typo variant={'muted'}>Environments</Typo>
             ) : (
               <Skeleton width={'6rem'} height={'1.125rem'} />
             )}

@@ -37,6 +37,7 @@ export interface InputProps
   maxFileSizeInMB?: number;
   form: UseFormReturn<any>;
   replaceBy: React.ReactNode;
+  onRemove?: () => void;
 }
 
 const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
@@ -50,6 +51,7 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
       maxFileSizeInMB,
       form,
       replaceBy,
+      onRemove,
       ...props
     },
     ref,
@@ -137,6 +139,7 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
                           onClick={() => {
                             setValidFile(false);
                             form.setValue(name, undefined);
+                            onRemove?.();
                           }}
                         >
                           Remove

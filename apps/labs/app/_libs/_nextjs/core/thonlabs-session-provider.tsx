@@ -7,14 +7,13 @@ import { EnvironmentData } from '../interfaces/environment-data';
 import { User } from '../interfaces/user';
 import useSWR from 'swr';
 import { fetcher, intFetcher } from '../services/api';
+import { usePathname } from 'next/navigation';
+import { publicRoutes } from '@/_constants/routes-connstants';
 
 /*
   This is a session provider to spread the data to frontend,
   the component goal is to make possible access data as user logged in
   and the environment data.
-
-  The user is consumed from cookies after authentication is completed
-  and the data is consumed from backend API call.
 
   This provider is rendered inside the wrapper and is connected to the hooks, so
   the customers don't need to implement this in their app.
@@ -44,10 +43,23 @@ export function ThonLabsSessionProvider({
   environmentId,
   publicKey,
 }: ThonLabsSessionProviderProps) {
-  // This is a check to keep the session alive by triggering the validateSession inside middleware
-  useSWR<EnvironmentData>(`/api/auth/alive`, intFetcher);
+  const pathname = usePathname();
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  /*
+    This is a check to keep the session alive by
+    triggering the validateSession inside middleware
+    but only if the route is not public
+  */
+  useSWR<EnvironmentData>(
+    () => !isPublicRoute && `/api/auth/alive`,
+    intFetcher,
+  );
 
   const token = Cookies.get('tl_session');
+  // TODO: replaces by a "session" API call
   const user = React.useMemo(() => ClientSessionService.getSession(), [token]);
   const { data: clientEnvironmentData } = useSWR<EnvironmentData>(
     `/environments/${environmentId}/data`,

@@ -12,10 +12,6 @@ export const config = {
 };
 
 export async function middleware(req: NextRequest) {
-  Log.info('middleware', {
-    route: `${req.method} ${req.nextUrl.toString()}`,
-  });
-
   const shouldRedirectToLogin = await validateSession(req, [
     '/api/environments',
   ]);

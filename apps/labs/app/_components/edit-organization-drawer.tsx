@@ -21,63 +21,74 @@ import { Typo, typoVariants } from '@repo/ui/typo';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import { TrashIcon } from 'lucide-react';
 import {
-  NewOrganizationFormData,
-  newOrganizationFormSchema,
+  EditOrganizationFormData,
+  editOrganizationFormSchema,
 } from '@/_validators/organizations-validators';
 import { Badge } from '@repo/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
-import { InputSingleFile } from '@repo/ui/input-single-file';
-import { ImagePreview } from '@repo/ui/image-preview';
 import useOrganization from '@/_hooks/use-organization';
+import { Organization } from '@/_interfaces/organization';
 
 type Props = {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
+  organization: Organization;
 };
 
-export default function NewOrganizationDrawer({
+export default function EditOrganizationDrawer({
   trigger,
+  organization,
+  ...props
 }: Props & React.ComponentProps<typeof Drawer>) {
-  const [open, setOpen] = React.useState(false);
-  const form = useForm<NewOrganizationFormData>({
-    defaultValues: {
-      domains: [],
-    },
-    resolver: zodResolver(newOrganizationFormSchema),
+  const form = useForm<EditOrganizationFormData>({
+    resolver: zodResolver(editOrganizationFormSchema),
   });
-  const domainsFields = useFieldArray<NewOrganizationFormData>({
+  const domainsFields = useFieldArray<EditOrganizationFormData>({
     control: form.control,
     name: 'domains',
   });
-  const logo = form.watch('logo');
-  const logoPreview = logo?.[0] ? URL.createObjectURL(logo[0]) : '';
-  const [isCreatingOrganization, startTransitionCreatingOrganization] =
-    useTransition();
-  const { createOrganization } = useOrganization();
+  const [isSaving, startTransitionSaving] = useTransition();
+  const { updateOrganization } = useOrganization();
 
-  function onSubmit(payload: NewOrganizationFormData) {
-    startTransitionCreatingOrganization(async () => {
+  React.useEffect(() => {
+    if (props.open) {
+      handleReset();
+    }
+  }, [props.open]);
+
+  function onSubmit(payload: EditOrganizationFormData) {
+    startTransitionSaving(async () => {
       try {
-        await createOrganization(payload);
-        setOpen(false);
+        await updateOrganization(organization.id, payload);
+        props.onOpenChange?.(false);
       } catch {}
     });
   }
 
   function handleReset() {
     form.clearErrors();
-    form.reset();
+    form.reset({
+      name: organization.name,
+      domains: organization.domains,
+    });
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild onClick={handleReset}>
-        {trigger}
-      </DrawerTrigger>
+    <Drawer {...props}>
+      {trigger && (
+        <DrawerTrigger asChild onClick={handleReset}>
+          {trigger}
+        </DrawerTrigger>
+      )}
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>New Organization</DrawerTitle>
+          <DrawerTitle>Edit Organization</DrawerTitle>
           <DrawerDescription>
-            Complete the information below to create a new organization.
+            Make changes to your organization settings below. You can change
+            logo{' '}
+            <button type="button" className={typoVariants({ variant: 'link' })}>
+              here
+            </button>
+            .
           </DrawerDescription>
         </DrawerHeader>
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
@@ -92,39 +103,6 @@ export default function NewOrganizationDrawer({
                     {...form.register('name')}
                   />
                 </InputWrapper>
-
-                <section>
-                  <header className="flex flex-col gap-0.5 mb-2">
-                    <Typo variant="lg" className="flex items-center gap-1">
-                      Logo{' '}
-                      <Badge variant="info" size={'sm'}>
-                        Optional
-                      </Badge>
-                    </Typo>
-                    <Typo variant="muted">
-                      Used in email templates and consumed from our APIs.
-                      Recommended size is 1024px of width.
-                    </Typo>
-                    {!logo && (
-                      <Alert variant="info" size={'sm'} className="mt-2">
-                        <AlertDescription>
-                          Max size: 50MB - Allowed files: PNG, JPG, JPEG, WEBP
-                          or SVG
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                  </header>
-
-                  <InputWrapper>
-                    <InputSingleFile
-                      form={form}
-                      allowedExtensions={['png', 'jpg', 'jpeg', 'webp', 'svg']}
-                      maxFileSizeInMB={50}
-                      replaceBy={<ImagePreview src={logoPreview} />}
-                      {...form.register('logo')}
-                    />
-                  </InputWrapper>
-                </section>
 
                 <section>
                   <header className="flex flex-col gap-0.5 mb-2">
@@ -191,16 +169,12 @@ export default function NewOrganizationDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <DrawerClose asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                disabled={isCreatingOrganization}
-              >
+              <Button type="button" variant="ghost" disabled={isSaving}>
                 Cancel
               </Button>
             </DrawerClose>
-            <Button type="submit" loading={isCreatingOrganization}>
-              {isCreatingOrganization ? 'Creating...' : 'Create Organization'}
+            <Button type="submit" loading={isSaving}>
+              {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>
           </DrawerFooter>
         </form>

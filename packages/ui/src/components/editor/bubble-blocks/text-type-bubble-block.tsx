@@ -116,7 +116,12 @@ export function TextTypeBlock() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant={'ghost'} icon={typoActiveItem?.icon} size={'sm'}>
+        <Button
+          type="button"
+          variant={'ghost'}
+          icon={typoActiveItem?.icon}
+          size={'sm'}
+        >
           {typoActiveItem?.name}
         </Button>
       </PopoverTrigger>

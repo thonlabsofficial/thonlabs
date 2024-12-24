@@ -106,6 +106,7 @@ export function LinkBlock({
     <Popover>
       <PopoverTrigger asChild>
         <ButtonIcon
+          type="button"
           variant={'ghost'}
           icon={LinkIcon}
           size={'sm'}

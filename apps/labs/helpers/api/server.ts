@@ -1,7 +1,7 @@
 import { getTokens } from '@/_libs/_nextjs/server';
 import Utils from '@repo/utils';
 import Log from '@repo/utils/log';
-import { InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 import https from 'https';
 
@@ -45,7 +45,7 @@ function serverEnvHeaders(envID: string) {
 
 function logRequest(instanceName: string) {
   return (config: InternalAxiosRequestConfig<any>) => {
-    Log.info(instanceName, {
+    Log.info(`${instanceName} req`, {
       url: config.url,
       method: config.method,
       headers: config.headers,
@@ -56,10 +56,27 @@ function logRequest(instanceName: string) {
   };
 }
 
+function logResponse(instanceName: string) {
+  return (response: AxiosResponse) => {
+    Log.info(`${instanceName} res`, {
+      url: response.config.url,
+      method: response.config.method,
+      status: response.status,
+      data: response.data,
+    });
+
+    return response;
+  };
+}
+
 serverLabsInternalAPI.interceptors.request.use(
   logRequest('serverLabsInternalAPI'),
 );
+serverLabsInternalAPI.interceptors.response.use(
+  logResponse('serverLabsInternalAPI'),
+);
 serverLabsEnvAPI.interceptors.request.use(logRequest('serverLabsEnvAPI'));
+serverLabsEnvAPI.interceptors.response.use(logResponse('serverLabsEnvAPI'));
 serverLabsEnvAPI.interceptors.request.use(validateTokensInterceptor);
 
 export { serverLabsEnvAPI, serverEnvHeaders, serverLabsInternalAPI };

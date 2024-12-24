@@ -24,7 +24,7 @@ const typoVariants = cva('font-sans text-text', {
       code: 'font-code p-0.5 bg-blue-500/[0.2] rounded-sm text-sm',
       codeLink:
         'font-code py-0.5 px-1 bg-blue-500/[0.2] hover:bg-blue-500/[0.3] rounded-sm text-sm transition-default',
-      link: 'underline underline-offset-4',
+      link: 'underline underline-offset-4 cursor-pointer',
       underline: 'underline underline-offset-4',
     },
     state: {

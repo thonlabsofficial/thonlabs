@@ -63,7 +63,7 @@ export default function NewProjectDialog({
         <DialogHeader>
           <DialogTitle>New Project</DialogTitle>
           <DialogDescription>
-            Once you create a new project, a <strong>"Production"</strong>{' '}
+            Once you create a new project, a <strong>"Development"</strong>{' '}
             environment will be automatically set up.
           </DialogDescription>
         </DialogHeader>

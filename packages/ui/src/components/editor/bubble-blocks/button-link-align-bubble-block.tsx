@@ -16,6 +16,7 @@ export function ButtonLinkAlignBlock() {
   return (
     <>
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignLeftIcon}
         size={'sm'}
@@ -23,6 +24,7 @@ export function ButtonLinkAlignBlock() {
         active={editor.isActive('buttonLink', { buttonLinkAlign: 'left' })}
       />
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignCenterIcon}
         size={'sm'}
@@ -32,6 +34,7 @@ export function ButtonLinkAlignBlock() {
         active={editor.isActive('buttonLink', { buttonLinkAlign: 'center' })}
       />
       <ButtonIcon
+        type="button"
         variant={'ghost'}
         icon={AlignRightIcon}
         size={'sm'}

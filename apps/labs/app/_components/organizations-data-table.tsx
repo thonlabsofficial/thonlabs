@@ -15,6 +15,8 @@ import {
   Delete,
   FileEdit,
   FileText,
+  ImageUp,
+  ImageMinus,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import {
@@ -26,16 +28,20 @@ import {
   DropdownMenuTrigger,
 } from '@repo/ui/dropdown';
 import { ButtonIcon } from '@repo/ui/button-icon';
-import { useOrganizations } from '@/_hooks/use-organizations';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import EditOrganizationDrawer from '@/_components/edit-organization-drawer';
+import EditOrganizationLogoDrawer from '@/_components/edit-organization-logo-drawer';
+import useOrganization from '@/_hooks/use-organization';
 
 const columns = ({
   setOpen,
   setOrganization,
+  organizationHook: { deleteOrganizationLogo },
 }: {
   setOpen: React.Dispatch<React.SetStateAction<string>>;
   setOrganization: React.Dispatch<React.SetStateAction<Organization | null>>;
+  organizationHook: ReturnType<typeof useOrganization>;
 }): ColumnDef<Organization>[] => [
   {
     accessorKey: 'name',
@@ -147,46 +153,69 @@ const columns = ({
       const organization = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <ButtonIcon
-              variant="outline"
-              icon={MoreHorizontal}
-              size={'sm'}
+        <div className="flex w-full justify-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <ButtonIcon
+                variant="outline"
+                icon={MoreHorizontal}
+                size={'sm'}
+                data-dt-bypass-click="true"
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-56"
+              align="end"
               data-dt-bypass-click="true"
-            />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-56"
-            align="end"
-            data-dt-bypass-click="true"
-          >
-            <DropdownMenuGroup>
-              <DropdownMenuItem asChild>
-                <Link
-                  href={`/${organization.environmentId}/organizations/${organization.id}`}
+            >
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={`/${organization.environmentId}/organizations/${organization.id}`}
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    <span>View info</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setOrganization(organization);
+                    setOpen('edit-organization-drawer');
+                  }}
                 >
-                  <FileText className="mr-2 h-4 w-4" />
-                  <span>View info</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => {
-                  setOrganization(organization);
-                  setOpen('edit-organization-drawer');
-                }}
-              >
-                <FileEdit className="mr-2 h-4 w-4" />
-                <span>Edit</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem variant={'destructive'}>
-                <Delete className="mr-2 h-4 w-4" />
-                <span>Delete</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                  <FileEdit className="mr-2 h-4 w-4" />
+                  <span>Edit</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setOrganization(organization);
+                    setOpen('edit-organization-logo-drawer');
+                  }}
+                >
+                  <ImageUp className="mr-2 h-4 w-4" />
+                  <span>
+                    {organization.logo ? 'Change Logo' : 'Upload Logo'}
+                  </span>
+                </DropdownMenuItem>
+                {organization.logo && (
+                  <DropdownMenuItem
+                    onSelect={async () => {
+                      await deleteOrganizationLogo(organization.id);
+                    }}
+                  >
+                    <ImageMinus className="mr-2 h-4 w-4" />
+                    <span>Delete Logo</span>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem variant={'destructive'}>
+                  <Delete className="mr-2 h-4 w-4" />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       );
     },
   },
@@ -203,6 +232,7 @@ export default function OrganizationsDataTable({ organizations }: Props) {
   );
   const router = useRouter();
   const { environmentId } = useParams();
+  const organizationHook = useOrganization();
 
   return (
     <>
@@ -210,6 +240,7 @@ export default function OrganizationsDataTable({ organizations }: Props) {
         columns={columns({
           setOpen,
           setOrganization,
+          organizationHook,
         })}
         data={organizations}
         defaultSorting={[{ id: 'name', desc: false }]}
@@ -231,6 +262,17 @@ export default function OrganizationsDataTable({ organizations }: Props) {
         onRowHover={(_, row) => {
           router.prefetch(`/${environmentId}/organizations/${row.original.id}`);
         }}
+      />
+
+      <EditOrganizationDrawer
+        organization={organization as Organization}
+        open={open === 'edit-organization-drawer'}
+        onOpenChange={() => setOpen('')}
+      />
+      <EditOrganizationLogoDrawer
+        organization={organization as Organization}
+        open={open === 'edit-organization-logo-drawer'}
+        onOpenChange={() => setOpen('')}
       />
     </>
   );

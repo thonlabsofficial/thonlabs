@@ -3,23 +3,23 @@ import { useTheme } from 'next-themes';
 import React from 'react';
 import { cn } from '../core/utils';
 import { Card } from './card';
+import { Typo } from './typo';
 
 const ImagePreview = ({
   children,
-  imageSRC,
+  src,
   className,
+  ...props
 }: {
-  children: React.ReactNode;
-  imageSRC?: string;
-  className?: string;
-}) => {
+  src?: string;
+} & React.ComponentProps<typeof Card>) => {
   const { resolvedTheme } = useTheme();
 
   const [darkBackground, setDarkBackground] = React.useState(true);
   React.useEffect(() => {
-    if (imageSRC) {
+    if (src) {
       const existingImg = document.querySelector(
-        `img[src="${imageSRC}"]`,
+        `img[src="${src}"]`,
       ) as HTMLImageElement;
 
       if (existingImg) {
@@ -33,7 +33,7 @@ const ImagePreview = ({
         // Fallback to creating a new image if needed
         const img = new Image();
         img.crossOrigin = 'anonymous';
-        img.src = imageSRC;
+        img.src = src;
         img.onerror = (e) => {
           console.warn('Error loading image from thonlabs CDN:', e);
           setDarkBackground(true);
@@ -41,7 +41,7 @@ const ImagePreview = ({
         img.onload = () => analyzeImage(img);
       }
     }
-  }, [imageSRC]);
+  }, [src]);
 
   const analyzeImage = (img: HTMLImageElement) => {
     try {
@@ -95,6 +95,7 @@ const ImagePreview = ({
           p-2 overflow-hidden select-none`,
         className,
       )}
+      {...props}
     >
       <div
         className={cn(
@@ -108,7 +109,14 @@ const ImagePreview = ({
           },
         )}
       >
-        {children}
+        <div
+          className="flex items-center justify-center bg-contain bg-center bg-no-repeat w-full h-full"
+          style={{
+            backgroundImage: `url(${src})`,
+          }}
+        >
+          {children && <Typo variant={'lg'}>{children}</Typo>}
+        </div>
       </div>
     </Card>
   );
