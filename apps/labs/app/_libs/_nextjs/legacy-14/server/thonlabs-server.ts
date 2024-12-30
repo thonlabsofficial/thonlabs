@@ -4,9 +4,9 @@ import {
   forwardSearchParams,
   getURLFromHost,
   removePathnameFromURL,
-} from '../utils/helpers';
-import Log from '../services/log';
-import { publicRoutes } from '@/_constants/routes-connstants';
+} from '../../current/utils/helpers';
+import Log from '../../current/services/log';
+import { publicRoutes } from '../../current/utils/constants';
 
 export function isAuthRoute(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
