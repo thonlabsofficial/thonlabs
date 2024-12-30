@@ -1,3 +1,5 @@
+@use '../../components/editor/editor.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -94,5 +96,3 @@
     @apply outline-none;
   }
 }
-
-@import '../../components/editor/editor.scss';

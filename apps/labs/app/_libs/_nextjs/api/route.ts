@@ -8,7 +8,8 @@ export const POST = async (
   req: NextRequest,
   { params }: { params: { thonlabs: string } },
 ) => {
-  const [action] = params.thonlabs;
+  const { thonlabs } = await params;
+  const [action] = thonlabs;
 
   switch (action) {
     case 'refresh':
@@ -28,7 +29,8 @@ export const GET = async (
   { params }: { params: { thonlabs: string } },
 ) => {
   let response;
-  const [action, param] = params.thonlabs;
+  const { thonlabs } = await params;
+  const [action, param] = thonlabs;
 
   switch (action) {
     case 'magic':
@@ -65,9 +67,11 @@ export const GET = async (
         );
       }
 
+      const isValid = await ServerSessionService.isValid();
+
       return redirect(
         response.statusCode === 200
-          ? `/?info=${ServerSessionService.isValid() ? APIResponseCodes.EmailConfirmation : APIResponseCodes.EmailConfirmationWithoutSession}`
+          ? `/?info=${isValid ? APIResponseCodes.EmailConfirmation : APIResponseCodes.EmailConfirmationWithoutSession}`
           : `/?reason=${response?.data?.emailResent ? APIResponseCodes.EmailConfirmationResent : APIResponseCodes.EmailConfirmationError}`,
         RedirectType.replace,
       );

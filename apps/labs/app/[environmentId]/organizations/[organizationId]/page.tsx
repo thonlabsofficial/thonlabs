@@ -51,17 +51,15 @@ interface Props {
   params: { environmentId: string; organizationId: string };
 }
 
-export async function generateMetadata({
-  params: { environmentId, organizationId },
-}: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { environmentId, organizationId } = await params;
   const organization = await getOrganization(environmentId, organizationId);
 
   return { title: `Organization: ${organization.name} · Organizations` };
 }
 
-export default async function OrganizationDetail({
-  params: { environmentId, organizationId },
-}: Props) {
+export default async function OrganizationDetail({ params }: Props) {
+  const { environmentId, organizationId } = await params;
   const organization = await getOrganization(environmentId, organizationId);
 
   return (

@@ -5,26 +5,53 @@ import { SessionData } from '../interfaces/session-data';
 import Log from './log';
 
 const ServerSessionService = {
-  create(data: SessionData) {
+  sessionToBase64(data: SessionData): string {
+    const sessionData = [
+      data.token,
+      data.tokenExpiresIn,
+      data.refreshToken,
+      data.refreshTokenExpiresIn,
+    ];
+    return Buffer.from(sessionData.join('|')).toString('base64');
+  },
+
+  sessionFromBase64(data: string): SessionData {
+    const sessionData = Buffer.from(data, 'base64')
+      .toString('utf-8')
+      .split('|');
+
+    return {
+      token: sessionData[0] as string,
+      tokenExpiresIn: parseInt(sessionData[1] as string),
+      refreshToken: sessionData?.[2] as string,
+      refreshTokenExpiresIn: sessionData?.[3]
+        ? parseInt(sessionData?.[3] as string)
+        : undefined,
+    } as SessionData;
+  },
+
+  async create(data: SessionData) {
     if (!data) {
       return;
     }
 
+    const { set } = await cookies();
+
     const expires = new Date(data.tokenExpiresIn);
-    cookies().set('tl_session', data.token, {
+    set('tl_session', data.token, {
       path: '/',
       expires,
       secure: process.env.NODE_ENV === 'production',
     });
 
     if (data.refreshToken) {
-      cookies().set('tl_refresh', data.refreshToken, {
+      set('tl_refresh', data.refreshToken, {
         path: '/',
         expires: data.refreshTokenExpiresIn,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
       });
-      cookies().set('tl_keep_alive', 'true', {
+      set('tl_keep_alive', 'true', {
         path: '/',
         expires: data.refreshTokenExpiresIn,
         secure: process.env.NODE_ENV === 'production',
@@ -32,16 +59,19 @@ const ServerSessionService = {
     }
   },
 
-  getSessionCookies() {
+  async getSessionCookies() {
+    const { get } = await cookies();
+
     return {
-      accessToken: cookies().get('tl_session')?.value,
-      refreshToken: cookies().get('tl_refresh')?.value,
-      keepAlive: cookies().get('tl_keep_alive')?.value === 'true',
+      accessToken: get('tl_session')?.value,
+      refreshToken: get('tl_refresh')?.value,
+      keepAlive: get('tl_keep_alive')?.value === 'true',
     };
   },
 
-  getSession() {
-    const accessToken = cookies().get('tl_session');
+  async getSession() {
+    const { get } = await cookies();
+    const accessToken = get('tl_session');
 
     if (!accessToken?.value) {
       return {
@@ -61,8 +91,9 @@ const ServerSessionService = {
     };
   },
 
-  isValid() {
-    let accessToken = cookies().get('tl_session');
+  async isValid() {
+    const { get } = await cookies();
+    let accessToken = get('tl_session');
 
     if (!accessToken?.value) {
       return false;
@@ -75,7 +106,8 @@ const ServerSessionService = {
   },
 
   async validateRefreshToken() {
-    const refreshToken = cookies().get('tl_refresh');
+    const { get } = await cookies();
+    const refreshToken = get('tl_refresh');
 
     if (!refreshToken?.value) {
       Log.info({
@@ -186,8 +218,8 @@ const ServerSessionService = {
 
   async shouldKeepAlive() {
     try {
-      const isValid = this.isValid();
-      const { keepAlive, refreshToken } = this.getSessionCookies();
+      const isValid = await this.isValid();
+      const { keepAlive, refreshToken } = await this.getSessionCookies();
 
       if (keepAlive && isValid === false) {
         if (!refreshToken) {
@@ -221,7 +253,8 @@ const ServerSessionService = {
   },
 
   async logout() {
-    const token = cookies().get('tl_session')?.value;
+    const { get, delete: deleteCookie } = await cookies();
+    const token = get('tl_session')?.value;
     await fetch(`${process.env.NEXT_PUBLIC_TL_API}/auth/logout`, {
       method: 'POST',
       headers: {
@@ -232,10 +265,10 @@ const ServerSessionService = {
         'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
       } as HeadersInit & { 'tl-env-id': string; 'tl-public-key': string },
     });
-    cookies().delete('tl_session');
-    cookies().delete('tl_refresh');
-    cookies().delete('tl_keep_alive');
-    cookies().delete('tl_env');
+    deleteCookie('tl_session');
+    deleteCookie('tl_refresh');
+    deleteCookie('tl_keep_alive');
+    deleteCookie('tl_env');
   },
 };
 

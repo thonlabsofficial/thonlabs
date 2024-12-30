@@ -37,7 +37,7 @@ export async function validateSession(
 
   if (!isPublicRoute) {
     const { accessToken, refreshToken, keepAlive } =
-      ServerSessionService.getSessionCookies();
+      await ServerSessionService.getSessionCookies();
 
     // Validates the access token or access token and refresh token
     // based on keep alive

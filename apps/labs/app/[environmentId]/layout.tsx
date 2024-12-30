@@ -19,8 +19,9 @@ export default async function LabsNestedLayout({
   children: React.ReactNode;
   params: { environmentId: string };
 }>) {
+  const { environmentId } = await params;
   const session = await getAuthSession();
-  const environmentAppData = await getAppData(params.environmentId);
+  const environmentAppData = await getAppData(environmentId);
 
   return (
     <EnvironmentAppDataProvider environmentAppData={environmentAppData}>

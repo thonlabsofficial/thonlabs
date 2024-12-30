@@ -10,7 +10,7 @@ const Log = {
     );
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(util.inspect(data, { depth: null, colors: true }));
+      console.log(data);
     }
   },
 };

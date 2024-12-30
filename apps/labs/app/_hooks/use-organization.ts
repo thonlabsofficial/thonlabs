@@ -106,15 +106,6 @@ export default function useOrganization(params: Params = {}) {
     payload: UpdateLogoOrganizationFormData,
     showNotification = true,
   ) {
-    // if (!payload.logo?.[0]) {
-    //   toast({
-    //     title: 'Error',
-    //     description: 'Please drop a file to upload.',
-    //     variant: 'destructive',
-    //   });
-    //   return;
-    // }
-
     try {
       await labsAPI.patch<Organization>(
         `/organizations/${organizationId}/logo`,

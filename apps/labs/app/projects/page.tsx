@@ -2,14 +2,9 @@ import { Metadata } from 'next';
 import ProjectsList from '@/projects/_components/projects-list';
 import { Typo } from '@repo/ui/typo';
 import { Button } from '@repo/ui/button';
-import dynamic from 'next/dynamic';
 import Container from '@/_components/container';
 import { Grid2X2 } from 'lucide-react';
-
-const NewProjectDialog = dynamic(
-  () => import('@/projects/_components/new-project-dialog'),
-  { ssr: false },
-);
+import NewProjectDialog from '@/projects/_components/new-project-dialog';
 
 export const metadata: Metadata = {
   title: 'Projects',

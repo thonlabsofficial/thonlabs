@@ -9,6 +9,7 @@ import {
 import { AxiosError } from 'axios';
 import ServerSessionService from '../../services/server-session-service';
 import { SessionData, ErrorResponse } from '@/_libs/_nextjs';
+import { cookies } from 'next/headers';
 
 type DataReturn = SessionData & ErrorResponse;
 
@@ -20,7 +21,28 @@ export async function login(payload: LoginFormData): Promise<DataReturn> {
     );
 
     if (data) {
-      ServerSessionService.create(data);
+      const { set } = await cookies();
+
+      const expires = new Date(data.tokenExpiresIn);
+      set('tl_session', data.token, {
+        path: '/',
+        expires,
+        secure: process.env.NODE_ENV === 'production',
+      });
+
+      if (data.refreshToken) {
+        set('tl_refresh', data.refreshToken, {
+          path: '/',
+          expires: data.refreshTokenExpiresIn,
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+        });
+        set('tl_keep_alive', 'true', {
+          path: '/',
+          expires: data.refreshTokenExpiresIn,
+          secure: process.env.NODE_ENV === 'production',
+        });
+      }
     }
 
     return data;
@@ -40,7 +62,28 @@ export async function signUp(payload: SignUpFormData): Promise<DataReturn> {
     );
 
     if (data) {
-      ServerSessionService.create(data);
+      const { set } = await cookies();
+
+      const expires = new Date(data.tokenExpiresIn);
+      set('tl_session', data.token, {
+        path: '/',
+        expires,
+        secure: process.env.NODE_ENV === 'production',
+      });
+
+      if (data.refreshToken) {
+        set('tl_refresh', data.refreshToken, {
+          path: '/',
+          expires: data.refreshTokenExpiresIn,
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+        });
+        set('tl_keep_alive', 'true', {
+          path: '/',
+          expires: data.refreshTokenExpiresIn,
+          secure: process.env.NODE_ENV === 'production',
+        });
+      }
     }
 
     return data;

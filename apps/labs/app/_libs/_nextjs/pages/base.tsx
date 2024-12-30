@@ -6,23 +6,25 @@ import ResetPasswordCreate from './reset-password-create';
 import ResetPasswordRequire from './reset-password-require';
 import SignUp from './sign-up';
 
-export function ThonlabsAuthPage({
+export async function ThonlabsAuthPage({
   params,
   searchParams,
 }: {
   params: { thonlabs: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const [route, param] = params.thonlabs || [];
-  const inviteFlow = searchParams?.inviteFlow === 'true';
+  const { thonlabs } = await params;
+  const { inviteFlow } = await searchParams;
+  const [route, param] = thonlabs || [];
+  const inviteFlowParam = inviteFlow === 'true';
   const inviteFlowEmail = Buffer.from(
-    (searchParams?.inviteFlow as string) || '',
+    (inviteFlow as string) || '',
     'base64',
   ).toString('utf-8');
 
   if (route === 'login') return <Login />;
   if (route === 'magic' && param)
-    return <MagicValidator token={param} inviteFlow={inviteFlow} />;
+    return <MagicValidator token={param} inviteFlow={inviteFlowParam} />;
   if (route === 'magic') return <MagicSent />;
   if (route === 'sign-up') return <SignUp />;
   if (route === 'confirm-email' && param)

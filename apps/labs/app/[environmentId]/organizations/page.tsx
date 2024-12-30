@@ -15,9 +15,8 @@ interface Props {
 }
 
 export default async function Organizations({ params }: Props) {
-  const { items: organizations } = await fetchOrganizations(
-    params.environmentId,
-  );
+  const { environmentId } = await params;
+  const { items: organizations } = await fetchOrganizations(environmentId);
 
   return (
     <>
