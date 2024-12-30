@@ -1,6 +1,6 @@
 import { pageRender } from '../../current/pages/page-render';
 
-export function ThonlabsAuthPage({
+export function ThonLabsAuthPage({
   params,
   searchParams,
 }: {

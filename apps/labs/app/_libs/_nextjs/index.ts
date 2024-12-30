@@ -8,14 +8,14 @@ import { ErrorResponse } from './current/utils/errors';
 import { useEnvironmentData } from './current/hooks/use-environment-data';
 import { useSession } from './current/hooks/use-session';
 import { ThonLabsWrapper } from './current/core/thonlabs-wrapper';
-import { ThonlabsAuthPage } from './current/pages/base';
+import { ThonLabsAuthPage } from './current/pages/base';
 
 export type { EnvironmentData, User, SessionData, ErrorResponse };
 
 export {
   AuthProviders,
   ThonLabsWrapper,
-  ThonlabsAuthPage,
+  ThonLabsAuthPage,
   useEnvironmentData,
   useSession,
 };
