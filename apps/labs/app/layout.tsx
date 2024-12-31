@@ -22,7 +22,7 @@ async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${fonts.className} bg-background text-text`}>
         <ThonLabsWrapper
           environmentId={process.env.NEXT_PUBLIC_TL_ENV_ID as string}
