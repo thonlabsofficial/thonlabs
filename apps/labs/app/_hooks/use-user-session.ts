@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
-import { useSession } from '@/_libs/_nextjs';
+import { useSession } from '@/_libs/_nextjs/v14';
 import { useEnvironments } from '@/_hooks/use-environments';
 import { Environment } from '@/_interfaces/environment';
 

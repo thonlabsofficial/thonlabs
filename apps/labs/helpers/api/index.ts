@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import qs from 'qs';
 import https from 'https';
-import { APIResponseCodes } from '@/_libs/_nextjs/utils/errors';
+import { APIResponseCodes } from '@/_libs/_nextjs/v14';
 
 const httpsAgent =
   process.env.NODE_ENV === 'development'
@@ -10,16 +10,6 @@ const httpsAgent =
         rejectUnauthorized: false,
       })
     : null;
-
-// TODO: remove it and replace the lib usage to fetch
-const labsPublicAPI = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_TL_API,
-  headers: {
-    'tl-env-id': process.env.NEXT_PUBLIC_TL_ENV_ID,
-    'tl-public-key': process.env.NEXT_PUBLIC_TL_PK,
-  },
-  httpsAgent,
-});
 
 // Used together with env ID and public key, not sure if will be necessary to this APP
 const labsAPI = axios.create({
@@ -116,7 +106,6 @@ labsEnvAPI.interceptors.response.use((res) => res, handleResponseError);
 intAPI.interceptors.response.use((res) => res, handleResponseError);
 
 export {
-  labsPublicAPI,
   labsAPI,
   intAPI,
   labsEnvAPI,

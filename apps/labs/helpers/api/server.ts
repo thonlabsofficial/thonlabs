@@ -1,4 +1,4 @@
-import { getTokens } from '@/_libs/_nextjs/server';
+import { getTokens } from '@/_libs/_nextjs/v14/server';
 import Utils from '@repo/utils';
 import Log from '@repo/utils/log';
 import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';

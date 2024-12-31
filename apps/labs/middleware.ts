@@ -3,8 +3,8 @@ import {
   validateSession,
   isAuthRoute,
   shouldBypassRoute,
-} from '@/_libs/_nextjs/server';
-import { forwardSearchParams } from '@/_libs/_nextjs/utils/helpers';
+} from '@/_libs/_nextjs/v14/server';
+import { forwardSearchParams } from '@/_libs/_nextjs/v14';
 import Log from '@repo/utils/log';
 
 export const config = {

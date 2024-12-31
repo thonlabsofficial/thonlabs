@@ -1,2 +1,2 @@
-import { ThonlabsAuthPage } from '@/_libs/_nextjs';
-export default ThonlabsAuthPage;
+import { ThonLabsAuthPage } from '@/_libs/_nextjs/v14';
+export default ThonLabsAuthPage;
