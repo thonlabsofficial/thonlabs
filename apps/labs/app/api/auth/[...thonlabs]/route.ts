@@ -1,1 +1,1 @@
-export * from '@/_libs/_nextjs/v14/api';
+export * from '@/_libs/_nextjs/api';

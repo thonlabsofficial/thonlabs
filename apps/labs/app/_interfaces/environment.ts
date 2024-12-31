@@ -1,4 +1,4 @@
-import { AuthProviders, EnvironmentData } from '@/_libs/_nextjs/v14';
+import { AuthProviders, EnvironmentData } from '@/_libs/_nextjs';
 import { Project } from './project';
 
 export enum CustomDomainStatus {

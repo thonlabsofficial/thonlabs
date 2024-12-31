@@ -1,6 +1,6 @@
 'use server';
 
-import { getSession } from '@/_libs/_nextjs/v14/server';
+import { getSession } from '@/_libs/_nextjs/server';
 
 export type UserSession = Awaited<ReturnType<typeof getSession>>;
 
