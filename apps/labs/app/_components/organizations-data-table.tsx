@@ -48,7 +48,7 @@ const columns = ({
   setOpen: React.Dispatch<React.SetStateAction<string>>;
   setOrganization: React.Dispatch<React.SetStateAction<Organization | null>>;
   organizationHook: ReturnType<typeof useOrganization>;
-  toast: ReturnType<typeof useToast>;
+  toast: ReturnType<typeof useToast>['toast'];
 }): ColumnDef<Organization>[] => [
   {
     accessorKey: 'name',
