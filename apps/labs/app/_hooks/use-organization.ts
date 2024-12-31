@@ -188,12 +188,40 @@ export default function useOrganization(params: Params = {}) {
     }
   }
 
+  async function updateOrganizationStatus(
+    organizationId: string,
+    payload: { active: boolean },
+  ) {
+    try {
+      await labsAPI.patch(`/organizations/${organizationId}/status`, payload);
+
+      await revalidateCache([
+        `/${environmentId}/organizations`,
+        `/${environmentId}/organizations/${organizationId}`,
+      ]);
+
+      toast({
+        title: 'Organization Status Updated',
+        description: `The organization status has been successfully updated.`,
+      });
+    } catch (error: any) {
+      console.error('useOrganization.updateOrganizationStatus', error);
+      toast({
+        title: 'Error',
+        description: error?.response?.data?.message || APIErrors.Generic,
+        variant: 'destructive',
+      });
+      throw error;
+    }
+  }
+
   return {
     createOrganization,
     updateOrganizationLogo,
     updateOrganization,
     deleteOrganizationLogo,
     deleteOrganization,
+    updateOrganizationStatus,
     organization,
     isLoadingOrganization,
     isValidatingOrganization,

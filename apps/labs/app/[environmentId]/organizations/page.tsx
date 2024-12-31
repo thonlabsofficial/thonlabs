@@ -10,11 +10,9 @@ export const metadata: Metadata = {
   title: 'Organizations',
 };
 
-interface Props {
-  params: { environmentId: string };
-}
+type Params = Promise<{ environmentId: string }>;
 
-export default async function Organizations({ params }: Props) {
+export default async function Organizations({ params }: { params: Params }) {
   const { environmentId } = await params;
   const { items: organizations } = await fetchOrganizations(environmentId);
 

@@ -130,9 +130,18 @@ export default function EditUserDrawer({
                             <InputSelectValue placeholder="Select an option" />
                           </InputSelectTrigger>
                           <InputSelectContent>
-                            {organizations.map(({ id, name }) => (
-                              <InputSelectItem key={id} value={id}>
-                                {name}
+                            {organizations.map(({ id, name, active }) => (
+                              <InputSelectItem
+                                key={id}
+                                value={id}
+                                disabled={!active}
+                              >
+                                {name}{' '}
+                                {!active && (
+                                  <Badge variant="destructive" size={'xs'}>
+                                    Inactive
+                                  </Badge>
+                                )}
                               </InputSelectItem>
                             ))}
                           </InputSelectContent>

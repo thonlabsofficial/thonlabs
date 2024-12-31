@@ -1,7 +1,13 @@
 'use client';
 
 import React from 'react';
-import { MoreHorizontal, Delete } from 'lucide-react';
+import {
+  MoreHorizontal,
+  Delete,
+  ToggleLeft,
+  ToggleRight,
+  ImageUp,
+} from 'lucide-react';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import {
   DropdownMenu,
@@ -13,10 +19,11 @@ import {
 } from '@repo/ui/dropdown';
 import OrganizationDeleteLogo from './organization-delete-logo';
 import { Organization } from '@/_interfaces/organization';
-import { AlertDialog } from '@repo/ui/alert-dialog';
 import useOrganization from '@/_hooks/use-organization';
 import OrganizationDeleteAlertDialog from './organization-delete-alert-dialog';
 import { useParams, useRouter } from 'next/navigation';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import OrganizationEditLogoDrawer from '@/_components/organization-edit-logo-drawer';
 
 interface Props {
   organization: Organization;
@@ -26,6 +33,8 @@ export default function OrganizationEditDropdownMenu({ organization }: Props) {
   const [open, setOpen] = React.useState('');
   const router = useRouter();
   const { environmentId } = useParams();
+  const { updateOrganizationStatus } = useOrganization();
+  const { toast } = useToast();
 
   return (
     <>
@@ -44,12 +53,39 @@ export default function OrganizationEditDropdownMenu({ organization }: Props) {
           data-dt-bypass-click="true"
         >
           <DropdownMenuGroup>
+            <DropdownMenuItem
+              onSelect={async () => {
+                toast({ description: 'Updating status...' });
+                await updateOrganizationStatus(organization.id, {
+                  active: !organization.active,
+                });
+              }}
+            >
+              {organization.active ? (
+                <>
+                  <ToggleLeft className="mr-2 h-4 w-4" />
+                  <span>Deactivate</span>
+                </>
+              ) : (
+                <>
+                  <ToggleRight className="mr-2 h-4 w-4" />
+                  <span>Activate</span>
+                </>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={() => {
+                setOpen('edit-organization-logo-drawer');
+              }}
+            >
+              <ImageUp className="mr-2 h-4 w-4" />
+              <span>{organization.logo ? 'Change Logo' : 'Upload Logo'}</span>
+            </DropdownMenuItem>
             {organization.logo && (
-              <>
-                <OrganizationDeleteLogo organizationId={organization.id} />
-                <DropdownMenuSeparator />
-              </>
+              <OrganizationDeleteLogo organizationId={organization.id} />
             )}
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               variant={'destructive'}
               onSelect={() => {
@@ -63,6 +99,11 @@ export default function OrganizationEditDropdownMenu({ organization }: Props) {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      <OrganizationEditLogoDrawer
+        open={open === 'edit-organization-logo-drawer'}
+        onOpenChange={() => setOpen('')}
+        organization={organization}
+      />
       <OrganizationDeleteAlertDialog
         open={open === 'delete-organization'}
         setOpen={setOpen}

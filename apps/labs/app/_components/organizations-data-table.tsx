@@ -17,6 +17,8 @@ import {
   FileText,
   ImageUp,
   ImageMinus,
+  ToggleLeft,
+  ToggleRight,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import {
@@ -35,15 +37,18 @@ import OrganizationEditLogoDrawer from '@/_components/organization-edit-logo-dra
 import useOrganization from '@/_hooks/use-organization';
 import { ImagePreview } from '@repo/ui/image-preview';
 import OrganizationDeleteAlertDialog from '@/_components/organization-delete-alert-dialog';
+import { useToast } from '@repo/ui/hooks/use-toast';
 
 const columns = ({
   setOpen,
   setOrganization,
-  organizationHook: { deleteOrganizationLogo },
+  organizationHook: { deleteOrganizationLogo, updateOrganizationStatus },
+  toast,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<string>>;
   setOrganization: React.Dispatch<React.SetStateAction<Organization | null>>;
   organizationHook: ReturnType<typeof useOrganization>;
+  toast: ReturnType<typeof useToast>;
 }): ColumnDef<Organization>[] => [
   {
     accessorKey: 'name',
@@ -116,6 +121,22 @@ const columns = ({
       ) : (
         <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
           No domains registered
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: 'active',
+    header: 'Status',
+    cell: ({ getValue }) => {
+      const data = getValue() as boolean;
+      return (
+        <Badge
+          variant={data ? 'success' : 'destructive'}
+          size={'sm'}
+          className="cursor-text"
+        >
+          {data ? 'Active' : 'Inactive'}
         </Badge>
       );
     },
@@ -194,6 +215,27 @@ const columns = ({
                   <span>Edit</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                  onSelect={async () => {
+                    toast({ description: 'Updating status...' });
+                    await updateOrganizationStatus(organization.id, {
+                      active: !organization.active,
+                    });
+                  }}
+                >
+                  {organization.active ? (
+                    <>
+                      <ToggleLeft className="mr-2 h-4 w-4" />
+                      <span>Deactivate</span>
+                    </>
+                  ) : (
+                    <>
+                      <ToggleRight className="mr-2 h-4 w-4" />
+                      <span>Activate</span>
+                    </>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
                   onSelect={() => {
                     setOrganization(organization);
                     setOpen('edit-organization-logo-drawer');
@@ -246,6 +288,7 @@ export default function OrganizationsDataTable({ organizations }: Props) {
   const router = useRouter();
   const { environmentId } = useParams();
   const organizationHook = useOrganization();
+  const { toast } = useToast();
 
   return (
     <>
@@ -254,6 +297,7 @@ export default function OrganizationsDataTable({ organizations }: Props) {
           setOpen,
           setOrganization,
           organizationHook,
+          toast,
         })}
         data={organizations}
         defaultSorting={[{ id: 'name', desc: false }]}

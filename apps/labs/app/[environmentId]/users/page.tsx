@@ -11,12 +11,13 @@ export const metadata: Metadata = {
   title: 'Users',
 };
 
-interface Props {
-  params: { environmentId: string };
-}
-
-export default async function Users({ params }: Props) {
-  const { items: users } = await fetchUsers(params.environmentId);
+export default async function Users({
+  params,
+}: {
+  params: Promise<{ environmentId: string }>;
+}) {
+  const { environmentId } = await params;
+  const { items: users } = await fetchUsers(environmentId);
 
   return (
     <>

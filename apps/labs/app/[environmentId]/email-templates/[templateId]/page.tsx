@@ -8,6 +8,8 @@ import { notFound } from 'next/navigation';
 import EditEmailTemplateSettings from '@/_components/edit-email-template-settings';
 import EmailDomainStatusAlert from '@/_components/email-domain-status-alert';
 
+type Params = Promise<{ environmentId: string; templateId: string }>;
+
 async function getEmailTemplate(environmentId: string, templateId: string) {
   const { data } = await serverLabsEnvAPI.get<EmailTemplate>(
     `/email-templates/${templateId}`,
@@ -21,21 +23,15 @@ async function getEmailTemplate(environmentId: string, templateId: string) {
   return data;
 }
 
-interface Props {
-  params: { environmentId: string; templateId: string };
-}
-
-export async function generateMetadata({
-  params: { environmentId, templateId },
-}: Props) {
+export async function generateMetadata({ params }: { params: Params }) {
+  const { environmentId, templateId } = await params;
   const emailTemplate = await getEmailTemplate(environmentId, templateId);
 
   return { title: `Email Template: ${emailTemplate.name} · Emails` };
 }
 
-export default async function EmailDetail({
-  params: { environmentId, templateId },
-}: Props) {
+export default async function EmailDetail({ params }: { params: Params }) {
+  const { environmentId, templateId } = await params;
   const emailTemplate = await getEmailTemplate(environmentId, templateId);
 
   return (

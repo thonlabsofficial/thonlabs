@@ -4,9 +4,11 @@ import ServerSessionService from '../services/server-session-service';
 import { APIResponseCodes } from '../../shared/utils/errors';
 import { forwardSearchParams } from '../../shared/utils/helpers';
 
+type Params = Promise<{ thonlabs: string }>;
+
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { thonlabs: string } },
+  { params }: { params: Params },
 ) => {
   const { thonlabs } = await params;
   const [action] = thonlabs;
@@ -24,10 +26,7 @@ export const POST = async (
   return notFound();
 };
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { thonlabs: string } },
-) => {
+export const GET = async (req: NextRequest, { params }: { params: Params }) => {
   let response;
   const { thonlabs } = await params;
   const [action, param] = thonlabs;

@@ -5,10 +5,9 @@ export const metadata: Metadata = {
   title: '',
 };
 
-export default function Home({
-  params,
-}: {
-  params: { environmentId: string };
-}) {
-  return redirect(`/${params.environmentId}/dashboard`);
+type Params = Promise<{ environmentId: string }>;
+
+export default async function Home({ params }: { params: Params }) {
+  const { environmentId } = await params;
+  return redirect(`/${environmentId}/dashboard`);
 }

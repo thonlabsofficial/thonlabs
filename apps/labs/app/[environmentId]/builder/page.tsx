@@ -11,14 +11,11 @@ export const metadata: Metadata = {
   title: 'Auth Builder',
 };
 
-interface Props {
-  params: {
-    environmentId: string;
-  };
-}
+type Params = Promise<{ environmentId: string }>;
 
-export default async function AuthBuilder({ params }: Props) {
-  const environment = await getEnvironmentById(params.environmentId);
+export default async function AuthBuilder({ params }: { params: Params }) {
+  const { environmentId } = await params;
+  const environment = await getEnvironmentById(environmentId);
 
   return (
     <>

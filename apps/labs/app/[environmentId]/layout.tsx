@@ -12,12 +12,14 @@ export const metadata: Metadata = {
   },
 };
 
+type Params = Promise<{ environmentId: string }>;
+
 export default async function LabsNestedLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { environmentId: string };
+  params: Params;
 }>) {
   const { environmentId } = await params;
   const session = await getAuthSession();

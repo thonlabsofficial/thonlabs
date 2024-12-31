@@ -10,16 +10,11 @@ export const metadata: Metadata = {
   title: 'Emails',
 };
 
-interface Props {
-  params: {
-    environmentId: string;
-  };
-}
+type Params = Promise<{ environmentId: string }>;
 
-export default async function Emails({ params }: Props) {
-  const { items: emailTemplates } = await fetchEmailTemplates(
-    params.environmentId,
-  );
+export default async function Emails({ params }: { params: Params }) {
+  const { environmentId } = await params;
+  const { items: emailTemplates } = await fetchEmailTemplates(environmentId);
 
   return (
     <>
