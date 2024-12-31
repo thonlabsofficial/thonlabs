@@ -62,7 +62,7 @@ export default function useOrganization(params: Params = {}) {
       console.error('useOrganization.createOrganization', error);
       toast({
         title: 'Creating Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
       throw error;
@@ -94,7 +94,7 @@ export default function useOrganization(params: Params = {}) {
       console.error('useOrganization.updateOrganization', error);
       toast({
         title: 'Updating Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
       throw error;
@@ -132,7 +132,7 @@ export default function useOrganization(params: Params = {}) {
       if (showNotification) {
         toast({
           title: 'Error',
-          description: error?.response?.data?.message || APIErrors.Generic,
+          description: error?.response?.data?.message || APIErrors.GenericFile,
           variant: 'destructive',
         });
       }

@@ -34,11 +34,12 @@ type Props = {
   organization: Organization;
 };
 
-export default function EditOrganizationDrawer({
+export default function OrganizationEditDrawer({
   trigger,
   organization,
   ...props
 }: Props & React.ComponentProps<typeof Drawer>) {
+  const [open, setOpen] = React.useState(props.open || false);
   const form = useForm<EditOrganizationFormData>({
     resolver: zodResolver(editOrganizationFormSchema),
   });
@@ -59,6 +60,7 @@ export default function EditOrganizationDrawer({
     startTransitionSaving(async () => {
       try {
         await updateOrganization(organization.id, payload);
+        setOpen(false);
         props.onOpenChange?.(false);
       } catch {}
     });
@@ -73,7 +75,7 @@ export default function EditOrganizationDrawer({
   }
 
   return (
-    <Drawer {...props}>
+    <Drawer open={open} onOpenChange={setOpen} {...props}>
       {trigger && (
         <DrawerTrigger asChild onClick={handleReset}>
           {trigger}

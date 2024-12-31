@@ -116,7 +116,7 @@ const ImagePreview = ({
             backgroundImage: `url(${src})`,
           }}
         >
-          {children && <Typo variant={'lg'}>{children}</Typo>}
+          {children && <Typo variant={'sm'}>{children}</Typo>}
         </div>
       </div>
     </Card>

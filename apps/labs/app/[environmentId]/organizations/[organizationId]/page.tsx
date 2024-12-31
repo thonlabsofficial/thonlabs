@@ -1,13 +1,7 @@
 import PageWrapper from '@/_components/page-wrapper';
 import { serverEnvHeaders, serverLabsEnvAPI } from '@helpers/api/server';
 import PageHeader from '@/_components/page-header';
-import {
-  Building,
-  Delete,
-  FileEdit,
-  ImageUp,
-  MoreHorizontal,
-} from 'lucide-react';
+import { Building, FileEdit, ImageUp } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import type {
   Organization,
@@ -21,18 +15,9 @@ import UsersDataTable from '@/_components/users-data-table';
 import { User } from '@/_interfaces/user';
 import NewUserDialog from '@/_components/new-user-dialog';
 import { Button } from '@repo/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@repo/ui/dropdown';
-import { ButtonIcon } from '@repo/ui/button-icon';
-import EditOrganizationDrawer from '@/_components/edit-organization-drawer';
-import EditOrganizationLogoDrawer from '@/_components/edit-organization-logo-drawer';
-import OrganizationDeleteLogo from '@/_components/organization-delete-logo';
+import OrganizationEditDrawer from '@/_components/organization-edit-drawer';
+import OrganizationEditLogoDrawer from '@/_components/organization-edit-logo-drawer';
+import OrganizationEditDropdownMenu from '@/_components/organization-edit-dropdown-menu';
 
 async function getOrganization(environmentId: string, organizationId: string) {
   const { data } = await serverLabsEnvAPI.get<OrganizationDetail>(
@@ -131,7 +116,7 @@ export default async function OrganizationDetail({ params }: Props) {
             </div>
             <div>
               <div className="flex gap-1 justify-end">
-                <EditOrganizationDrawer
+                <OrganizationEditDrawer
                   trigger={
                     <Button size={'sm'} variant={'outline'} icon={FileEdit}>
                       Edit
@@ -139,7 +124,7 @@ export default async function OrganizationDetail({ params }: Props) {
                   }
                   organization={organization}
                 />
-                <EditOrganizationLogoDrawer
+                <OrganizationEditLogoDrawer
                   trigger={
                     <Button size={'sm'} variant={'outline'} icon={ImageUp}>
                       {organization?.logo ? 'Change Logo' : 'Upload Logo'}
@@ -147,36 +132,7 @@ export default async function OrganizationDetail({ params }: Props) {
                   }
                   organization={organization}
                 />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <ButtonIcon
-                      variant="outline"
-                      icon={MoreHorizontal}
-                      size={'sm'}
-                      data-dt-bypass-click="true"
-                    />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    className="w-56"
-                    align="end"
-                    data-dt-bypass-click="true"
-                  >
-                    <DropdownMenuGroup>
-                      {organization.logo && (
-                        <>
-                          <OrganizationDeleteLogo
-                            organizationId={organization.id}
-                          />
-                          <DropdownMenuSeparator />
-                        </>
-                      )}
-                      <DropdownMenuItem variant={'destructive'}>
-                        <Delete className="mr-2 h-4 w-4" />
-                        <span>Delete</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <OrganizationEditDropdownMenu organization={organization} />
               </div>
             </div>
           </section>

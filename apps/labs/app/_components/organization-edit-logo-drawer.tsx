@@ -32,7 +32,7 @@ type Props = {
   organization: Organization;
 };
 
-export default function EditOrganizationLogoDrawer({
+export default function OrganizationEditLogoDrawer({
   trigger,
   organization,
   ...props
@@ -56,11 +56,8 @@ export default function EditOrganizationLogoDrawer({
     startTransitionSaving(async () => {
       try {
         await updateOrganizationLogo(organization.id, payload);
-        if (trigger) {
-          setOpen(false);
-        } else {
-          props.onOpenChange?.(false);
-        }
+        setOpen(false);
+        props.onOpenChange?.(false);
       } catch {}
     });
   }
@@ -73,7 +70,7 @@ export default function EditOrganizationLogoDrawer({
   }
 
   return (
-    <Drawer open={open} onOpenChange={props.onOpenChange || setOpen}>
+    <Drawer open={open} onOpenChange={setOpen} {...props}>
       {trigger && (
         <DrawerTrigger asChild onClick={handleReset}>
           {trigger}

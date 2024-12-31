@@ -29,7 +29,7 @@ export default function useProject() {
       console.error('[Create Project]', error);
       toast({
         title: 'Creating Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
     }
@@ -62,7 +62,7 @@ export default function useProject() {
       console.error('[Update General Info]', error);
       toast({
         title: 'Updating Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
     }

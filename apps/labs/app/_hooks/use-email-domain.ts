@@ -40,7 +40,7 @@ export default function useEmailDomain() {
       console.error('useEmailDomain.changeEmailDomain', error);
       toast({
         title: 'Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
       throw error;

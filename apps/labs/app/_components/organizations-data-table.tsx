@@ -30,9 +30,11 @@ import {
 import { ButtonIcon } from '@repo/ui/button-icon';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import EditOrganizationDrawer from '@/_components/edit-organization-drawer';
-import EditOrganizationLogoDrawer from '@/_components/edit-organization-logo-drawer';
+import OrganizationEditDrawer from '@/_components/organization-edit-drawer';
+import OrganizationEditLogoDrawer from '@/_components/organization-edit-logo-drawer';
 import useOrganization from '@/_hooks/use-organization';
+import { ImagePreview } from '@repo/ui/image-preview';
+import OrganizationDeleteAlertDialog from '@/_components/organization-delete-alert-dialog';
 
 const columns = ({
   setOpen,
@@ -55,25 +57,30 @@ const columns = ({
       );
     },
     cell: ({ getValue, row }) => {
-      const { id } = row.original;
+      const { id, logo } = row.original;
 
       const data = getValue() as string;
       return (
-        <div className="flex flex-col gap-0.5 mt-px">
-          <Typo className="font-semibold">{data}</Typo>
-          <div className="flex gap-0.5">
-            <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
-              OID: {id?.substring(0, 4)}...{id?.substring(id.length - 4)}
-            </Badge>
-            <Clipboard
-              size="xs"
-              variant="outline"
-              value={id}
-              className="opacity-0 group-hover:opacity-100"
-              labels={[Copy, Check]}
-              iconLabels
-              data-dt-bypass-click="true"
-            />
+        <div className="flex gap-1">
+          <ImagePreview src={logo} className="min-w-24 w-auto h-14">
+            {!logo && 'No Logo'}
+          </ImagePreview>
+          <div className="flex flex-col gap-0.5 mt-px">
+            <Typo className="font-semibold">{data}</Typo>
+            <div className="flex gap-0.5">
+              <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
+                OID: {id?.substring(0, 4)}...{id?.substring(id.length - 4)}
+              </Badge>
+              <Clipboard
+                size="xs"
+                variant="outline"
+                value={id}
+                className="opacity-0 group-hover:opacity-100"
+                labels={[Copy, Check]}
+                iconLabels
+                data-dt-bypass-click="true"
+              />
+            </div>
           </div>
         </div>
       );
@@ -208,7 +215,13 @@ const columns = ({
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem variant={'destructive'}>
+                <DropdownMenuItem
+                  variant={'destructive'}
+                  onSelect={() => {
+                    setOrganization(organization);
+                    setOpen('delete-organization');
+                  }}
+                >
                   <Delete className="mr-2 h-4 w-4" />
                   <span>Delete</span>
                 </DropdownMenuItem>
@@ -264,15 +277,20 @@ export default function OrganizationsDataTable({ organizations }: Props) {
         }}
       />
 
-      <EditOrganizationDrawer
+      <OrganizationEditDrawer
         organization={organization as Organization}
         open={open === 'edit-organization-drawer'}
         onOpenChange={() => setOpen('')}
       />
-      <EditOrganizationLogoDrawer
+      <OrganizationEditLogoDrawer
         organization={organization as Organization}
         open={open === 'edit-organization-logo-drawer'}
         onOpenChange={() => setOpen('')}
+      />
+      <OrganizationDeleteAlertDialog
+        open={open === 'delete-organization'}
+        setOpen={setOpen}
+        organization={organization as Organization}
       />
     </>
   );

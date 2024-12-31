@@ -83,7 +83,7 @@ export default function useEmailTemplate(
       console.error('useEmailTemplate.updateEmailTemplate', error);
       toast({
         title: 'Updating Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
       throw error;

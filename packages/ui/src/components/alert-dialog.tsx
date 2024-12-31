@@ -29,7 +29,6 @@ type Props = {
 function AlertDialog({
   title,
   description,
-  isActing,
   trigger,
   idleLabel,
   variant = 'primary',
@@ -37,8 +36,11 @@ function AlertDialog({
   onClick,
   ...props
 }: Props & React.ComponentProps<typeof Dialog>) {
+  const [open, setOpen] = React.useState(props.open || false);
+  const [isActing, setIsActing] = React.useState(false);
+
   return (
-    <Dialog {...props}>
+    <Dialog open={open} onOpenChange={setOpen} {...props}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent>
         <DialogHeader>
@@ -55,7 +57,14 @@ function AlertDialog({
             type="button"
             variant={variant}
             loading={isActing}
-            onClick={onClick}
+            onClick={async (e) => {
+              try {
+                setIsActing(true);
+                await onClick?.(e);
+              } finally {
+                setIsActing(false);
+              }
+            }}
           >
             {isActing ? actingLabel : idleLabel}
           </Button>

@@ -74,7 +74,7 @@ export default function useEnvironment(
       console.error('useEnvironment.createEnvironment', error);
       toast({
         title: "We couldn't create your environment",
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
     }
@@ -127,7 +127,7 @@ export default function useEnvironment(
       console.error('useEnvironment.updateEnvironmentGeneralSettings', error);
       toast({
         title: 'Update Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
 
@@ -177,7 +177,7 @@ export default function useEnvironment(
       console.error('useEnvironment.updateEnvironmentAuthSettings', error);
       toast({
         title: 'Update Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
 
@@ -317,7 +317,7 @@ export default function useEnvironment(
       console.error('useEnvironment.setCustomDomain', error);
       toast({
         title: 'Set Custom Domain Error',
-        description: error?.response?.data?.message || APIErrors.Generic,
+        description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
       throw error;

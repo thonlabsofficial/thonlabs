@@ -35,7 +35,7 @@ export interface InputProps
   loading?: boolean;
   allowedExtensions?: string[];
   maxFileSizeInMB?: number;
-  form: UseFormReturn<any>;
+  form: any;
   replaceBy: React.ReactNode;
   onRemove?: () => void;
 }
@@ -134,6 +134,7 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
                       </div>
                       <div className="flex gap-1">
                         <ButtonLink
+                          type="button"
                           size={'xs'}
                           variant={'destructive'}
                           onClick={() => {
