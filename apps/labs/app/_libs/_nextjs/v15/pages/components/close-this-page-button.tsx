@@ -1,11 +1,10 @@
 'use client';
 
 import { Button } from '@repo/ui/button';
-import { useSearchParams } from 'next/navigation';
+import { usePreviewMode } from '../../hooks/use-preview-mode';
 
 export function CloseThisPageButton() {
-  const searchParams = useSearchParams();
-  const previewMode = searchParams.get('previewMode') === 'true';
+  const { previewMode } = usePreviewMode();
 
   return (
     <Button

@@ -1,5 +1,8 @@
+import React from 'react';
 import { Card, CardContent } from '@repo/ui/card';
 import SectionHeader from '@/_components/section-header';
+import { ThonLabsAuthPage } from '@/_libs/_nextjs';
+import BuilderActivatePreviewMode from '@/_components/builder-activate-preview-mode';
 
 export default function BuilderPreview() {
   const currentURL =
@@ -10,18 +13,12 @@ export default function BuilderPreview() {
   return (
     <>
       <SectionHeader title="Preview" />
-      <Card className="h-[46rem] overflow-hidden">
+      <Card className="h-[46rem] overflow-hidden relative">
         <CardContent className="p-0 w-full h-full">
-          {/* <div>
-            <ThonLabsAuthPage
-              params={Promise.resolve({ thonlabs: ['login'] })}
-              searchParams={Promise.resolve({})}
-              previewMode={true}
-            />
-          </div> */}
-          <iframe
-            src={`${currentURL}/builder-preview/login?previewMode=true`}
-            className="w-full h-full"
+          <BuilderActivatePreviewMode />
+          <ThonLabsAuthPage
+            params={Promise.resolve({ thonlabs: ['login'] })}
+            searchParams={Promise.resolve({})}
           />
         </CardContent>
       </Card>

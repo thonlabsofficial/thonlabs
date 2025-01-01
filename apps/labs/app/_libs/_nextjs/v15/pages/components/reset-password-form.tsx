@@ -9,12 +9,12 @@ import {
 } from '../validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { ReloadIcon } from '@radix-ui/react-icons';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import Log from '../../../shared/utils/log';
 import { resetPassword } from '../actions/auth-actions';
 import { useSearchParams } from 'next/navigation';
 import { delay } from '../../../shared/utils/helpers';
+import { usePreviewMode } from '../../hooks/use-preview-mode';
 
 export default function ResetPasswordForm() {
   const [loading, setLoading] = React.useState(false);
@@ -24,8 +24,7 @@ export default function ResetPasswordForm() {
     resolver: zodResolver(ResetPasswordFormSchema),
   });
 
-  const searchParams = useSearchParams();
-  const previewMode = searchParams.get('previewMode') === 'true';
+  const { previewMode } = usePreviewMode();
 
   async function onSubmit(data: ResetPasswordFormData) {
     try {

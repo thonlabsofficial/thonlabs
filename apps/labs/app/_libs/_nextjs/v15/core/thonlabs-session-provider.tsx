@@ -9,6 +9,7 @@ import useSWR from 'swr';
 import { fetcher, intFetcher } from '../../shared/utils/api';
 import { usePathname } from 'next/navigation';
 import { publicRoutes } from '../../shared/utils/constants';
+import { usePreviewMode } from '../hooks/use-preview-mode';
 
 /*
   This is a session provider to spread the data to frontend,
@@ -68,10 +69,20 @@ export function ThonLabsSessionProvider({
       publicKey,
     }),
   );
-  const memoClientEnvironmentData = React.useMemo(
-    () => clientEnvironmentData || environmentData,
-    [environmentId, publicKey, clientEnvironmentData],
-  );
+  const { previewMode, previewEnvironmentData } = usePreviewMode();
+  const memoClientEnvironmentData = React.useMemo(() => {
+    const finalData = clientEnvironmentData || environmentData;
+
+    if (previewMode) {
+      console.log('Collecting data from preview mode');
+      return {
+        ...finalData,
+        ...previewEnvironmentData,
+      };
+    }
+
+    return finalData;
+  }, [environmentId, publicKey, clientEnvironmentData, previewEnvironmentData]);
 
   return (
     <ThonLabsSessionContext.Provider

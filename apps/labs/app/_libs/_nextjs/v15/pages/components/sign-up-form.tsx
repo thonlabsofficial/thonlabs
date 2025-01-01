@@ -12,20 +12,20 @@ import {
 } from '../validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signUp } from '../actions/auth-actions';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Typo } from '@repo/ui/typo';
 import { useEnvironmentData } from '../../hooks/use-environment-data';
 import { AuthProviders } from '../../../shared/interfaces/environment-data';
 import { delay } from '../../../shared/utils/helpers';
+import { usePreviewMode } from '../../hooks/use-preview-mode';
 
 export default function SignUpForm() {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const { toast } = useToast();
   const { authProvider, enableSignUp } = useEnvironmentData();
-  const searchParams = useSearchParams();
-  const previewMode = searchParams.get('previewMode') === 'true';
+  const { previewMode } = usePreviewMode();
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(

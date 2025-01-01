@@ -18,6 +18,8 @@ import { useTransition } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
 import { EnvironmentDetail } from '@/_interfaces/environment';
+import { usePreviewMode } from '@/_libs/_nextjs/v15/hooks/use-preview-mode';
+import { EnvironmentData } from '@/_libs/_nextjs';
 
 interface Props {
   environment: EnvironmentDetail;
@@ -34,8 +36,14 @@ export default function BuilderAuthSettings({ environment }: Props) {
       enableSignUpB2BOnly: environment.enableSignUpB2BOnly || false,
     },
   });
+  const formData = useWatch({ control: form.control });
   const { updateEnvironmentAuthSettings } = useEnvironment();
   const [isSaving, startSavingTransition] = useTransition();
+  const { setPreviewEnvironmentData } = usePreviewMode();
+
+  React.useEffect(() => {
+    setPreviewEnvironmentData(formData as EnvironmentData);
+  }, [formData, setPreviewEnvironmentData]);
 
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
     startSavingTransition(() => {
