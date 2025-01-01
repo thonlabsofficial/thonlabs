@@ -10,7 +10,7 @@ export async function ThonLabsAuthPage({
   params,
   searchParams,
 }: {
-  params: { thonlabs: string };
+  params: { thonlabs: string[] };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const [route, param] = params.thonlabs || [];

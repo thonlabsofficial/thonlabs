@@ -1,4 +1,4 @@
-import { EnvironmentData } from '../interfaces/environment-data';
+import { EnvironmentData } from '../../shared/interfaces/environment-data';
 import { ThonLabsSessionProvider } from './thonlabs-session-provider';
 import { ThonLabsInternalProvider } from './thonlabs-internal-provider';
 import ToasterObservableWrapper from '../pages/components/toaster-observable-wrapper';
@@ -49,7 +49,7 @@ export async function ThonLabsWrapper({
     environmentId,
     publicKey,
     baseURL,
-  });
+  } as EnvironmentData);
 
   const environmentData = await api<EnvironmentData>(
     `/environments/${environmentId}/data`,

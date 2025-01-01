@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png',
   },
+  robots: {
+    follow: false,
+    index: false,
+  },
 };
 
 async function RootLayout({

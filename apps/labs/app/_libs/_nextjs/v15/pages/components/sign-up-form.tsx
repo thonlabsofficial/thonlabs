@@ -12,17 +12,20 @@ import {
 } from '../validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signUp } from '../actions/auth-actions';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Typo } from '@repo/ui/typo';
 import { useEnvironmentData } from '../../hooks/use-environment-data';
-import { AuthProviders } from '../../interfaces/environment-data';
+import { AuthProviders } from '../../../shared/interfaces/environment-data';
+import { delay } from '../../../shared/utils/helpers';
 
 export default function SignUpForm() {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const { toast } = useToast();
   const { authProvider, enableSignUp } = useEnvironmentData();
+  const searchParams = useSearchParams();
+  const previewMode = searchParams.get('previewMode') === 'true';
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(
@@ -33,6 +36,12 @@ export default function SignUpForm() {
   async function onSubmit(data: SignUpFormData) {
     try {
       setLoading(true);
+
+      if (previewMode) {
+        await delay(1000);
+        setLoading(false);
+        return;
+      }
 
       const result = await signUp(data);
 
@@ -104,7 +113,7 @@ export default function SignUpForm() {
           <Typo variant="sm" className="text-muted-foreground">
             Already have an account?{' '}
             <Link
-              href="/auth/login"
+              href={previewMode ? '#' : '/auth/login'}
               className="text-foreground hover:underline"
             >
               Log in

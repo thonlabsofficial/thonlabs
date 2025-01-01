@@ -9,17 +9,20 @@ import { LoginFormData, LoginFormSchema } from '../validators/auth-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { login } from '../actions/auth-actions';
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Typo } from '@repo/ui/typo';
-import { AuthProviders } from '../../interfaces/environment-data';
+import { AuthProviders } from '../../../shared/interfaces/environment-data';
 import { useEnvironmentData } from '../../hooks/use-environment-data';
+import { delay } from '../../../shared/utils/helpers';
 
 export default function LoginForm() {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const { toast } = useToast();
   const { authProvider, enableSignUp } = useEnvironmentData();
+  const searchParams = useSearchParams();
+  const previewMode = searchParams.get('previewMode') === 'true';
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(
@@ -30,6 +33,12 @@ export default function LoginForm() {
   async function onSubmit(data: LoginFormData) {
     try {
       setLoading(true);
+
+      if (previewMode) {
+        await delay(1000);
+        setLoading(false);
+        return;
+      }
 
       const result = await login(data);
 
@@ -73,7 +82,7 @@ export default function LoginForm() {
                   className={`text-gray-500 hover:text-gray-900 dark:hover:text-gray-50 
             transition-all duration-200 ease-in-out 
             text-sm font-medium leading-none underline-offset-4 hover:underline`}
-                  href="/auth/reset-password"
+                  href={previewMode ? '#' : '/auth/reset-password'}
                   tabIndex={-1}
                 >
                   Forgot your password?
@@ -100,7 +109,7 @@ export default function LoginForm() {
           <Typo variant="sm" className="text-muted-foreground">
             Don't have an account?{' '}
             <Link
-              href="/auth/sign-up"
+              href={previewMode ? '#' : '/auth/sign-up'}
               className="text-foreground hover:underline"
             >
               Sign up

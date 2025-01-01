@@ -1,11 +1,7 @@
-export interface EnvironmentConfig {
-  environmentId: string;
-  publicKey: string;
-  baseURL?: string;
-}
+import { EnvironmentData } from '../interfaces/environment-data';
 
 declare global {
-  var __environmentStore: EnvironmentConfig | null;
+  var __environmentStore: EnvironmentData | null;
 }
 
 class EnvironmentStore {
@@ -25,11 +21,11 @@ class EnvironmentStore {
     return EnvironmentStore.instance;
   }
 
-  setConfig(config: EnvironmentConfig) {
+  setConfig(config: EnvironmentData) {
     global.__environmentStore = config;
   }
 
-  getConfig(): EnvironmentConfig | null {
+  getConfig(): EnvironmentData | null {
     return global.__environmentStore;
   }
 }

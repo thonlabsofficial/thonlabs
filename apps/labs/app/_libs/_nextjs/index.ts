@@ -1,7 +1,7 @@
 import {
   EnvironmentData,
   AuthProviders,
-} from './v15/interfaces/environment-data';
+} from './shared/interfaces/environment-data';
 import { User } from './v15/interfaces/user';
 import { SessionData } from './v15/interfaces/session-data';
 import { APIResponseCodes, ErrorResponse } from './shared/utils/errors';

@@ -10,7 +10,7 @@ export type LoginFormData = z.infer<ReturnType<typeof LoginFormSchema>>;
 
 export const SignUpFormSchema = (isMagicLogin: boolean) =>
   z.object({
-    fullName: z.string(),
+    fullName: z.string().min(1, { message: 'This field is required' }),
     email: z.string().email(),
     ...(isMagicLogin
       ? {}

@@ -6,15 +6,12 @@ import ResetPasswordCreate from './reset-password-create';
 import ResetPasswordRequire from './reset-password-require';
 import SignUp from './sign-up';
 
-type Params = Promise<{ thonlabs: string }>;
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
-
 export async function ThonLabsAuthPage({
   params,
   searchParams,
 }: {
-  params: Params;
-  searchParams: SearchParams;
+  params: Promise<{ thonlabs: string[] }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { thonlabs } = await params;
   const { inviteFlow } = await searchParams;

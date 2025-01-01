@@ -30,7 +30,7 @@ export default async function ResetPasswordCreate({
   return (
     <div className="flex md:items-center justify-center">
       <LandingGrid />
-      <div className="mt-16 sm:pt-0 md:mt-40 px-3 w-full sm:max-w-[400px]">
+      <div className="mt-16 sm:pt-0 md:mt-40 px-3 w-full sm:max-w-[400px] relative">
         <AuthHeader
           title="Create a New Password"
           description="Please complete the form below to create a new password for your account."

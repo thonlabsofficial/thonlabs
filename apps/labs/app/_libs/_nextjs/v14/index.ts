@@ -1,4 +1,7 @@
-import { EnvironmentData, AuthProviders } from './interfaces/environment-data';
+import {
+  EnvironmentData,
+  AuthProviders,
+} from '../shared/interfaces/environment-data';
 import { User } from './interfaces/user';
 import { SessionData } from './interfaces/session-data';
 import { APIResponseCodes, ErrorResponse } from '../shared/utils/errors';

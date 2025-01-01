@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { Typo } from '@repo/ui/typo';
 import { useEnvironmentData } from '../../hooks/use-environment-data';
-import { AuthProviders } from '../../interfaces/environment-data';
+import { AuthProviders } from '../../../shared/interfaces/environment-data';
 
 export default function LoginForm() {
   const [loading, setLoading] = React.useState(false);

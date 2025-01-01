@@ -25,6 +25,7 @@ export async function middleware(req: NextRequest) {
       '/api/environments',
       '/env-',
       '/api/auth',
+      '/builder-preview',
     ])
   ) {
     return NextResponse.next();

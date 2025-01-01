@@ -23,7 +23,7 @@ interface Props {
   environment: EnvironmentDetail;
 }
 
-export default function AuthSettings({ environment }: Props) {
+export default function BuilderAuthSettings({ environment }: Props) {
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
     defaultValues: {
@@ -54,7 +54,7 @@ export default function AuthSettings({ environment }: Props) {
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-[19rem_1fr] gap-40">
+        <div className="grid grid-cols-[15rem_1fr] gap-3">
           <CardHeader description="Customize the login page to match your brand and user experience.">
             Login Page
           </CardHeader>
@@ -83,7 +83,7 @@ export default function AuthSettings({ environment }: Props) {
           </CardContent>
         </div>
         <SeparatorLine className="my-0" />
-        <div className="grid grid-cols-[19rem_1fr] gap-40">
+        <div className="grid grid-cols-[15rem_1fr] gap-3">
           <CardHeader description="Control who can access your app. Choose between open access or limit it to specific organization domains.">
             User Creation
           </CardHeader>
@@ -111,7 +111,7 @@ export default function AuthSettings({ environment }: Props) {
           </CardContent>
         </div>
         <SeparatorLine className="my-0" />
-        <div className="grid grid-cols-[19rem_1fr] gap-40">
+        <div className="grid grid-cols-[15rem_1fr] gap-3">
           <CardHeader
             description={
               <>

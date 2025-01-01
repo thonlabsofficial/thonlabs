@@ -3,7 +3,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import ClientSessionService from '../services/client-session-service';
-import { EnvironmentData } from '../interfaces/environment-data';
+import { EnvironmentData } from '../../shared/interfaces/environment-data';
 import { User } from '../interfaces/user';
 import useSWR from 'swr';
 import { fetcher, intFetcher } from '../../shared/utils/api';

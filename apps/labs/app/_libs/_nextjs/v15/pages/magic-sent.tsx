@@ -7,7 +7,7 @@ export default function MagicSent() {
     <>
       <div className="flex md:items-center justify-center">
         <LandingGrid />
-        <div className="mt-16 sm:pt-0 md:mt-40 px-3 w-full sm:max-w-[400px]">
+        <div className="mt-16 sm:pt-0 md:mt-40 px-3 w-full sm:max-w-[400px] relative">
           <AuthHeader
             title="Check your email"
             description="We've sent you a magic link to log in to Thon Labs, you can close this page."

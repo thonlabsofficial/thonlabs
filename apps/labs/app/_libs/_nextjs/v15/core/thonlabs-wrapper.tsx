@@ -1,13 +1,11 @@
-import { EnvironmentData } from '../interfaces/environment-data';
+import { EnvironmentData } from '../../shared/interfaces/environment-data';
 import { api } from '../../shared/utils/api';
 import { ThonLabsSessionProvider } from './thonlabs-session-provider';
 import { ThonLabsInternalProvider } from './thonlabs-internal-provider';
 import ToasterObservableWrapper from '../pages/components/toaster-observable-wrapper';
-import {
-  EnvironmentConfig,
-  environmentStore,
-} from '../../shared/store/env-store';
+import { environmentStore } from '../../shared/store/env-store';
 import Log from '../../shared/utils/log';
+import { cn } from '@repo/ui/core/utils';
 
 /*
   This is a wrapper to get environment data from backend and forward to frontend.
@@ -20,14 +18,18 @@ import Log from '../../shared/utils/log';
 */
 
 export interface ThonLabsWrapperProps
-  extends React.HTMLAttributes<HTMLElement>,
-    EnvironmentConfig {}
+  extends React.HTMLAttributes<HTMLElement> {
+  environmentId: string;
+  publicKey: string;
+  baseURL?: string;
+}
 
 export async function ThonLabsWrapper({
   children,
   environmentId,
   publicKey,
   baseURL,
+  className,
 }: ThonLabsWrapperProps) {
   if (!environmentId) {
     Log.error({
@@ -49,7 +51,7 @@ export async function ThonLabsWrapper({
     environmentId,
     publicKey,
     baseURL,
-  });
+  } as EnvironmentData);
 
   const environmentData = await api<EnvironmentData>(
     `/environments/${environmentId}/data`,
@@ -76,7 +78,14 @@ export async function ThonLabsWrapper({
         environmentId={environmentId}
         publicKey={publicKey}
       >
-        {children}
+        <div
+          className={cn(
+            'w-full min-h-screen bg-background text-text',
+            className,
+          )}
+        >
+          {children}
+        </div>
       </ThonLabsSessionProvider>
     </ThonLabsInternalProvider>
   );

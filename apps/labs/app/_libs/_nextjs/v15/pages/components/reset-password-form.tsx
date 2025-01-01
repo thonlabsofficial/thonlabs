@@ -11,9 +11,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { labsPublicAPI } from '../../../shared/utils/api';
 import Log from '../../../shared/utils/log';
 import { resetPassword } from '../actions/auth-actions';
+import { useSearchParams } from 'next/navigation';
+import { delay } from '../../../shared/utils/helpers';
 
 export default function ResetPasswordForm() {
   const [loading, setLoading] = React.useState(false);
@@ -23,9 +24,18 @@ export default function ResetPasswordForm() {
     resolver: zodResolver(ResetPasswordFormSchema),
   });
 
+  const searchParams = useSearchParams();
+  const previewMode = searchParams.get('previewMode') === 'true';
+
   async function onSubmit(data: ResetPasswordFormData) {
     try {
       setLoading(true);
+
+      if (previewMode) {
+        await delay(1000);
+        setLoading(false);
+        return;
+      }
 
       await resetPassword(data);
 
@@ -69,8 +79,7 @@ export default function ResetPasswordForm() {
       </div>
 
       <Button className="w-full mt-4" loading={loading}>
-        {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin -mt-1" />}
-        Send Reset Link
+        {loading ? 'Sending...' : 'Send Reset Link'}
       </Button>
     </form>
   );
