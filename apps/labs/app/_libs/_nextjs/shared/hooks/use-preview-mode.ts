@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThonLabsInternalContext } from '../core/thonlabs-internal-provider';
+import { ThonLabsPreviewContext } from '../../shared/providers/thonlabs-preview-provider';
 
 export function usePreviewMode() {
   const {
@@ -7,7 +7,7 @@ export function usePreviewMode() {
     previewEnvironmentData,
     setPreviewMode,
     setPreviewEnvironmentData,
-  } = React.useContext(ThonLabsInternalContext);
+  } = React.useContext(ThonLabsPreviewContext);
 
   return {
     previewMode,

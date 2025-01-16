@@ -18,8 +18,7 @@ import { useTransition } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
 import { EnvironmentDetail } from '@/_interfaces/environment';
-import { usePreviewMode } from '@/_libs/_nextjs/v15/hooks/use-preview-mode';
-import { EnvironmentData } from '@/_libs/_nextjs';
+import { EnvironmentData, usePreviewMode } from '@/_libs/_nextjs';
 
 interface Props {
   environment: EnvironmentDetail;

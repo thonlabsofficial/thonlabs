@@ -7,12 +7,8 @@ export default function Login() {
     <>
       <div className="flex md:items-center justify-center">
         <LandingGrid />
-        <div className="mt-16 sm:pt-0 md:mt-40 px-3 w-full sm:max-w-[400px]">
-          <AuthHeader
-            title="Welcome"
-            description="Log in to Thon Labs"
-            className="mb-14"
-          />
+        <div className="mt-16 sm:pt-0 md:mt-40 px-3 w-full sm:max-w-[400px] relative">
+          <AuthHeader title="Welcome" description="login" className="mb-14" />
           <LoginForm />
         </div>
       </div>

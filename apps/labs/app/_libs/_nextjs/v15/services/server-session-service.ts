@@ -222,14 +222,7 @@ const ServerSessionService = {
   },
 
   async logout() {
-    const { get, delete: deleteCookie } = await cookies();
-    const token = get('tl_session')?.value;
-    await labsPublicAPI('/auth/logout', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const { delete: deleteCookie } = await cookies();
     deleteCookie('tl_session');
     deleteCookie('tl_refresh');
     deleteCookie('tl_keep_alive');

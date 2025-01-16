@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@repo/ui/button';
-import { usePreviewMode } from '../../hooks/use-preview-mode';
+import { usePreviewMode } from '../../../shared/hooks/use-preview-mode';
 
 export function CloseThisPageButton() {
   const { previewMode } = usePreviewMode();

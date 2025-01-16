@@ -1,24 +1,30 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { Card, CardContent } from '@repo/ui/card';
-import SectionHeader from '@/_components/section-header';
-import { ThonLabsAuthPage } from '@/_libs/_nextjs';
+import { ThonLabsAuthPagePreview } from '@/_libs/_nextjs';
 import BuilderActivatePreviewMode from '@/_components/builder-activate-preview-mode';
+import { Button } from '@repo/ui/button';
 
 export default function BuilderPreview() {
-  const currentURL =
-    typeof window !== 'undefined'
-      ? window.location.origin
-      : 'http://localhost:3000';
+  const [page, setPage] = useState('login');
 
   return (
     <>
-      <SectionHeader title="Preview" />
+      <div className="flex gap-2">
+        <Button onClick={() => setPage('login')}>Login</Button>
+        <Button onClick={() => setPage('sign-up')}>Sign Up</Button>
+        <Button onClick={() => setPage('reset-password')}>
+          Reset Password
+        </Button>
+        <Button onClick={() => setPage('magic')}>Magic</Button>
+      </div>
       <Card className="h-[46rem] overflow-hidden relative">
         <CardContent className="p-0 w-full h-full">
           <BuilderActivatePreviewMode />
-          <ThonLabsAuthPage
-            params={Promise.resolve({ thonlabs: ['login'] })}
-            searchParams={Promise.resolve({})}
+          <ThonLabsAuthPagePreview
+            params={{ thonlabs: [page] }}
+            searchParams={{}}
           />
         </CardContent>
       </Card>

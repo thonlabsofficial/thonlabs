@@ -9,7 +9,7 @@ import useSWR from 'swr';
 import { fetcher, intFetcher } from '../../shared/utils/api';
 import { usePathname } from 'next/navigation';
 import { publicRoutes } from '../../shared/utils/constants';
-import { usePreviewMode } from '../hooks/use-preview-mode';
+import { usePreviewMode } from '../../shared/hooks/use-preview-mode';
 
 /*
   This is a session provider to spread the data to frontend,

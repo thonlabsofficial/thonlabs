@@ -18,7 +18,7 @@ import { Typo } from '@repo/ui/typo';
 import { useEnvironmentData } from '../../hooks/use-environment-data';
 import { AuthProviders } from '../../../shared/interfaces/environment-data';
 import { delay } from '../../../shared/utils/helpers';
-import { usePreviewMode } from '../../hooks/use-preview-mode';
+import { usePreviewMode } from '../../../shared/hooks/use-preview-mode';
 
 export default function SignUpForm() {
   const [loading, setLoading] = React.useState(false);

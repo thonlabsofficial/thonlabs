@@ -12,9 +12,8 @@ import React from 'react';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import Log from '../../../shared/utils/log';
 import { resetPassword } from '../actions/auth-actions';
-import { useSearchParams } from 'next/navigation';
 import { delay } from '../../../shared/utils/helpers';
-import { usePreviewMode } from '../../hooks/use-preview-mode';
+import { usePreviewMode } from '../../../shared/hooks/use-preview-mode';
 
 export default function ResetPasswordForm() {
   const [loading, setLoading] = React.useState(false);
