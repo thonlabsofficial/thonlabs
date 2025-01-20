@@ -3,77 +3,55 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../core/utils';
 import { ButtonIconProps } from './button-icon';
 
-const buttonIconGroupVariants = cva('inline-flex rounded-md shadow-sm', {
-  variants: {
-    variant: {
-      default: 'bg-background',
-      outline: 'border border-foreground/20',
-      ghost: 'bg-transparent',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
+const buttonIconGroupVariants = cva(
+  'flex gap-1 h-8 items-center justify-center rounded-md bg-muted p-0.5 text-muted-foreground',
+);
 
 interface ButtonGroupProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof buttonIconGroupVariants> {
   children: React.ReactElement<ButtonIconProps>[];
-  activeIndex?: number;
-  onActiveChange?: (index: number) => void;
 }
 
 export const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-  (
-    { className, variant, children, activeIndex, onActiveChange, ...props },
-    ref,
-  ) => {
-    const [internalActiveIndex, setInternalActiveIndex] = React.useState(
-      activeIndex || -1,
-    );
-
-    React.useEffect(() => {
-      if (activeIndex !== undefined) {
-        setInternalActiveIndex(activeIndex);
-      }
-    }, [activeIndex]);
-
-    const handleClick = (index: number) => {
-      setInternalActiveIndex(index);
-      onActiveChange?.(index);
-    };
-
+  ({ className, children, ...props }, ref) => {
     return (
       <div
-        className={cn(buttonIconGroupVariants({ variant }), className)}
+        className={cn(buttonIconGroupVariants(), className)}
         ref={ref}
         {...props}
       >
-        {React.Children.map(children, (child, index) => {
-          if (React.isValidElement<ButtonIconProps>(child)) {
-            return React.cloneElement(child, {
-              variant: variant === 'outline' ? 'outline' : child.props.variant,
-              active: index === internalActiveIndex,
-              ...child.props,
-              className: cn(
-                child.props.className,
-                index === 0 && 'rounded-l-md rounded-r-none',
-                index === children.length - 1 && 'rounded-r-md rounded-l-none',
-                index > 0 && index < children.length - 1 && 'rounded-none',
-                variant === 'outline' && index > 0 && '-ml-px',
-              ),
-              onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-                child.props.onClick?.(e);
-                handleClick(index);
-              },
-            });
-          }
-          return child;
-        })}
+        {children}
       </div>
     );
   },
 );
 
 ButtonGroup.displayName = 'ButtonGroup';
+
+export const ButtonGroupItem = React.forwardRef<
+  HTMLButtonElement,
+  React.HTMLAttributes<HTMLButtonElement> & {
+    active?: boolean;
+  }
+>(({ className, children, active, ...props }, ref) => {
+  return (
+    <button
+      ref={ref}
+      className={cn(
+        `inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 py-1 text-sm 
+          font-medium ring-offset-background transition-all focus-visible:outline-none 
+          focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 
+          disabled:pointer-events-none disabled:opacity-50`,
+        {
+          'bg-card text-foreground shadow-sm pointer-events-none': active,
+          'text-foreground/50 hover:text-foreground/70': !active,
+        },
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+});

@@ -7,6 +7,7 @@
     "./alert": "./src/components/alert.tsx",
     "./avatar": "./src/components/avatar.tsx",
     "./badge": "./src/components/badge.tsx",
+    "./button-group": "./src/components/button-group.tsx",
     "./button-icon": "./src/components/button-icon.tsx",
     "./button-link": "./src/components/button-link.tsx",
     "./button": "./src/components/button.tsx",
