@@ -14,8 +14,9 @@ import {
   TableHeader,
   TableRow,
 } from '@repo/ui/table';
-import { Alert } from '@repo/ui/alert';
-import { Check, Loader, X } from 'lucide-react';
+import { Alert, AlertDescription } from '@repo/ui/alert';
+import { Check, Copy, Loader, X } from 'lucide-react';
+import { Clipboard } from '@repo/ui/clipboard';
 
 interface Props {
   environmentId: string;
@@ -72,111 +73,132 @@ export default function CustomDomainStatusCard({ environmentId }: Props) {
   return (
     !isLoadingEnvironment &&
     environment?.customDomain && (
-      <Card variant={'darker'} className="mt-3 py-3 px-4">
-        <div className="flex items-center gap-3">
-          <div
-            className={cn(
-              'flex-none basis-8 h-8 rounded-md flex items-center justify-center border ',
-              {
-                'bg-warning/10 border-warning/40': isCustomDomainVerifying(),
-                'bg-success/10 border-success/40': isCustomDomainVerified(),
-                'bg-destructive/10 border-destructive/40':
-                  isCustomDomainFailed(),
-              },
-            )}
-          >
-            {isCustomDomainVerifying() && (
-              <Loader className="w-4 h-4 animate-spin" />
-            )}
-            {isCustomDomainVerified() && <Check className="w-4 h-4" />}
-            {isCustomDomainFailed() && <X className="w-4 h-4" />}
-          </div>
-          <Typo variant={'sm'}>
-            {isCustomDomainVerifying() && (
-              <>
-                Please navigate to the DNS settings page of your DNS provider
-                and add the following DNS record to the records section.
-                We&apos;ll check the DNS settings every 5 minutes for the next 5
-                hours.
-              </>
-            )}
-            {isCustomDomainVerified() && (
-              <>
-                Great job! Domain successfully verified. Your environment is now
-                accessible via the custom domain above.
-              </>
-            )}
-            {isCustomDomainFailed() && (
-              <>
-                We could not verify the DNS completely. Please double-check your
-                DNS provider settings to ensure all records are accurate.
-              </>
-            )}
-          </Typo>
-        </div>
-        <Table className="rounded overflow-hidden mt-3">
-          <TableHeader>
-            <TableRow header withHover={false}>
-              <TableHead className="select-none">Name</TableHead>
-              <TableHead className="select-none">Type</TableHead>
-              <TableHead className="select-none">Value</TableHead>
-              <TableHead className="select-none">TTL</TableHead>
-              <TableHead className="select-none">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow className="group">
-              <TableCell withCopy>
-                {Utils.getSubDomains(environment?.customDomain)}
-              </TableCell>
-              <TableCell>CNAME</TableCell>
-              <TableCell withCopy>{authDomain}</TableCell>
-              <TableCell>60</TableCell>
-              <TableCell>
-                {environment?.customDomainStatus ===
-                  CustomDomainStatus.Verifying && (
-                  <Badge variant={'warning'}>Verifying</Badge>
-                )}
-                {environment?.customDomainStatus ===
-                  CustomDomainStatus.Verified && (
-                  <Badge variant={'success'}>Verified</Badge>
-                )}
-                {environment?.customDomainStatus ===
-                  CustomDomainStatus.Failed && (
-                  <Badge variant={'destructive'}>Failed</Badge>
-                )}
-              </TableCell>
-            </TableRow>
-            <TableRow className="group">
-              <TableCell withCopy>_tl_verify</TableCell>
-              <TableCell>TXT</TableCell>
-              <TableCell withCopy>{environment?.customDomainTXT}</TableCell>
-              <TableCell>60</TableCell>
-              <TableCell>
-                {environment?.customDomainTXTStatus ===
-                  CustomDomainStatus.Verifying && (
-                  <Badge variant={'warning'}>Verifying</Badge>
-                )}
-                {environment?.customDomainTXTStatus ===
-                  CustomDomainStatus.Verified && (
-                  <Badge variant={'success'}>Verified</Badge>
-                )}
-                {environment?.customDomainTXTStatus ===
-                  CustomDomainStatus.Failed && (
-                  <Badge variant={'destructive'}>Failed</Badge>
-                )}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-
+      <>
         {isCustomDomainVerifying() && (
-          <Alert variant={'info'} className="mt-2 font-semibold" size={'sm'}>
-            Keep in mind that DNS propagation can take some time, so please be
-            patient as the changes take effect.
+          <Alert className="mt-3 font-semibold">
+            <AlertDescription>
+              While validation is in progress, you can continue integrating with
+              the custom authentication domain{' '}
+              <span>
+                {authDomain}{' '}
+                <Clipboard
+                  size="xs"
+                  variant="outline"
+                  value={authDomain}
+                  labels={[Copy, Check]}
+                  iconLabels
+                />
+              </span>
+              .
+            </AlertDescription>
           </Alert>
         )}
-      </Card>
+        <Card variant={'darker'} className="mt-3 py-3 px-4">
+          <div className="flex items-center gap-3">
+            <div
+              className={cn(
+                'flex-none basis-8 h-8 rounded-md flex items-center justify-center border ',
+                {
+                  'bg-warning/10 border-warning/40': isCustomDomainVerifying(),
+                  'bg-success/10 border-success/40': isCustomDomainVerified(),
+                  'bg-destructive/10 border-destructive/40':
+                    isCustomDomainFailed(),
+                },
+              )}
+            >
+              {isCustomDomainVerifying() && (
+                <Loader className="w-4 h-4 animate-spin" />
+              )}
+              {isCustomDomainVerified() && <Check className="w-4 h-4" />}
+              {isCustomDomainFailed() && <X className="w-4 h-4" />}
+            </div>
+            <Typo variant={'sm'}>
+              {isCustomDomainVerifying() && (
+                <>
+                  Please navigate to the DNS settings page of your DNS provider
+                  and add the following DNS record to the records section.
+                  We&apos;ll check the DNS settings every 5 minutes for the next
+                  5 hours.
+                </>
+              )}
+              {isCustomDomainVerified() && (
+                <>
+                  Great job! Domain successfully verified. Your environment is
+                  now accessible via the custom domain above.
+                </>
+              )}
+              {isCustomDomainFailed() && (
+                <>
+                  We could not verify the DNS completely. Please double-check
+                  your DNS provider settings to ensure all records are accurate.
+                </>
+              )}
+            </Typo>
+          </div>
+          <Table className="rounded overflow-hidden mt-3">
+            <TableHeader>
+              <TableRow header withHover={false}>
+                <TableHead className="select-none">Name</TableHead>
+                <TableHead className="select-none">Type</TableHead>
+                <TableHead className="select-none">Value</TableHead>
+                <TableHead className="select-none">TTL</TableHead>
+                <TableHead className="select-none">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow className="group">
+                <TableCell withCopy>
+                  {Utils.getSubDomains(environment?.customDomain)}
+                </TableCell>
+                <TableCell>CNAME</TableCell>
+                <TableCell withCopy>{authDomain}</TableCell>
+                <TableCell>60</TableCell>
+                <TableCell>
+                  {environment?.customDomainStatus ===
+                    CustomDomainStatus.Verifying && (
+                    <Badge variant={'warning'}>Verifying</Badge>
+                  )}
+                  {environment?.customDomainStatus ===
+                    CustomDomainStatus.Verified && (
+                    <Badge variant={'success'}>Verified</Badge>
+                  )}
+                  {environment?.customDomainStatus ===
+                    CustomDomainStatus.Failed && (
+                    <Badge variant={'destructive'}>Failed</Badge>
+                  )}
+                </TableCell>
+              </TableRow>
+              <TableRow className="group">
+                <TableCell withCopy>_tl_verify</TableCell>
+                <TableCell>TXT</TableCell>
+                <TableCell withCopy>{environment?.customDomainTXT}</TableCell>
+                <TableCell>60</TableCell>
+                <TableCell>
+                  {environment?.customDomainTXTStatus ===
+                    CustomDomainStatus.Verifying && (
+                    <Badge variant={'warning'}>Verifying</Badge>
+                  )}
+                  {environment?.customDomainTXTStatus ===
+                    CustomDomainStatus.Verified && (
+                    <Badge variant={'success'}>Verified</Badge>
+                  )}
+                  {environment?.customDomainTXTStatus ===
+                    CustomDomainStatus.Failed && (
+                    <Badge variant={'destructive'}>Failed</Badge>
+                  )}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+
+          {isCustomDomainVerifying() && (
+            <Alert variant={'info'} className="mt-2 font-semibold" size={'sm'}>
+              Keep in mind that DNS propagation can take some time, so please be
+              patient as the changes take effect.
+            </Alert>
+          )}
+        </Card>
+      </>
     )
   );
 }

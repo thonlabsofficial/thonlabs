@@ -93,13 +93,8 @@ export default function MainAside() {
               href={`/${environmentId}/email-templates`}
               icon={Mail}
             />
-            <NavItem
-              label="Domains"
-              href={`/${environmentId}/domains`}
-              icon={Globe}
-            />
           </section>
-          <section className="flex flex-col gap-1 w-full">
+          {/* <section className="flex flex-col gap-1 w-full">
             <Typo variant={'mutedXs'} className="px-2">
               Databases
             </Typo>
@@ -118,7 +113,7 @@ export default function MainAside() {
               href={`/${environmentId}/translations`}
               icon={Earth}
             />
-          </section>
+          </section> */}
           <section className="flex flex-col gap-1 w-full">
             <Typo variant={'mutedXs'} className="px-2">
               Configuration
