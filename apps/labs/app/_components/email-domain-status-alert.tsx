@@ -41,10 +41,10 @@ export default function EmailDomainStatusAlert() {
                 We're currently verifying your email domain. For more details
                 see{' '}
                 <Link
-                  className={typoVariants({ variant: 'codeLink' })}
-                  href={`/${environmentId}/domains`}
+                  className={typoVariants({ variant: 'link' })}
+                  href={`/${environmentId}/settings`}
                 >
-                  domains page
+                  settings page
                 </Link>
                 .
               </AlertDescription>
@@ -59,10 +59,10 @@ export default function EmailDomainStatusAlert() {
                 We could not verify the email domain. For more details and
                 instructions see{' '}
                 <Link
-                  className={typoVariants({ variant: 'codeLink' })}
-                  href={`/${environmentId}/domains`}
+                  className={typoVariants({ variant: 'link' })}
+                  href={`/${environmentId}/settings`}
                 >
-                  domains page
+                  settings page
                 </Link>
                 .
               </AlertDescription>

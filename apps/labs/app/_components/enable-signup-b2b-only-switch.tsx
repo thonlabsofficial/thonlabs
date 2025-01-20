@@ -59,8 +59,7 @@ export default function EnableSignUpB2BOnlySwitch({
       />
 
       {!isLoadingOrganizations && organizations?.length === 0 && (
-        <Alert variant="warning" className="mt-2" size={'sm'}>
-          <AlertTitle>No organizations found</AlertTitle>
+        <Alert variant="info" className="mt-2" size={'sm'}>
           <AlertDescription>
             Want to enable sign up for B2B only?{' '}
             <NewOrganizationDrawer
