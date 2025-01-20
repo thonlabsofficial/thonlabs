@@ -22,16 +22,21 @@ export function ThonLabsAuthPagePreview({
     'base64',
   ).toString('utf-8');
 
-  if (route === 'login') return <Login />;
-  if (route === 'magic' && param)
-    return <MagicValidator token={param} inviteFlow={inviteFlowParam} />;
-  if (route === 'magic') return <MagicSent />;
-  if (route === 'sign-up') return <SignUp />;
-  if (route === 'confirm-email' && param)
-    return <ConfirmEmailValidator token={param} />;
-  if (route === 'reset-password' && param)
-    return (
-      <ResetPasswordCreate token={param} inviteFlowEmail={inviteFlowEmail} />
-    );
-  if (route === 'reset-password') return <ResetPasswordRequire />;
+  return (
+    <div className="bg-background text-text">
+      {route === 'login' && <Login />}
+      {route === 'magic' && param && (
+        <MagicValidator token={param} inviteFlow={inviteFlowParam} />
+      )}
+      {route === 'magic' && <MagicSent />}
+      {route === 'sign-up' && <SignUp />}
+      {route === 'confirm-email' && param && (
+        <ConfirmEmailValidator token={param} />
+      )}
+      {route === 'reset-password' && param && (
+        <ResetPasswordCreate token={param} inviteFlowEmail={inviteFlowEmail} />
+      )}
+      {route === 'reset-password' && <ResetPasswordRequire />}
+    </div>
+  );
 }
