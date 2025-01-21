@@ -2,33 +2,26 @@ import { NextRequest, NextResponse } from 'next/server';
 import {
   validateSession,
   isAuthRoute,
-  shouldBypassRoute,
-} from '@/_libs/_nextjs/server';
-import { forwardSearchParams } from '@/_libs/_nextjs';
+  validationRedirect,
+} from '@thonlabs/nextjs/server';
+import { forwardSearchParams } from '@thonlabs/nextjs';
 import Log from '@repo/utils/log';
 
 export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico|favicon.png).*)',
 };
 
-export async function middleware(req: NextRequest) {
-  const shouldRedirectToLogin = await validateSession(req, [
+export async function middleware(req: NextRequest): Promise<NextResponse> {
+  const redirect = await validateSession(req, [
     '/api/environments',
+    '/projects',
+    '/api/environments',
+    '/env-',
+    '/api/auth',
+    '/builder-preview',
   ]);
-  if (shouldRedirectToLogin) {
-    return shouldRedirectToLogin;
-  }
-
-  if (
-    shouldBypassRoute(req, [
-      '/projects',
-      '/api/environments',
-      '/env-',
-      '/api/auth',
-      '/builder-preview',
-    ])
-  ) {
-    return NextResponse.next();
+  if (redirect) {
+    return validationRedirect(redirect);
   }
 
   if (!isAuthRoute(req)) {

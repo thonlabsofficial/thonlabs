@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
 } from '@repo/ui/dropdown';
 import { Loader, LogOut } from 'lucide-react';
-import { useSession } from '@/_libs/_nextjs';
+import { useSession } from '@thonlabs/nextjs';
 import { cn } from '@repo/ui/core/utils';
 
 type Props = {

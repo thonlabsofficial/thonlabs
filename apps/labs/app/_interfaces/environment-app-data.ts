@@ -1,4 +1,4 @@
-import { EnvironmentData } from '@/_libs/_nextjs';
+import { EnvironmentData } from '@thonlabs/nextjs';
 import { EmailTemplateDomain } from '@/_interfaces/email-template-domain';
 
 export interface EnvironmentAppData extends EnvironmentData {

@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import qs from 'qs';
 import https from 'https';
-import { APIResponseCodes } from '@/_libs/_nextjs';
+import { APIResponseCodes } from '@thonlabs/nextjs';
 
 const httpsAgent =
   process.env.NODE_ENV === 'development'

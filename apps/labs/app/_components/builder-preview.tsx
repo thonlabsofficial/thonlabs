@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from '@repo/ui/card';
-import { ThonLabsAuthPagePreview } from '@/_libs/_nextjs';
+import { ThonLabsAuthPagePreview } from '@thonlabs/nextjs';
 import BuilderActivatePreviewMode from '@/_components/builder-activate-preview-mode';
 import { ButtonGroup, ButtonGroupItem } from '@repo/ui/button-group';
 import SectionHeader from '@/_components/section-header';

@@ -1,1 +1,1 @@
-export * from '@/_libs/_nextjs/api';
+export * from '@thonlabs/nextjs/api';

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { usePreviewMode } from '@/_libs/_nextjs';
+import { usePreviewMode } from '@thonlabs/nextjs';
 
 export default function BuilderActivatePreviewMode() {
   const { setPreviewMode } = usePreviewMode();
