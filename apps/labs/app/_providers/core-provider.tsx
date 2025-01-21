@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { ThemeProvider } from 'next-themes';
-import { Toaster } from '@repo/ui/toaster';
 import { SWRConfig } from 'swr';
 import { fetcher } from '../../helpers/api';
 import { SkeletonProvider } from '@repo/ui/skeleton';
@@ -26,7 +25,6 @@ export default function CoreProvider({
           <SkeletonProvider>{children}</SkeletonProvider>
         </ThemeProvider>
       </SWRConfig>
-      <Toaster />
     </>
   );
 }
