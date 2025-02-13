@@ -27,6 +27,6 @@ export async function getAppData(environmentId: string) {
     Log.info('getAppData', {
       error: (error as Error).message,
     });
-    throw new Error((error as Error).message);
+    return null;
   }
 }

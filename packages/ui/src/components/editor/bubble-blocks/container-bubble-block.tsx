@@ -223,7 +223,7 @@ export function ContainerBubble() {
                   },
                 })}
               />
-              <ButtonGroup variant="outline">
+              <ButtonGroup>
                 <Button
                   type="button"
                   variant="ghost"

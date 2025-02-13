@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  validateSession,
-  isAuthRoute,
-  validationRedirect,
-} from '@thonlabs/nextjs/server';
+import { validateSession, validationRedirect } from '@thonlabs/nextjs/server';
 import { forwardSearchParams } from '@thonlabs/nextjs';
 import Log from '@repo/utils/log';
 
@@ -24,7 +20,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     return validationRedirect(redirect);
   }
 
-  if (!isAuthRoute(req)) {
+  if (req.nextUrl.pathname === '/') {
     Log.info('middleware', 'No environment selected, redirecting to /projects');
     return NextResponse.redirect(forwardSearchParams(req, '/projects'));
   }

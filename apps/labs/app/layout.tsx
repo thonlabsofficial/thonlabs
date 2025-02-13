@@ -5,7 +5,6 @@ import type { Metadata } from 'next';
 import CoreProvider from './_providers/core-provider';
 import { fonts } from '@repo/ui/core/fonts';
 import { ThonLabsWrapper } from '@thonlabs/nextjs';
-import { Toaster } from '@repo/ui/toaster';
 
 export const metadata: Metadata = {
   title: {
@@ -36,7 +35,6 @@ async function RootLayout({
         >
           <CoreProvider>{children}</CoreProvider>
         </ThonLabsWrapper>
-        <Toaster />
       </body>
     </html>
   );

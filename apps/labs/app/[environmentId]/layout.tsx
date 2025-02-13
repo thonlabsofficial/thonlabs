@@ -4,6 +4,8 @@ import MainAside from '@/_components/main-aside';
 import MainHeader from '@/_components/main-header';
 import { getAppData } from '@/_services/server-environment-app-data-service';
 import { EnvironmentAppDataProvider } from '@/_providers/environment-app-data-provider';
+import { notFound } from 'next/navigation';
+import { Toaster } from '@repo/ui/toaster';
 
 export const metadata: Metadata = {
   robots: {
@@ -25,6 +27,10 @@ export default async function LabsNestedLayout({
   const session = await getAuthSession();
   const environmentAppData = await getAppData(environmentId);
 
+  if (!environmentAppData) {
+    notFound();
+  }
+
   return (
     <EnvironmentAppDataProvider environmentAppData={environmentAppData}>
       <MainHeader session={session} logoReduced />
@@ -35,6 +41,7 @@ export default async function LabsNestedLayout({
           <footer className="mt-12" />
         </div>
       </main>
+      <Toaster />
     </EnvironmentAppDataProvider>
   );
 }

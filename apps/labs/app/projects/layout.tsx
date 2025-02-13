@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getAuthSession } from '@/_services/server-auth-session-service';
 import MainHeader from '@/_components/main-header';
+import { Toaster } from '@repo/ui/toaster';
 
 export const metadata: Metadata = {
   robots: {
@@ -25,6 +26,7 @@ export default async function ProjectsNestedLayout({
           <footer className="mt-12" />
         </div>
       </main>
+      <Toaster />
     </>
   );
 }
