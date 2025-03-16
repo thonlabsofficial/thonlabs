@@ -44,10 +44,15 @@ function serverEnvHeaders(envID: string) {
 
 function logRequest(instanceName: string) {
   return (config: InternalAxiosRequestConfig<any>) => {
+    const headers = {
+      ...config.headers,
+      Authorization: 'Bearer [REDACTED]',
+    };
+
     Log.info(`${instanceName} req`, {
       url: config.url,
       method: config.method,
-      headers: config.headers,
+      headers,
       data: config.data,
     });
 
