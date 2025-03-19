@@ -119,7 +119,7 @@ export default function MainAside() {
               Configuration
             </Typo>
             <NavItem
-              label="API Keys"
+              label="Integration & Keys"
               href={`/${environmentId}/api-keys`}
               icon={LockKeyhole}
             />

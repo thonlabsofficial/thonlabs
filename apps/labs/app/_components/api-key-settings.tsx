@@ -42,7 +42,6 @@ export default function APIKeysSettings() {
                 loading={isLoadingEnvironment}
                 value={environment?.publicKey}
                 withCopy
-                withHide
               />
             </InputWrapper>
           </CardContent>
