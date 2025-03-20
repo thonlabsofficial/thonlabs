@@ -33,7 +33,7 @@ export default async function LabsNestedLayout({
 
   return (
     <EnvironmentAppDataProvider environmentAppData={environmentAppData}>
-      <MainHeader session={session} logoReduced />
+      <MainHeader environmentId={environmentId} session={session} logoReduced />
       <main className="pt-[3.5625rem]">
         <MainAside />
         <div>

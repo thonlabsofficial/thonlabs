@@ -69,6 +69,11 @@ export default function MainHeaderEnvNav() {
   const restPathname = pathname.split('/').slice(2).join('/');
   const isLoading = isLoadingProjects || isLoadingUserSession;
 
+  const otherProjectsEnvironments = projects
+    .filter((project) => project.id !== environment?.project?.id)
+    .map((project) => project.environments)
+    .flat();
+
   return (
     <>
       <div className="flex items-center ml-1">
@@ -93,39 +98,48 @@ export default function MainHeaderEnvNav() {
                   Settings
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>Other Projects</DropdownMenuLabel>
-              <DropdownMenuGroup>
-                <ScrollArea className="max-h-[6.125rem]">
-                  {!isLoading ? (
-                    projects
-                      .filter(
-                        (project) => project.id !== environment?.project?.id,
-                      )
-                      .map((project) => (
-                        <Link
-                          href={`/${project.environments?.[0]?.id}`}
-                          key={project.id}
-                          onClick={() => {
-                            toast({
-                              title: 'Welcome back!',
-                              description: `You're now in ${project.environments?.[0]?.name} for project ${project.appName}.`,
-                              duration: 2400,
-                            });
-                          }}
-                        >
-                          <DropdownMenuItem>{project.appName}</DropdownMenuItem>
-                        </Link>
-                      ))
-                  ) : (
-                    <div className="flex flex-col gap-1">
-                      <Skeleton className="h-6 w-full" />
-                      <Skeleton className="h-6 w-full" />
-                      <Skeleton className="h-6 w-full" />
-                    </div>
-                  )}
-                </ScrollArea>
-              </DropdownMenuGroup>
+              {otherProjectsEnvironments &&
+                otherProjectsEnvironments.length > 0 && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>Other Projects</DropdownMenuLabel>
+                    <DropdownMenuGroup>
+                      <ScrollArea className="max-h-[6.125rem]">
+                        {!isLoading ? (
+                          projects
+                            .filter(
+                              (project) =>
+                                project.environments &&
+                                project.id !== environment?.project?.id,
+                            )
+                            .map((project) => (
+                              <Link
+                                href={`/${project.environments?.[0]?.id}`}
+                                key={project.id}
+                                onClick={() => {
+                                  toast({
+                                    title: 'Welcome back!',
+                                    description: `You're now in ${project.environments?.[0]?.name} for project ${project.appName}.`,
+                                    duration: 2400,
+                                  });
+                                }}
+                              >
+                                <DropdownMenuItem>
+                                  {project.appName}
+                                </DropdownMenuItem>
+                              </Link>
+                            ))
+                        ) : (
+                          <div className="flex flex-col gap-1">
+                            <Skeleton className="h-6 w-full" />
+                            <Skeleton className="h-6 w-full" />
+                            <Skeleton className="h-6 w-full" />
+                          </div>
+                        )}
+                      </ScrollArea>
+                    </DropdownMenuGroup>
+                  </>
+                )}
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem
