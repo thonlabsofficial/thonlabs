@@ -11,9 +11,6 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const redirect = await validateSession(req, [
     '/api/environments',
     '/projects',
-    '/api/environments',
-    '/env-',
-    '/api/auth',
     '/builder-preview',
   ]);
   if (redirect) {
