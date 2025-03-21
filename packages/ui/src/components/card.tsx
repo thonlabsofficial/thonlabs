@@ -3,6 +3,7 @@ import * as React from 'react';
 import { cn } from '../core/utils';
 import { VariantProps, cva } from 'class-variance-authority';
 import { Typo } from './typo';
+import { IconSquare } from './icon-square';
 
 const cardVariants = cva(
   'rounded-lg border text-card-foreground shadow transition-all duration-120 ease-in-out',
@@ -43,11 +44,27 @@ Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  { description?: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>
->(({ className, description, children, ...props }, ref) => (
-  <div ref={ref} className={cn('flex flex-col p-6', className)} {...props}>
-    <Typo>{children}</Typo>
-    {description && <Typo variant={'muted'}>{description}</Typo>}
+  {
+    description?: React.ReactNode;
+    icon?: any;
+  } & React.HTMLAttributes<HTMLDivElement>
+>(({ className, description, icon, children, ...props }, ref) => (
+  <div
+    className={cn(
+      'flex gap-2 p-3',
+      {
+        'items-center': icon && !description,
+        'mt-1': icon && description,
+      },
+      className,
+    )}
+    {...props}
+  >
+    {icon && <IconSquare icon={icon} />}
+    <div ref={ref} className={cn('flex flex-col')}>
+      <Typo>{children}</Typo>
+      {description && <Typo variant={'muted'}>{description}</Typo>}
+    </div>
   </div>
 ));
 CardHeader.displayName = 'CardHeader';
