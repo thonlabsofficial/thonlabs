@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@repo/ui/button';
+import { Button, buttonVariants } from '@repo/ui/button';
 import JoinWaitlistDialog from './join-waitlist-dialog';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -26,9 +26,9 @@ export default function JoinWaitlistButton() {
         onClick={() => setIsOpen(true)}
       >
         Press{' '}
-        <Button size={'xs'} variant={'outline'}>
+        <div className={buttonVariants({ variant: 'outline', size: 'xs' })}>
           W
-        </Button>{' '}
+        </div>{' '}
         to join waitlist
       </Button>
       <Button

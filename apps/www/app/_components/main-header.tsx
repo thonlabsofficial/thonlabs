@@ -1,10 +1,9 @@
 import React from 'react';
 import { cn } from '@repo/ui/core/utils';
-import dynamic from 'next/dynamic';
 import { Button } from '@repo/ui/button';
 import JoinWaitlistDialog from './join-waitlist-dialog';
 import * as motion from 'framer-motion/client';
-const Logo = dynamic(() => import('@repo/ui/logo'), { ssr: false });
+import Logo from '@repo/ui/logo';
 
 export default function MainHeader({
   className,

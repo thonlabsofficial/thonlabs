@@ -3,14 +3,9 @@ import { buttonVariants } from '@repo/ui/button';
 import LandingGrid from '@repo/ui/landing-grid';
 import { Typo } from '@repo/ui/typo';
 import { Metadata } from 'next';
-import { SiGithub, SiX } from 'react-icons/si';
-import dynamic from 'next/dynamic';
+import { SiGithub } from 'react-icons/si';
 import * as motion from 'framer-motion/client';
-
-const JoinWaitlistButton = dynamic(
-  () => import('./_components/join-waitlist-button'),
-  { ssr: false },
-);
+import JoinWaitlistButton from './_components/join-waitlist-button';
 
 export const metadata: Metadata = {
   title: {
@@ -62,7 +57,7 @@ export default function Home() {
           <div className="mx-auto w-20 h-px bg-border my-8" />
           <div className="flex gap-3 items-center justify-center">
             <a
-              href="https://git.new/thonlabs"
+              href="https://git.new/thonlabs?utm_source=website"
               target="_blank"
               rel="noopener noreferrer"
               className={buttonVariants({
@@ -74,7 +69,7 @@ export default function Home() {
               <SiGithub /> Star us on GitHub
             </a>
 
-            <a
+            {/* <a
               href="https://dub.sh/x-guscsales"
               target="_blank"
               rel="noopener noreferrer"
@@ -85,7 +80,7 @@ export default function Home() {
               })}
             >
               <SiX /> Follow the builder
-            </a>
+            </a> */}
           </div>
         </motion.div>
       </div>

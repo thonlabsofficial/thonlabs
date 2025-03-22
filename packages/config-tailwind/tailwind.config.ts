@@ -2,7 +2,7 @@ import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
 const config: Omit<Config, 'content'> = {
-  darkMode: ['class'],
+  darkMode: 'class',
   theme: {
     extend: {
       screens: {
