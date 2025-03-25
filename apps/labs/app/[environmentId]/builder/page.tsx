@@ -22,7 +22,7 @@ export default async function Builder({ params }: { params: Params }) {
     <>
       <PageHeader
         title="Builder"
-        description="Customize the authentication experience for your user"
+        description="Customize the authentication experience for your users"
         icon={ShieldEllipsis}
       />
       <PageWrapper className="pt-4 grid gap-10" withContainer={false}>

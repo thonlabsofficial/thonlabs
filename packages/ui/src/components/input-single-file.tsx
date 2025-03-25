@@ -3,7 +3,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { Typo } from './typo';
 import { Label } from './label';
 import { Skeleton } from './skeleton';
-import { UseFormReturn, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { useToast } from '../hooks/use-toast';
 import { Card } from './card';
 import { IconSquare } from './icon-square';

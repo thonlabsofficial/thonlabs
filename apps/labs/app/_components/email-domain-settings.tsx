@@ -19,7 +19,10 @@ export default function EmailDomainSettings() {
   return (
     <Card>
       <div className="grid grid-cols-[19rem_1fr] gap-40">
-        <CardHeader description="This domain is used to send emails from your environment.">
+        <CardHeader
+          padding
+          description="This domain is used to send emails from your environment."
+        >
           Email Template Domain
         </CardHeader>
         <CardContent className="flex-1 p-6">

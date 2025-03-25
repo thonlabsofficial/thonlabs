@@ -85,12 +85,7 @@ export default function OrganizationEditDrawer({
         <DrawerHeader>
           <DrawerTitle>Edit Organization</DrawerTitle>
           <DrawerDescription>
-            Make changes to your organization settings below. You can change
-            logo{' '}
-            <button type="button" className={typoVariants({ variant: 'link' })}>
-              here
-            </button>
-            .
+            Make changes to your organization settings below.
           </DrawerDescription>
         </DrawerHeader>
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>

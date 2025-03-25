@@ -16,7 +16,10 @@ export default function EnvironmentDangerZone() {
   return (
     <Card className="border-destructive/60 bg-destructive/10">
       <div className="grid grid-cols-[22rem_1fr] gap-24">
-        <CardHeader description="Deleting an environment is permanent and cannot be undone.">
+        <CardHeader
+          padding
+          description="Deleting an environment is permanent and cannot be undone."
+        >
           Delete Environment
         </CardHeader>
         <CardContent className="flex justify-end items-center p-6">
