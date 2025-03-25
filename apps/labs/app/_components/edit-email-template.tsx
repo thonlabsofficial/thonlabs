@@ -128,6 +128,7 @@ export default function EditEmailTemplate({
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_48rem] 2xl:grid-cols-[1fr_55rem] xl:gap-5 2xl:gap-20">
           <div className="flex flex-col gap-10">
             <CardHeader
+              padding
               className="max-w-sm"
               description={
                 <>

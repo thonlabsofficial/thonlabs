@@ -3,16 +3,18 @@ import * as React from 'react';
 import { cn } from '../core/utils';
 import { VariantProps, cva } from 'class-variance-authority';
 import { Typo } from './typo';
-import { IconSquare } from './icon-square';
+import { iconVariants } from './icon-square';
+import { ArrowRight } from 'lucide-react';
 
 const cardVariants = cva(
-  'rounded-lg border text-card-foreground shadow transition-all duration-120 ease-in-out',
+  `rounded-lg border text-card-foreground shadow transition-all duration-120 ease-in-out`,
   {
     variants: {
       variant: {
         default: 'bg-card',
         transparent: 'bg-transparent',
         darker: 'bg-background/40',
+        link: 'group bg-card hover:bg-muted/40 cursor-pointer',
       },
       border: {
         solid: 'border-solid',
@@ -28,76 +30,110 @@ const cardVariants = cva(
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {}
+    VariantProps<typeof cardVariants> {
+  icon?: any;
+  padding?: boolean;
+}
 
 const Card = React.forwardRef<
   HTMLDivElement,
   CardProps & React.HTMLAttributes<HTMLDivElement>
->(({ className, variant, border, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(cardVariants({ variant, border }), className)}
-    {...props}
-  />
-));
+>(
+  (
+    { className, variant, border, icon: Icon, padding, children, ...props },
+    ref,
+  ) => (
+    <div
+      ref={ref}
+      className={cn(
+        cardVariants({ variant, border }),
+        {
+          'p-5': padding,
+        },
+        className,
+      )}
+      {...props}
+    >
+      {Icon ? (
+        <div className="flex gap-3">
+          <Icon className={iconVariants({ size: 'md' })} />
+          <div className="flex flex-col gap-2">{children}</div>
+        </div>
+      ) : (
+        children
+      )}
+    </div>
+  ),
+);
 Card.displayName = 'Card';
 
-const CardHeader = React.forwardRef<
-  HTMLDivElement,
-  {
-    description?: React.ReactNode;
-    icon?: any;
-  } & React.HTMLAttributes<HTMLDivElement>
->(({ className, description, icon, children, ...props }, ref) => (
-  <div
+function CardHeader({
+  className,
+  padding,
+  description,
+  children,
+  ...props
+}: {
+  padding?: boolean;
+  description?: React.ReactNode;
+} & React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        'flex flex-col',
+        {
+          'p-5': padding,
+        },
+        className,
+      )}
+      {...props}
+    >
+      {children}
+      {description && <Typo variant={'muted'}>{description}</Typo>}
+    </div>
+  );
+}
+
+const CardTitle = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof Typo>) => (
+  <Typo variant={'baseBold'} className={className} {...props} />
+);
+CardTitle.displayName = 'CardTitle';
+
+const CardArrowRight = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof ArrowRight>) => (
+  <ArrowRight
     className={cn(
-      'flex gap-2 p-3',
-      {
-        'items-center': icon && !description,
-        'mt-1': icon && description,
-      },
+      'group-hover:translate-x-1 transition-all duration-120 ease-in-out',
       className,
     )}
     {...props}
-  >
-    {icon && <IconSquare icon={icon} />}
-    <div ref={ref} className={cn('flex flex-col')}>
-      <Typo>{children}</Typo>
-      {description && <Typo variant={'muted'}>{description}</Typo>}
-    </div>
-  </div>
-));
-CardHeader.displayName = 'CardHeader';
-
-const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h3
-    ref={ref}
-    className={cn('font-semibold leading-none tracking-tight', className)}
-    {...props}
   />
-));
-CardTitle.displayName = 'CardTitle';
+);
+CardArrowRight.displayName = 'CardArrowRight';
 
-const CardDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
+const CardDescription = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof Typo>) => (
+  <Typo
+    as="p"
+    variant={'muted'}
     className={cn('text-sm text-muted-foreground', className)}
     {...props}
   />
-));
+);
 CardDescription.displayName = 'CardDescription';
 
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
+  <div ref={ref} className={className} {...props} />
 ));
 CardContent.displayName = 'CardContent';
 
@@ -120,5 +156,6 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
+  CardArrowRight,
   cardVariants,
 };

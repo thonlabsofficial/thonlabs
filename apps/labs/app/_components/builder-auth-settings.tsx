@@ -62,7 +62,10 @@ export default function BuilderAuthSettings({ environment }: Props) {
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-[15rem_1fr] gap-3">
-          <CardHeader description="Customize the login page to match your brand and user experience.">
+          <CardHeader
+            padding
+            description="Customize the login page to match your brand and user experience."
+          >
             Login Page
           </CardHeader>
           <CardContent className="flex-1 p-6">
@@ -91,7 +94,10 @@ export default function BuilderAuthSettings({ environment }: Props) {
         </div>
         <SeparatorLine className="my-0" />
         <div className="grid grid-cols-[15rem_1fr] gap-3">
-          <CardHeader description="Control who can access your app. Choose between open access or limit it to specific organization domains.">
+          <CardHeader
+            padding
+            description="Control who can access your app. Choose between open access or limit it to specific organization domains."
+          >
             User Creation
           </CardHeader>
           <CardContent className="flex-1 p-6">
@@ -120,6 +126,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
         <SeparatorLine className="my-0" />
         <div className="grid grid-cols-[15rem_1fr] gap-3">
           <CardHeader
+            padding
             description={
               <>
                 The time is based on{' '}

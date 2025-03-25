@@ -24,9 +24,10 @@ const iconSquareVariants = cva(
 const iconVariants = cva('', {
   variants: {
     size: {
-      sm: 'w-4 h-4',
-      md: 'w-6 h-6',
-      lg: 'w-8 h-8',
+      sm: 'flex-none basis-4 w-4 h-4',
+      md: 'flex-none basis-6 w-6 h-6',
+      lg: 'flex-none basis-8 w-8 h-8',
+      xl: 'flex-none basis-10 w-10 h-10',
     },
   },
   defaultVariants: {
@@ -68,4 +69,4 @@ const IconSquare = ({
   );
 };
 
-export { IconSquare };
+export { IconSquare, iconVariants };

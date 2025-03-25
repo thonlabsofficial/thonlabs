@@ -26,8 +26,8 @@ function ProjectSection({
   const { toast } = useToast();
 
   return (
-    <Card key={project.id}>
-      <CardContent className="flex flex-col gap-6 pt-6">
+    <Card key={project.id} padding>
+      <CardContent className="flex flex-col gap-6">
         <header className="flex justify-between">
           <div className="flex items-center gap-2">
             {!loading ? (

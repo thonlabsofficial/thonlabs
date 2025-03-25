@@ -52,7 +52,7 @@ export default function EnvironmentGeneralSettings() {
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-[19rem_1fr] gap-40">
-          <CardHeader>General Settings</CardHeader>
+          <CardHeader padding>General Settings</CardHeader>
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
               <InputWrapper>

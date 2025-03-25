@@ -10,7 +10,10 @@ export default function EnvironmentIdCard() {
   return (
     <Card>
       <div className="grid grid-cols-[19rem_1fr] gap-40">
-        <CardHeader description="This is the unique identifier for your environment.">
+        <CardHeader
+          padding
+          description="This is the unique identifier for your environment."
+        >
           Environment ID
         </CardHeader>
         <CardContent className="flex-1 p-6">

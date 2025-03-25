@@ -32,7 +32,10 @@ export default function APIKeysSettings() {
     <>
       <Card>
         <div className="grid grid-cols-[19rem_1fr] gap-40">
-          <CardHeader description="The public key allows secure retrieval of data from the client.">
+          <CardHeader
+            padding
+            description="The public key allows secure retrieval of data from the client."
+          >
             Public Key
           </CardHeader>
           <CardContent className="flex-1 p-6">
@@ -67,7 +70,10 @@ export default function APIKeysSettings() {
       </Card>
       <Card>
         <div className="grid grid-cols-[19rem_1fr] gap-40">
-          <CardHeader description="The secret key is used to securely access and manage data on the server. Keep it confidential to protect your application's integrity.">
+          <CardHeader
+            padding
+            description="The secret key is used to securely access and manage data on the server. Keep it confidential to protect your application's integrity."
+          >
             Secret Key
           </CardHeader>
           <CardContent className="flex-1 p-6">
