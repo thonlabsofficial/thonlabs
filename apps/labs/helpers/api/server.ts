@@ -46,7 +46,14 @@ function logRequest(instanceName: string) {
   return (config: InternalAxiosRequestConfig<any>) => {
     const headers = {
       ...config.headers,
-      Authorization: 'Bearer [REDACTED]',
+      ...(config.headers['tl-int-key'] && {
+        'tl-int-key':
+          config.headers['tl-int-key']?.toString()?.substring(0, 5) +
+          '...[REDACTED]',
+      }),
+      ...(config.headers['Authorization'] && {
+        Authorization: `${config.headers['Authorization']?.toString()?.substring(0, 20)}...[REDACTED]`,
+      }),
     };
 
     Log.info(`${instanceName} req`, {

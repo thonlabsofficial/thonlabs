@@ -23,7 +23,7 @@ export default async function Home({
       <PageWrapper className="space-y-6" withContainer={false}>
         <section>
           <SectionHeader title="Summary" />
-          <EnvironmentSummaryCards />
+          <EnvironmentSummaryCards environmentId={environmentId} />
         </section>
 
         <section>
