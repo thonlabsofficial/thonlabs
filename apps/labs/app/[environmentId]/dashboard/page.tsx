@@ -5,22 +5,34 @@ import { LayoutDashboard } from 'lucide-react';
 import SectionHeader from '@/_components/section-header';
 import EnvironmentSummaryCards from '@/_components/environment-summary-cards';
 import ExploreThonLabsCards from '@/_components/explore-thonlabs-cards';
+import OnboardIntegration, {
+  OnboardIntegrationOptions,
+} from '@/_components/onboard-integration';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
 };
 
-export default async function Home({
-  params,
-}: {
-  params: { environmentId: string };
-}) {
+type Params = Promise<{ environmentId: string }>;
+
+export default async function Home({ params }: { params: Params }) {
   const { environmentId } = await params;
 
   return (
     <>
       <PageHeader title="Dashboard" icon={LayoutDashboard} />
-      <PageWrapper className="space-y-6" withContainer={false}>
+      <PageWrapper className="space-y-8" withContainer={false}>
+        <section className="grid grid-cols-[30rem_1fr] gap-2">
+          <div className="space-y-2">
+            <SectionHeader
+              title="Integrate in Minutes"
+              description="Select your Next.js version below, and follow simple quick steps to add authentication to your application."
+            />
+            <OnboardIntegrationOptions />
+          </div>
+          <OnboardIntegration />
+        </section>
+
         <section>
           <SectionHeader title="Summary" />
           <EnvironmentSummaryCards environmentId={environmentId} />

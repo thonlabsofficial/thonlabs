@@ -4,7 +4,7 @@ import { cn } from '../core/utils';
 import { ButtonIconProps } from './button-icon';
 
 const buttonIconGroupVariants = cva(
-  'flex gap-1 h-8 items-center justify-center rounded-md bg-muted p-0.5 text-muted-foreground',
+  'inline-flex gap-1 h-8 items-center justify-center rounded-md bg-muted p-0.5 text-muted-foreground',
 );
 
 interface ButtonGroupProps

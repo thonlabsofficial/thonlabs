@@ -1,4 +1,4 @@
-import { AuthProviders, EnvironmentData } from '@thonlabs/nextjs';
+import { EnvironmentData } from '@thonlabs/nextjs';
 import { Project } from './project';
 
 export enum CustomDomainStatus {
