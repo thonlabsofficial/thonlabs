@@ -5,3 +5,4 @@ export * from './id-card-icon';
 export * from './layout-panel-top';
 export * from './route-icon';
 export * from './cpu-icon';
+export * from './flask-icon';

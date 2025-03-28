@@ -9,6 +9,7 @@ import OnboardIntegration, {
   OnboardIntegrationOptions,
 } from '@/_components/onboard-integration';
 import DashboardPageHeader from '@/_components/dashboard-page-header';
+import { BlocksIcon } from '@repo/ui/animated-icons';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -28,7 +29,12 @@ export default async function Home({ params }: { params: Params }) {
         <section className="grid grid-cols-[22rem_1fr] gap-2">
           <div className="space-y-2">
             <SectionHeader
-              title="Integrate in Minutes - It's like lego"
+              title={
+                <div className="flex items-center gap-0.5">
+                  <div>Integrate in Minutes - It's like lego</div>
+                  <BlocksIcon className="-mt-1" />
+                </div>
+              }
               description="Select your Next.js version below, and follow simple quick steps to add authentication to your application."
             />
             <OnboardIntegrationOptions />

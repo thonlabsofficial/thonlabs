@@ -8,10 +8,14 @@ import {
   IdCardIcon,
   RouteIcon,
   LayoutPanelTopIcon,
+  FlaskIcon,
 } from '@repo/ui/animated-icons';
 import { CodeBlock } from '@repo/ui/code-block';
 import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 import { Badge } from '@repo/ui/badge';
+import { Typo } from '@repo/ui/typo';
+import React from 'react';
+import { BorderBeam } from '@repo/ui/border-beam';
 
 export function OnboardIntegrationOptions() {
   return (
@@ -155,6 +159,16 @@ export default ThonLabsAuthPage;`}
     ),
   };
 
+  const [animate, setAnimate] = React.useState(false);
+
+  function handleMouseEnter() {
+    setAnimate(true);
+  }
+
+  function handleMouseLeave() {
+    setAnimate(false);
+  }
+
   return (
     <div>
       <BentoGrid className="grid-cols-2 gap-2">
@@ -165,6 +179,39 @@ export default ThonLabsAuthPage;`}
             children={itemsChildren?.[item.title]}
           />
         ))}
+        <BentoGridItem
+          title=""
+          description=""
+          className="relative overflow-hidden col-span-2"
+          afterSlot={
+            <>
+              <BorderBeam
+                duration={6}
+                size={400}
+                className="from-transparent via-green-500 to-transparent"
+              />
+              <BorderBeam
+                duration={6}
+                size={400}
+                delay={9}
+                className="from-transparent via-blue-500 to-transparent"
+                reverse
+              />
+            </>
+          }
+        >
+          <div
+            className="flex items-center justify-center gap-2 cursor-default"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <FlaskIcon size={24} animate={animate} />
+            <Typo as="div" variant="h3" className="text-center">
+              All set! Go to your app, sign up and check the summary below
+            </Typo>
+            <FlaskIcon size={24} animate={animate} />
+          </div>
+        </BentoGridItem>
       </BentoGrid>
     </div>
   );

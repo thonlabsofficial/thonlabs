@@ -9,6 +9,7 @@
     "./avatar": "./src/components/avatar.tsx",
     "./badge": "./src/components/badge.tsx",
     "./bento-grid": "./src/components/bento-grid.tsx",
+    "./border-beam": "./src/components/border-beam.tsx",
     "./button-group": "./src/components/button-group.tsx",
     "./button-icon": "./src/components/button-icon.tsx",
     "./button-link": "./src/components/button-link.tsx",

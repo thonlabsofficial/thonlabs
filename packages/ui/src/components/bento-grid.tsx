@@ -32,6 +32,7 @@ interface Props extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   description?: string | React.ReactNode;
   header?: React.ReactNode;
   icon?: any;
+  afterSlot?: React.ReactNode;
 }
 
 export const BentoGridItem = ({
@@ -41,6 +42,7 @@ export const BentoGridItem = ({
   header,
   icon: Icon,
   children,
+  afterSlot,
 }: Props) => {
   const [animate, setAnimate] = React.useState(false);
 
@@ -56,7 +58,6 @@ export const BentoGridItem = ({
     <Card
       className={cn('group/bento', className)}
       padding
-      variant={'black'}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -77,6 +78,7 @@ export const BentoGridItem = ({
         </div>
       </CardHeader>
       <CardContent>{children}</CardContent>
+      {afterSlot}
     </Card>
   );
 };

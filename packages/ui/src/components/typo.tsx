@@ -56,7 +56,7 @@ function Typo({
 }: TypoProps) {
   return React.createElement(as, {
     ...props,
-    children: props.children || fallback,
+    children: props.children || (props.children !== '' ? fallback : null),
     className: cn(typoVariants({ variant, state }), className),
   });
 }

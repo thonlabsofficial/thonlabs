@@ -59,7 +59,7 @@ export const CodeBlock = ({
     : highlightLines;
 
   return (
-    <div className="relative w-full rounded bg-card p-4 font-mono text-sm">
+    <div className="relative w-full rounded bg-background p-2 font-mono text-sm">
       <div className="flex flex-col gap-2">
         {tabsExist && (
           <div className="flex justify-between">
@@ -105,7 +105,7 @@ export const CodeBlock = ({
           margin: 0,
           padding: 0,
           background: 'transparent',
-          fontSize: '0.875rem', // text-sm equivalent
+          fontSize: '0.8125rem', // text-sm equivalent
         }}
         wrapLines={true}
         showLineNumbers={showLineNumbers}
