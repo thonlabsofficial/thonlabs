@@ -16,19 +16,54 @@ import { Badge } from '@repo/ui/badge';
 import { Typo } from '@repo/ui/typo';
 import React from 'react';
 import { BorderBeam } from '@repo/ui/border-beam';
+import {
+  OnboardIntegrationContext,
+  OnboardIntegrationSdks,
+} from '@/_providers/onboard-integration-provider';
+import { cn } from '@repo/ui/core/utils';
 
 export function OnboardIntegrationOptions() {
+  const { currentSdk, setCurrentSdk } = React.useContext(
+    OnboardIntegrationContext,
+  );
+
+  const sdks = [
+    {
+      label: 'Next.js@15',
+      value: OnboardIntegrationSdks.NextJS15,
+    },
+    {
+      label: 'Next.js@13+',
+      value: OnboardIntegrationSdks.NextJS13Plus,
+    },
+    {
+      label: 'React',
+      value: OnboardIntegrationSdks.React,
+      disabled: true,
+    },
+  ];
+
   return (
     <div>
       <ButtonGroup>
-        <ButtonGroupItem active>Next.js@15</ButtonGroupItem>
-        <ButtonGroupItem>Next.js@13+</ButtonGroupItem>
-        <ButtonGroupItem className="flex items-center gap-1 !pr-0.5" disabled>
-          <span>React</span>
-          <Badge size="xs" variant={'defaultNoOpacity'}>
-            Soon
-          </Badge>
-        </ButtonGroupItem>
+        {sdks.map((sdk) => (
+          <ButtonGroupItem
+            key={sdk.value}
+            active={currentSdk === sdk.value}
+            disabled={sdk.disabled}
+            onClick={() => setCurrentSdk(sdk.value)}
+            className={cn('flex items-center gap-1', {
+              '!pr-0.5': sdk.disabled,
+            })}
+          >
+            {sdk.label}
+            {sdk.disabled && (
+              <Badge size="xs" variant={'defaultNoOpacity'}>
+                Soon
+              </Badge>
+            )}
+          </ButtonGroupItem>
+        ))}
       </ButtonGroup>
     </div>
   );
@@ -69,10 +104,18 @@ const items = [
   },
 ];
 
-export default function OnboardIntegration() {
-  const { environmentId, publicKey, authDomain } = useEnvironmentAppData();
-
-  const itemsChildren: Record<string, React.ReactNode> = {
+function getNextSteps({
+  environmentId,
+  publicKey,
+  authDomain,
+  sdkVersion,
+}: {
+  environmentId: string;
+  publicKey: string;
+  authDomain: string;
+  sdkVersion: OnboardIntegrationSdks;
+}) {
+  return {
     'Step 1': (
       <CodeBlock
         language="markdown"
@@ -109,22 +152,22 @@ NEXT_PUBLIC_TL_AUTH_API=${authDomain}`}
       <CodeBlock
         language="tsx"
         filename="app/layout.tsx"
-        code={`import {ThonLabsWrapper} from "@thonlabs/nextjs";
+        code={`import {ThonLabsWrapper} from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}";
 
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
-  return (
-    <html>
-      <body>
-        <ThonLabsWrapper
-          environmentId="process.env.NEXT_PUBLIC_TL_ENV_ID"
-          publicKey="process.env.NEXT_PUBLIC_TL_PK"
-          baseURL="process.env.NEXT_PUBLIC_TL_AUTH_API"
-        >
-          {children}
-        </ThonLabsWrapper>
-      </body>
-    </html>
-  );
+return (
+  <html>
+    <body>
+      <ThonLabsWrapper
+        environmentId="process.env.NEXT_PUBLIC_TL_ENV_ID"
+        publicKey="process.env.NEXT_PUBLIC_TL_PK"
+        baseURL="process.env.NEXT_PUBLIC_TL_AUTH_API"
+      >
+        {children}
+      </ThonLabsWrapper>
+    </body>
+  </html>
+);
 }`}
       />
     ),
@@ -133,12 +176,12 @@ export default async function RootLayout({children}: Readonly<{children: React.R
         <CodeBlock
           language="typescript"
           filename="app/api/auth/[...thonlabs]/route.ts"
-          code={`export * from "@thonlabs/nextjs/api";`}
+          code={`export * from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}/api";`}
         />
         <CodeBlock
           language="typescript"
           filename="app/auth/[...thonlabs]/page.tsx"
-          code={`import {ThonLabsAuthPage} from "@thonlabs/nextjs";
+          code={`import {ThonLabsAuthPage} from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}";
 export default ThonLabsAuthPage;`}
         />
       </div>
@@ -147,7 +190,9 @@ export default ThonLabsAuthPage;`}
       <CodeBlock
         language="typescript"
         filename="app/middleware.ts"
-        code={`export async function middleware(req: NextRequest) {
+        code={`import {validateSession, validationRedirect} from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}/server";
+
+export async function middleware(req: NextRequest) {
   const redirect = await validateSession(req);
   if (redirect) {
     return validationRedirect(redirect);
@@ -158,7 +203,33 @@ export default ThonLabsAuthPage;`}
       />
     ),
   };
+}
 
+export default function OnboardIntegration() {
+  const { environmentId, publicKey, authDomain } = useEnvironmentAppData();
+  const { currentSdk } = React.useContext(OnboardIntegrationContext);
+  const itemsChildren: Record<
+    OnboardIntegrationSdks,
+    Record<string, React.ReactNode>
+  > = {
+    [OnboardIntegrationSdks.NextJS15]: getNextSteps({
+      environmentId,
+      publicKey,
+      authDomain,
+      sdkVersion: OnboardIntegrationSdks.NextJS15,
+    }),
+    [OnboardIntegrationSdks.NextJS13Plus]: getNextSteps({
+      environmentId,
+      publicKey,
+      authDomain,
+      sdkVersion: OnboardIntegrationSdks.NextJS13Plus,
+    }),
+    [OnboardIntegrationSdks.React]: {},
+  };
+
+  /*
+    This is just to animate the flask icon.
+  */
   const [animate, setAnimate] = React.useState(false);
 
   function handleMouseEnter() {
@@ -176,7 +247,7 @@ export default ThonLabsAuthPage;`}
           <BentoGridItem
             key={i}
             {...item}
-            children={itemsChildren?.[item.title]}
+            children={itemsChildren?.[currentSdk]?.[item.title]}
           />
         ))}
         <BentoGridItem
