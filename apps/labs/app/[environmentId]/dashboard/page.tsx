@@ -8,6 +8,7 @@ import ExploreThonLabsCards from '@/_components/explore-thonlabs-cards';
 import OnboardIntegration, {
   OnboardIntegrationOptions,
 } from '@/_components/onboard-integration';
+import DashboardPageHeader from '@/_components/dashboard-page-header';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -20,12 +21,15 @@ export default async function Home({ params }: { params: Params }) {
 
   return (
     <>
-      <PageHeader title="Dashboard" icon={LayoutDashboard} />
+      {/* <PageHeader title="Dashboard" icon={LayoutDashboard} /> */}
+      <PageWrapper className="mt-4 mb-9" withContainer={false}>
+        <DashboardPageHeader />
+      </PageWrapper>
       <PageWrapper className="space-y-8" withContainer={false}>
         <section className="grid grid-cols-[30rem_1fr] gap-2">
           <div className="space-y-2">
             <SectionHeader
-              title="Integrate in Minutes"
+              title="Integrate in Minutes - It's like lego"
               description="Select your Next.js version below, and follow simple quick steps to add authentication to your application."
             />
             <OnboardIntegrationOptions />

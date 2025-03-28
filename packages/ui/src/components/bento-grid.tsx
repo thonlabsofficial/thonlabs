@@ -1,0 +1,73 @@
+import React from 'react';
+import { cn } from '../core/utils';
+import { Card, CardDescription, CardHeader, CardTitle } from './card';
+
+export const BentoGrid = ({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) => {
+  return (
+    <div
+      className={cn(
+        'mx-auto grid max-w-7xl grid-cols-1 gap-4 md:auto-rows-[10rem] md:grid-cols-2',
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+export const BentoGridItem = ({
+  className,
+  title,
+  description,
+  header,
+  icon: Icon,
+}: {
+  className?: string;
+  title?: string | React.ReactNode;
+  description?: string | React.ReactNode;
+  header?: React.ReactNode;
+  icon?: any;
+}) => {
+  const [animate, setAnimate] = React.useState(false);
+
+  function handleMouseEnter() {
+    setAnimate(true);
+  }
+
+  function handleMouseLeave() {
+    setAnimate(false);
+  }
+
+  return (
+    <Card
+      className={cn('group/bento', className)}
+      padding
+      variant={'black'}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <CardHeader>
+        {header}
+        <div className="flex gap-2 transition duration-200 group-hover/bento:translate-x-1">
+          {Icon && (
+            <div>
+              <Icon size={24} animate={animate} />
+            </div>
+          )}
+          <div>
+            <CardTitle className="mb-2 text-neutral-600 dark:text-neutral-200">
+              {title}
+            </CardTitle>
+            <CardDescription>{description}</CardDescription>
+          </div>
+        </div>
+      </CardHeader>
+    </Card>
+  );
+};

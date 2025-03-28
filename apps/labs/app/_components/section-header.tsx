@@ -10,7 +10,7 @@ export default function SectionHeader({
   description?: React.ReactNode;
 } & React.HTMLAttributes<HTMLElement>) {
   return (
-    <header className={cn('flex flex-col mb-4', className)}>
+    <header className={cn('flex flex-col gap-0.5 mb-4', className)}>
       <Typo variant="h4">{title}</Typo>
       {description && <Typo variant="muted">{description}</Typo>}
     </header>

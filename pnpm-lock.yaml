@@ -485,7 +485,7 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       clsx:
-        specifier: ^2.1.0
+        specifier: ^2.1.1
         version: 2.1.1
       eslint:
         specifier: ^8.57.0
@@ -503,7 +503,7 @@ importers:
         specifier: ^1.72.0
         version: 1.77.4
       tailwind-merge:
-        specifier: ^2.2.2
+        specifier: ^2.3.0
         version: 2.3.0
       tailwindcss:
         specifier: ^3.4.4
