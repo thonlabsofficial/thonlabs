@@ -1,6 +1,12 @@
 import React from 'react';
 import { cn } from '../core/utils';
-import { Card, CardDescription, CardHeader, CardTitle } from './card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from './card';
 
 export const BentoGrid = ({
   className,
@@ -12,7 +18,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        'mx-auto grid max-w-7xl grid-cols-1 gap-4 md:auto-rows-[10rem] md:grid-cols-2',
+        'mx-auto grid max-w-7xl grid-cols-1 gap-4 md:grid-cols-2',
         className,
       )}
     >
@@ -21,19 +27,21 @@ export const BentoGrid = ({
   );
 };
 
+interface Props extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  title?: string | React.ReactNode;
+  description?: string | React.ReactNode;
+  header?: React.ReactNode;
+  icon?: any;
+}
+
 export const BentoGridItem = ({
   className,
   title,
   description,
   header,
   icon: Icon,
-}: {
-  className?: string;
-  title?: string | React.ReactNode;
-  description?: string | React.ReactNode;
-  header?: React.ReactNode;
-  icon?: any;
-}) => {
+  children,
+}: Props) => {
   const [animate, setAnimate] = React.useState(false);
 
   function handleMouseEnter() {
@@ -52,7 +60,7 @@ export const BentoGridItem = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <CardHeader>
+      <CardHeader className="mb-2">
         {header}
         <div className="flex gap-2 transition duration-200 group-hover/bento:translate-x-1">
           {Icon && (
@@ -68,6 +76,7 @@ export const BentoGridItem = ({
           </div>
         </div>
       </CardHeader>
+      <CardContent>{children}</CardContent>
     </Card>
   );
 };

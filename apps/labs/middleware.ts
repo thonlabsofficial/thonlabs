@@ -7,7 +7,7 @@ export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico|favicon.png).*)',
 };
 
-export async function middleware(req: NextRequest): Promise<NextResponse> {
+export async function middleware(req: NextRequest) {
   const redirect = await validateSession(req, [
     '/api/environments',
     '/projects',

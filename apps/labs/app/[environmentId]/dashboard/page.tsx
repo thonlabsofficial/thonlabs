@@ -21,12 +21,11 @@ export default async function Home({ params }: { params: Params }) {
 
   return (
     <>
-      {/* <PageHeader title="Dashboard" icon={LayoutDashboard} /> */}
       <PageWrapper className="mt-4 mb-9" withContainer={false}>
         <DashboardPageHeader />
       </PageWrapper>
       <PageWrapper className="space-y-8" withContainer={false}>
-        <section className="grid grid-cols-[30rem_1fr] gap-2">
+        <section className="grid grid-cols-[22rem_1fr] gap-2">
           <div className="space-y-2">
             <SectionHeader
               title="Integrate in Minutes - It's like lego"
