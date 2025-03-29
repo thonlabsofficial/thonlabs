@@ -5,7 +5,7 @@ import { Badge } from '@repo/ui/badge';
 import { Typo } from '@repo/ui/typo';
 
 export default function DashboardPageHeader() {
-  const { environmentName, appName } = useEnvironmentAppData();
+  const { environmentName, appName, sdkIntegrated } = useEnvironmentAppData();
 
   return (
     <header className="flex items-center gap-2">
@@ -13,6 +13,7 @@ export default function DashboardPageHeader() {
         {appName} · {environmentName}
       </Typo>
       <Badge variant="info">Free Plan</Badge>
+      {sdkIntegrated && <Badge variant="success">Integrated</Badge>}
     </header>
   );
 }

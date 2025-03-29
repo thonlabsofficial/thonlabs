@@ -18,7 +18,7 @@ module.exports = {
     node: true,
     browser: true,
   },
-  plugins: ['only-warn', '@typescript-eslint'],
+  plugins: ['only-warn', '@typescript-eslint', 'import'],
   settings: {
     'import/resolver': {
       typescript: {
@@ -31,10 +31,19 @@ module.exports = {
     '.*.js',
     'node_modules/',
   ],
-  overrides: [{ files: ['*.js?(x)', '*.ts?(x)'] }],
+  // overrides: [{ files: ['*.js?(x)', '*.ts?(x)'] }],
   rules: {
     'no-case-declarations': 'off',
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error'],
+    'no-unused-vars': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        args: 'after-used',
+        ignoreRestSiblings: true,
+        varsIgnorePattern: '^_',
+      },
+    ],
+    'import/no-unused-modules': 'error',
   },
 };
