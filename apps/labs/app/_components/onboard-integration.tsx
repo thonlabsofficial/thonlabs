@@ -72,33 +72,34 @@ export function OnboardIntegrationOptions() {
 const items = [
   {
     title: 'Step 1',
-    description: 'Paste the environment keys into your .env file.',
+    description: 'Add your ThonLabs environment keys to your .env file.',
     icon: IdCardIcon,
     className: 'col-auto',
   },
   {
     title: 'Step 2',
-    description: 'Install the package with your favorite package manager.',
+    description: 'Install the package using your favorite package manager.',
     icon: BoxesIcon,
     className: 'col-auto',
   },
   {
     title: 'Step 3',
     description:
-      'Wrap ThonLabs in your root layout. We suggest to keep ThonLabsWrapper above any other.',
+      'Add the ThonLabsWrapper to your root layout, placing it above other providers for optimal functionality.',
     icon: LayoutPanelTopIcon,
     className: 'col-span-2',
   },
   {
     title: 'Step 4',
     description:
-      'Setup the API and auth routes. You need to create two files, one for route and another for page.',
+      'Create API route and page files to handle authentication flows and callbacks.',
     icon: RouteIcon,
     className: 'col-auto',
   },
   {
     title: 'Step 5',
-    description: 'Setup the middleware to validate the user session.',
+    description:
+      'Implement middleware to protect routes and validate user sessions.',
     icon: CpuIcon,
     className: 'col-auto',
   },
