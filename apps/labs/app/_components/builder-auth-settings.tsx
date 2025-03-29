@@ -19,17 +19,45 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
 import { EnvironmentDetail } from '@/_interfaces/environment';
 import { EnvironmentData, usePreviewMode } from '@thonlabs/nextjs';
+import { Label } from '@repo/ui/label';
+import {
+  InputSelect,
+  InputSelectContent,
+  InputSelectItem,
+  InputSelectTrigger,
+  InputSelectValue,
+} from '@repo/ui/input-select';
 
 interface Props {
   environment: EnvironmentDetail;
 }
 
 export default function BuilderAuthSettings({ environment }: Props) {
+  const [tokenExpirationValue, tokenExpirationUnit] = React.useMemo(() => {
+    if (!environment.tokenExpiration) {
+      /*
+        If not exists, do not fallback, it should be an error
+        and for sure there is some bug in our backend
+      */
+      return [];
+    }
+
+    const match = environment.tokenExpiration.match(/^(\d+)([a-z]+)$/i);
+
+    return match?.[1] && match?.[2]
+      ? [
+          Number(match[1]),
+          match[2] as UpdateEnvironmentAuthSettingsFormData['tokenExpirationUnit'],
+        ]
+      : [];
+  }, [environment.tokenExpiration]);
+
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
     defaultValues: {
       authProvider: environment.authProvider || '',
-      tokenExpiration: environment.tokenExpiration || '',
+      tokenExpirationValue,
+      tokenExpirationUnit,
       refreshTokenExpiration: environment.refreshTokenExpiration || '',
       enableSignUp: environment.enableSignUp || false,
       enableSignUpB2BOnly: environment.enableSignUpB2BOnly || false,
@@ -49,7 +77,8 @@ export default function BuilderAuthSettings({ environment }: Props) {
       updateEnvironmentAuthSettings(environment!.id, payload).then(() => {
         form.reset({
           authProvider: payload?.authProvider || '',
-          tokenExpiration: payload?.tokenExpiration || '',
+          tokenExpirationValue: payload?.tokenExpirationValue || 0,
+          tokenExpirationUnit: payload?.tokenExpirationUnit || '',
           refreshTokenExpiration: payload?.refreshTokenExpiration || '',
           enableSignUp: payload?.enableSignUp || false,
           enableSignUpB2BOnly: payload?.enableSignUpB2BOnly || false,
@@ -146,14 +175,35 @@ export default function BuilderAuthSettings({ environment }: Props) {
           <CardContent className="flex-1 p-6">
             <div className="grid gap-5">
               <InputWrapper>
-                <Input
-                  id="name"
-                  placeholder="e.g.: 1d"
-                  label="Access Token Expiration"
-                  maxLength={25}
-                  error={form.formState.errors.tokenExpiration?.message}
-                  {...form.register('tokenExpiration')}
-                />
+                <Label>Access Token Expiration</Label>
+                <div className="grid grid-cols-[6rem_1fr] gap-1">
+                  <Input
+                    maxLength={2}
+                    {...form.register('tokenExpirationValue', {
+                      valueAsNumber: true,
+                    })}
+                  />
+                  <Controller
+                    name="tokenExpirationUnit"
+                    control={form.control}
+                    render={({ field }) => (
+                      <InputSelect onValueChange={field.onChange} {...field}>
+                        <InputSelectTrigger value={field.value}>
+                          <InputSelectValue placeholder="Select an option" />
+                        </InputSelectTrigger>
+                        <InputSelectContent>
+                          <InputSelectItem value="m">minutes</InputSelectItem>
+                          <InputSelectItem value="d">days</InputSelectItem>
+                        </InputSelectContent>
+                      </InputSelect>
+                    )}
+                  />
+                </div>
+                {form.formState.errors.tokenExpirationValue && (
+                  <Typo variant={'sm'} state={'error'} className="text-sm">
+                    {form.formState.errors.tokenExpirationValue?.message}
+                  </Typo>
+                )}
               </InputWrapper>
               <InputWrapper>
                 <Input

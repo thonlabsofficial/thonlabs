@@ -142,7 +142,13 @@ export default function useEnvironment(
     try {
       await labsAPI.patch<Environment>(
         `/environments/${environmentId}/auth-settings`,
-        payload,
+        {
+          authProvider: payload.authProvider,
+          enableSignUp: payload.enableSignUp,
+          enableSignUpB2BOnly: payload.enableSignUpB2BOnly,
+          tokenExpiration: `${payload.tokenExpirationValue}${payload.tokenExpirationUnit}`,
+          refreshTokenExpiration: payload.refreshTokenExpiration,
+        },
       );
 
       makeMutations(
