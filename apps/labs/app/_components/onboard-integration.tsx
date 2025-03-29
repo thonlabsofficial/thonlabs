@@ -155,19 +155,19 @@ NEXT_PUBLIC_TL_AUTH_API=${authDomain}`}
         code={`import {ThonLabsWrapper} from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}";
 
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
-return (
-  <html>
-    <body>
-      <ThonLabsWrapper
-        environmentId="process.env.NEXT_PUBLIC_TL_ENV_ID"
-        publicKey="process.env.NEXT_PUBLIC_TL_PK"
-        baseURL="process.env.NEXT_PUBLIC_TL_AUTH_API"
-      >
-        {children}
-      </ThonLabsWrapper>
-    </body>
-  </html>
-);
+  return (
+    <html>
+      <body>
+        <ThonLabsWrapper
+          environmentId="process.env.NEXT_PUBLIC_TL_ENV_ID"
+          publicKey="process.env.NEXT_PUBLIC_TL_PK"
+          baseURL="process.env.NEXT_PUBLIC_TL_AUTH_API"
+        >
+          {children}
+        </ThonLabsWrapper>
+      </body>
+    </html>
+  );
 }`}
       />
     ),
