@@ -37,7 +37,7 @@ interface Props extends React.ComponentProps<typeof Dialog> {
 
 export default function JoinWaitlistDialog({ trigger, ...props }: Props) {
   const form = useForm<JoinWaitlistFormData>({
-    resolver: zodResolver(joinWaitlistFormSchema as any),
+    resolver: zodResolver(joinWaitlistFormSchema),
   });
   const [isSaving, startSavingTransition] = useTransition();
   const [done, setDone] = React.useState(false);
