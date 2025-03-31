@@ -15,6 +15,7 @@ const cardVariants = cva(
         transparent: 'bg-transparent',
         darker: 'bg-background/40',
         link: 'group bg-card hover:bg-muted/40 cursor-pointer',
+        black: 'bg-white dark:bg-black',
       },
       border: {
         solid: 'border-solid',

@@ -4,7 +4,7 @@ import { cn } from '../core/utils';
 import { ButtonIconProps } from './button-icon';
 
 const buttonIconGroupVariants = cva(
-  'flex gap-1 h-8 items-center justify-center rounded-md bg-muted p-0.5 text-muted-foreground',
+  'inline-flex gap-1 h-8 items-center justify-center rounded-md bg-muted p-0.5 text-muted-foreground',
 );
 
 interface ButtonGroupProps
@@ -33,8 +33,9 @@ export const ButtonGroupItem = React.forwardRef<
   HTMLButtonElement,
   React.HTMLAttributes<HTMLButtonElement> & {
     active?: boolean;
+    disabled?: boolean;
   }
->(({ className, children, active, ...props }, ref) => {
+>(({ className, children, active, disabled, ...props }, ref) => {
   return (
     <button
       ref={ref}
@@ -42,10 +43,11 @@ export const ButtonGroupItem = React.forwardRef<
         `inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 py-1 h-7 text-sm 
           font-medium ring-offset-background transition-all focus-visible:outline-none 
           focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 
-          disabled:pointer-events-none disabled:opacity-50`,
+          disabled:pointer-events-none`,
         {
           'bg-card text-foreground shadow-sm pointer-events-none': active,
           'text-foreground/50 hover:text-foreground/70': !active,
+          'pointer-events-none': disabled,
         },
         className,
       )}
