@@ -16,7 +16,7 @@ export default function BuilderPreview() {
   const [previewTheme, setPreviewTheme] = useState(resolvedTheme);
 
   React.useEffect(() => {
-    if (!previewTheme) {
+    if (!previewTheme || previewTheme === 'system') {
       setPreviewTheme(resolvedTheme);
     }
   }, [resolvedTheme]);
