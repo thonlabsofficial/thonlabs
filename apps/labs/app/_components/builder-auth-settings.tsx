@@ -19,6 +19,8 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
 import { EnvironmentDetail } from '@/_interfaces/environment';
 import { EnvironmentData, usePreviewMode } from '@thonlabs/nextjs';
+import { Label } from '@repo/ui/label';
+import { InputColorPicker } from '@repo/ui/input-color-picker';
 
 interface Props {
   environment: EnvironmentDetail;
@@ -33,6 +35,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
       refreshTokenExpiration: environment.refreshTokenExpiration || '',
       enableSignUp: environment.enableSignUp || false,
       enableSignUpB2BOnly: environment.enableSignUpB2BOnly || false,
+      primaryColor: environment.primaryColor || '',
     },
   });
   const formData = useWatch({ control: form.control });
@@ -53,6 +56,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
           refreshTokenExpiration: payload?.refreshTokenExpiration || '',
           enableSignUp: payload?.enableSignUp || false,
           enableSignUpB2BOnly: payload?.enableSignUpB2BOnly || false,
+          primaryColor: payload?.primaryColor || '',
         });
       });
     });
@@ -64,7 +68,36 @@ export default function BuilderAuthSettings({ environment }: Props) {
         <div className="grid grid-cols-[15rem_1fr] gap-3">
           <CardHeader
             padding
-            description="Customize the login page to match your brand and user experience."
+            description="Customize the auth pages to match your brand and user experience."
+          >
+            Style
+          </CardHeader>
+          <CardContent className="flex-1 p-6">
+            <div className="grid gap-5">
+              <InputWrapper>
+                <Controller
+                  name="primaryColor"
+                  control={form.control}
+                  render={({ field, formState }) => (
+                    <InputColorPicker
+                      label="Primary Color"
+                      setValue={form.setValue}
+                      name={field.name}
+                      value={field.value}
+                      onInputChange={field.onChange}
+                      error={formState.errors.primaryColor?.message}
+                    />
+                  )}
+                />
+              </InputWrapper>
+            </div>
+          </CardContent>
+        </div>
+        <SeparatorLine className="my-0" />
+        <div className="grid grid-cols-[15rem_1fr] gap-3">
+          <CardHeader
+            padding
+            description="Choose the authentication type to use."
           >
             Login Page
           </CardHeader>
