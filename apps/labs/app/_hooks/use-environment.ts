@@ -163,8 +163,8 @@ export default function useEnvironment(
             isSDKData: true,
           },
           {
-            key: 'primaryColor',
-            value: payload.primaryColor,
+            key: 'styles',
+            value: payload.styles,
             isSDKData: true,
           },
         ]),
