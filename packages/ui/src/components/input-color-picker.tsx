@@ -182,7 +182,12 @@ export function InputColorPicker({
                 style={{ backgroundColor: value }}
               />
             </PopoverTrigger>
-            <input type="text" value={value} onChange={onInputChange} />
+            <input
+              type="text"
+              className="w-full"
+              value={value}
+              onChange={onInputChange}
+            />
           </div>
           {error && (
             <InputMessage size={size} state="error">
