@@ -2,12 +2,12 @@ import * as React from 'react';
 
 import { cn } from '../core/utils';
 import { VariantProps, cva } from 'class-variance-authority';
-import { Typo } from './typo';
 import { Label } from './label';
 import { Skeleton } from './skeleton';
 import { Clipboard } from './clipboard';
 import { Button } from './button';
 import { Spinner } from './spinner';
+import { InputMessage } from './input-message';
 
 const inputVariants = cva(
   `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-solid hover:bg-input-hover shadow-sm 
@@ -178,11 +178,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className="!rounded-md"
           />
         )}
-        {error && (
-          <Typo variant={size} state={'error'} className="text-sm">
-            {error}
-          </Typo>
-        )}
+        {error && <InputMessage size={size}>{error}</InputMessage>}
       </>
     );
   },
