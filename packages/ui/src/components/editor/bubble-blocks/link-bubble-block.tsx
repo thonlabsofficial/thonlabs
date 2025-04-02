@@ -52,6 +52,11 @@ export function LinkBlock({
     editor.isActive('image', { hasLink: true });
   const allowRemove =
     editor.isActive('link') || editor.isActive('image', { hasLink: true });
+  const currentLink =
+    editor.getAttributes('link')?.href ||
+    editor.getAttributes('buttonLink')?.href ||
+    editor.getAttributes('image')?.href ||
+    '';
 
   useEffect(() => {
     if (inputRef.current) {
@@ -60,14 +65,8 @@ export function LinkBlock({
   }, [inputRef]);
 
   useEffect(() => {
-    const currentLink =
-      editor.getAttributes('link')?.href ||
-      editor.getAttributes('buttonLink')?.href ||
-      editor.getAttributes('image')?.href ||
-      '';
-
     form.setValue('link', currentLink);
-  }, [editor, isActive]);
+  }, [editor, currentLink]);
 
   const setLinkOnEditor = useCallback(
     (url: string) => {
