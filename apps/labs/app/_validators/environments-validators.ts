@@ -32,14 +32,16 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
   }),
   enableSignUp: z.boolean(),
   enableSignUpB2BOnly: z.boolean(),
-  primaryColor: z
-    .string({ required_error: ErrorMessages.RequiredField })
-    .refine(
-      (color) =>
-        colorPatterns.hexColor.test(color) ||
-        colorPatterns.rgbColor.test(color),
-      { message: ErrorMessages.InvalidColorFormat },
-    ),
+  styles: z.object({
+    primaryColor: z
+      .string({ required_error: ErrorMessages.RequiredField })
+      .refine(
+        (color) =>
+          colorPatterns.hexColor.test(color) ||
+          colorPatterns.rgbColor.test(color),
+        { message: ErrorMessages.InvalidColorFormat },
+      ),
+  }),
 });
 
 export type UpdateEnvironmentAuthSettingsFormData = z.infer<

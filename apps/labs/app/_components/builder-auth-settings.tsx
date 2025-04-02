@@ -35,7 +35,9 @@ export default function BuilderAuthSettings({ environment }: Props) {
       refreshTokenExpiration: environment.refreshTokenExpiration || '',
       enableSignUp: environment.enableSignUp || false,
       enableSignUpB2BOnly: environment.enableSignUpB2BOnly || false,
-      primaryColor: environment.primaryColor || '',
+      styles: {
+        primaryColor: environment.styles?.primaryColor || '',
+      },
     },
   });
   const formData = useWatch({ control: form.control });
@@ -56,7 +58,9 @@ export default function BuilderAuthSettings({ environment }: Props) {
           refreshTokenExpiration: payload?.refreshTokenExpiration || '',
           enableSignUp: payload?.enableSignUp || false,
           enableSignUpB2BOnly: payload?.enableSignUpB2BOnly || false,
-          primaryColor: payload?.primaryColor || '',
+          styles: {
+            primaryColor: payload?.styles?.primaryColor || '',
+          },
         });
       });
     });
@@ -76,7 +80,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
             <div className="grid gap-5">
               <InputWrapper>
                 <Controller
-                  name="primaryColor"
+                  name="styles.primaryColor"
                   control={form.control}
                   render={({ field, formState }) => (
                     <InputColorPicker
@@ -85,7 +89,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
                       name={field.name}
                       value={field.value}
                       onInputChange={field.onChange}
-                      error={formState.errors.primaryColor?.message}
+                      error={formState.errors.styles?.primaryColor?.message}
                     />
                   )}
                 />
