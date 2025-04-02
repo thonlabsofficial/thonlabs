@@ -9,16 +9,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Badge } from '@repo/ui/badge';
 import { Button } from '@repo/ui/button';
 import { Card, CardHeader, CardContent, CardFooter } from '@repo/ui/card';
-import { ColorPicker } from '@repo/ui/color-picker';
 import { cn } from '@repo/ui/core/utils';
-import Editor, { EditorInstance } from '@repo/ui/editor';
+import Editor from '@repo/ui/editor';
 import { Input, InputWrapper } from '@repo/ui/input';
 import { Typo } from '@repo/ui/typo';
 import { Plus } from 'lucide-react';
 import React, { useTransition } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Skeleton } from '@repo/ui/skeleton';
 import { EmailTemplateTypes } from '@/_interfaces/email-template';
+import { InputColorPicker } from '@repo/ui/input-color-picker';
 
 const EmailInput = React.forwardRef<
   HTMLInputElement,
@@ -242,16 +242,23 @@ export default function EditEmailTemplate({
                       Background Color
                     </Typo>
                     <div className="flex-1 flex flex-wrap gap-2">
-                      <ColorPicker
-                        defaultColor={bodyStyles?.backgroundColor}
-                        className="!w-24"
-                        size="xs"
-                        loading={isLoadingEmailTemplate}
-                        onSelect={({ color }) => {
-                          form.setValue('bodyStyles.backgroundColor', color, {
-                            shouldDirty: true,
-                          });
-                        }}
+                      <Controller
+                        name="bodyStyles.backgroundColor"
+                        control={form.control}
+                        render={({ field, formState }) => (
+                          <InputColorPicker
+                            className="!w-24"
+                            size="xs"
+                            setValue={form.setValue}
+                            name={field.name}
+                            value={field.value}
+                            onInputChange={field.onChange}
+                            error={
+                              formState.errors.bodyStyles?.backgroundColor
+                                ?.message
+                            }
+                          />
+                        )}
                       />
                     </div>
                   </section>
@@ -260,16 +267,20 @@ export default function EditEmailTemplate({
                       Font Color
                     </Typo>
                     <div className="flex-1 flex flex-wrap gap-2">
-                      <ColorPicker
-                        defaultColor={bodyStyles?.color}
-                        className="!w-24"
-                        size="xs"
-                        loading={isLoadingEmailTemplate}
-                        onSelect={({ color }) => {
-                          form.setValue('bodyStyles.color', color, {
-                            shouldDirty: true,
-                          });
-                        }}
+                      <Controller
+                        name="bodyStyles.color"
+                        control={form.control}
+                        render={({ field, formState }) => (
+                          <InputColorPicker
+                            className="!w-24"
+                            size="xs"
+                            setValue={form.setValue}
+                            name={field.name}
+                            value={field.value}
+                            onInputChange={field.onChange}
+                            error={formState.errors.bodyStyles?.color?.message}
+                          />
+                        )}
                       />
                     </div>
                   </section>

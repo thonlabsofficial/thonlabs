@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Command, CommandGroup, CommandItem, CommandList } from './command';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { Input, inputVariants } from './input';
+import { inputVariants } from './input';
 import { cn } from '../core/utils';
 import { Skeleton } from './skeleton';
+import { InputMessage } from './input-message';
+import { Label } from './label';
 
 const colors = {
   white: '#ffffff',
@@ -101,45 +103,52 @@ const colors = {
 };
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Popover> {
-  defaultColor?: string;
+  name: string;
+  error: React.ReactNode;
   className?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   loading?: boolean;
+  label?: React.ReactNode;
+  value?: string;
   onSelect?: ({
-    name,
-    color,
+    colorName,
+    colorValue,
   }: {
-    name: keyof typeof colors;
-    color: string;
+    colorName: keyof typeof colors;
+    colorValue: string;
   }) => void;
+  onInputChange: (...event: any[]) => void;
+  setValue: any;
 }
 
-export function ColorPicker({
-  defaultColor,
+export function InputColorPicker({
   size = 'md',
+  name,
   loading,
+  value,
+  label,
+  error,
   onSelect,
+  onInputChange,
+  setValue,
   className,
   ...props
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentColor, setCurrentColor] = useState(defaultColor);
-
-  useEffect(() => {
-    setCurrentColor(defaultColor);
-  }, [defaultColor]);
 
   function handleSelect({
-    name,
-    color,
+    colorName,
+    colorValue,
   }: {
-    name: keyof typeof colors;
-    color: string;
+    colorName: keyof typeof colors;
+    colorValue: string;
   }) {
-    setCurrentColor(colors[name]);
     setIsOpen(false);
 
-    onSelect?.({ name, color });
+    setValue(name, colorValue, {
+      shouldDirty: true,
+    });
+    onSelect?.({ colorName, colorValue });
   }
 
   return (
@@ -150,27 +159,45 @@ export function ColorPicker({
         setIsOpen(isOpen);
       }}
     >
-      <PopoverTrigger asChild>
-        {!loading ? (
+      {!loading ? (
+        <>
+          {label && <Label>{label}</Label>}
           <div
             className={inputVariants({
               size,
               className: cn(
-                'flex items-center gap-1 border-zinc-200 dark:border-zinc-600 hover:border-zinc-400 dark:hover:border-zinc-500 !bg-transparent cursor-pointer',
+                `flex items-center gap-1 border-zinc-200 dark:border-zinc-600 
+                hover:border-zinc-400 dark:hover:border-zinc-500 !bg-transparent cursor-pointer`,
                 className,
               ),
             })}
           >
-            <div
-              className="flex-none basis-4 h-4 rounded border border-foreground/10"
-              style={{ backgroundColor: currentColor }}
+            <PopoverTrigger asChild>
+              <div
+                className={cn('flex-none rounded border border-foreground/10', {
+                  'w-4 h-4': size === 'xs' || size === 'sm',
+                  'w-5 h-5': size === 'md',
+                  'w-6 h-6': size === 'lg',
+                })}
+                style={{ backgroundColor: value }}
+              />
+            </PopoverTrigger>
+            <input
+              type="text"
+              className="w-full"
+              value={value}
+              onChange={onInputChange}
             />
-            {currentColor}
           </div>
-        ) : (
-          <Skeleton className="!w-24 h-7 !rounded-md" />
-        )}
-      </PopoverTrigger>
+          {error && (
+            <InputMessage size={size} state="error">
+              {error}
+            </InputMessage>
+          )}
+        </>
+      ) : (
+        <Skeleton className="!w-24 h-7 !rounded-md" />
+      )}
       <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
         <Command className="bg-transparent">
           <CommandList>
@@ -184,8 +211,8 @@ export function ColorPicker({
                       key={name}
                       onSelect={() => {
                         handleSelect({
-                          name: name as keyof typeof colors,
-                          color,
+                          colorName: name as keyof typeof colors,
+                          colorValue: color,
                         });
                       }}
                     >
@@ -205,8 +232,8 @@ export function ColorPicker({
                       key={name}
                       onSelect={() => {
                         handleSelect({
-                          name: name as keyof typeof colors,
-                          color,
+                          colorName: name as keyof typeof colors,
+                          colorValue: color,
                         });
                       }}
                     >

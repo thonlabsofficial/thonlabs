@@ -9,7 +9,11 @@ import {
 } from '@helpers/api/server';
 import { AxiosResponse } from 'axios';
 
-export async function getEnvironmentById(environmentId: string) {
+type EnvironmentWithAppData = EnvironmentDetail & EnvironmentAppData;
+
+export async function getEnvironmentById(
+  environmentId: string,
+): Promise<EnvironmentWithAppData> {
   const [{ data: environment }, { data: environmentData }] = await Promise.all([
     serverLabsEnvAPI.get<EnvironmentDetail, AxiosResponse<EnvironmentDetail>>(
       `/environments/${environmentId}`,

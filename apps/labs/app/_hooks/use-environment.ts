@@ -162,6 +162,11 @@ export default function useEnvironment(
             value: payload.enableSignUpB2BOnly,
             isSDKData: true,
           },
+          {
+            key: 'styles',
+            value: payload.styles,
+            isSDKData: true,
+          },
         ]),
       );
 
