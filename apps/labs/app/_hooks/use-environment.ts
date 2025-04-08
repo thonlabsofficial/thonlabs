@@ -143,14 +143,12 @@ export default function useEnvironment(
       await labsAPI.patch<Environment>(
         `/environments/${environmentId}/auth-settings`,
         {
-          authProvider: payload.authProvider,
-          enableSignUp: payload.enableSignUp,
-          enableSignUpB2BOnly: payload.enableSignUpB2BOnly,
+          ...payload,
           tokenExpiration: `${payload.tokenExpirationValue}${payload.tokenExpirationUnit}`,
           refreshTokenExpiration: `${payload.refreshTokenExpirationValue}${payload.refreshTokenExpirationUnit}`,
         },
       );
-// VITOR > alguma coisa está dando errado na linha 143
+
       makeMutations(
         buildEnvDataMutation(environmentId, [
           {
