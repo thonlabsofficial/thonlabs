@@ -52,13 +52,33 @@ export default function BuilderAuthSettings({ environment }: Props) {
       : [];
   }, [environment.tokenExpiration]);
 
+  const [refreshTokenExpirationValue, refreshTokenExpirationUnit] = React.useMemo(() => {
+    if (!environment.refreshTokenExpiration) {
+      /*
+        If not exists, do not fallback, it should be an error
+        and for sure there is some bug in our backend
+      */
+      return [];
+    }
+
+    const match = environment.refreshTokenExpiration.match(/^(\d+)([a-z]+)$/i);
+
+    return match?.[1] && match?.[2]
+      ? [
+          Number(match[1]),
+          match[2] as UpdateEnvironmentAuthSettingsFormData['refreshTokenExpirationUnit'],
+        ]
+      : [];
+  }, [environment.refreshTokenExpiration]);
+
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
     defaultValues: {
       authProvider: environment.authProvider || '',
       tokenExpirationValue,
       tokenExpirationUnit,
-      refreshTokenExpiration: environment.refreshTokenExpiration || '',
+      refreshTokenExpirationValue,
+      refreshTokenExpirationUnit,
       enableSignUp: environment.enableSignUp || false,
       enableSignUpB2BOnly: environment.enableSignUpB2BOnly || false,
     },
@@ -79,7 +99,8 @@ export default function BuilderAuthSettings({ environment }: Props) {
           authProvider: payload?.authProvider || '',
           tokenExpirationValue: payload?.tokenExpirationValue || 0,
           tokenExpirationUnit: payload?.tokenExpirationUnit || '',
-          refreshTokenExpiration: payload?.refreshTokenExpiration || '',
+          refreshTokenExpirationValue: payload?.refreshTokenExpirationValue || 0,
+          refreshTokenExpirationUnit: payload?.refreshTokenExpirationUnit || '',
           enableSignUp: payload?.enableSignUp || false,
           enableSignUpB2BOnly: payload?.enableSignUpB2BOnly || false,
         });
@@ -206,13 +227,43 @@ export default function BuilderAuthSettings({ environment }: Props) {
                 )}
               </InputWrapper>
               <InputWrapper>
-                <Input
+                <Label>Refresh Token Expiration</Label>
+                <div className='grid grid-cols-[6rem_1fr] gap-1'>
+                  <Input
+                  maxLength={2}
+                  {...form.register('refreshTokenExpirationValue', {
+                    valueAsNumber: true,
+                  })}
+                  />
+                  <Controller
+                  name='refreshTokenExpirationUnit'
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSelect onValueChange={field.onChange} {...field}>
+                      <InputSelectTrigger value={field.value}>
+                        <InputSelectValue placeholder="Select an option" />
+                      </InputSelectTrigger>
+                      <InputSelectContent>
+                        <InputSelectItem value="m">minutes</InputSelectItem>
+                        <InputSelectItem value="d">days</InputSelectItem>
+                      </InputSelectContent>
+                    </InputSelect>
+                  )}
+                  />
+                  
+                </div>
+                {/* <Input
                   id="appURL"
                   placeholder="e.g.: 30d"
                   label="Refresh Token Expiration"
                   error={form.formState.errors.refreshTokenExpiration?.message}
                   {...form.register('refreshTokenExpiration')}
-                />
+                /> */}
+                {form.formState.errors.tokenExpirationValue && (
+                  <Typo variant={'sm'} state={'error'} className="text-sm">
+                    {form.formState.errors.tokenExpirationValue?.message}
+                  </Typo>
+                )}
               </InputWrapper>
             </div>
           </CardContent>

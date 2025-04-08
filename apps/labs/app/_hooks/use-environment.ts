@@ -147,10 +147,10 @@ export default function useEnvironment(
           enableSignUp: payload.enableSignUp,
           enableSignUpB2BOnly: payload.enableSignUpB2BOnly,
           tokenExpiration: `${payload.tokenExpirationValue}${payload.tokenExpirationUnit}`,
-          refreshTokenExpiration: payload.refreshTokenExpiration,
+          refreshTokenExpiration: `${payload.refreshTokenExpirationValue}${payload.refreshTokenExpirationUnit}`,
         },
       );
-
+// VITOR > alguma coisa está dando errado na linha 143
       makeMutations(
         buildEnvDataMutation(environmentId, [
           {

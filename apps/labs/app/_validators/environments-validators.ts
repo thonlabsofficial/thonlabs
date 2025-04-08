@@ -24,7 +24,9 @@ export type UpdateEnvironmentGeneralSettingsFormData = z.infer<
 >;
 
 export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
-  authProvider: z.string({ required_error: ErrorMessages.RequiredField }),
+  authProvider: z.string({
+    required_error: ErrorMessages.RequiredField
+  }),
   tokenExpirationValue: z
     .number({
       required_error: ErrorMessages.RequiredField,
@@ -35,10 +37,20 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
   tokenExpirationUnit: z.enum(['m', 'd'], {
     required_error: ErrorMessages.RequiredField,
   }),
-  refreshTokenExpiration: z.string({
-    required_error: ErrorMessages.RequiredField,
+
+  refreshTokenExpirationValue: z
+    .number({
+      required_error: ErrorMessages.RequiredField,
+      invalid_type_error: ErrorMessages.InvalidNumber,
+    })
+    .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') })
+    .max(54, { message: ErrorMessages.MaxValue.replace('{max}', '54') }),
+  
+  refreshTokenExpirationUnit: z.enum(['m', 'd'], {
+    required_error:ErrorMessages.RequiredField,
   }),
-  enableSignUp: z.boolean(),
+  
+    enableSignUp: z.boolean(),
   enableSignUpB2BOnly: z.boolean(),
 });
 
