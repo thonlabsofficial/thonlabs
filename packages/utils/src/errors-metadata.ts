@@ -5,4 +5,5 @@ export enum ErrorMessages {
   MinValue = 'Value must be greater than {min}',
   MaxValue = 'Value must be less than {max}',
   InvalidNumber = 'This field must be a number',
+  InvalidColorFormat = 'Invalid color format',
 }

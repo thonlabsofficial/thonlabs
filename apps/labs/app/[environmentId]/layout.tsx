@@ -24,8 +24,10 @@ export default async function LabsNestedLayout({
   params: Params;
 }>) {
   const { environmentId } = await params;
-  const session = await getAuthSession();
-  const environmentAppData = await getAppData(environmentId);
+  const [session, environmentAppData] = await Promise.all([
+    getAuthSession(),
+    getAppData(environmentId),
+  ]);
 
   if (!environmentAppData) {
     notFound();
