@@ -2,11 +2,10 @@
 
 import React from 'react';
 import SeparatorLine from '@/_components/separator-line';
-import useEnvironment from '@/_hooks/use-environment';
 import {
   UpdateEnvironmentAuthSettingsFormData,
   UpdateEnvironmentAuthSettingsFormSchema,
-} from '@/_validators/environments-validators';
+} from '@/_validators/builder-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
@@ -18,9 +17,21 @@ import { useTransition } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
 import { EnvironmentDetail } from '@/_interfaces/environment';
-import { EnvironmentData, usePreviewMode } from '@thonlabs/nextjs';
-import { Label } from '@repo/ui/label';
+import {
+  EnvironmentData,
+  SSOSocialProvider,
+  usePreviewMode,
+} from '@thonlabs/nextjs';
 import { InputColorPicker } from '@repo/ui/input-color-picker';
+import { Label } from '@repo/ui/label';
+import BuilderEditCredentialsDrawer from '@/_components/builder-edit-credentials-drawer';
+import useBuilder from '@/_hooks/use-builder';
+
+const ssoProvidersMapper = {
+  [SSOSocialProvider.GOOGLE]: {
+    label: 'Enable Google Login',
+  },
+};
 
 interface Props {
   environment: EnvironmentDetail;
@@ -38,16 +49,43 @@ export default function BuilderAuthSettings({ environment }: Props) {
       styles: {
         primaryColor: environment.styles?.primaryColor || '',
       },
+      activeSSOProviders: environment.activeSSOProviders || [],
     },
   });
   const formData = useWatch({ control: form.control });
-  const { updateEnvironmentAuthSettings } = useEnvironment();
+  const { updateEnvironmentAuthSettings } = useBuilder();
   const [isSaving, startSavingTransition] = useTransition();
   const { setPreviewEnvironmentData } = usePreviewMode();
 
   React.useEffect(() => {
     setPreviewEnvironmentData(formData as EnvironmentData);
   }, [formData, setPreviewEnvironmentData]);
+
+  React.useEffect(() => {
+    form.setValue('activeSSOProviders', environment.activeSSOProviders || []);
+  }, [environment.activeSSOProviders]);
+
+  function isSSOProviderActive(provider: SSOSocialProvider) {
+    return form.getValues('activeSSOProviders')?.includes(provider);
+  }
+
+  function handleSSOProviderCheckedChange(
+    provider: SSOSocialProvider,
+    checked: boolean,
+  ) {
+    const activeSSOProviders = form.getValues('activeSSOProviders') || [];
+    let newActiveSSOProviders = [...activeSSOProviders];
+
+    if (checked) {
+      newActiveSSOProviders = [...activeSSOProviders, provider];
+    } else {
+      newActiveSSOProviders = activeSSOProviders.filter((p) => p !== provider);
+    }
+
+    form.setValue('activeSSOProviders', newActiveSSOProviders, {
+      shouldDirty: true,
+    });
+  }
 
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
     startSavingTransition(() => {
@@ -61,6 +99,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
           styles: {
             primaryColor: payload?.styles?.primaryColor || '',
           },
+          activeSSOProviders: payload?.activeSSOProviders || [],
         });
       });
     });
@@ -125,6 +164,36 @@ export default function BuilderAuthSettings({ environment }: Props) {
                   ]}
                   {...form.register('authProvider')}
                 />
+              </InputWrapper>
+
+              <InputWrapper>
+                <Label>Social Login Providers</Label>
+                {Object.values(SSOSocialProvider).map((provider) => (
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center justify-between">
+                      <InputSwitch
+                        key={provider}
+                        label={ssoProvidersMapper[provider].label}
+                        value={isSSOProviderActive(provider)}
+                        onCheckedChange={(checked) =>
+                          handleSSOProviderCheckedChange(provider, checked)
+                        }
+                        checked={isSSOProviderActive(provider)}
+                      />
+                      {isSSOProviderActive(provider) && (
+                        <BuilderEditCredentialsDrawer
+                          environmentId={environment.id}
+                          provider={provider}
+                          trigger={
+                            <Button variant={'ghost'} size={'xs'} type="button">
+                              Edit Credentials
+                            </Button>
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
               </InputWrapper>
             </div>
           </CardContent>

@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { ErrorMessages } from '@repo/utils/errors-metadata';
-import { colorPatterns } from '@repo/utils/validation-patterns';
 
 export const NewEnvironmentFormSchema = z.object({
   name: z
@@ -22,30 +21,6 @@ export const UpdateEnvironmentGeneralSettingsFormSchema = z.object({
 
 export type UpdateEnvironmentGeneralSettingsFormData = z.infer<
   typeof UpdateEnvironmentGeneralSettingsFormSchema
->;
-
-export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
-  authProvider: z.string({ required_error: ErrorMessages.RequiredField }),
-  tokenExpiration: z.string({ required_error: ErrorMessages.RequiredField }),
-  refreshTokenExpiration: z.string({
-    required_error: ErrorMessages.RequiredField,
-  }),
-  enableSignUp: z.boolean(),
-  enableSignUpB2BOnly: z.boolean(),
-  styles: z.object({
-    primaryColor: z
-      .string({ required_error: ErrorMessages.RequiredField })
-      .refine(
-        (color) =>
-          colorPatterns.hexColor.test(color) ||
-          colorPatterns.rgbColor.test(color),
-        { message: ErrorMessages.InvalidColorFormat },
-      ),
-  }),
-});
-
-export type UpdateEnvironmentAuthSettingsFormData = z.infer<
-  typeof UpdateEnvironmentAuthSettingsFormSchema
 >;
 
 export const DeleteEnvironmentFormSchema = z.object({

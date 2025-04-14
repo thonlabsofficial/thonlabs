@@ -1,7 +1,6 @@
 import { labsAPI } from '../../helpers/api';
 import {
   NewEnvironmentFormData,
-  UpdateEnvironmentAuthSettingsFormData,
   UpdateEnvironmentGeneralSettingsFormData,
 } from '../_validators/environments-validators';
 import { useToast } from '@repo/ui/hooks/use-toast';
@@ -11,11 +10,7 @@ import useSWR from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optimistic-update';
-import {
-  buildEnvDataMutation,
-  useEnvironmentAppData,
-} from '@/_hooks/use-environment-app-data';
-import { revalidateCache } from '@/_services/server-cache-service';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 
 type Params = {
   environmentId?: string;
@@ -125,61 +120,6 @@ export default function useEnvironment(
       return Promise.resolve();
     } catch (error: any) {
       console.error('useEnvironment.updateEnvironmentGeneralSettings', error);
-      toast({
-        title: 'Update Error',
-        description: error?.response?.data?.message || APIErrors.GenericForm,
-        variant: 'destructive',
-      });
-
-      return Promise.reject(error);
-    }
-  }
-
-  async function updateEnvironmentAuthSettings(
-    environmentId: string,
-    payload: UpdateEnvironmentAuthSettingsFormData,
-  ) {
-    try {
-      await labsAPI.patch<Environment>(
-        `/environments/${environmentId}/auth-settings`,
-        payload,
-      );
-
-      makeMutations(
-        buildEnvDataMutation(environmentId, [
-          {
-            key: 'authProvider',
-            value: payload.authProvider,
-            isSDKData: true,
-          },
-          {
-            key: 'enableSignUp',
-            value: payload.enableSignUp,
-            isSDKData: true,
-          },
-          {
-            key: 'enableSignUpB2BOnly',
-            value: payload.enableSignUpB2BOnly,
-            isSDKData: true,
-          },
-          {
-            key: 'styles',
-            value: payload.styles,
-            isSDKData: true,
-          },
-        ]),
-      );
-
-      await revalidateCache([`/${environmentId}/builder`]);
-
-      toast({
-        title: 'Changes Saved',
-        description: 'The auth settings has been successfully updated.',
-      });
-
-      return Promise.resolve();
-    } catch (error: any) {
-      console.error('useEnvironment.updateEnvironmentAuthSettings', error);
       toast({
         title: 'Update Error',
         description: error?.response?.data?.message || APIErrors.GenericForm,
@@ -413,7 +353,6 @@ export default function useEnvironment(
     environmentError,
     createEnvironment,
     updateEnvironmentGeneralSettings,
-    updateEnvironmentAuthSettings,
     regenerateEnvironmentPublicKey,
     regenerateEnvironmentSecretKey,
     getEnvironmentSecretKey,
