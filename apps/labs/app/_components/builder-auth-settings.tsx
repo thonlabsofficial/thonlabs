@@ -288,16 +288,9 @@ export default function BuilderAuthSettings({ environment }: Props) {
                   />
                   
                 </div>
-                {/* <Input
-                  id="appURL"
-                  placeholder="e.g.: 30d"
-                  label="Refresh Token Expiration"
-                  error={form.formState.errors.refreshTokenExpiration?.message}
-                  {...form.register('refreshTokenExpiration')}
-                /> */}
-                {form.formState.errors.tokenExpirationValue && (
+                {form.formState.errors.refreshTokenExpirationValue && (
                   <Typo variant={'sm'} state={'error'} className="text-sm">
-                    {form.formState.errors.tokenExpirationValue?.message}
+                    {form.formState.errors.refreshTokenExpirationValue?.message}
                   </Typo>
                 )}
               </InputWrapper>

@@ -33,8 +33,7 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
       required_error: ErrorMessages.RequiredField,
       invalid_type_error: ErrorMessages.InvalidNumber,
     })
-    .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') })
-    .max(54, { message: ErrorMessages.MaxValue.replace('{max}', '54') }),
+    .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') }),
   tokenExpirationUnit: z.enum(['m', 'd'], {
     required_error: ErrorMessages.RequiredField,
   }),
@@ -44,8 +43,7 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
       required_error: ErrorMessages.RequiredField,
       invalid_type_error: ErrorMessages.InvalidNumber,
     })
-    .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') })
-    .max(54, { message: ErrorMessages.MaxValue.replace('{max}', '54') }),
+    .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') }),
   
   refreshTokenExpirationUnit: z.enum(['m', 'd'], {
     required_error:ErrorMessages.RequiredField,
