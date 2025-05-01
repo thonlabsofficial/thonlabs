@@ -18,6 +18,7 @@ export const UpdateEnvironmentGeneralSettingsFormSchema = z.object({
     .min(1, { message: ErrorMessages.RequiredField })
     .max(25, { message: 'This field must be 25 characters or fewer' }),
   appURL: z.string().url(),
+  logo: z.instanceof(FileList).optional(),
 });
 
 export type UpdateEnvironmentGeneralSettingsFormData = z.infer<
