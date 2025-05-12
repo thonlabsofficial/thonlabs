@@ -142,7 +142,11 @@ export default function useEnvironment(
     try {
       await labsAPI.patch<Environment>(
         `/environments/${environmentId}/auth-settings`,
-        payload,
+        {
+          ...payload,
+          tokenExpiration: `${payload.tokenExpirationValue}${payload.tokenExpirationUnit}`,
+          refreshTokenExpiration: `${payload.refreshTokenExpirationValue}${payload.refreshTokenExpirationUnit}`,
+        },
       );
 
       makeMutations(
