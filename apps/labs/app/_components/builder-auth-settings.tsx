@@ -169,7 +169,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
               <InputWrapper>
                 <Label>Social Login Providers</Label>
                 {Object.values(SSOSocialProvider).map((provider) => (
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-1" key={provider}>
                     <div className="flex items-center justify-between">
                       <InputSwitch
                         key={provider}

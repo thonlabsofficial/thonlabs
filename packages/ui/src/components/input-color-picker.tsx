@@ -184,7 +184,7 @@ export function InputColorPicker({
             </PopoverTrigger>
             <input
               type="text"
-              className="w-full"
+              className="w-full bg-transparent"
               value={value}
               onChange={onInputChange}
             />
