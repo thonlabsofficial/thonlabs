@@ -5,9 +5,24 @@ import { SSOSocialProvider } from '@thonlabs/nextjs';
 
 export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
   authProvider: z.string({ required_error: ErrorMessages.RequiredField }),
-  tokenExpiration: z.string({ required_error: ErrorMessages.RequiredField }),
-  refreshTokenExpiration: z.string({
+  tokenExpirationValue: z
+    .number({
+      required_error: ErrorMessages.RequiredField,
+      invalid_type_error: ErrorMessages.InvalidNumber,
+    })
+    .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') }),
+  tokenExpirationUnit: z.enum(['m', 'd'], {
     required_error: ErrorMessages.RequiredField,
+  }),
+  refreshTokenExpirationValue: z
+    .number({
+      required_error: ErrorMessages.RequiredField,
+      invalid_type_error: ErrorMessages.InvalidNumber,
+    })
+    .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') }),
+  
+  refreshTokenExpirationUnit: z.enum(['m', 'd'], {
+    required_error:ErrorMessages.RequiredField,
   }),
   enableSignUp: z.boolean(),
   enableSignUpB2BOnly: z.boolean(),
