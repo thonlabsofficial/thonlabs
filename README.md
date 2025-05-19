@@ -1,28 +1,42 @@
-# Thon Labs Frontend
+# ThonLabs Frontend Monorepo
 
-**🚨 This is a WIP README file 🚨**
+ThonLabs is an open-source all-in-one platform that gives your SaaS the foundation it needs — with plug-and-play authentication, user and organization management, and more.
 
-Here you'll find all frontend projects related to Thon Labs.
+Join our waitlist - https://thonlabs.io
 
-This project has the following major technologies:
+## Getting started
 
-- Next.js
-- Bun
-- TailwindCSS
-- Shadcn UI
+This is the frontend project and uses Next.js, TailwindCSS, ShadcnUI, turborepo and more.
 
-## Getting Started
+### How to install
 
-First, install all packages:
+Make sure you have `pnpm` installed, since it's our package manager.
 
 ```bash
-bun install
+npm i -g pnpm
 ```
 
-Second, run the development server:
+Install the packages
 
 ```bash
-bun dev
+pnpm i
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ThonLabs uses ThonLabs, so you need to create an `.env` file at `apps/labs` and adds your ThonLabs Environment ID and Public Key
+
+```markdown
+NEXT_PUBLIC_TL_API=http://localhost:3100 # Backend server URL
+NEXT_PUBLIC_TL_AUTH_API=http://localhost:3100 # Backend server URL
+NEXT_PUBLIC_TL_ENV_ID=<your_env_id>
+NEXT_PUBLIC_TL_PK=<your_public_key>
+```
+
+**[Here](https://github.com/codeguslabs/thonlabs-services) you can learn how to setup the ThonLabs Services**
+
+Run the project
+
+```bash
+turbo dev --filter labs
+```
+
+The project will start on port `https://localhost:3000`
