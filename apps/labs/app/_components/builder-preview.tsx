@@ -68,7 +68,7 @@ export default function BuilderPreview() {
           </ButtonGroup>
         </div>
       </div>
-      <Card className="h-[46rem] overflow-hidden relative">
+      <Card className="h-[53rem] overflow-hidden relative">
         <CardContent
           className={cn('p-0 w-full h-full bg-background', previewTheme)}
         >

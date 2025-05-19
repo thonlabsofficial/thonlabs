@@ -35,13 +35,7 @@ export default function EnableSignUpB2BOnlySwitch({
             label="Restrict User Creation To Organization Domains"
             description={
               <>
-                Allow only users with email matching your{' '}
-                <Link
-                  className={typoVariants({ variant: 'codeLink' })}
-                  href={`/${environmentId}/organizations`}
-                >
-                  organization's
-                </Link>
+                Allow only users with email matching your organization's
                 approved domains.
               </>
             }
