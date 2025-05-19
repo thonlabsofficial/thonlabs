@@ -26,7 +26,7 @@ export default async function Builder({ params }: { params: Params }) {
         icon={ShieldEllipsis}
       />
       <PageWrapper className="pt-4 grid gap-10" withContainer={false}>
-        <div className="grid grid-cols-[44rem_1fr] gap-2">
+        <div className="grid grid-cols-[42rem_1fr] gap-2">
           <section>
             <SectionHeader title="Settings" />
             <BuilderAuthSettings environment={environment} />
