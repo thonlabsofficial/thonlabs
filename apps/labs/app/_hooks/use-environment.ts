@@ -135,6 +135,47 @@ export default function useEnvironment(
     }
   }
 
+  async function updateLogoGeneralSettings(
+    environmentId: string,
+    payload: UpdateEnvironmentGeneralSettingsFormData,
+    showNotification = true,
+  ) {
+    try {
+      await labsAPI.patch<Environment>(
+        `/environments/${environmentId}/general-settings/logo`,
+        { file: payload.logo?.[0] },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
+      await revalidateCache([
+        `/${environmentId}/general-settings`,
+      ]);
+
+      if (showNotification) {
+        toast({
+          title: 'Your Company Logo Changed',
+          description: 'The logo has been successfully changed.',
+        });
+      }
+
+    } catch (error: any) {
+      // VITOR > Fix error message later. Original from Organization is "console.error('useOrganization.updateLogo', error);"
+      console.error('Something is not right', error);
+      if (showNotification) {
+        toast({
+          title: 'Error',
+          description: error?.response?.data?.message || APIErrors.GenericFile,
+          variant: 'destructive',
+        });
+      }
+      throw error;
+    }
+  }
+
   async function updateEnvironmentAuthSettings(
     environmentId: string,
     payload: UpdateEnvironmentAuthSettingsFormData,
@@ -273,11 +314,11 @@ export default function useEnvironment(
               (p: Project & { environments: Environment[] }) =>
                 p.id === environment.projectId
                   ? {
-                      ...p,
-                      environments: p.environments.filter(
-                        (e) => e.id !== environment.id,
-                      ),
-                    }
+                    ...p,
+                    environments: p.environments.filter(
+                      (e) => e.id !== environment.id,
+                    ),
+                  }
                   : p,
             ),
           }),
@@ -417,6 +458,7 @@ export default function useEnvironment(
     environmentError,
     createEnvironment,
     updateEnvironmentGeneralSettings,
+    updateLogoGeneralSettings,
     updateEnvironmentAuthSettings,
     regenerateEnvironmentPublicKey,
     regenerateEnvironmentSecretKey,
