@@ -43,18 +43,25 @@ export function useCredential(params: Params = {}) {
       );
 
       toast({
-        description: `The ${provider} has been successfully saved.`,
+        description: `The ${provider} provider has been successfully saved.`,
       });
 
-      makeMutations(
-        buildEnvDataMutation(environmentId, [
+      makeMutations([
+        ...buildEnvDataMutation(environmentId, [
           {
             key: 'activeSSOProviders',
             value: data.activeSSOProviders,
             isSDKData: true,
           },
         ]),
-      );
+        {
+          cacheKey: `/environments/${environmentId}/credentials/${provider}`,
+          populateCache: (_: any, cache: any) => ({
+            ...cache,
+            ...payload,
+          }),
+        },
+      ]);
     } catch (error: any) {
       console.error('useCredential.upsertCredential', error);
       toast({
