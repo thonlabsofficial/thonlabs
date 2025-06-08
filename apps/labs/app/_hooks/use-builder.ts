@@ -18,7 +18,15 @@ export default function useBuilder() {
     try {
       await labsAPI.patch<Environment>(
         `/environments/${environmentId}/auth-settings`,
-        payload,
+        {
+          authProvider: payload.authProvider,
+          enableSignUp: payload.enableSignUp,
+          enableSignUpB2BOnly: payload.enableSignUpB2BOnly,
+          styles: payload.styles,
+          activeSSOProviders: payload.activeSSOProviders,
+          tokenExpiration: `${payload.tokenExpirationValue}${payload.tokenExpirationUnit}`,
+          refreshTokenExpiration: `${payload.refreshTokenExpirationValue}${payload.refreshTokenExpirationUnit}`,
+        },
       );
 
       makeMutations(
