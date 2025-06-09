@@ -12,7 +12,7 @@
     "@hookform/resolvers": "^4.1.3",
     "@radix-ui/react-icons": "^1.3.2",
     "@repo/ui": "workspace:*",
-    "@thonlabs/nextjs": "^0.6.7",
+    "@thonlabs/nextjs": "^0.6.8",
     "axios": "^1.8.2",
     "date-fns": "^3.6.0",
     "jose": "^5.9.6",

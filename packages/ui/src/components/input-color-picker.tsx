@@ -187,6 +187,7 @@ export function InputColorPicker({
               className="w-full bg-transparent"
               value={value}
               onChange={onInputChange}
+              name={name}
             />
           </div>
           {error && (
