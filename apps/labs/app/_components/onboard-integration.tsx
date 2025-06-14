@@ -130,7 +130,7 @@ function getNextSteps({
         filename=".env"
         code={`NEXT_PUBLIC_TL_ENV_ID=${environmentId}
 NEXT_PUBLIC_TL_PK=${publicKey}
-NEXT_PUBLIC_TL_AUTH_API=${authDomain}`}
+NEXT_PUBLIC_TL_AUTH_DOMAIN=${authDomain}`}
       />
     ),
     'step-2': (
@@ -169,7 +169,7 @@ export default async function RootLayout({children}: Readonly<{children: React.R
         <ThonLabsWrapper
           environmentId="process.env.NEXT_PUBLIC_TL_ENV_ID"
           publicKey="process.env.NEXT_PUBLIC_TL_PK"
-          baseURL="process.env.NEXT_PUBLIC_TL_AUTH_API"
+          baseURL="process.env.NEXT_PUBLIC_TL_AUTH_DOMAIN"
         >
           {children}
         </ThonLabsWrapper>

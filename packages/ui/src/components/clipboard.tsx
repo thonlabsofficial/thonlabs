@@ -13,7 +13,7 @@ type LucideIconType = ForwardRefExoticComponent<
 
 type Props = {
   value: string;
-  labels?: (React.ReactNode | IconType | LucideIconType)[];
+  labels?: any;
   onCopied?: () => void;
   onCopyFinished?: () => void;
   iconLabels?: boolean;

@@ -1,7 +1,6 @@
 import { labsAPI } from '../../helpers/api';
 import {
   NewEnvironmentFormData,
-  UpdateEnvironmentAuthSettingsFormData,
   UpdateEnvironmentGeneralSettingsFormData,
 } from '../_validators/environments-validators';
 import { useToast } from '@repo/ui/hooks/use-toast';
@@ -11,10 +10,7 @@ import useSWR from 'swr';
 import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optimistic-update';
-import {
-  buildEnvDataMutation,
-  useEnvironmentAppData,
-} from '@/_hooks/use-environment-app-data';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 import { revalidateCache } from '@/_services/server-cache-service';
 
 type Params = {
@@ -151,9 +147,7 @@ export default function useEnvironment(
         },
       );
 
-      await revalidateCache([
-        `/${environmentId}/general-settings`,
-      ]);
+      await revalidateCache([`/${environmentId}/general-settings`]);
 
       if (showNotification) {
         toast({
@@ -161,7 +155,6 @@ export default function useEnvironment(
           description: 'The logo has been successfully changed.',
         });
       }
-
     } catch (error: any) {
       // VITOR > Fix error message later. Original from Organization is "console.error('useOrganization.updateLogo', error);"
       console.error('Something is not right', error);
@@ -173,65 +166,6 @@ export default function useEnvironment(
         });
       }
       throw error;
-    }
-  }
-
-  async function updateEnvironmentAuthSettings(
-    environmentId: string,
-    payload: UpdateEnvironmentAuthSettingsFormData,
-  ) {
-    try {
-      await labsAPI.patch<Environment>(
-        `/environments/${environmentId}/auth-settings`,
-        {
-          ...payload,
-          tokenExpiration: `${payload.tokenExpirationValue}${payload.tokenExpirationUnit}`,
-          refreshTokenExpiration: `${payload.refreshTokenExpirationValue}${payload.refreshTokenExpirationUnit}`,
-        },
-      );
-
-      makeMutations(
-        buildEnvDataMutation(environmentId, [
-          {
-            key: 'authProvider',
-            value: payload.authProvider,
-            isSDKData: true,
-          },
-          {
-            key: 'enableSignUp',
-            value: payload.enableSignUp,
-            isSDKData: true,
-          },
-          {
-            key: 'enableSignUpB2BOnly',
-            value: payload.enableSignUpB2BOnly,
-            isSDKData: true,
-          },
-          {
-            key: 'styles',
-            value: payload.styles,
-            isSDKData: true,
-          },
-        ]),
-      );
-
-      await revalidateCache([`/${environmentId}/builder`]);
-
-      toast({
-        title: 'Changes Saved',
-        description: 'The auth settings has been successfully updated.',
-      });
-
-      return Promise.resolve();
-    } catch (error: any) {
-      console.error('useEnvironment.updateEnvironmentAuthSettings', error);
-      toast({
-        title: 'Update Error',
-        description: error?.response?.data?.message || APIErrors.GenericForm,
-        variant: 'destructive',
-      });
-
-      return Promise.reject(error);
     }
   }
 
@@ -314,11 +248,11 @@ export default function useEnvironment(
               (p: Project & { environments: Environment[] }) =>
                 p.id === environment.projectId
                   ? {
-                    ...p,
-                    environments: p.environments.filter(
-                      (e) => e.id !== environment.id,
-                    ),
-                  }
+                      ...p,
+                      environments: p.environments.filter(
+                        (e) => e.id !== environment.id,
+                      ),
+                    }
                   : p,
             ),
           }),
@@ -459,7 +393,6 @@ export default function useEnvironment(
     createEnvironment,
     updateEnvironmentGeneralSettings,
     updateLogoGeneralSettings,
-    updateEnvironmentAuthSettings,
     regenerateEnvironmentPublicKey,
     regenerateEnvironmentSecretKey,
     getEnvironmentSecretKey,

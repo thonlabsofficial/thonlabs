@@ -30,7 +30,7 @@ const cardVariants = cva(
 );
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends React.ComponentProps<'div'>,
     VariantProps<typeof cardVariants> {
   icon?: any;
   padding?: boolean;
@@ -38,7 +38,7 @@ export interface CardProps
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  CardProps & React.HTMLAttributes<HTMLDivElement>
+  CardProps
 >(
   (
     { className, variant, border, icon: Icon, padding, children, ...props },
@@ -106,7 +106,7 @@ CardTitle.displayName = 'CardTitle';
 const CardArrowRight = ({
   className,
   ...props
-}: React.ComponentProps<typeof ArrowRight>) => (
+}: React.ComponentProps<'svg'>) => (
   <ArrowRight
     className={cn(
       'group-hover:translate-x-1 transition-all duration-120 ease-in-out',

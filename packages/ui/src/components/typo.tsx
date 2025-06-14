@@ -42,7 +42,7 @@ const typoVariants = cva('font-sans text-text', {
 export interface TypoProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof typoVariants> {
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   fallback?: React.ReactNode;
 }
 

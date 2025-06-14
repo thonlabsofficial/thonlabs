@@ -2,11 +2,10 @@
 
 import React from 'react';
 import SeparatorLine from '@/_components/separator-line';
-import useEnvironment from '@/_hooks/use-environment';
 import {
   UpdateEnvironmentAuthSettingsFormData,
   UpdateEnvironmentAuthSettingsFormSchema,
-} from '@/_validators/environments-validators';
+} from '@/_validators/builder-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
@@ -18,8 +17,11 @@ import { useTransition } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
 import { EnvironmentDetail } from '@/_interfaces/environment';
-import { EnvironmentData, usePreviewMode } from '@thonlabs/nextjs';
-import { Label } from '@repo/ui/label';
+import {
+  EnvironmentData,
+  SSOSocialProvider,
+  usePreviewMode,
+} from '@thonlabs/nextjs';
 import {
   InputSelect,
   InputSelectContent,
@@ -28,6 +30,15 @@ import {
   InputSelectValue,
 } from '@repo/ui/input-select';
 import { InputColorPicker } from '@repo/ui/input-color-picker';
+import { Label } from '@repo/ui/label';
+import BuilderEditCredentialsDrawer from '@/_components/builder-edit-credentials-drawer';
+import useBuilder from '@/_hooks/use-builder';
+
+const ssoProvidersMapper = {
+  [SSOSocialProvider.GOOGLE]: {
+    label: 'Enable Google Login',
+  },
+};
 
 interface Props {
   environment: EnvironmentDetail;
@@ -53,24 +64,26 @@ export default function BuilderAuthSettings({ environment }: Props) {
       : [];
   }, [environment.tokenExpiration]);
 
-  const [refreshTokenExpirationValue, refreshTokenExpirationUnit] = React.useMemo(() => {
-    if (!environment.refreshTokenExpiration) {
-      /*
+  const [refreshTokenExpirationValue, refreshTokenExpirationUnit] =
+    React.useMemo(() => {
+      if (!environment.refreshTokenExpiration) {
+        /*
         If not exists, do not fallback, it should be an error
         and for sure there is some bug in our backend
       */
-      return [];
-    }
+        return [];
+      }
 
-    const match = environment.refreshTokenExpiration.match(/^(\d+)([a-z]+)$/i);
+      const match =
+        environment.refreshTokenExpiration.match(/^(\d+)([a-z]+)$/i);
 
-    return match?.[1] && match?.[2]
-      ? [
-          Number(match[1]),
-          match[2] as UpdateEnvironmentAuthSettingsFormData['refreshTokenExpirationUnit'],
-        ]
-      : [];
-  }, [environment.refreshTokenExpiration]);
+      return match?.[1] && match?.[2]
+        ? [
+            Number(match[1]),
+            match[2] as UpdateEnvironmentAuthSettingsFormData['refreshTokenExpirationUnit'],
+          ]
+        : [];
+    }, [environment.refreshTokenExpiration]);
 
   const form = useForm<UpdateEnvironmentAuthSettingsFormData>({
     resolver: zodResolver(UpdateEnvironmentAuthSettingsFormSchema),
@@ -85,16 +98,43 @@ export default function BuilderAuthSettings({ environment }: Props) {
       styles: {
         primaryColor: environment.styles?.primaryColor || '',
       },
+      activeSSOProviders: environment.activeSSOProviders || [],
     },
   });
   const formData = useWatch({ control: form.control });
-  const { updateEnvironmentAuthSettings } = useEnvironment();
+  const { updateEnvironmentAuthSettings } = useBuilder();
   const [isSaving, startSavingTransition] = useTransition();
   const { setPreviewEnvironmentData } = usePreviewMode();
 
   React.useEffect(() => {
     setPreviewEnvironmentData(formData as EnvironmentData);
   }, [formData, setPreviewEnvironmentData]);
+
+  React.useEffect(() => {
+    form.setValue('activeSSOProviders', environment.activeSSOProviders || []);
+  }, [environment.activeSSOProviders]);
+
+  function isSSOProviderActive(provider: SSOSocialProvider) {
+    return form.getValues('activeSSOProviders')?.includes(provider);
+  }
+
+  function handleSSOProviderCheckedChange(
+    provider: SSOSocialProvider,
+    checked: boolean,
+  ) {
+    const activeSSOProviders = form.getValues('activeSSOProviders') || [];
+    let newActiveSSOProviders = [...activeSSOProviders];
+
+    if (checked) {
+      newActiveSSOProviders = [...activeSSOProviders, provider];
+    } else {
+      newActiveSSOProviders = activeSSOProviders.filter((p) => p !== provider);
+    }
+
+    form.setValue('activeSSOProviders', newActiveSSOProviders, {
+      shouldDirty: true,
+    });
+  }
 
   function onSubmit(payload: UpdateEnvironmentAuthSettingsFormData) {
     startSavingTransition(() => {
@@ -103,13 +143,15 @@ export default function BuilderAuthSettings({ environment }: Props) {
           authProvider: payload?.authProvider || '',
           tokenExpirationValue: payload?.tokenExpirationValue || 0,
           tokenExpirationUnit: payload?.tokenExpirationUnit || '',
-          refreshTokenExpirationValue: payload?.refreshTokenExpirationValue || 0,
+          refreshTokenExpirationValue:
+            payload?.refreshTokenExpirationValue || 0,
           refreshTokenExpirationUnit: payload?.refreshTokenExpirationUnit || '',
           enableSignUp: payload?.enableSignUp || false,
           enableSignUpB2BOnly: payload?.enableSignUpB2BOnly || false,
           styles: {
             primaryColor: payload?.styles?.primaryColor || '',
           },
+          activeSSOProviders: payload?.activeSSOProviders || [],
         });
       });
     });
@@ -174,6 +216,36 @@ export default function BuilderAuthSettings({ environment }: Props) {
                   ]}
                   {...form.register('authProvider')}
                 />
+              </InputWrapper>
+
+              <InputWrapper>
+                <Label>Social Login Providers</Label>
+                {Object.values(SSOSocialProvider).map((provider) => (
+                  <div className="flex flex-col gap-1" key={provider}>
+                    <div className="flex items-center justify-between">
+                      <InputSwitch
+                        key={provider}
+                        label={ssoProvidersMapper[provider].label}
+                        value={isSSOProviderActive(provider)}
+                        onCheckedChange={(checked) =>
+                          handleSSOProviderCheckedChange(provider, checked)
+                        }
+                        checked={isSSOProviderActive(provider)}
+                      />
+                      {isSSOProviderActive(provider) && (
+                        <BuilderEditCredentialsDrawer
+                          environmentId={environment.id}
+                          provider={provider}
+                          trigger={
+                            <Button variant={'ghost'} size={'xs'} type="button">
+                              Edit Credentials
+                            </Button>
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
               </InputWrapper>
             </div>
           </CardContent>
@@ -264,40 +336,32 @@ export default function BuilderAuthSettings({ environment }: Props) {
               </InputWrapper>
               <InputWrapper>
                 <Label>Refresh Token Expiration</Label>
-                <div className='grid grid-cols-[6rem_1fr] gap-1'>
+                <div className="grid grid-cols-[6rem_1fr] gap-1">
                   <Input
-                  maxLength={2}
-                  {...form.register('refreshTokenExpirationValue', {
-                    valueAsNumber: true,
-                  })}
+                    maxLength={2}
+                    {...form.register('refreshTokenExpirationValue', {
+                      valueAsNumber: true,
+                    })}
                   />
                   <Controller
-                  name='refreshTokenExpirationUnit'
-                  control={form.control}
-                  render={({ field }) => (
-                    <InputSelect onValueChange={field.onChange} {...field}>
-                      <InputSelectTrigger value={field.value}>
-                        <InputSelectValue placeholder="Select an option" />
-                      </InputSelectTrigger>
-                      <InputSelectContent>
-                        <InputSelectItem value="m">minutes</InputSelectItem>
-                        <InputSelectItem value="d">days</InputSelectItem>
-                      </InputSelectContent>
-                    </InputSelect>
-                  )}
+                    name="refreshTokenExpirationUnit"
+                    control={form.control}
+                    render={({ field }) => (
+                      <InputSelect onValueChange={field.onChange} {...field}>
+                        <InputSelectTrigger value={field.value}>
+                          <InputSelectValue placeholder="Select an option" />
+                        </InputSelectTrigger>
+                        <InputSelectContent>
+                          <InputSelectItem value="m">minutes</InputSelectItem>
+                          <InputSelectItem value="d">days</InputSelectItem>
+                        </InputSelectContent>
+                      </InputSelect>
+                    )}
                   />
-                  
                 </div>
-                {/* <Input
-                  id="appURL"
-                  placeholder="e.g.: 30d"
-                  label="Refresh Token Expiration"
-                  error={form.formState.errors.refreshTokenExpiration?.message}
-                  {...form.register('refreshTokenExpiration')}
-                /> */}
-                {form.formState.errors.tokenExpirationValue && (
+                {form.formState.errors.refreshTokenExpirationValue && (
                   <Typo variant={'sm'} state={'error'} className="text-sm">
-                    {form.formState.errors.tokenExpirationValue?.message}
+                    {form.formState.errors.refreshTokenExpirationValue?.message}
                   </Typo>
                 )}
               </InputWrapper>
