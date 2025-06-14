@@ -31,7 +31,7 @@ async function RootLayout({
         <ThonLabsWrapper
           environmentId={process.env.NEXT_PUBLIC_TL_ENV_ID as string}
           publicKey={process.env.NEXT_PUBLIC_TL_PK as string}
-          baseURL={process.env.NEXT_PUBLIC_TL_AUTH_API as string}
+          authDomain={process.env.NEXT_PUBLIC_TL_AUTH_DOMAIN as string}
         >
           <CoreProvider>{children}</CoreProvider>
         </ThonLabsWrapper>
