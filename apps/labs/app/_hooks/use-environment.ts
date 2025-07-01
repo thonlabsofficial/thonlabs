@@ -86,6 +86,11 @@ export default function useEnvironment(
         payload,
       );
 
+      if (payload.logo && payload.logo?.[0]) {
+        await updateLogoGeneralSettings(environmentId, payload.logo, false);
+      }
+
+
       /*
         Updates the cache of get and projects list with the new environment data
       */
@@ -133,13 +138,13 @@ export default function useEnvironment(
 
   async function updateLogoGeneralSettings(
     environmentId: string,
-    payload: UpdateEnvironmentGeneralSettingsFormData,
+    logo: FileList,
     showNotification = true,
   ) {
     try {
       await labsAPI.patch<Environment>(
         `/environments/${environmentId}/general-settings/logo`,
-        { file: payload.logo?.[0] },
+        { file: logo?.[0] },
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -147,7 +152,9 @@ export default function useEnvironment(
         },
       );
 
-      await revalidateCache([`/${environmentId}/general-settings`]);
+      await revalidateCache([
+        `/${environmentId}/general-settings`,
+      ]);
 
       if (showNotification) {
         toast({
@@ -156,8 +163,7 @@ export default function useEnvironment(
         });
       }
     } catch (error: any) {
-      // VITOR > Fix error message later. Original from Organization is "console.error('useOrganization.updateLogo', error);"
-      console.error('Something is not right', error);
+      console.error('useEnvironment.updateLogoGeneralSettings', error);
       if (showNotification) {
         toast({
           title: 'Error',
@@ -248,11 +254,11 @@ export default function useEnvironment(
               (p: Project & { environments: Environment[] }) =>
                 p.id === environment.projectId
                   ? {
-                      ...p,
-                      environments: p.environments.filter(
-                        (e) => e.id !== environment.id,
-                      ),
-                    }
+                    ...p,
+                    environments: p.environments.filter(
+                      (e) => e.id !== environment.id,
+                    ),
+                  }
                   : p,
             ),
           }),
