@@ -29,7 +29,7 @@ const inputSingleFileVariants = cva(
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form' | 'type'>,
-    VariantProps<typeof inputSingleFileVariants> {
+  VariantProps<typeof inputSingleFileVariants> {
   label?: React.ReactNode;
   error?: React.ReactNode;
   loading?: boolean;
@@ -75,9 +75,8 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
       if (allowedExtensions && !allowedExtensions.includes(extension)) {
         toast({
           title: 'Invalid file type',
-          description: `Allowed extensions ${
-            allowedExtensions.length > 1 ? 'are' : 'is'
-          } ${allowedExtensions.join(', ')}`,
+          description: `Allowed extensions ${allowedExtensions.length > 1 ? 'are' : 'is'
+            } ${allowedExtensions.join(', ')}`,
           variant: 'destructive',
         });
         form.setValue(name, undefined);
@@ -87,9 +86,8 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
       if (maxFileSizeInMB && formFile.size > maxFileSizeInMB * 1024 * 1024) {
         toast({
           title: 'File too large',
-          description: `Max allowed size is ${maxFileSizeInMB}MB - Current file size: ${
-            formFile.size * 1024 * 1024
-          }MB`,
+          description: `Max allowed size is ${maxFileSizeInMB}MB - Current file size: ${formFile.size * 1024 * 1024
+            }MB`,
           variant: 'destructive',
         });
         form.setValue(name, undefined);
@@ -130,7 +128,7 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
                     <IconSquare icon={fileIcon} />
                     <div className="flex flex-col">
                       <div className="truncate max-w-[17.375rem]">
-                        <Typo variant="sm">{formFile.name}</Typo>
+                        <Typo variant="sm">{formFile?.name}</Typo>
                       </div>
                       <div className="flex gap-1">
                         <ButtonLink

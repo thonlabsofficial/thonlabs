@@ -11,6 +11,7 @@ import React from 'react';
 import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optimistic-update';
 import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
+import { revalidateCache } from '@/_services/server-cache-service';
 
 type Params = {
   environmentId?: string;
@@ -85,6 +86,11 @@ export default function useEnvironment(
         payload,
       );
 
+      if (payload.logo && payload.logo?.[0]) {
+        await updateLogoGeneralSettings(environmentId, payload.logo, false);
+      }
+
+
       /*
         Updates the cache of get and projects list with the new environment data
       */
@@ -127,6 +133,45 @@ export default function useEnvironment(
       });
 
       return Promise.reject(error);
+    }
+  }
+
+  async function updateLogoGeneralSettings(
+    environmentId: string,
+    logo: FileList,
+    showNotification = true,
+  ) {
+    try {
+      await labsAPI.patch<Environment>(
+        `/environments/${environmentId}/general-settings/logo`,
+        { file: logo?.[0] },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
+      await revalidateCache([
+        `/${environmentId}/general-settings`,
+      ]);
+
+      if (showNotification) {
+        toast({
+          title: 'Your Company Logo Changed',
+          description: 'The logo has been successfully changed.',
+        });
+      }
+    } catch (error: any) {
+      console.error('useEnvironment.updateLogoGeneralSettings', error);
+      if (showNotification) {
+        toast({
+          title: 'Error',
+          description: error?.response?.data?.message || APIErrors.GenericFile,
+          variant: 'destructive',
+        });
+      }
+      throw error;
     }
   }
 
@@ -209,11 +254,11 @@ export default function useEnvironment(
               (p: Project & { environments: Environment[] }) =>
                 p.id === environment.projectId
                   ? {
-                      ...p,
-                      environments: p.environments.filter(
-                        (e) => e.id !== environment.id,
-                      ),
-                    }
+                    ...p,
+                    environments: p.environments.filter(
+                      (e) => e.id !== environment.id,
+                    ),
+                  }
                   : p,
             ),
           }),
@@ -353,6 +398,7 @@ export default function useEnvironment(
     environmentError,
     createEnvironment,
     updateEnvironmentGeneralSettings,
+    updateLogoGeneralSettings,
     regenerateEnvironmentPublicKey,
     regenerateEnvironmentSecretKey,
     getEnvironmentSecretKey,

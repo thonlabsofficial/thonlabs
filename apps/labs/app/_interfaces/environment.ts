@@ -10,6 +10,7 @@ export enum CustomDomainStatus {
 export interface Environment {
   id: string;
   name: string;
+  logo: string;
   appURL: string;
   project: Project;
 }

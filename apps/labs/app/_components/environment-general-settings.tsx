@@ -8,7 +8,9 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
+import { ImagePreview } from '@repo/ui/image-preview';
 import { Input, InputWrapper } from '@repo/ui/input';
+import { InputSingleFile } from '@repo/ui/input-single-file';
 import { useParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,9 +37,15 @@ export default function EnvironmentGeneralSettings() {
       },
     },
   );
+
+  const logo = form.watch('logo');
+
+  const logoPreview = logo?.[0] ? URL.createObjectURL(logo[0]) : '';
+
   const [isSaving, startSavingTransition] = useTransition();
 
   function onSubmit(payload: UpdateEnvironmentGeneralSettingsFormData) {
+    console.log(payload.logo);
     startSavingTransition(() => {
       updateEnvironmentGeneralSettings(environment!.id, payload).then(() => {
         form.reset({
@@ -85,6 +93,16 @@ export default function EnvironmentGeneralSettings() {
                   loading={isLoadingEnvironment}
                   error={form.formState.errors.appURL?.message}
                   {...form.register('appURL')}
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <InputSingleFile
+                  label="Your company logo"
+                  form={form}
+                  allowedExtensions={['png', 'jpg', 'jpeg', 'webp', 'svg']}
+                  maxFileSizeInMB={50}
+                  replaceBy={<ImagePreview src={logoPreview} />}
+                  {...form.register('logo')}
                 />
               </InputWrapper>
             </div>
