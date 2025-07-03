@@ -118,44 +118,46 @@ export default function NewUserDialog({
                 {...form.register('email')}
               />
             </InputWrapper>
-            {!organization && !envData?.enableSignUpB2BOnly && (
-              <InputWrapper className="z-60">
-                <Controller
-                  name="organizationId"
-                  control={form.control}
-                  render={({ field }) => (
-                    <InputSelect onValueChange={field.onChange} {...field}>
-                      <InputSelectTrigger
-                        label={
-                          <>
-                            Organization{' '}
-                            <Badge
-                              variant="info"
-                              size={'sm'}
-                              className="!text-text"
-                            >
-                              Optional
-                            </Badge>
-                          </>
-                        }
-                        error={form.formState.errors.organizationId?.message}
-                        onClear={() => field.onChange('')}
-                        value={field.value}
-                      >
-                        <InputSelectValue placeholder="Select an option" />
-                      </InputSelectTrigger>
-                      <InputSelectContent>
-                        {organizations.map(({ id, name }) => (
-                          <InputSelectItem key={id} value={id}>
-                            {name}
-                          </InputSelectItem>
-                        ))}
-                      </InputSelectContent>
-                    </InputSelect>
-                  )}
-                />
-              </InputWrapper>
-            )}
+            {organizations.length > 0 &&
+              !organization &&
+              !envData?.enableSignUpB2BOnly && (
+                <InputWrapper className="z-60">
+                  <Controller
+                    name="organizationId"
+                    control={form.control}
+                    render={({ field }) => (
+                      <InputSelect onValueChange={field.onChange} {...field}>
+                        <InputSelectTrigger
+                          label={
+                            <>
+                              Organization{' '}
+                              <Badge
+                                variant="info"
+                                size={'sm'}
+                                className="!text-text"
+                              >
+                                Optional
+                              </Badge>
+                            </>
+                          }
+                          error={form.formState.errors.organizationId?.message}
+                          onClear={() => field.onChange('')}
+                          value={field.value}
+                        >
+                          <InputSelectValue placeholder="Select an option" />
+                        </InputSelectTrigger>
+                        <InputSelectContent>
+                          {organizations.map(({ id, name }) => (
+                            <InputSelectItem key={id} value={id}>
+                              {name}
+                            </InputSelectItem>
+                          ))}
+                        </InputSelectContent>
+                      </InputSelect>
+                    )}
+                  />
+                </InputWrapper>
+              )}
             <InputWrapper>
               <Controller
                 name="sendInvite"
