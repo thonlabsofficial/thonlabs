@@ -55,9 +55,7 @@
     "./assets/images/thon-labs-logo-dark.svg": "./src/assets/images/thon-labs-logo-dark.svg",
     "./assets/images/thon-labs-logo-light.svg": "./src/assets/images/thon-labs-logo-light.svg",
     "./assets/images/thon-labs-logo-dark-reduced.svg": "./src/assets/images/thon-labs-logo-dark-reduced.svg",
-    "./assets/images/thon-labs-logo-light-reduced.svg": "./src/assets/images/thon-labs-logo-light-reduced.svg",
-    "./assets/images/resend-logo.svg": "./src/assets/images/resend-logo.svg",
-    "./assets/images/aws-logo.svg": "./src/assets/images/aws-logo.svg"
+    "./assets/images/thon-labs-logo-light-reduced.svg": "./src/assets/images/thon-labs-logo-light-reduced.svg"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0"
