@@ -46,7 +46,7 @@ export default function ExploreThonLabsCards({ environmentId }: Props) {
     <div className="grid grid-cols-4 gap-3">
       <ExploreThonLabsCard
         title="Auth Builder"
-        description="Customize the authentication experience for your users and define tokens time"
+        description="Setup SSO providers for your users, configure colors and tokens"
         icon={ShieldEllipsis}
         link={`/${environmentId}/builder`}
       />
@@ -57,8 +57,8 @@ export default function ExploreThonLabsCards({ environmentId }: Props) {
         link={`/${environmentId}/email-templates`}
       />
       <ExploreThonLabsCard
-        title="Setup Domains"
-        description="Configure your custom domains for authentication and email templates"
+        title="Setup Domain"
+        description="Configure your custom domain for authentication"
         icon={Globe}
         link={`/${environmentId}/settings`}
       />

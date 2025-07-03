@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../core/utils';
+import { Skeleton } from './skeleton';
 
 const buttonVariants = cva(
   `inline-flex items-center justify-center whitespace-nowrap rounded-md font-semibold 
@@ -9,6 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        none: '',
         primary:
           'bg-primary text-primary-foreground shadow hover:bg-primary/90',
         opposite: 'bg-foreground text-secondary shadow hover:bg-foreground/90',
@@ -56,6 +58,7 @@ export interface ButtonProps
   loading?: boolean;
   icon?: any;
   active?: boolean;
+  skeleton?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -69,10 +72,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       icon: Icon,
       active,
+      skeleton,
       ...props
     },
     ref,
   ) => {
+    if (skeleton) {
+      return (
+        <Skeleton
+          className={cn(buttonVariants({ variant: 'none', size, className }))}
+        />
+      );
+    }
+
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }), {

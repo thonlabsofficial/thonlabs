@@ -25,7 +25,7 @@ const iconVariants = cva('', {
   variants: {
     size: {
       sm: 'flex-none basis-4 w-4 h-4',
-      md: 'flex-none basis-6 w-6 h-6',
+      md: 'flex-none basis-5 w-5 h-5',
       lg: 'flex-none basis-8 w-8 h-8',
       xl: 'flex-none basis-10 w-10 h-10',
     },

@@ -6,7 +6,6 @@ import PageHeader from '@/_components/page-header';
 import { MailOpen } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import EditEmailTemplateSettings from '@/_components/edit-email-template-settings';
-import EmailDomainStatusAlert from '@/_components/email-domain-status-alert';
 
 type Params = Promise<{ environmentId: string; templateId: string }>;
 
@@ -36,8 +35,6 @@ export default async function EmailDetail({ params }: { params: Params }) {
 
   return (
     <>
-      <EmailDomainStatusAlert />
-
       <PageHeader
         title={`Email Template: ${emailTemplate.name}`}
         icon={MailOpen}

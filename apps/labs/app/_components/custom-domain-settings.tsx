@@ -23,9 +23,9 @@ export default function CustomDomainSettings() {
       <div className="grid grid-cols-[19rem_1fr] gap-40">
         <CardHeader
           padding
-          description="Use this domain for all authentication requests, including login, signup, password reset, and email confirmation."
+          description="Used in authentication flows such as login, signup, password reset, and email confirmation."
         >
-          Authentication Domain
+          Domain
         </CardHeader>
         <CardContent className="flex-1 p-6">
           <InputWrapper>

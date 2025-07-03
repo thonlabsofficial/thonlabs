@@ -1,4 +1,3 @@
-import { UpdateProviderCredentialsFormData } from '@/_validators/builder-validators';
 import { labsEnvAPI } from '@helpers/api';
 import { APIErrors } from '@helpers/api/api-errors';
 import { useToast } from '@repo/ui/hooks/use-toast';
@@ -27,6 +26,9 @@ export function useCredential(params: Params = {}) {
       params.environmentId &&
       params.provider &&
       `/environments/${params.environmentId}/credentials/${params.provider}`,
+    {
+      revalidateOnFocus: false,
+    },
   );
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
@@ -34,7 +36,7 @@ export function useCredential(params: Params = {}) {
   async function upsertCredential(
     environmentId: string,
     provider: SSOSocialProvider,
-    payload: UpdateProviderCredentialsFormData,
+    payload: any,
   ) {
     try {
       const { data } = await labsEnvAPI.post<CredentialBaseResponse>(
@@ -42,18 +44,19 @@ export function useCredential(params: Params = {}) {
         payload,
       );
 
-      toast({
-        description: `The ${provider} provider has been successfully saved.`,
-      });
+      if (data.activeSSOProviders) {
+        makeMutations(
+          buildEnvDataMutation(environmentId, [
+            {
+              key: 'activeSSOProviders',
+              value: data.activeSSOProviders,
+              isSDKData: true,
+            },
+          ]),
+        );
+      }
 
       makeMutations([
-        ...buildEnvDataMutation(environmentId, [
-          {
-            key: 'activeSSOProviders',
-            value: data.activeSSOProviders,
-            isSDKData: true,
-          },
-        ]),
         {
           cacheKey: `/environments/${environmentId}/credentials/${provider}`,
           populateCache: (_: any, cache: any) => ({
@@ -65,7 +68,7 @@ export function useCredential(params: Params = {}) {
     } catch (error: any) {
       console.error('useCredential.upsertCredential', error);
       toast({
-        title: `We couldn't save ${provider} credential`,
+        title: `We couldn't save ${provider} credentials`,
         description: error?.response?.data?.message || APIErrors.GenericForm,
         variant: 'destructive',
       });
