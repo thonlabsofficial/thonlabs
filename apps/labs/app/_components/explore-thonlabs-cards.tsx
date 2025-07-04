@@ -24,7 +24,7 @@ function ExploreThonLabsCard({
 }: ExploreThonLabsCardProps) {
   return (
     <Link href={link}>
-      <Card icon={icon} variant="link" padding>
+      <Card icon={icon} variant="link" padding className="h-full">
         <CardHeader className="flex !flex-row items-center justify-between">
           <CardTitle className="flex gap-1">{title}</CardTitle>
           <CardArrowRight className="w-4 h-4" />
@@ -43,10 +43,10 @@ interface Props {
 
 export default function ExploreThonLabsCards({ environmentId }: Props) {
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className="grid grid-cols-4 items-stretch gap-3">
       <ExploreThonLabsCard
         title="Auth Builder"
-        description="Customize the authentication experience for your users and define tokens time"
+        description="Setup SSO providers for your users, configure colors and tokens"
         icon={ShieldEllipsis}
         link={`/${environmentId}/builder`}
       />
@@ -57,8 +57,8 @@ export default function ExploreThonLabsCards({ environmentId }: Props) {
         link={`/${environmentId}/email-templates`}
       />
       <ExploreThonLabsCard
-        title="Setup Domains"
-        description="Configure your custom domains for authentication and email templates"
+        title="Setup Domain"
+        description="Configure your custom domain for authentication"
         icon={Globe}
         link={`/${environmentId}/settings`}
       />

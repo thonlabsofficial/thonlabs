@@ -68,11 +68,6 @@ export default function MainAside() {
               href={`/${environmentId}/dashboard`}
               icon={LayoutDashboard}
             />
-          </section>
-          <section className="flex flex-col gap-1 w-full">
-            <Typo variant={'mutedXs'} className="px-2">
-              Auth & User Management
-            </Typo>
             <NavItem
               label="Auth Builder"
               href={`/${environmentId}/builder`}
@@ -92,6 +87,11 @@ export default function MainAside() {
               label="Email Templates"
               href={`/${environmentId}/email-templates`}
               icon={Mail}
+            />
+            <NavItem
+              label="Settings"
+              href={`/${environmentId}/settings`}
+              icon={Settings}
             />
           </section>
           {/* <section className="flex flex-col gap-1 w-full">
@@ -114,21 +114,6 @@ export default function MainAside() {
               icon={Earth}
             />
           </section> */}
-          <section className="flex flex-col gap-1 w-full">
-            <Typo variant={'mutedXs'} className="px-2">
-              Configuration
-            </Typo>
-            <NavItem
-              label="Integration & Keys"
-              href={`/${environmentId}/api-keys`}
-              icon={LockKeyhole}
-            />
-            <NavItem
-              label="Settings"
-              href={`/${environmentId}/settings`}
-              icon={Settings}
-            />
-          </section>
         </div>
       </nav>
     </aside>

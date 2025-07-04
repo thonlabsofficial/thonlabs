@@ -32,7 +32,7 @@ export default function EnableSignUpB2BOnlySwitch({
         control={form.control}
         render={({ field }) => (
           <InputSwitch
-            label="Restrict User Creation To Organization Domains"
+            label="Restrict sign ups to B2B only"
             description={
               <>
                 Allow only users with email matching your organization's

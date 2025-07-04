@@ -12,7 +12,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { InputSwitch } from '@repo/ui/input-switch';
 import { useForm } from 'react-hook-form';
 import { useTransition } from 'react';
-import EmailTemplatesConstants from '@/_constants/email-templates-constants';
+import emailTemplatesConstants from '@/_constants/email-templates-constants';
 
 interface Props {
   templateId: string;
@@ -49,7 +49,7 @@ export default function EditEmailTemplateSettings({ templateId }: Props) {
 
   return (
     emailTemplate &&
-    EmailTemplatesConstants.allowedStatusChange.includes(
+    emailTemplatesConstants.allowedStatusChange.includes(
       emailTemplate.type,
     ) && (
       <Card>

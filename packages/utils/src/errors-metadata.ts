@@ -7,4 +7,5 @@ export enum ErrorMessages {
   InvalidNumber = 'This field must be a number',
   InvalidColorFormat = 'Invalid color format',
   InvalidURL = 'Invalid URL',
+  MaxLength = 'Max length exceeded',
 }

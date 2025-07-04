@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Typo } from './typo';
 import { Switch } from './switch';
 import { cn } from '../core/utils';
-import { Skeleton } from './skeleton';
 import { Spinner } from './spinner';
 
 export interface InputSwitchProps extends React.HTMLAttributes<HTMLElement> {

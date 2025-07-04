@@ -11,6 +11,7 @@ import { EmailTemplate } from '@/_interfaces/email-template';
 import useSWR from 'swr';
 import { envFetcher } from '@helpers/api';
 import { useEffect } from 'react';
+import { revalidateCache } from '@/_services/server-cache-service';
 
 interface Params {
   templateId?: string;
@@ -106,6 +107,7 @@ export default function useEmailTemplate(
         description: `"${data.name}" email template has been ${payload.enabled ? 'activated' : 'deactivated'}`,
       });
 
+      // TODO: decide what approach to use (CSR or SSR) and apply the correct cache validation
       makeMutations([
         {
           cacheKey: `/email-templates/${templateId}`,
@@ -126,6 +128,8 @@ export default function useEmailTemplate(
           }),
         },
       ]);
+
+      await revalidateCache([`/${environmentId}/email-templates`]);
 
       return data;
     } catch (error: any) {

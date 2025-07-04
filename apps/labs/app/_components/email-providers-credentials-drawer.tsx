@@ -3,7 +3,7 @@
 import { Button } from '@repo/ui/button';
 import { Input, InputWrapper } from '@repo/ui/input';
 import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Drawer,
@@ -15,62 +15,51 @@ import {
   DrawerScrollArea,
   DrawerContentContainer,
 } from '@repo/ui/drawer';
-import { Typo } from '@repo/ui/typo';
-import { SSOSocialProvider } from '@thonlabs/nextjs';
+import { EmailProviderTypes } from '@/_interfaces/email-provider';
+import { useEmailProvider } from '@/_hooks/use-email-provider';
 import {
-  UpdateProviderCredentialsFormData,
-  updateProviderCredentialsFormSchema,
-} from '@/_validators/builder-validators';
-import { useCredential } from '@/_hooks/use-credential';
+  UpdateEmailProviderCredentialPayload,
+  updateEmailProviderCredentialValidator,
+} from '@/_validators/email-providers-validators';
+import { InputSwitch } from '@repo/ui/input-switch';
 
 type Props = {
   trigger?: React.ReactNode;
-  environmentId: string;
-  provider: SSOSocialProvider;
+  provider: EmailProviderTypes;
 };
 
 export default function BuilderEditCredentialsDrawer({
   trigger,
   provider,
-  environmentId,
   ...props
 }: Props & React.ComponentProps<typeof Drawer>) {
   const [open, setOpen] = React.useState(props.open || false);
-  const { credential, isLoadingCredential, upsertCredential } = useCredential(
-    open ? { environmentId, provider } : undefined,
-  );
-  const form = useForm<UpdateProviderCredentialsFormData>({
-    resolver: zodResolver(updateProviderCredentialsFormSchema),
+  const { emailProvider, isLoadingEmailProvider, updateEmailProvider } =
+    useEmailProvider(open ? { provider } : undefined);
+  const form = useForm<UpdateEmailProviderCredentialPayload>({
+    resolver: zodResolver(updateEmailProviderCredentialValidator),
   });
   const [isSaving, startSavingTransition] = useTransition();
 
   React.useEffect(() => {
-    if (props.open || credential) {
+    if (props.open || emailProvider) {
       handleInit();
     }
-  }, [props.open, credential]);
+  }, [props.open, emailProvider]);
 
-  async function handleSave() {
-    if (!(await form.trigger())) {
-      return;
-    }
+  async function handleSave(payload: UpdateEmailProviderCredentialPayload) {
     startSavingTransition(async () => {
-      try {
-        await upsertCredential(environmentId, provider, {
-          ...form.getValues(),
-          active: true,
-        });
-        setOpen(false);
-        props.onOpenChange?.(false);
-      } catch {}
+      await updateEmailProvider(provider, payload);
+      setOpen(false);
+      props.onOpenChange?.(false);
     });
   }
 
   function handleInit() {
     form.clearErrors();
-    form.setValue('clientId', credential?.clientId || '');
-    form.setValue('secretKey', credential?.secretKey || '');
-    form.setValue('redirectURI', credential?.redirectURI || '');
+    form.setValue('domain', emailProvider?.domain || '');
+    form.setValue('secretKey', emailProvider?.secretKey || '');
+    form.setValue('active', emailProvider?.active || false);
   }
 
   return (
@@ -86,35 +75,42 @@ export default function BuilderEditCredentialsDrawer({
             Edit {provider} Credentials
           </DrawerTitle>
         </DrawerHeader>
-        <form className="h-full">
+        <form className="h-full" onSubmit={form.handleSubmit(handleSave)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
               <div className="grid w-full items-center gap-4">
                 <InputWrapper>
                   <Input
-                    label="Client ID"
-                    maxLength={100}
-                    error={form.formState.errors.clientId?.message}
-                    loading={isLoadingCredential}
-                    {...form.register('clientId')}
+                    label="Domain"
+                    maxLength={255}
+                    error={form.formState.errors.domain?.message}
+                    loading={isLoadingEmailProvider}
+                    {...form.register('domain')}
                   />
                 </InputWrapper>
                 <InputWrapper>
                   <Input
                     label="Secret Key"
-                    maxLength={100}
+                    maxLength={255}
                     error={form.formState.errors.secretKey?.message}
-                    loading={isLoadingCredential}
+                    loading={isLoadingEmailProvider}
                     {...form.register('secretKey')}
                   />
                 </InputWrapper>
                 <InputWrapper>
-                  <Input
-                    label="Redirect URI"
-                    maxLength={900}
-                    error={form.formState.errors.redirectURI?.message}
-                    loading={isLoadingCredential}
-                    {...form.register('redirectURI')}
+                  <Controller
+                    name="active"
+                    control={form.control}
+                    render={({ field }) => (
+                      <InputSwitch
+                        label="Set as active provider"
+                        description="When set to true, all other providers will be marked as inactive."
+                        value={field.value}
+                        checked={!!field.value}
+                        onCheckedChange={field.onChange}
+                        loading={isLoadingEmailProvider}
+                      />
+                    )}
                   />
                 </InputWrapper>
               </div>
@@ -122,11 +118,11 @@ export default function BuilderEditCredentialsDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <Button
-              type="button"
+              type="submit"
               loading={isSaving}
+              skeleton={isLoadingEmailProvider}
               className="w-full"
               disabled={!form.formState.isDirty || isSaving}
-              onClick={handleSave}
             >
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>
