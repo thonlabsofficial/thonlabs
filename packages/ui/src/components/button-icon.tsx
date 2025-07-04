@@ -10,13 +10,14 @@ const buttonIconVariants = cva(
   {
     variants: {
       variant: {
+        none: '',
         primary:
           'bg-primary text-primary-foreground shadow hover:bg-primary/90',
         opposite: 'bg-foreground text-secondary shadow hover:bg-foreground/90',
         destructive:
           'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
         outline:
-          'border border-input text-foreground bg-transparent border-foreground/20 hover:bg-card',
+          'border text-foreground bg-transparent border-foreground/20 hover:bg-card',
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'text-text hover:bg-foreground/10 hover:text-accent-foreground',
@@ -75,7 +76,7 @@ const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
     ref,
   ) => {
     return loading ? (
-      <Skeleton className={buttonIconVariants({ size })} />
+      <Skeleton className={buttonIconVariants({ size, variant: 'none' })} />
     ) : (
       <button
         className={cn(buttonIconVariants({ variant, size, className }), {
