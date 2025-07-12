@@ -2,7 +2,11 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import qs from 'qs';
 import https from 'https';
-import { APIResponseCodes } from '@thonlabs/nextjs';
+import {
+  APIResponseCodes,
+  getAccessToken,
+  generateAccessToken,
+} from '@thonlabs/nextjs';
 
 const httpsAgent =
   process.env.NODE_ENV === 'development'
@@ -46,15 +50,10 @@ const envFetcher = (envID: string) => (url: string) =>
 async function validateTokensInterceptor(
   config: InternalAxiosRequestConfig<any>,
 ) {
-  let accessToken = Cookies.get('tl_session');
+  let accessToken = getAccessToken();
 
   if (!accessToken) {
-    localStorage.setItem('tl_refreshing', 'true');
-
-    await intAPI.post('/api/auth/refresh');
-    accessToken = Cookies.get('tl_session');
-
-    localStorage.removeItem('tl_refreshing');
+    accessToken = await generateAccessToken();
   }
 
   config.headers['Authorization'] = `Bearer ${accessToken}`;

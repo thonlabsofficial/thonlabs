@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { validateSession, validationRedirect } from '@thonlabs/nextjs/server';
+import {
+  validateSession,
+  redirectToLogin,
+  thonLabsConfig,
+} from '@thonlabs/nextjs/server';
 import { forwardSearchParams } from '@thonlabs/nextjs';
 import Log from '@repo/utils/log';
 
@@ -14,7 +18,7 @@ export async function middleware(req: NextRequest) {
     '/builder-preview',
   ]);
   if (redirect) {
-    return validationRedirect(redirect);
+    return redirectToLogin(redirect);
   }
 
   if (req.nextUrl.pathname === '/') {
@@ -22,5 +26,5 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(forwardSearchParams(req, '/projects'));
   }
 
-  return NextResponse.next();
+  return NextResponse.next(thonLabsConfig(req));
 }

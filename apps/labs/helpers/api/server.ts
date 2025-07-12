@@ -1,4 +1,4 @@
-import { getTokens } from '@thonlabs/nextjs/server';
+import { getAccessToken } from '@thonlabs/nextjs/server';
 import Log from '@repo/utils/log';
 import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
@@ -27,7 +27,7 @@ const serverLabsInternalAPI = axios.create({
 async function validateTokensInterceptor(
   config: InternalAxiosRequestConfig<any>,
 ) {
-  const { accessToken } = await getTokens();
+  const accessToken = await getAccessToken();
 
   config.headers['Authorization'] = `Bearer ${accessToken}`;
 
