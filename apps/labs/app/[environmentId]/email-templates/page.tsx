@@ -21,7 +21,7 @@ export default async function Emails({ params }: { params: Params }) {
     <>
       <PageHeader title="Email Templates" icon={Mail} />
 
-      <PageWrapper withContainer={false} className="grid gap-12">
+      <PageWrapper className="grid gap-12">
         <section>
           <EmailTemplatesList emailTemplates={emailTemplates} />
         </section>

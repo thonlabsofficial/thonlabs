@@ -15,7 +15,7 @@ export default function Container({
     <div
       {...props}
       className={cn(
-        'container mx-auto 2xl:max-w-[75rem]',
+        'container mx-auto 2xl:max-w-[85rem]',
         {
           'px-3': withGutter,
         },

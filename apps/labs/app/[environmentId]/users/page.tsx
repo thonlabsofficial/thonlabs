@@ -21,20 +21,13 @@ export default async function Users({
 
   return (
     <>
-      <PageHeader title="Users" icon={SquareUser} />
-      <PageWrapper withContainer={false}>
-        <UsersDataTable
-          users={users}
-          actions={
-            <NewUserDialog
-              trigger={
-                <Button size={'sm'} variant={'outline'}>
-                  New User
-                </Button>
-              }
-            />
-          }
-        />
+      <PageHeader
+        title="Users"
+        icon={SquareUser}
+        actions={<NewUserDialog trigger={<Button>New User</Button>} />}
+      />
+      <PageWrapper>
+        <UsersDataTable users={users} />
       </PageWrapper>
     </>
   );

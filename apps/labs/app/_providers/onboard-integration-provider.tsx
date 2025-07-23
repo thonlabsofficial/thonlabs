@@ -12,27 +12,35 @@ export enum OnboardIntegrationSdks {
 export interface OnboardIntegrationContextProps {
   currentSdk: OnboardIntegrationSdks;
   setCurrentSdk: (sdk: OnboardIntegrationSdks) => void;
+  forceNotInitialized?: boolean;
 }
 
 export const OnboardIntegrationContext =
   React.createContext<OnboardIntegrationContextProps>({
     currentSdk: OnboardIntegrationSdks.NextJS15,
     setCurrentSdk: () => {},
+    forceNotInitialized: false,
   });
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
+  forceNotInitialized?: boolean;
 }
 
-export const OnboardIntegrationProvider = ({ children }: Props) => {
+export const OnboardIntegrationProvider = ({
+  children,
+  forceNotInitialized = false,
+}: Props) => {
   const { sdkIntegrated } = useEnvironmentAppData();
   const [currentSdk, setCurrentSdk] = React.useState<OnboardIntegrationSdks>(
     OnboardIntegrationSdks.NextJS15,
   );
 
   return (
-    !sdkIntegrated && (
-      <OnboardIntegrationContext.Provider value={{ currentSdk, setCurrentSdk }}>
+    (!sdkIntegrated || forceNotInitialized) && (
+      <OnboardIntegrationContext.Provider
+        value={{ currentSdk, setCurrentSdk, forceNotInitialized }}
+      >
         {children}
       </OnboardIntegrationContext.Provider>
     )

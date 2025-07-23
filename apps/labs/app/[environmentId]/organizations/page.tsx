@@ -5,6 +5,8 @@ import React from 'react';
 import { Building } from 'lucide-react';
 import OrganizationsDataTable from '@/_components/organizations-data-table';
 import { fetchOrganizations } from '@/_services/organization-service';
+import NewOrganizationDrawer from '@/_components/new-organization-drawer';
+import { Button } from '@repo/ui/button';
 
 export const metadata: Metadata = {
   title: 'Organizations',
@@ -18,8 +20,14 @@ export default async function Organizations({ params }: { params: Params }) {
 
   return (
     <>
-      <PageHeader title="Organizations" icon={Building} />
-      <PageWrapper withContainer={false} className="pt-4 grid gap-12">
+      <PageHeader
+        title="Organizations"
+        icon={Building}
+        actions={
+          <NewOrganizationDrawer trigger={<Button>New Organization</Button>} />
+        }
+      />
+      <PageWrapper className="pt-4 grid gap-12">
         <OrganizationsDataTable organizations={organizations} />
       </PageWrapper>
     </>

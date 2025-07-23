@@ -7,12 +7,14 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from '@repo/ui/dropdown';
-import { Loader, LogOut } from 'lucide-react';
+import { BlocksIcon, Loader, LogOut } from 'lucide-react';
 import { useSession } from '@thonlabs/nextjs';
 import { cn } from '@repo/ui/core/utils';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 type Props = {
   session?: UserSession;
@@ -20,6 +22,7 @@ type Props = {
 
 export default function UserAvatar({ session }: Props) {
   const { logout, isLoggingOut } = useSession();
+  const { environmentId } = useParams();
 
   return (
     session && (
@@ -32,26 +35,35 @@ export default function UserAvatar({ session }: Props) {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64" align="start">
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              className={cn({
-                'pointer-events-none': isLoggingOut,
-              })}
-              onSelect={logout}
-            >
-              {!isLoggingOut ? (
-                <>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
-                </>
-              ) : (
-                <>
-                  <Loader className="mr-2 h-4 w-4 animate-spin" />
-                  Logging out...
-                </>
-              )}
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          {environmentId && (
+            <>
+              <Link href={`/${environmentId}/onboard-integration`}>
+                <DropdownMenuItem>
+                  <BlocksIcon className="mr-2 h-4 w-4" />
+                  Onboard
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+            </>
+          )}
+          <DropdownMenuItem
+            className={cn({
+              'pointer-events-none': isLoggingOut,
+            })}
+            onSelect={logout}
+          >
+            {!isLoggingOut ? (
+              <>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </>
+            ) : (
+              <>
+                <Loader className="mr-2 h-4 w-4 animate-spin" />
+                Logging out...
+              </>
+            )}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     )

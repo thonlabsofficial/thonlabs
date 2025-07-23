@@ -13,9 +13,9 @@ export default function PageWrapper({
   withContainer = true,
   withPadding = true,
 }: Props & React.HTMLAttributes<HTMLElement>) {
-  const defaultClassName = cn({ 'px-3 py-2': withPadding }, className);
+  const defaultClassName = cn({ 'px-3 mt-8': withPadding }, className);
   return (
-    <div className="pl-64">
+    <div>
       {withContainer ? (
         <Container className={defaultClassName} withGutter={false}>
           {children}

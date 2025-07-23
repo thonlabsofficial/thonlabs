@@ -51,11 +51,10 @@ export default async function OrganizationDetail({
   return (
     <>
       <PageHeader
-        title={`Organization: ${organization.name}`}
+        title={`Organization - ${organization.name}`}
         icon={Building}
-        withContainer={false}
       />
-      <PageWrapper withContainer={false} className="pt-4 grid gap-4">
+      <PageWrapper className="pt-4 grid gap-4">
         <div className="flex gap-8">
           <section>
             <ImagePreview

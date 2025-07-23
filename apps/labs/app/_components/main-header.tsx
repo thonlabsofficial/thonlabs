@@ -5,6 +5,7 @@ import MainHeaderEnvNav from './main-header-env-nav';
 import { UserSession } from '@/_services/server-auth-session-service';
 import UserAvatar from '@/_components/user-avatar';
 import Logo from '@/_components/logo';
+import MainNavHorizontal from './main-nav-horizontal';
 
 type Props = {
   withNav?: boolean;
@@ -40,6 +41,10 @@ export default function MainHeader({
         )}
         {withNav && <MainHeaderEnvNav />}
       </div>
+
+      {withNav && environmentId && (
+        <MainNavHorizontal environmentId={environmentId} />
+      )}
 
       <div className="flex items-center gap-2">
         <UserAvatar session={session} />

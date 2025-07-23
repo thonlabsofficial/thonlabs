@@ -5,7 +5,7 @@ import axios from 'axios';
 import https from 'https';
 
 const httpsAgent =
-  process.env.NODE_ENV === 'development'
+  process.env.SSL_ON_DEV === 'true'
     ? new https.Agent({
         rejectUnauthorized: false,
       })

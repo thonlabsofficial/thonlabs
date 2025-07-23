@@ -195,6 +195,12 @@ export default function ProjectsList() {
         projects.map((project) => (
           <ProjectSection key={project.id} project={project} />
         ))}
+
+      {!isLoadingProjects && projects.length === 0 && (
+        <div className="flex flex-col items-center justify-center h-full">
+          <Typo variant="muted">No projects found</Typo>
+        </div>
+      )}
     </div>
   );
 }

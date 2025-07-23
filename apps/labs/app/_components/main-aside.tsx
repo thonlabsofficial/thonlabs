@@ -6,18 +6,12 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@repo/ui/core/utils';
 import {
   Building,
-  DatabaseZap,
-  Earth,
-  Folder,
-  Globe,
   LayoutDashboard,
-  LockKeyhole,
   Mail,
   Settings,
   ShieldEllipsis,
   SquareUser,
 } from 'lucide-react';
-import { Typo } from '@repo/ui/typo';
 
 function NavItem({
   icon: Icon,

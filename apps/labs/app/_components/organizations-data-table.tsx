@@ -304,15 +304,6 @@ export default function OrganizationsDataTable({ organizations }: Props) {
         searchFields={['id', 'name']}
         noResultsMessage="No organizations found"
         searchPlaceholder="Search by name..."
-        actions={
-          <NewOrganizationDrawer
-            trigger={
-              <Button size={'sm'} variant={'outline'}>
-                New Organization
-              </Button>
-            }
-          />
-        }
         onRowClick={(_, row) => {
           router.push(`/${environmentId}/organizations/${row.original.id}`);
         }}

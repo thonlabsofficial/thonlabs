@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: 'Projects',
 };
 
-export default function Projects() {
+export default async function Projects() {
   return (
     <>
       <div className="mb-6 border-b bg-card py-8">

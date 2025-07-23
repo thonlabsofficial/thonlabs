@@ -28,45 +28,43 @@ import SectionHeader from '@/_components/section-header';
 export function OnboardIntegrationHeader() {
   const { projectIntegrationStatus, isLoadingProjectIntegrationStatus } =
     useProjectIntegrationStatus();
-  const { sdkIntegrated } = useEnvironmentAppData();
+  const { forceNotInitialized } = React.useContext(OnboardIntegrationContext);
 
-  if (sdkIntegrated) {
-    return null;
+  if (projectIntegrationStatus === 'notInitialized' || forceNotInitialized) {
+    return (
+      <SectionHeader
+        title={
+          <div className="flex items-center gap-0.5">
+            <BlocksIcon className="-mt-1" />
+            <div>Integrate in minutes, it's like lego</div>
+          </div>
+        }
+        description="Select your library below, and follow simple quick steps to add authentication to your app."
+      />
+    );
   }
 
-  return (
-    <>
-      {isLoadingProjectIntegrationStatus && (
-        <SectionHeader title="loading" description="loading" loading />
-      )}
-      {projectIntegrationStatus === 'partialCompleted' && (
-        <SectionHeader
-          title="Update the environment variables"
-          description="Your code integration is ready, but we need to connect it to this environment yet."
-        />
-      )}
-      {projectIntegrationStatus === 'notInitialized' && (
-        <SectionHeader
-          title={
-            <div className="flex items-center gap-0.5">
-              <div>Integrate in Minutes - It's like lego</div>
-              <BlocksIcon className="-mt-1" />
-            </div>
-          }
-          description="Select your Next.js version below, and follow simple quick steps to add authentication to your application."
-        />
-      )}
-    </>
-  );
+  if (isLoadingProjectIntegrationStatus) {
+    return <SectionHeader title="loading" description="loading" loading />;
+  }
+
+  if (projectIntegrationStatus === 'partialCompleted') {
+    return (
+      <SectionHeader
+        title="Update the environment variables"
+        description="Your code integration is ready, but we need to connect it to this environment yet."
+      />
+    );
+  }
 }
 
 export function OnboardIntegrationOptions() {
   const { projectIntegrationStatus } = useProjectIntegrationStatus();
-  const { currentSdk, setCurrentSdk } = React.useContext(
+  const { currentSdk, setCurrentSdk, forceNotInitialized } = React.useContext(
     OnboardIntegrationContext,
   );
 
-  if (projectIntegrationStatus !== 'notInitialized') {
+  if (projectIntegrationStatus !== 'notInitialized' && !forceNotInitialized) {
     return null;
   }
 
@@ -112,7 +110,7 @@ export function OnboardIntegrationOptions() {
   );
 }
 
-function getNextSteps({
+function getNextJSSteps({
   environmentId,
   publicKey,
   authDomain,
@@ -167,9 +165,9 @@ export default async function RootLayout({children}: Readonly<{children: React.R
     <html>
       <body>
         <ThonLabsWrapper
-          environmentId="process.env.NEXT_PUBLIC_TL_ENV_ID"
-          publicKey="process.env.NEXT_PUBLIC_TL_PK"
-          baseURL="process.env.NEXT_PUBLIC_TL_AUTH_DOMAIN"
+          environmentId={process.env.NEXT_PUBLIC_TL_ENV_ID as string}
+          publicKey={process.env.NEXT_PUBLIC_TL_PK as string}
+          authDomain={process.env.NEXT_PUBLIC_TL_AUTH_DOMAIN as string}
         >
           {children}
         </ThonLabsWrapper>
@@ -180,7 +178,7 @@ export default async function RootLayout({children}: Readonly<{children: React.R
       />
     ),
     'step-4': (
-      <div className="space-y-2">
+      <div className="flex gap-2">
         <CodeBlock
           language="typescript"
           filename="app/api/auth/[...thonlabs]/route.ts"
@@ -198,15 +196,16 @@ export default ThonLabsAuthPage;`}
       <CodeBlock
         language="typescript"
         filename="app/middleware.ts"
-        code={`import {validateSession, validationRedirect} from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}/server";
+        code={`import { type NextRequest, NextResponse } from 'next/server';
+import { validateSession, redirectToLogin, thonLabsConfig } from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}/server";
 
 export async function middleware(req: NextRequest) {
   const redirect = await validateSession(req);
   if (redirect) {
-    return validationRedirect(redirect);
+    return redirectToLogin(redirect);
   }
 
-  return NextResponse.next();
+  return NextResponse.next(thonLabsConfig(req));
 }`}
       />
     ),
@@ -216,18 +215,20 @@ export async function middleware(req: NextRequest) {
 export default function OnboardIntegration() {
   const { projectIntegrationStatus } = useProjectIntegrationStatus();
   const { environmentId, publicKey, authDomain } = useEnvironmentAppData();
-  const { currentSdk } = React.useContext(OnboardIntegrationContext);
+  const { currentSdk, forceNotInitialized } = React.useContext(
+    OnboardIntegrationContext,
+  );
   const itemsChildren: Record<
     OnboardIntegrationSdks,
     Record<string, React.ReactNode>
   > = {
-    [OnboardIntegrationSdks.NextJS15]: getNextSteps({
+    [OnboardIntegrationSdks.NextJS15]: getNextJSSteps({
       environmentId,
       publicKey,
       authDomain,
       sdkVersion: OnboardIntegrationSdks.NextJS15,
     }),
-    [OnboardIntegrationSdks.NextJS13Plus]: getNextSteps({
+    [OnboardIntegrationSdks.NextJS13Plus]: getNextJSSteps({
       environmentId,
       publicKey,
       authDomain,
@@ -237,7 +238,7 @@ export default function OnboardIntegration() {
   };
 
   const items = [
-    ...(projectIntegrationStatus === 'notInitialized'
+    ...(projectIntegrationStatus === 'notInitialized' || forceNotInitialized
       ? [
           {
             id: 'step-1',
@@ -269,7 +270,7 @@ export default function OnboardIntegration() {
             description:
               'Create API route and page files to handle authentication flows and callbacks.',
             icon: RouteIcon,
-            className: 'col-auto',
+            className: 'col-span-2',
           },
           {
             id: 'step-5',
@@ -277,7 +278,7 @@ export default function OnboardIntegration() {
             description:
               'Implement middleware to protect routes and validate user sessions.',
             icon: CpuIcon,
-            className: 'col-auto',
+            className: 'col-span-2',
           },
         ]
       : [
@@ -314,41 +315,44 @@ export default function OnboardIntegration() {
             children={itemsChildren?.[currentSdk]?.[item.id]}
           />
         ))}
-        {projectIntegrationStatus === 'notInitialized' && (
-          <BentoGridItem
-            title=""
-            description=""
-            className="relative overflow-hidden col-span-2"
-            afterSlot={
-              <>
-                <BorderBeam
-                  duration={6}
-                  size={400}
-                  className="from-transparent via-green-500 to-transparent"
-                />
-                <BorderBeam
-                  duration={6}
-                  size={400}
-                  delay={9}
-                  className="from-transparent via-blue-500 to-transparent"
-                  reverse
-                />
-              </>
-            }
-          >
-            <div
-              className="flex items-center justify-center gap-2 cursor-default"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
+        {projectIntegrationStatus === 'notInitialized' ||
+          (forceNotInitialized && (
+            <BentoGridItem
+              title=""
+              description=""
+              className="relative overflow-hidden col-span-2"
+              afterSlot={
+                <>
+                  <BorderBeam
+                    duration={6}
+                    size={400}
+                    className="from-transparent via-green-500 to-transparent"
+                  />
+                  <BorderBeam
+                    duration={6}
+                    size={400}
+                    delay={9}
+                    className="from-transparent via-blue-500 to-transparent"
+                    reverse
+                  />
+                </>
+              }
             >
-              <FlaskIcon size={24} animate={animate} />
-              <Typo as="div" variant="h3" className="text-center">
-                All set! Go to your app, sign up and check the summary below
-              </Typo>
-              <FlaskIcon size={24} animate={animate} />
-            </div>
-          </BentoGridItem>
-        )}
+              <div
+                className="flex items-center justify-center gap-2 cursor-default"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FlaskIcon size={24} animate={animate} />
+                <Typo as="div" variant="h4" className="text-center">
+                  Ready to go!
+                </Typo>
+                <Typo as="div" variant="lead" className="text-center">
+                  Test your integration by signing up a new user in your app.
+                </Typo>
+              </div>
+            </BentoGridItem>
+          ))}
       </BentoGrid>
     </div>
   );
