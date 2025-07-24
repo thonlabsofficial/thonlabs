@@ -33,6 +33,7 @@ import { InputColorPicker } from '@repo/ui/input-color-picker';
 import { Label } from '@repo/ui/label';
 import BuilderEditCredentialsDrawer from '@/_components/builder-edit-credentials-drawer';
 import useBuilder from '@/_hooks/use-builder';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 
 const ssoProvidersMapper = {
   [SSOSocialProvider.GOOGLE]: {
@@ -105,9 +106,10 @@ export default function BuilderAuthSettings({ environment }: Props) {
   const { updateEnvironmentAuthSettings } = useBuilder();
   const [isSaving, startSavingTransition] = useTransition();
   const { setPreviewEnvironmentData } = usePreviewMode();
+  const { appName } = useEnvironmentAppData();
 
   React.useEffect(() => {
-    setPreviewEnvironmentData(formData as EnvironmentData);
+    setPreviewEnvironmentData({ appName, ...formData } as EnvironmentData);
   }, [formData, setPreviewEnvironmentData]);
 
   React.useEffect(() => {
