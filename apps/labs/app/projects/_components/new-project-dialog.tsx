@@ -72,7 +72,7 @@ export default function NewProjectDialog({
             <InputWrapper>
               <Input
                 id="appName"
-                placeholder="e.g.: Thon Labs"
+                placeholder="e.g.: Acme Inc."
                 label="Name"
                 maxLength={30}
                 error={form.formState.errors.appName?.message}
@@ -82,7 +82,7 @@ export default function NewProjectDialog({
             <InputWrapper>
               <Input
                 id="appURL"
-                placeholder="e.g.: https://thonlabs.io"
+                placeholder="e.g.: https://thonlabs.io or http://localhost:3000"
                 label="URL"
                 error={form.formState.errors.appURL?.message}
                 {...form.register('appURL')}

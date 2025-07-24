@@ -37,10 +37,10 @@ export default function UserAvatar({ session }: Props) {
         <DropdownMenuContent className="w-64" align="start">
           {environmentId && (
             <>
-              <Link href={`/${environmentId}/onboard-integration`}>
+              <Link href={`/${environmentId}/integration-guide`}>
                 <DropdownMenuItem>
                   <BlocksIcon className="mr-2 h-4 w-4" />
-                  Onboard
+                  Integration guide
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />

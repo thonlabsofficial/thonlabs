@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Toaster } from '@repo/ui/toaster';
+import LandingGrid from '@/_components/landing-grid';
 
 export const metadata: Metadata = {
   robots: {
@@ -15,12 +16,8 @@ export default async function OnboardNestedLayout({
 }>) {
   return (
     <>
-      <main className="pt-[3.5625rem]">
-        <div>
-          {children}
-          <footer className="mt-12" />
-        </div>
-      </main>
+      <LandingGrid />
+      <main>{children}</main>
       <Toaster />
     </>
   );

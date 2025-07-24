@@ -315,8 +315,8 @@ export default function OnboardIntegration() {
             children={itemsChildren?.[currentSdk]?.[item.id]}
           />
         ))}
-        {projectIntegrationStatus === 'notInitialized' ||
-          (forceNotInitialized && (
+        {projectIntegrationStatus === 'notInitialized' &&
+          !forceNotInitialized && (
             <BentoGridItem
               title=""
               description=""
@@ -352,7 +352,7 @@ export default function OnboardIntegration() {
                 </Typo>
               </div>
             </BentoGridItem>
-          ))}
+          )}
       </BentoGrid>
     </div>
   );

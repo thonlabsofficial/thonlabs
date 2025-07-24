@@ -36,10 +36,7 @@ export interface CardProps
   padding?: boolean;
 }
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  CardProps
->(
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
     { className, variant, border, icon: Icon, padding, children, ...props },
     ref,
