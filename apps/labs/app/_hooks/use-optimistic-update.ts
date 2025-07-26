@@ -24,5 +24,5 @@ export default function useOptimisticUpdate() {
     });
   }
 
-  return { makeMutations };
+  return { makeMutations, swrMutate };
 }
