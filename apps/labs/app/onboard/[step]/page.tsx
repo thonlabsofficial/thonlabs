@@ -2,11 +2,9 @@ import { onboardFlow, OnboardStep } from '../_constants/onboard-flow';
 import { notFound } from 'next/navigation';
 import { getAuthSession } from '@/_services/server-auth-session-service';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { step: OnboardStep };
-}) {
+type Params = Promise<{ step: OnboardStep }>;
+
+export async function generateMetadata({ params }: { params: Params }) {
   const { step } = await params;
   const onboardStep = onboardFlow[step as OnboardStep];
   let title = onboardStep.title;
@@ -23,10 +21,6 @@ export async function generateMetadata({
     title,
   };
 }
-
-type Params = Promise<{
-  step: OnboardStep;
-}>;
 
 export default async function OnboardPage({ params }: { params: Params }) {
   const { step } = await params;

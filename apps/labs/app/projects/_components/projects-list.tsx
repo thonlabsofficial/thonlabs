@@ -63,7 +63,7 @@ function ProjectSection({
           <div className="grid grid-cols-3 gap-3">
             {project.environments.map((environment, index) => (
               <Link
-                href={`/${environment.id}`}
+                href={`/${environment.id}/dashboard`}
                 key={`${index}_${environment.id}`}
                 onClick={() => {
                   toast({
