@@ -36,7 +36,7 @@ export default function useEnvironment(
   const environmentData = useEnvironmentAppData();
 
   const { toast } = useToast();
-  const { makeMutations } = useOptimisticUpdate();
+  const { makeMutations, swrMutate } = useOptimisticUpdate();
 
   const environmentMemo = React.useMemo(() => {
     if (!environment || !environmentData) {
@@ -90,7 +90,6 @@ export default function useEnvironment(
         await updateLogoGeneralSettings(environmentId, payload.logo, false);
       }
 
-
       /*
         Updates the cache of get and projects list with the new environment data
       */
@@ -117,6 +116,8 @@ export default function useEnvironment(
           }),
         },
       ]);
+
+      swrMutate(`/api/environments/${environmentId}/data/app`);
 
       toast({
         title: 'Changes Saved',
@@ -152,9 +153,7 @@ export default function useEnvironment(
         },
       );
 
-      await revalidateCache([
-        `/${environmentId}/general-settings`,
-      ]);
+      await revalidateCache([`/${environmentId}/general-settings`]);
 
       if (showNotification) {
         toast({
@@ -254,11 +253,11 @@ export default function useEnvironment(
               (p: Project & { environments: Environment[] }) =>
                 p.id === environment.projectId
                   ? {
-                    ...p,
-                    environments: p.environments.filter(
-                      (e) => e.id !== environment.id,
-                    ),
-                  }
+                      ...p,
+                      environments: p.environments.filter(
+                        (e) => e.id !== environment.id,
+                      ),
+                    }
                   : p,
             ),
           }),

@@ -12,9 +12,11 @@ import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { ImagePreview } from '@repo/ui/image-preview';
 import { Input, InputWrapper } from '@repo/ui/input';
 import { InputSingleFile } from '@repo/ui/input-single-file';
+import { Label } from '@repo/ui/label';
 import { useParams } from 'next/navigation';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+import { Typo } from '@repo/ui/typo';
 
 export default function EnvironmentGeneralSettings() {
   const form = useForm<UpdateEnvironmentGeneralSettingsFormData>({
@@ -34,28 +36,30 @@ export default function EnvironmentGeneralSettings() {
         form.reset({
           name: environment?.name || '',
           appURL: environment?.appURL || '',
+          logo: undefined,
         });
       },
     },
   );
-
   const { environmentLogo } = useEnvironmentAppData();
+  const [isSaving, startSavingTransition] = useTransition();
+  const [showLogoInput, setShowLogoInput] = useState(false);
 
   const logo = form.watch('logo');
-
   const logoPreview = logo?.[0] ? URL.createObjectURL(logo[0]) : '';
 
-  const [isSaving, startSavingTransition] = useTransition();
-
   function onSubmit(payload: UpdateEnvironmentGeneralSettingsFormData) {
-    console.log(payload.logo);
-    startSavingTransition(() => {
-      updateEnvironmentGeneralSettings(environment!.id, payload).then(() => {
-        form.reset({
-          name: payload?.name || '',
-          appURL: payload?.appURL || '',
-        });
-      });
+    startSavingTransition(async () => {
+      await updateEnvironmentGeneralSettings(environment!.id, payload).then(
+        () => {
+          form.reset({
+            name: payload?.name || '',
+            appURL: payload?.appURL || '',
+            logo: undefined,
+          });
+          setShowLogoInput(false);
+        },
+      );
     });
   }
 
@@ -88,6 +92,7 @@ export default function EnvironmentGeneralSettings() {
                   {...form.register('name')}
                 />
               </InputWrapper>
+
               <InputWrapper>
                 <Input
                   id="appURL"
@@ -98,17 +103,36 @@ export default function EnvironmentGeneralSettings() {
                   {...form.register('appURL')}
                 />
               </InputWrapper>
-              <InputWrapper>
-                <img src={`${process.env.NEXT_PUBLIC_TL_EXT_FILES}/environments/${environmentId}/images/${environmentLogo}`} />
-                <InputSingleFile
-                  label="Your company logo"
-                  form={form}
-                  allowedExtensions={['png', 'jpg', 'jpeg', 'webp', 'svg']}
-                  maxFileSizeInMB={50}
-                  replaceBy={<ImagePreview src={logoPreview} />}
-                  {...form.register('logo')}
-                />
-              </InputWrapper>
+
+              <div>
+                <header className="flex justify-between">
+                  <Label>Your company logo</Label>
+                  <Typo
+                    variant={'sm'}
+                    onClick={() => {
+                      setShowLogoInput(!showLogoInput);
+                      form.setValue('logo', undefined);
+                    }}
+                    className="cursor-pointer text-muted-foreground hover:underline"
+                  >
+                    {showLogoInput ? 'Cancel' : 'Change logo'}
+                  </Typo>
+                </header>
+                {!environmentLogo || showLogoInput ? (
+                  <InputSingleFile
+                    form={form}
+                    allowedExtensions={['png', 'jpg', 'jpeg', 'webp', 'svg']}
+                    maxFileSizeInMB={50}
+                    replaceBy={<ImagePreview src={logoPreview} />}
+                    {...form.register('logo')}
+                  />
+                ) : (
+                  <ImagePreview
+                    src={`${process.env.NEXT_PUBLIC_TL_EXT_FILES}/environments/${environmentId}/images/${environmentLogo}`}
+                    className="max-h-40"
+                  />
+                )}
+              </div>
             </div>
           </CardContent>
         </div>
