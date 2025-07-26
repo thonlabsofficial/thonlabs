@@ -1,6 +1,7 @@
 'use client';
 
 import useEnvironment from '@/_hooks/use-environment';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 import {
   UpdateEnvironmentGeneralSettingsFormData,
   UpdateEnvironmentGeneralSettingsFormSchema,
@@ -37,6 +38,8 @@ export default function EnvironmentGeneralSettings() {
       },
     },
   );
+
+  const { environmentLogo } = useEnvironmentAppData();
 
   const logo = form.watch('logo');
 
@@ -96,6 +99,7 @@ export default function EnvironmentGeneralSettings() {
                 />
               </InputWrapper>
               <InputWrapper>
+                <img src={`${process.env.NEXT_PUBLIC_TL_EXT_FILES}/environments/${environmentId}/images/${environmentLogo}`} />
                 <InputSingleFile
                   label="Your company logo"
                   form={form}
