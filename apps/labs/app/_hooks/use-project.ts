@@ -13,16 +13,21 @@ export default function useProject() {
   const { toast } = useToast();
   const { mutate } = useSWRConfig();
 
-  async function createProject(payload: NewProjectFormData) {
+  async function createProject(
+    payload: NewProjectFormData,
+    withNotification = true,
+  ) {
     try {
       const { data } = await labsAPI.post<
         Project & { environment: Environment }
       >('/projects', payload);
 
-      toast({
-        title: 'This is a beginning of something!',
-        description: `Your project ${payload.appName} has been successfully created.`,
-      });
+      if (withNotification) {
+        toast({
+          title: 'This is a beginning of something!',
+          description: `Your project ${payload.appName} has been successfully created.`,
+        });
+      }
 
       return data;
     } catch (error: any) {

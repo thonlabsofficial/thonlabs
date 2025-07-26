@@ -20,7 +20,9 @@ export default async function Home({ params }: { params: Params }) {
       <DashboardPageHeader />
 
       <PageWrapper className="space-y-8">
-        <Onboard />
+        <section>
+          <Onboard />
+        </section>
 
         <section>
           <SectionHeader title="Summary" />

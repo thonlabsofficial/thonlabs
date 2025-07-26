@@ -17,7 +17,7 @@ import {
 
 type Props = {
   title: React.ReactNode;
-  idleLabel: React.ReactNode;
+  idleLabel?: React.ReactNode;
   actingLabel?: React.ReactNode;
   variant?: React.ComponentProps<typeof Button>['variant'];
   onClick?: React.ComponentProps<typeof Button>['onClick'];
@@ -33,6 +33,7 @@ function AlertDialog({
   idleLabel,
   variant = 'primary',
   actingLabel,
+  children,
   onClick,
   ...props
 }: Props & React.ComponentProps<typeof Dialog>) {
@@ -47,27 +48,34 @@ function AlertDialog({
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
+        {children && <div className="mt-2">{children}</div>}
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost" disabled={isActing}>
-              Cancel
+            <Button
+              type="button"
+              variant={idleLabel ? 'ghost' : 'primary'}
+              disabled={isActing}
+            >
+              {idleLabel ? 'Cancel' : 'Close'}
             </Button>
           </DialogClose>
-          <Button
-            type="button"
-            variant={variant}
-            loading={isActing}
-            onClick={async (e) => {
-              try {
-                setIsActing(true);
-                await onClick?.(e);
-              } finally {
-                setIsActing(false);
-              }
-            }}
-          >
-            {isActing ? actingLabel : idleLabel}
-          </Button>
+          {idleLabel && (
+            <Button
+              type="button"
+              variant={variant}
+              loading={isActing}
+              onClick={async (e) => {
+                try {
+                  setIsActing(true);
+                  await onClick?.(e);
+                } finally {
+                  setIsActing(false);
+                }
+              }}
+            >
+              {isActing ? actingLabel : idleLabel}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

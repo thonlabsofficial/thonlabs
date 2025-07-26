@@ -26,7 +26,9 @@ export async function middleware(req: NextRequest) {
 
     if (projects.length === 0) {
       Log.info('middleware', 'No projects found, redirecting to /onboard');
-      return NextResponse.redirect(forwardSearchParams(req, '/onboard'));
+      return NextResponse.redirect(
+        forwardSearchParams(req, '/onboard/welcome'),
+      );
     }
   }
 

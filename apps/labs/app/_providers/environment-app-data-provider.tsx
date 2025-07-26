@@ -3,7 +3,7 @@
 import React from 'react';
 import useSWR from 'swr';
 import { EnvironmentAppData } from '@/_interfaces/environment-app-data';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { intFetcher } from '@helpers/api';
 
 export interface EnvironmentAppDataContextProps {
@@ -17,14 +17,18 @@ export const EnvironmentAppDataContext =
 
 export interface EnvironmentAppDataProviderProps
   extends React.HTMLAttributes<HTMLElement> {
-  environmentAppData: EnvironmentAppData;
+  environmentAppData: EnvironmentAppData | null;
 }
 
 export function EnvironmentAppDataProvider({
   environmentAppData,
   children,
 }: EnvironmentAppDataProviderProps) {
-  const { environmentId } = useParams();
+  const { environmentId: environmentIdFromParams } = useParams();
+  const searchParams = useSearchParams();
+  const environmentId =
+    environmentIdFromParams || searchParams.get('environmentId');
+
   const { data: appData } = useSWR<EnvironmentAppData>(
     `/api/environments/${environmentId}/data/app`,
     intFetcher,

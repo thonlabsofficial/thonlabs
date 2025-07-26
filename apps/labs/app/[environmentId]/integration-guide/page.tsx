@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Integrate your app',
 };
 
-export default async function OnboardIntegrationPage() {
+export default async function IntegrationGuidePage() {
   return (
     <>
       <PageHeader

@@ -7,7 +7,6 @@ import logoDarkReduced from '@repo/ui/assets/images/thon-labs-logo-dark-reduced.
 import logoLightReduced from '@repo/ui/assets/images/thon-labs-logo-light-reduced.svg';
 import React from 'react';
 import { cn } from '@repo/ui/core/utils';
-import { useTheme } from 'next-themes';
 
 type Props = {
   reduced?: boolean;
@@ -18,22 +17,20 @@ export default function Logo({
   reduced,
   ...props
 }: Props & Omit<React.ComponentProps<typeof Image>, 'alt' | 'src'>) {
-  const { resolvedTheme } = useTheme();
-
-  let sourceImg;
-
-  if (resolvedTheme !== 'dark') {
-    sourceImg = reduced ? logoLightReduced : logoLight;
-  } else {
-    sourceImg = reduced ? logoDarkReduced : logoDark;
-  }
-
   return (
-    <Image
-      {...props}
-      src={sourceImg}
-      alt="Thon Labs Logo"
-      className={cn('w-auto h-[1.125rem]', className)}
-    />
+    <div className={cn('w-auto h-[1.125rem] relative', className)}>
+      <Image
+        {...props}
+        src={reduced ? logoLightReduced : logoLight}
+        alt="Thon Labs Logo"
+        className="block dark:hidden w-auto h-[1.125rem]"
+      />
+      <Image
+        {...props}
+        src={reduced ? logoDarkReduced : logoDark}
+        alt="Thon Labs Logo"
+        className="hidden dark:block w-auto h-[1.125rem]"
+      />
+    </div>
   );
 }
