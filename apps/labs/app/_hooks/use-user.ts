@@ -1,15 +1,15 @@
 import { envHeaders, labsEnvAPI } from '@helpers/api';
-import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
-import {
+import { useToast } from '@repo/ui/hooks/use-toast';
+import qs from 'qs';
+import useUserSession from '@/_hooks/use-user-session';
+import type { User } from '@/_interfaces/user';
+import { revalidateCache } from '@/_services/server-cache-service';
+import type {
   NewUserFormData,
   UpdateUserGeneralDataFormData,
   UpdateUserStatusFormData,
 } from '@/_validators/users-validators';
-import { User } from '@/_interfaces/user';
-import qs from 'qs';
-import useUserSession from '@/_hooks/use-user-session';
-import { revalidateCache } from '@/_services/server-cache-service';
 
 export default function useUser() {
   const { environment } = useUserSession();
@@ -20,7 +20,7 @@ export default function useUser() {
       const { data: user } = await labsEnvAPI.post<User>(
         `/users?${qs.stringify({ sendInvite })}`,
         payload,
-        envHeaders(environment.id),
+        envHeaders(environment.id)
       );
 
       toast({
@@ -49,13 +49,13 @@ export default function useUser() {
 
   async function updateGeneralData(
     userId: string,
-    payload: UpdateUserGeneralDataFormData,
+    payload: UpdateUserGeneralDataFormData
   ) {
     try {
       const { data } = await labsEnvAPI.patch<User>(
         `/users/${userId}/general-data`,
         payload,
-        envHeaders(environment.id),
+        envHeaders(environment.id)
       );
 
       toast({
@@ -79,13 +79,13 @@ export default function useUser() {
 
   async function updateStatus(
     userId: string,
-    payload: UpdateUserStatusFormData,
+    payload: UpdateUserStatusFormData
   ) {
     try {
       const { data } = await labsEnvAPI.patch<User>(
         `/users/${userId}/status`,
         payload,
-        envHeaders(environment.id),
+        envHeaders(environment.id)
       );
 
       toast({
@@ -110,7 +110,7 @@ export default function useUser() {
     try {
       const { data } = await labsEnvAPI.delete<User>(
         `/users/${userId}`,
-        envHeaders(environment.id),
+        envHeaders(environment.id)
       );
 
       toast({
@@ -136,7 +136,7 @@ export default function useUser() {
       const { data } = await labsEnvAPI.post(
         `/users/${userId}/resend-invitation`,
         {},
-        envHeaders(environment.id),
+        envHeaders(environment.id)
       );
 
       toast({

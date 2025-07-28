@@ -1,17 +1,17 @@
 'use server';
 
-import { AxiosError } from 'axios';
 import { labsInternalAPI } from '@helpers/api';
-import { JoinWaitlistFormData } from '@/_validators/general-validators';
-import { DataReturn } from '@repo/utils/data-return';
+import type { DataReturn } from '@repo/utils/data-return';
+import type { AxiosError } from 'axios';
+import type { JoinWaitlistFormData } from '@/_validators/general-validators';
 
 export async function joinWaitlistAction(
-  payload: JoinWaitlistFormData,
+  payload: JoinWaitlistFormData
 ): Promise<DataReturn> {
   try {
     const { data } = await labsInternalAPI.post(
       `/waitlist/${process.env.TL_ENV_ID}`,
-      payload,
+      payload
     );
 
     return data;

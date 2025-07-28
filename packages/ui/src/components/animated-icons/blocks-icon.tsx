@@ -29,7 +29,7 @@ const variants: Variants = {
 const BlocksIcon = forwardRef<BlocksIconHandle, BlocksIconProps>(
   (
     { onMouseEnter, onMouseLeave, animate = false, size = 28, ...props },
-    ref,
+    ref
   ) => {
     const controls = useAnimation();
     const isControlledRef = useRef(false);
@@ -59,7 +59,7 @@ const BlocksIcon = forwardRef<BlocksIconHandle, BlocksIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter],
+      [controls, onMouseEnter]
     );
 
     const handleMouseLeave = useCallback(
@@ -70,7 +70,7 @@ const BlocksIcon = forwardRef<BlocksIconHandle, BlocksIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave],
+      [controls, onMouseLeave]
     );
 
     return (
@@ -80,26 +80,26 @@ const BlocksIcon = forwardRef<BlocksIconHandle, BlocksIconProps>(
         {...props}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns='http://www.w3.org/2000/svg'
           width={size}
           height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
         >
-          <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+          <path d='M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3' />
           <motion.path
-            d="M14 3h7v7h-7z"
+            d='M14 3h7v7h-7z'
             variants={variants}
             animate={controls}
           />
         </svg>
       </div>
     );
-  },
+  }
 );
 
 BlocksIcon.displayName = 'BlocksIcon';

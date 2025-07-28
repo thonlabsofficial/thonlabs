@@ -1,23 +1,23 @@
 'use server';
 
-import { EnvironmentDetail } from '@/_interfaces/environment';
-import { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 import {
   serverEnvHeaders,
   serverLabsEnvAPI,
   serverLabsInternalAPI,
 } from '@helpers/api/server';
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
+import type { EnvironmentDetail } from '@/_interfaces/environment';
+import type { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 
 type EnvironmentWithAppData = EnvironmentDetail & EnvironmentAppData;
 
 export async function getEnvironmentById(
-  environmentId: string,
+  environmentId: string
 ): Promise<EnvironmentWithAppData> {
   const [{ data: environment }, { data: environmentData }] = await Promise.all([
     serverLabsEnvAPI.get<EnvironmentDetail, AxiosResponse<EnvironmentDetail>>(
       `/environments/${environmentId}`,
-      serverEnvHeaders(environmentId),
+      serverEnvHeaders(environmentId)
     ),
     serverLabsInternalAPI.get<
       EnvironmentAppData,

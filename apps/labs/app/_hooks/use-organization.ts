@@ -1,16 +1,19 @@
+import { labsAPI } from '@helpers/api';
+import { APIErrors } from '@helpers/api/api-errors';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import { useParams } from 'next/navigation';
 import React from 'react';
 import useSWR from 'swr';
-import { labsAPI } from '@helpers/api';
-import { useToast } from '@repo/ui/hooks/use-toast';
-import { APIErrors } from '@helpers/api/api-errors';
-import {
-  UpdateLogoOrganizationFormData,
+import type {
+  Organization,
+  OrganizationDetail,
+} from '@/_interfaces/organization';
+import { revalidateCache } from '@/_services/server-cache-service';
+import type {
   EditOrganizationFormData,
   NewOrganizationFormData,
+  UpdateLogoOrganizationFormData,
 } from '@/_validators/organizations-validators';
-import { Organization, OrganizationDetail } from '@/_interfaces/organization';
-import { useParams } from 'next/navigation';
-import { revalidateCache } from '@/_services/server-cache-service';
 
 interface Params {
   organizationId?: string;
@@ -25,7 +28,7 @@ export default function useOrganization(params: Params = {}) {
     isValidating: isValidatingOrganization,
     error: organizationError,
   } = useSWR<OrganizationDetail>(
-    () => params.organizationId && `/organizations/${params.organizationId}`,
+    () => params.organizationId && `/organizations/${params.organizationId}`
   );
 
   const organization = React.useMemo(() => {
@@ -43,10 +46,10 @@ export default function useOrganization(params: Params = {}) {
     try {
       const { data } = await labsAPI.post<Organization>(
         '/organizations',
-        payload,
+        payload
       );
 
-      if (logo && logo?.[0]) {
+      if (logo?.[0]) {
         await updateOrganizationLogo(data.id, { logo }, false);
       }
 
@@ -71,12 +74,12 @@ export default function useOrganization(params: Params = {}) {
 
   async function updateOrganization(
     organizationId: string,
-    payload: EditOrganizationFormData,
+    payload: EditOrganizationFormData
   ) {
     try {
       const { data } = await labsAPI.patch<Organization>(
         `/organizations/${organizationId}`,
-        payload,
+        payload
       );
 
       toast({
@@ -104,7 +107,7 @@ export default function useOrganization(params: Params = {}) {
   async function updateOrganizationLogo(
     organizationId: string,
     payload: UpdateLogoOrganizationFormData,
-    showNotification = true,
+    showNotification = true
   ) {
     try {
       await labsAPI.patch<Organization>(
@@ -114,7 +117,7 @@ export default function useOrganization(params: Params = {}) {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-        },
+        }
       );
 
       await revalidateCache([
@@ -190,7 +193,7 @@ export default function useOrganization(params: Params = {}) {
 
   async function updateOrganizationStatus(
     organizationId: string,
-    payload: { active: boolean },
+    payload: { active: boolean }
   ) {
     try {
       await labsAPI.patch(`/organizations/${organizationId}/status`, payload);

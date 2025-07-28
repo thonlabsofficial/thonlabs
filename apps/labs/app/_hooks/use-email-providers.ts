@@ -1,7 +1,7 @@
 import { envFetcher, envURL } from '@helpers/api';
-import useSWR from 'swr';
 import { useParams } from 'next/navigation';
-import {
+import useSWR from 'swr';
+import type {
   EmailProvider,
   EmailProviderTypes,
 } from '@/_interfaces/email-provider';
@@ -12,7 +12,7 @@ export function useEmailProviders() {
   const { environmentId } = useParams();
   const { data, error, isLoading } = useSWR<EmailProvidersResponse>(
     envURL('/email-providers', environmentId as string),
-    envFetcher(environmentId as string),
+    envFetcher(environmentId as string)
   );
 
   return {

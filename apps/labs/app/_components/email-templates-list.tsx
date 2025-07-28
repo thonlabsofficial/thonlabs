@@ -1,26 +1,28 @@
 'use client';
 
-import { DataTable, DataTableHeaderCell, ColumnDef } from '@repo/ui/data-table';
-import { format } from 'date-fns';
 import { Badge } from '@repo/ui/badge';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import {
+  type ColumnDef,
+  DataTable,
+  DataTableHeaderCell,
+} from '@repo/ui/data-table';
+import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from '@repo/ui/dropdown';
-import React from 'react';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { FileEdit, CheckCircle, XCircle, MoreHorizontal } from 'lucide-react';
-import { EmailTemplate } from '@/_interfaces/email-template';
-import { useEmailTemplates } from '@/_hooks/use-email-templates';
+import { format } from 'date-fns';
+import { CheckCircle, FileEdit, MoreHorizontal, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import useUserSession from '@/_hooks/use-user-session';
-import useEmailTemplate from '@/_hooks/use-email-template';
 import EmailTemplatesConstants from '@/_constants/email-templates-constants';
+import useEmailTemplate from '@/_hooks/use-email-template';
+import useUserSession from '@/_hooks/use-user-session';
+import type { EmailTemplate } from '@/_interfaces/email-template';
 
 function DropdownMenuItemAction({
   type,
@@ -45,12 +47,12 @@ function DropdownMenuItemAction({
         >
           {emailTemplate.enabled ? (
             <>
-              <XCircle className="mr-2 h-4 w-4" />
+              <XCircle className='mr-2 h-4 w-4' />
               <span>Deactivate</span>
             </>
           ) : (
             <>
-              <CheckCircle className="mr-2 h-4 w-4" />
+              <CheckCircle className='mr-2 h-4 w-4' />
               <span>Activate</span>
             </>
           )}
@@ -65,9 +67,9 @@ const columns: ColumnDef<EmailTemplate>[] = [
     header: (columnDef) => {
       return (
         <DataTableHeaderCell
-          header="Name"
+          header='Name'
           columnDef={columnDef}
-          accessorKey="name"
+          accessorKey='name'
         />
       );
     },
@@ -82,7 +84,7 @@ const columns: ColumnDef<EmailTemplate>[] = [
         <Badge
           variant={data ? 'success' : 'destructive'}
           size={'sm'}
-          className="cursor-pointer"
+          className='cursor-pointer'
         >
           {data ? 'Active' : 'Inactive'}
         </Badge>
@@ -94,9 +96,9 @@ const columns: ColumnDef<EmailTemplate>[] = [
     header: (columnDef) => {
       return (
         <DataTableHeaderCell
-          header="Updated At"
+          header='Updated At'
           columnDef={columnDef}
-          accessorKey="updatedAt"
+          accessorKey='updatedAt'
         />
       );
     },
@@ -111,35 +113,35 @@ const columns: ColumnDef<EmailTemplate>[] = [
     cell: ({ row }) => {
       const emailTemplate = row.original;
       return (
-        <div className="w-full flex justify-end">
+        <div className='flex w-full justify-end'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <ButtonIcon
-                variant="outline"
+                variant='outline'
                 icon={MoreHorizontal}
                 size={'sm'}
-                data-dt-bypass-click="true"
+                data-dt-bypass-click='true'
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              data-dt-bypass-click="true"
-              className="w-56"
-              align="end"
+              data-dt-bypass-click='true'
+              className='w-56'
+              align='end'
             >
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                   <Link
                     href={`/${emailTemplate.environmentId}/email-templates/${emailTemplate.id}`}
                   >
-                    <FileEdit className="mr-2 h-4 w-4" />
+                    <FileEdit className='mr-2 h-4 w-4' />
                     <span>Edit</span>
                   </Link>
                 </DropdownMenuItem>
                 {EmailTemplatesConstants.allowedStatusChange.includes(
-                  emailTemplate.type,
+                  emailTemplate.type
                 ) && (
                   <DropdownMenuItemAction
-                    type="update-status"
+                    type='update-status'
                     emailTemplate={emailTemplate}
                   />
                 )}
@@ -161,23 +163,19 @@ export default function EmailTemplatesList({ emailTemplates }: Props) {
   const router = useRouter();
 
   return (
-    <>
-      <DataTable
-        columns={columns}
-        data={emailTemplates}
-        defaultSorting={[{ id: 'name', desc: false }]}
-        searchFields={['name']}
-        noResultsMessage="No email templates found"
-        searchPlaceholder="Search by name..."
-        onRowHover={(_, row) => {
-          router.prefetch(
-            `/${environmentId}/email-templates/${row.original.id}`,
-          );
-        }}
-        onRowClick={(_, row) => {
-          router.push(`/${environmentId}/email-templates/${row.original.id}`);
-        }}
-      />
-    </>
+    <DataTable
+      columns={columns}
+      data={emailTemplates}
+      defaultSorting={[{ id: 'name', desc: false }]}
+      searchFields={['name']}
+      noResultsMessage='No email templates found'
+      searchPlaceholder='Search by name...'
+      onRowHover={(_, row) => {
+        router.prefetch(`/${environmentId}/email-templates/${row.original.id}`);
+      }}
+      onRowClick={(_, row) => {
+        router.push(`/${environmentId}/email-templates/${row.original.id}`);
+      }}
+    />
   );
 }

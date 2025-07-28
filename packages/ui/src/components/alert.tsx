@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '../core/utils';
 
@@ -30,7 +30,7 @@ const alertVariants = cva(
       variant: 'default',
       size: 'md',
     },
-  },
+  }
 );
 
 const Alert = React.forwardRef<
@@ -40,12 +40,12 @@ const Alert = React.forwardRef<
 >(({ className, variant, size, icon: Icon, children, ...props }, ref) => (
   <div
     ref={ref}
-    role="alert"
+    role='alert'
     className={cn(alertVariants({ variant, size }), className)}
     {...props}
   >
-    {Icon && <Icon className="w-4 h-4 -mt-px" />}
-    <div className="flex flex-col gap-0.5">{children}</div>
+    {Icon && <Icon className='-mt-px h-4 w-4' />}
+    <div className='flex flex-col gap-0.5'>{children}</div>
   </div>
 ));
 Alert.displayName = 'Alert';
@@ -57,8 +57,8 @@ const AlertTitle = React.forwardRef<
   <h5
     ref={ref}
     className={cn(
-      'font-semibold leading-none tracking-tight text-sm',
-      className,
+      'font-semibold text-sm leading-none tracking-tight',
+      className
     )}
     {...props}
   />

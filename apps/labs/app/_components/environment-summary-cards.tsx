@@ -1,7 +1,6 @@
-import { getDashboardSummary } from '@/_services/dashboard-service';
-import { labsAPI } from '@helpers/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/card';
 import { Typo } from '@repo/ui/typo';
+import { getDashboardSummary } from '@/_services/dashboard-service';
 
 interface EnvironmentSummaryCardProps {
   title: string;
@@ -15,7 +14,7 @@ function EnvironmentSummaryCard({ title, value }: EnvironmentSummaryCardProps) {
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Typo variant="h2">{value}</Typo>
+        <Typo variant='h2'>{value}</Typo>
       </CardContent>
     </Card>
   );
@@ -33,17 +32,17 @@ export default async function EnvironmentSummaryCards({
     'default',
     {
       month: 'long',
-    },
+    }
   );
 
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className='grid grid-cols-4 gap-3'>
       <EnvironmentSummaryCard
-        title="Total Active Users"
+        title='Total Active Users'
         value={data.totalActiveUsers?.toString() || '-'}
       />
       <EnvironmentSummaryCard
-        title="Monthly Active Users"
+        title='Monthly Active Users'
         value={data.monthlyActiveUsers?.toString() || '-'}
       />
       <EnvironmentSummaryCard
@@ -51,7 +50,7 @@ export default async function EnvironmentSummaryCards({
         value={data.currentMonthSignUps?.toString() || '-'}
       />
       <EnvironmentSummaryCard
-        title="Total Organizations"
+        title='Total Organizations'
         value={data.totalActiveOrganizations?.toString() || '-'}
       />
     </div>

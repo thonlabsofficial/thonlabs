@@ -12,7 +12,7 @@ interface GetSummaryResponse {
 export async function getDashboardSummary(environmentId: string) {
   const { data } = await serverLabsEnvAPI.get<GetSummaryResponse>(
     `/dashboard/summary`,
-    serverEnvHeaders(environmentId),
+    serverEnvHeaders(environmentId)
   );
 
   return data;

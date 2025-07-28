@@ -16,7 +16,7 @@ export default function OrganizationTotalUsersBoxKeyValue({
 
   return (
     <BoxKeyValue
-      label="Total Users"
+      label='Total Users'
       loading={isLoadingOrganization}
       value={organization?.users.length}
     />

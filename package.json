@@ -5,14 +5,13 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
     "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
+    "@biomejs/biome": "^2.1.2",
     "@repo/typescript-config": "workspace:*",
-    "eslint-config": "^0.3.0",
-    "prettier": "^3.2.5",
     "turbo": "^2.3.2"
   },
   "engines": {

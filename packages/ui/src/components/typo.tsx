@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 import { cn } from '../core/utils';
 
 const typoVariants = cva('font-sans text-text', {

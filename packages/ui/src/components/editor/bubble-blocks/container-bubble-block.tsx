@@ -1,16 +1,16 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import Utils from '@repo/utils';
 import { useCurrentEditor } from '@tiptap/react';
 import { motion } from 'framer-motion';
-import { Separator } from '../../separator';
-import { ColorBlock } from './color-bubble-block';
-import { Button } from '../../button';
 import { MoveHorizontalIcon, Trash2Icon } from 'lucide-react';
-import { Input } from '../../input';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import Utils from '@repo/utils';
+import { Button } from '../../button';
 import { ButtonGroup } from '../../button-group';
+import { Input } from '../../input';
+import { Separator } from '../../separator';
+import { ColorBlock } from './color-bubble-block';
 
 const containerFormSchema = z.object({
   isLocked: z.boolean(),
@@ -40,7 +40,7 @@ export function ContainerBubble() {
   });
 
   const [activeDOM, setActiveDOM] = useState<HTMLElement | undefined>(
-    undefined,
+    undefined
   );
   const [activeContainerPosition, setActiveContainerPosition] = useState<
     | {
@@ -58,19 +58,19 @@ export function ContainerBubble() {
       if (activeContainerStyles) {
         form.setValue(
           'width',
-          parseInt(activeContainerStyles.maxWidth || '100'),
+          parseInt(activeContainerStyles.maxWidth || '100')
         );
         form.setValue(
           'widthUnit',
-          activeContainerStyles.maxWidth?.endsWith('px') ? 'px' : '%',
+          activeContainerStyles.maxWidth?.endsWith('px') ? 'px' : '%'
         );
         form.setValue(
           'borderRadius',
-          parseInt(activeContainerStyles.borderRadius || '0'),
+          parseInt(activeContainerStyles.borderRadius || '0')
         );
       }
     }
-  }, [activeDOM]);
+  }, [activeDOM, form.setValue]);
 
   const width = form.watch('width');
   const widthUnit = form.watch('widthUnit');
@@ -91,7 +91,7 @@ export function ContainerBubble() {
         });
       }
     }
-  }, [editor, width, widthUnit, borderRadius]);
+  }, [editor, width, widthUnit, borderRadius, activeDOM?.id]);
 
   if (!editor) {
     return null;
@@ -134,7 +134,7 @@ export function ContainerBubble() {
       setActiveDOM(undefined);
       setActiveContainerPosition(undefined);
     }
-  }, [$from, isFocused]);
+  }, [$from, isFocused, view.dom.getBoundingClientRect, view.nodeDOM]);
 
   useEffect(() => {
     const handleClick = () => {
@@ -195,7 +195,7 @@ export function ContainerBubble() {
     activeDOM &&
     isFocused && (
       <motion.div
-        className="absolute flex flex-col gap-1 p-1 rounded-md bg-muted border border-foreground/[0.07] shadow-md"
+        className='absolute flex flex-col gap-1 rounded-md border border-foreground/[0.07] bg-muted p-1 shadow-md'
         style={{
           top: activeContainerPosition.top - bubbleGutter,
           right: activeContainerPosition.right + bubbleWidth,
@@ -204,14 +204,14 @@ export function ContainerBubble() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.07 }}
       >
-        <input id="is-locked" type="hidden" {...form.register('isLocked')} />
-        <div className="flex items-center gap-0.5">
-          <div className="flex px-1 gap-2">
-            <div className="flex items-center gap-0.5">
-              <MoveHorizontalIcon className="h-3.5 w-3.5 flex-none basis-3.5 text-text" />
+        <input id='is-locked' type='hidden' {...form.register('isLocked')} />
+        <div className='flex items-center gap-0.5'>
+          <div className='flex gap-2 px-1'>
+            <div className='flex items-center gap-0.5'>
+              <MoveHorizontalIcon className='h-3.5 w-3.5 flex-none basis-3.5 text-text' />
               <Input
-                type="number"
-                className="w-14"
+                type='number'
+                className='w-14'
                 size={'xs'}
                 maxLength={4}
                 onFocus={() => {
@@ -225,10 +225,10 @@ export function ContainerBubble() {
               />
               <ButtonGroup>
                 <Button
-                  type="button"
-                  variant="ghost"
-                  size="xs"
-                  className="px-1"
+                  type='button'
+                  variant='ghost'
+                  size='xs'
+                  className='px-1'
                   onClick={async () => {
                     form.setValue('isLocked', true);
                     form.setValue('widthUnit', 'px');
@@ -242,10 +242,10 @@ export function ContainerBubble() {
                   px
                 </Button>
                 <Button
-                  type="button"
-                  variant="ghost"
-                  size="xs"
-                  className="px-1"
+                  type='button'
+                  variant='ghost'
+                  size='xs'
+                  className='px-1'
                   onClick={async () => {
                     form.setValue('isLocked', true);
                     form.setValue('widthUnit', '%');
@@ -261,27 +261,27 @@ export function ContainerBubble() {
               </ButtonGroup>
             </div>
             <Separator
-              orientation="vertical"
-              className="h-7 bg-foreground/[0.07]"
+              orientation='vertical'
+              className='h-7 bg-foreground/[0.07]'
             />
-            <div className="flex items-center gap-0.5">
+            <div className='flex items-center gap-0.5'>
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-3.5 w-3.5 flex-none basis-3.5 text-text"
+                xmlns='http://www.w3.org/2000/svg'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                className='h-3.5 w-3.5 flex-none basis-3.5 text-text'
               >
-                <path d="M21 3h-16a2 2 0 0 0 -2 2v16" />
+                <path d='M21 3h-16a2 2 0 0 0 -2 2v16' />
               </svg>
               <Input
-                type="number"
-                className="w-14"
+                type='number'
+                className='w-14'
                 size={'xs'}
                 maxLength={4}
                 onFocus={() => {
@@ -296,11 +296,11 @@ export function ContainerBubble() {
             </div>
           </div>
           <Separator
-            orientation="vertical"
-            className="h-7 bg-foreground/[0.07]"
+            orientation='vertical'
+            className='h-7 bg-foreground/[0.07]'
           />
           <ColorBlock
-            type="containerBackground"
+            type='containerBackground'
             containerId={activeDOM.id}
             onOpenChange={({ isOpen }) => {
               form.setValue('isLocked', isOpen);
@@ -311,7 +311,7 @@ export function ContainerBubble() {
             }}
           />
           <ColorBlock
-            type="containerBorder"
+            type='containerBorder'
             containerId={activeDOM.id}
             onOpenChange={({ isOpen }) => {
               form.setValue('isLocked', isOpen);
@@ -322,13 +322,13 @@ export function ContainerBubble() {
             }}
           />
           <Separator
-            orientation="vertical"
-            className="h-7 bg-foreground/[0.07]"
+            orientation='vertical'
+            className='h-7 bg-foreground/[0.07]'
           />
           <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+            type='button'
+            variant='ghost'
+            size='sm'
             icon={Trash2Icon}
             onClick={async () => {
               form.setValue('isLocked', true);
@@ -340,7 +340,7 @@ export function ContainerBubble() {
               form.setValue('isLocked', false);
             }}
           >
-            <span className="sr-only">Delete</span>
+            <span className='sr-only'>Delete</span>
           </Button>
         </div>
       </motion.div>

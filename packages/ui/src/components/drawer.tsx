@@ -1,9 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import * as DrawerPrimitive from '@radix-ui/react-dialog';
-import { cn } from '../core/utils';
 import { X } from 'lucide-react';
+import * as React from 'react';
+import { cn } from '../core/utils';
 
 const Drawer = ({
   open,
@@ -11,7 +11,7 @@ const Drawer = ({
 }: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Root>) => {
   React.useEffect(() => {
     window.document.body.style.pointerEvents = 'auto';
-  }, [open]);
+  }, []);
 
   return <DrawerPrimitive.Root open={open} {...props} />;
 };
@@ -28,8 +28,8 @@ const DrawerOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     className={cn(
-      'fixed inset-0 z-50 bg-black/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-      className,
+      'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/40 backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in',
+      className
     )}
     {...props}
     ref={ref}
@@ -49,21 +49,15 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        `
-        fixed w-[26rem] top-0 z-50 flex
-        flex-col bg-card !select-auto !cursor-auto 
-        inset-y-0 right-0 h-full border-l
-        data-[state=open]:animate-slide-fade-in-from-right 
-        data-[state=closed]:animate-slide-fade-out-to-right
-      `,
-        className,
+        `!select-auto !cursor-auto fixed inset-y-0 top-0 right-0 z-50 flex h-full w-[26rem] flex-col border-l bg-card data-[state=closed]:animate-slide-fade-out-to-right data-[state=open]:animate-slide-fade-in-from-right `,
+        className
       )}
       {...props}
     >
       {children}
-      <DrawerPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+      <DrawerPrimitive.Close className='absolute top-4 right-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary'>
+        <X className='h-4 w-4' />
+        <span className='sr-only'>Close</span>
       </DrawerPrimitive.Close>
     </DrawerPrimitive.Content>
   </DrawerPortal>
@@ -77,12 +71,8 @@ const DrawerContentWrapper = React.forwardRef<
   <DrawerPrimitive.Content
     ref={ref}
     className={cn(
-      `
-      fixed top-0 z-50 inset-y-0 right-0 h-full
-      data-[state=open]:animate-slide-fade-in-from-right 
-      data-[state=closed]:animate-slide-fade-out-to-right
-    `,
-      className,
+      `fixed inset-y-0 top-0 right-0 z-50 h-full data-[state=closed]:animate-slide-fade-out-to-right data-[state=open]:animate-slide-fade-in-from-right `,
+      className
     )}
     {...props}
   >
@@ -99,21 +89,15 @@ const DrawerMainContent = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      `
-      fixed w-[26rem] top-0 z-50 flex
-      flex-col bg-card !select-auto !cursor-auto 
-      inset-y-0 right-0 h-full border-l sm:max-w-sm
-      data-[state=open]:animate-slide-fade-in-from-right 
-      data-[state=closed]:animate-slide-fade-out-to-right
-    `,
-      className,
+      `!select-auto !cursor-auto fixed inset-y-0 top-0 right-0 z-50 flex h-full w-[26rem] flex-col border-l bg-card data-[state=closed]:animate-slide-fade-out-to-right data-[state=open]:animate-slide-fade-in-from-right sm:max-w-sm `,
+      className
     )}
     {...props}
   >
     {children}
-    <DrawerPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
-      <X className="h-4 w-4" />
-      <span className="sr-only">Close</span>
+    <DrawerPrimitive.Close className='absolute top-4 right-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary'>
+      <X className='h-4 w-4' />
+      <span className='sr-only'>Close</span>
     </DrawerPrimitive.Close>
   </div>
 ));
@@ -126,14 +110,8 @@ const DrawerComplementaryContent = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      `
-      fixed w-[60vw] top-0 right-[24rem] z-50 flex
-      flex-col bg-card !select-auto !cursor-auto 
-      inset-y-0 h-full p-4
-      data-[state=open]:animate-slide-fade-in-from-right 
-      data-[state=closed]:animate-slide-fade-out-to-right
-    `,
-      className,
+      `!select-auto !cursor-auto fixed inset-y-0 top-0 right-[24rem] z-50 flex h-full w-[60vw] flex-col bg-card p-4 data-[state=closed]:animate-slide-fade-out-to-right data-[state=open]:animate-slide-fade-in-from-right `,
+      className
     )}
     {...props}
   >
@@ -148,8 +126,8 @@ const DrawerHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'grid gap-1.5 sm:text-left pl-5 pr-12 pt-5 pb-5 mb-6 border-b',
-      className,
+      'mb-6 grid gap-1.5 border-b pt-5 pr-12 pb-5 pl-5 sm:text-left',
+      className
     )}
     {...props}
   />
@@ -164,12 +142,12 @@ const DrawerFooter = ({
   return (
     <div
       className={cn(
-        'flex gap-3 pt-6 p-4',
+        'flex gap-3 p-4 pt-6',
         {
           'justify-between': multipleChildren,
           'justify-end': !multipleChildren,
         },
-        className,
+        className
       )}
       {...props}
     />
@@ -183,7 +161,7 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={cn('text-lg font-semibold text-foreground', className)}
+    className={cn('font-semibold text-foreground text-lg', className)}
     {...props}
   />
 ));
@@ -195,7 +173,7 @@ const DrawerDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
-    className={cn('text-sm text-muted-foreground', className)}
+    className={cn('text-muted-foreground text-sm', className)}
     {...props}
   />
 ));
@@ -210,7 +188,7 @@ const DrawerScrollArea = React.forwardRef<
     {...props}
     ref={ref}
   >
-    <div className="w-full">{children}</div>
+    <div className='w-full'>{children}</div>
   </div>
 ));
 DrawerScrollArea.displayName = 'DrawerScrollArea';

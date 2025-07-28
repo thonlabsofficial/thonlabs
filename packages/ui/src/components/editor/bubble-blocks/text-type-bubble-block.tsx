@@ -1,21 +1,21 @@
-import { Command, CommandList, CommandGroup, CommandItem } from '../../command';
-import { Button } from '../../button';
-import { Typo } from '../../typo';
-import { Popover, PopoverContent, PopoverTrigger } from '../../popover';
-import { EditorInstance, useEditor } from 'novel';
 import {
-  LucideIcon,
-  Text as TextIcon,
+  Book as BookTypeIcon,
   Heading1 as Heading1Icon,
   Heading2 as Heading2Icon,
   Heading3 as Heading3Icon,
-  ListOrdered as ListOrderedIcon,
-  TextQuote as TextQuoteIcon,
-  SquareDashedBottomCode as SquareDashedBottomCodeIcon,
   Heading4 as Heading4Icon,
   List as ListIcon,
-  Book as BookTypeIcon,
+  ListOrdered as ListOrderedIcon,
+  type LucideIcon,
+  SquareDashedBottomCode as SquareDashedBottomCodeIcon,
+  Text as TextIcon,
+  TextQuote as TextQuoteIcon,
 } from 'lucide-react';
+import { type EditorInstance, useEditor } from 'novel';
+import { Button } from '../../button';
+import { Command, CommandGroup, CommandItem, CommandList } from '../../command';
+import { Popover, PopoverContent, PopoverTrigger } from '../../popover';
+import { Typo } from '../../typo';
 
 type SelectorItem = {
   name: string;
@@ -117,7 +117,7 @@ export function TextTypeBlock() {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          type="button"
+          type='button'
           variant={'ghost'}
           icon={typoActiveItem?.icon}
           size={'sm'}
@@ -125,10 +125,10 @@ export function TextTypeBlock() {
           {typoActiveItem?.name}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
-        <Command className="bg-transparent" defaultValue={typoActiveItem?.name}>
+      <PopoverContent className='flex w-52 flex-col gap-1 rounded-md border border-foreground/[0.07] bg-muted p-0'>
+        <Command className='bg-transparent' defaultValue={typoActiveItem?.name}>
           <CommandList>
-            <CommandGroup heading="Switch To">
+            <CommandGroup heading='Switch To'>
               {textTypeItems.map((item, index) => (
                 <CommandItem
                   value={item.name}
@@ -138,7 +138,7 @@ export function TextTypeBlock() {
                     item.command(editor);
                   }}
                 >
-                  <item.icon className="mr-2 mt-0.5 h-4 w-4" />
+                  <item.icon className='mt-0.5 mr-2 h-4 w-4' />
                   <Typo variant={'sm'}>{item.name}</Typo>
                 </CommandItem>
               ))}

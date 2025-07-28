@@ -1,11 +1,11 @@
-import { Metadata } from 'next';
-import PageWrapper from '@/_components/page-wrapper';
-import PageHeader from '@/_components/page-header';
+import { Button } from '@repo/ui/button';
 import { SquareUser } from 'lucide-react';
+import type { Metadata } from 'next';
 import NewUserDialog from '@/_components/new-user-dialog';
+import PageHeader from '@/_components/page-header';
+import PageWrapper from '@/_components/page-wrapper';
 import UsersDataTable from '@/_components/users-data-table';
 import { fetchUsers } from '@/_services/user-service';
-import { Button } from '@repo/ui/button';
 
 export const metadata: Metadata = {
   title: 'Users',
@@ -22,7 +22,7 @@ export default async function Users({
   return (
     <>
       <PageHeader
-        title="Users"
+        title='Users'
         icon={SquareUser}
         actions={<NewUserDialog trigger={<Button>New User</Button>} />}
       />

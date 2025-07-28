@@ -1,6 +1,6 @@
-import Container from '@/_components/container';
 import { cn } from '@repo/ui/core/utils';
-import React from 'react';
+import type React from 'react';
+import Container from '@/_components/container';
 
 type Props = {
   withContainer?: boolean;

@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react';
-import { cn } from '@repo/ui/core/utils';
-import { Typo } from '@repo/ui/typo';
 import { Clipboard } from '@repo/ui/clipboard';
-import { format } from 'date-fns/format';
-import { Copy, Check } from 'lucide-react';
+import { cn } from '@repo/ui/core/utils';
 import { Skeleton } from '@repo/ui/skeleton';
+import { Typo } from '@repo/ui/typo';
+import { format } from 'date-fns/format';
+import { Check, Copy } from 'lucide-react';
+import type React from 'react';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   label: React.ReactNode;
@@ -27,22 +27,22 @@ export default function BoxKeyValue({
 }: Props) {
   return (
     <div className={cn('flex flex-col gap-0.5', className)} {...props}>
-      <Typo variant={'muted'} className="font-semibold">
+      <Typo variant={'muted'} className='font-semibold'>
         {label}
       </Typo>
       {loading ? (
-        <Skeleton className="h-[1.375rem] w-24" />
+        <Skeleton className='h-[1.375rem] w-24' />
       ) : (
-        <Typo variant={'sm'} className="flex items-center gap-1">
+        <Typo variant={'sm'} className='flex items-center gap-1'>
           {date && value
             ? format(new Date(value as string), 'MM/dd/yyyy hh:mm aa')
-            : value != null || value != undefined
+            : value != null || value !== undefined
               ? (value as React.ReactNode)
               : '-'}
           {withCopy && (
             <Clipboard
-              size="xs"
-              variant="outline"
+              size='xs'
+              variant='outline'
               value={value?.toString() as string}
               labels={[Copy, Check]}
               iconLabels

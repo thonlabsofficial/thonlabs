@@ -1,27 +1,26 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/button';
 import {
   Drawer,
   DrawerContent,
+  DrawerContentContainer,
   DrawerFooter,
   DrawerHeader,
+  DrawerScrollArea,
   DrawerTitle,
   DrawerTrigger,
-  DrawerScrollArea,
-  DrawerContentContainer,
 } from '@repo/ui/drawer';
-import { Typo } from '@repo/ui/typo';
-import { SSOSocialProvider } from '@thonlabs/nextjs';
+import { Input, InputWrapper } from '@repo/ui/input';
+import type { SSOSocialProvider } from '@thonlabs/nextjs';
+import React, { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { useCredential } from '@/_hooks/use-credential';
 import {
-  UpdateProviderCredentialsFormData,
+  type UpdateProviderCredentialsFormData,
   updateProviderCredentialsFormSchema,
 } from '@/_validators/builder-validators';
-import { useCredential } from '@/_hooks/use-credential';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -37,7 +36,7 @@ export default function BuilderEditCredentialsDrawer({
 }: Props & React.ComponentProps<typeof Drawer>) {
   const [open, setOpen] = React.useState(props.open || false);
   const { credential, isLoadingCredential, upsertCredential } = useCredential(
-    open ? { environmentId, provider } : undefined,
+    open ? { environmentId, provider } : undefined
   );
   const form = useForm<UpdateProviderCredentialsFormData>({
     resolver: zodResolver(updateProviderCredentialsFormSchema),
@@ -48,7 +47,7 @@ export default function BuilderEditCredentialsDrawer({
     if (props.open || credential) {
       handleInit();
     }
-  }, [props.open, credential]);
+  }, [props.open, credential, handleInit]);
 
   async function handleSave() {
     if (!(await form.trigger())) {
@@ -82,17 +81,17 @@ export default function BuilderEditCredentialsDrawer({
       )}
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle className="capitalize">
+          <DrawerTitle className='capitalize'>
             Edit {provider} Credentials
           </DrawerTitle>
         </DrawerHeader>
-        <form className="h-full">
+        <form className='h-full'>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
+              <div className='grid w-full items-center gap-4'>
                 <InputWrapper>
                   <Input
-                    label="Client ID"
+                    label='Client ID'
                     maxLength={100}
                     error={form.formState.errors.clientId?.message}
                     loading={isLoadingCredential}
@@ -101,7 +100,7 @@ export default function BuilderEditCredentialsDrawer({
                 </InputWrapper>
                 <InputWrapper>
                   <Input
-                    label="Secret Key"
+                    label='Secret Key'
                     maxLength={100}
                     error={form.formState.errors.secretKey?.message}
                     loading={isLoadingCredential}
@@ -110,7 +109,7 @@ export default function BuilderEditCredentialsDrawer({
                 </InputWrapper>
                 <InputWrapper>
                   <Input
-                    label="Redirect URI"
+                    label='Redirect URI'
                     maxLength={900}
                     error={form.formState.errors.redirectURI?.message}
                     loading={isLoadingCredential}
@@ -122,9 +121,9 @@ export default function BuilderEditCredentialsDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <Button
-              type="button"
+              type='button'
               loading={isSaving}
-              className="w-full"
+              className='w-full'
               disabled={!form.formState.isDirty || isSaving}
               onClick={handleSave}
             >

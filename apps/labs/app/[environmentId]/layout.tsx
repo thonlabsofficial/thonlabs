@@ -1,11 +1,10 @@
-import { Metadata } from 'next';
-import { getAuthSession } from '@/_services/server-auth-session-service';
-import MainAside from '@/_components/main-aside';
-import MainHeader from '@/_components/main-header';
-import { getAppData } from '@/_services/server-environment-app-data-service';
-import { EnvironmentAppDataProvider } from '@/_providers/environment-app-data-provider';
-import { notFound } from 'next/navigation';
 import { Toaster } from '@repo/ui/toaster';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import MainHeader from '@/_components/main-header';
+import { EnvironmentAppDataProvider } from '@/_providers/environment-app-data-provider';
+import { getAuthSession } from '@/_services/server-auth-session-service';
+import { getAppData } from '@/_services/server-environment-app-data-service';
 
 export const metadata: Metadata = {
   robots: {
@@ -36,11 +35,11 @@ export default async function LabsNestedLayout({
   return (
     <EnvironmentAppDataProvider environmentAppData={environmentAppData}>
       <MainHeader environmentId={environmentId} session={session} logoReduced />
-      <main className="pt-[3.5625rem]">
+      <main className='pt-[3.5625rem]'>
         {/* <MainAside /> */}
         <div>
           {children}
-          <footer className="mt-12" />
+          <footer className='mt-12' />
         </div>
       </main>
       <Toaster />

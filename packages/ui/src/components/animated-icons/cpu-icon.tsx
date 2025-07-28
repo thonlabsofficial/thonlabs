@@ -53,7 +53,7 @@ const xVariants: Variants = {
 const CpuIcon = forwardRef<CpuIconHandle, CpuIconProps>(
   (
     { onMouseEnter, onMouseLeave, animate = false, size = 28, ...props },
-    ref,
+    ref
   ) => {
     const controls = useAnimation();
     const isControlledRef = useRef(false);
@@ -83,7 +83,7 @@ const CpuIcon = forwardRef<CpuIconHandle, CpuIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter],
+      [controls, onMouseEnter]
     );
 
     const handleMouseLeave = useCallback(
@@ -94,7 +94,7 @@ const CpuIcon = forwardRef<CpuIconHandle, CpuIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave],
+      [controls, onMouseLeave]
     );
     return (
       <div
@@ -103,62 +103,62 @@ const CpuIcon = forwardRef<CpuIconHandle, CpuIconProps>(
         {...props}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns='http://www.w3.org/2000/svg'
           width={size}
           height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
         >
-          <rect width="16" height="16" x="4" y="4" rx="2" />
-          <rect width="6" height="6" x="9" rx="1" y="9" />
+          <rect width='16' height='16' x='4' y='4' rx='2' />
+          <rect width='6' height='6' x='9' rx='1' y='9' />
           <motion.path
-            d="M15 2v2"
+            d='M15 2v2'
             variants={yVariants}
             transition={transition}
             animate={controls}
           />
           <motion.path
-            d="M15 20v2"
+            d='M15 20v2'
             variants={yVariants}
             transition={transition}
             animate={controls}
           />
           <motion.path
-            d="M2 15h2"
+            d='M2 15h2'
             variants={xVariants}
             transition={transition}
             animate={controls}
           />
           <motion.path
-            d="M2 9h2"
+            d='M2 9h2'
             variants={xVariants}
             transition={transition}
             animate={controls}
           />
           <motion.path
-            d="M20 15h2"
+            d='M20 15h2'
             variants={xVariants}
             transition={transition}
             animate={controls}
           />
           <motion.path
-            d="M20 9h2"
+            d='M20 9h2'
             variants={xVariants}
             transition={transition}
             animate={controls}
           />
           <motion.path
-            d="M9 2v2"
+            d='M9 2v2'
             variants={yVariants}
             transition={transition}
             animate={controls}
           />
           <motion.path
-            d="M9 20v2"
+            d='M9 20v2'
             variants={yVariants}
             transition={transition}
             animate={controls}
@@ -166,7 +166,7 @@ const CpuIcon = forwardRef<CpuIconHandle, CpuIconProps>(
         </svg>
       </div>
     );
-  },
+  }
 );
 
 CpuIcon.displayName = 'CpuIcon';

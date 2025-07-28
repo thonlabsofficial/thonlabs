@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import type * as React from 'react';
 import { cn } from '../core/utils';
 
 const badgeVariants = cva(
@@ -33,7 +33,7 @@ const badgeVariants = cva(
       variant: 'default',
       size: 'md',
     },
-  },
+  }
 );
 
 export interface BadgeProps

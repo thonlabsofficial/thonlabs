@@ -1,4 +1,4 @@
-import { cva, VariantProps } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../core/utils';
 
 const iconSquareVariants = cva(
@@ -18,7 +18,7 @@ const iconSquareVariants = cva(
       size: 'md',
       variant: 'default',
     },
-  },
+  }
 );
 
 const iconVariants = cva('', {
@@ -59,7 +59,7 @@ const IconSquare = ({
           {
             'border border-foreground/[0.05]': bordered,
           },
-          className,
+          className
         ),
       })}
       {...props}

@@ -1,20 +1,19 @@
 'use client';
 
-import React from 'react';
-import { useProjects } from '@/_hooks/use-projects';
-import { Environment } from '@/_interfaces/environment';
-import { Project } from '@/_interfaces/project';
 import { Avatar, AvatarFallback } from '@repo/ui/avatar';
-import { Card, CardContent } from '@repo/ui/card';
-import { Typo } from '@repo/ui/typo';
-import NewEnvironmentDialog from '@/projects/_components/new-environment-dialog';
 import { Button } from '@repo/ui/button';
-import ProjectSettingsDrawer from './project-settings-drawer';
-import { Skeleton } from '@repo/ui/skeleton';
+import { Card, CardContent } from '@repo/ui/card';
 import { cn } from '@repo/ui/core/utils';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import { Skeleton } from '@repo/ui/skeleton';
+import { Typo } from '@repo/ui/typo';
 import { ArrowRight, Settings } from 'lucide-react';
 import Link from 'next/link';
-import { useToast } from '@repo/ui/hooks/use-toast';
+import { useProjects } from '@/_hooks/use-projects';
+import type { Environment } from '@/_interfaces/environment';
+import type { Project } from '@/_interfaces/project';
+import NewEnvironmentDialog from '@/projects/_components/new-environment-dialog';
+import ProjectSettingsDrawer from './project-settings-drawer';
 
 function ProjectSection({
   project,
@@ -27,9 +26,9 @@ function ProjectSection({
 
   return (
     <Card key={project.id} padding>
-      <CardContent className="flex flex-col gap-6">
-        <header className="flex justify-between">
-          <div className="flex items-center gap-2">
+      <CardContent className='flex flex-col gap-6'>
+        <header className='flex justify-between'>
+          <div className='flex items-center gap-2'>
             {!loading ? (
               <Typo variant={'h4'}>{project.appName}</Typo>
             ) : (
@@ -53,14 +52,14 @@ function ProjectSection({
         </header>
 
         <section>
-          <header className="mb-1">
+          <header className='mb-1'>
             {!loading ? (
               <Typo variant={'muted'}>Environments</Typo>
             ) : (
               <Skeleton width={'6rem'} height={'1.125rem'} />
             )}
           </header>
-          <div className="grid grid-cols-3 gap-3">
+          <div className='grid grid-cols-3 gap-3'>
             {project.environments.map((environment, index) => (
               <Link
                 href={`/${environment.id}/dashboard`}
@@ -76,16 +75,16 @@ function ProjectSection({
                 <Card
                   aria-disabled
                   className={cn(
-                    'group border-foreground/[0.2] hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1]',
+                    'group hover:!bg-foreground/[0.08] hover:!border-foreground/[0.1] border-foreground/[0.2]',
                     {
                       'pointer-events-none': loading,
-                    },
+                    }
                   )}
                   variant={'transparent'}
                 >
-                  <CardContent className="flex h-full justify-between gap-4 p-4">
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-2">
+                  <CardContent className='flex h-full justify-between gap-4 p-4'>
+                    <div className='flex flex-col gap-3'>
+                      <div className='flex items-center gap-2'>
                         {!loading ? (
                           <Avatar>
                             <AvatarFallback>
@@ -99,7 +98,7 @@ function ProjectSection({
                             height={'2.5rem'}
                           />
                         )}
-                        <div className="flex flex-col mt-1">
+                        <div className='mt-1 flex flex-col'>
                           {!loading ? (
                             <Typo variant={'lg'}>{environment.name}</Typo>
                           ) : (
@@ -108,7 +107,7 @@ function ProjectSection({
                           {!loading ? (
                             <Typo
                               variant={'sm'}
-                              className="text-zinc-600 dark:text-zinc-400"
+                              className='text-zinc-600 dark:text-zinc-400'
                             >
                               {environment.appURL}
                             </Typo>
@@ -116,20 +115,16 @@ function ProjectSection({
                             <Skeleton
                               width={'10rem'}
                               height={'1.125rem'}
-                              className="mt-1"
+                              className='mt-1'
                             />
                           )}
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center">
+                    <div className='flex items-center'>
                       {!loading && (
                         <ArrowRight
-                          className={`
-                  w-5 h-5 opacity-0 invisible 
-                  group-hover:opacity-100 group-hover:visible 
-                  transition-all duration-120 ease-in-out
-                `}
+                          className={`invisible h-5 w-5 opacity-0 transition-all duration-120 ease-in-out group-hover:visible group-hover:opacity-100 `}
                         />
                       )}
                     </div>
@@ -141,15 +136,15 @@ function ProjectSection({
               <NewEnvironmentDialog
                 trigger={
                   <Card
-                    role="button"
+                    role='button'
                     variant={'transparent'}
                     border={'dashed'}
-                    className="group border-foreground/[0.2] hover:border-foreground/[0.3] min-h-[5.25rem]"
+                    className='group min-h-[5.25rem] border-foreground/[0.2] hover:border-foreground/[0.3]'
                   >
-                    <CardContent className="flex h-full justify-center items-center gap-4 p-4">
+                    <CardContent className='flex h-full items-center justify-center gap-4 p-4'>
                       <Typo
                         variant={'lg'}
-                        className="text-foreground/[0.7] group-hover:text-foreground/[0.9] transition-default"
+                        className='text-foreground/[0.7] transition-default group-hover:text-foreground/[0.9]'
                       >
                         New Environment
                       </Typo>
@@ -170,25 +165,23 @@ export default function ProjectsList() {
   const { isLoadingProjects, projects } = useProjects();
 
   return (
-    <div className="grid gap-6">
+    <div className='grid gap-6'>
       {isLoadingProjects && (
-        <>
-          <ProjectSection
-            loading
-            project={
-              {
-                environments: [
-                  {} as Environment,
-                  {} as Environment,
-                  {} as Environment,
-                  {} as Environment,
-                  {} as Environment,
-                  {} as Environment,
-                ],
-              } as Project & { environments: Environment[] }
-            }
-          />
-        </>
+        <ProjectSection
+          loading
+          project={
+            {
+              environments: [
+                {} as Environment,
+                {} as Environment,
+                {} as Environment,
+                {} as Environment,
+                {} as Environment,
+                {} as Environment,
+              ],
+            } as Project & { environments: Environment[] }
+          }
+        />
       )}
 
       {!isLoadingProjects &&
@@ -197,8 +190,8 @@ export default function ProjectsList() {
         ))}
 
       {!isLoadingProjects && projects.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-full">
-          <Typo variant="muted">No projects found</Typo>
+        <div className='flex h-full flex-col items-center justify-center'>
+          <Typo variant='muted'>No projects found</Typo>
         </div>
       )}
     </div>

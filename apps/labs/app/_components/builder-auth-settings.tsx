@@ -1,27 +1,11 @@
 'use client';
 
-import React from 'react';
-import SeparatorLine from '@/_components/separator-line';
-import {
-  UpdateEnvironmentAuthSettingsFormData,
-  UpdateEnvironmentAuthSettingsFormSchema,
-} from '@/_validators/builder-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
+import { InputColorPicker } from '@repo/ui/input-color-picker';
 import { InputRadio } from '@repo/ui/input-radio';
-import { InputSwitch } from '@repo/ui/input-switch';
-import { Typo } from '@repo/ui/typo';
-import { useTransition } from 'react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
-import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
-import { EnvironmentDetail } from '@/_interfaces/environment';
-import {
-  EnvironmentData,
-  SSOSocialProvider,
-  usePreviewMode,
-} from '@thonlabs/nextjs';
 import {
   InputSelect,
   InputSelectContent,
@@ -29,11 +13,26 @@ import {
   InputSelectTrigger,
   InputSelectValue,
 } from '@repo/ui/input-select';
-import { InputColorPicker } from '@repo/ui/input-color-picker';
+import { InputSwitch } from '@repo/ui/input-switch';
 import { Label } from '@repo/ui/label';
+import { Typo } from '@repo/ui/typo';
+import {
+  type EnvironmentData,
+  SSOSocialProvider,
+  usePreviewMode,
+} from '@thonlabs/nextjs';
+import React, { useTransition } from 'react';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import BuilderEditCredentialsDrawer from '@/_components/builder-edit-credentials-drawer';
+import EnableSignUpB2BOnlySwitch from '@/_components/enable-signup-b2b-only-switch';
+import SeparatorLine from '@/_components/separator-line';
 import useBuilder from '@/_hooks/use-builder';
 import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
+import type { EnvironmentDetail } from '@/_interfaces/environment';
+import {
+  type UpdateEnvironmentAuthSettingsFormData,
+  UpdateEnvironmentAuthSettingsFormSchema,
+} from '@/_validators/builder-validators';
 
 const ssoProvidersMapper = {
   [SSOSocialProvider.GOOGLE]: {
@@ -122,7 +121,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
 
   function handleSSOProviderCheckedChange(
     provider: SSOSocialProvider,
-    checked: boolean,
+    checked: boolean
   ) {
     const activeSSOProviders = form.getValues('activeSSOProviders') || [];
     let newActiveSSOProviders = [...activeSSOProviders];
@@ -162,22 +161,22 @@ export default function BuilderAuthSettings({ environment }: Props) {
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-[15rem_1fr] gap-3">
+        <div className='grid grid-cols-[15rem_1fr] gap-3'>
           <CardHeader
             padding
-            description="Customize the auth pages to match your brand and user experience."
+            description='Customize the auth pages to match your brand and user experience.'
           >
             Style
           </CardHeader>
-          <CardContent className="flex-1 p-6">
-            <div className="grid gap-5">
+          <CardContent className='flex-1 p-6'>
+            <div className='grid gap-5'>
               <InputWrapper>
                 <Controller
-                  name="styles.primaryColor"
+                  name='styles.primaryColor'
                   control={form.control}
                   render={({ field, formState }) => (
                     <InputColorPicker
-                      label="Primary Color"
+                      label='Primary Color'
                       setValue={form.setValue}
                       name={field.name}
                       value={field.value}
@@ -190,19 +189,19 @@ export default function BuilderAuthSettings({ environment }: Props) {
             </div>
           </CardContent>
         </div>
-        <SeparatorLine className="my-0" />
-        <div className="grid grid-cols-[15rem_1fr] gap-3">
+        <SeparatorLine className='my-0' />
+        <div className='grid grid-cols-[15rem_1fr] gap-3'>
           <CardHeader
             padding
-            description="Choose the authentication type to use."
+            description='Choose the authentication type to use.'
           >
             Login Page
           </CardHeader>
-          <CardContent className="flex-1 p-6">
-            <div className="grid gap-5">
+          <CardContent className='flex-1 p-6'>
+            <div className='grid gap-5'>
               <InputWrapper>
                 <InputRadio
-                  label="Login Type"
+                  label='Login Type'
                   options={[
                     {
                       value: 'MagicLogin',
@@ -223,8 +222,8 @@ export default function BuilderAuthSettings({ environment }: Props) {
               <InputWrapper>
                 <Label>Social Login Providers</Label>
                 {Object.values(SSOSocialProvider).map((provider) => (
-                  <div className="flex flex-col gap-1" key={provider}>
-                    <div className="flex items-center justify-between">
+                  <div className='flex flex-col gap-1' key={provider}>
+                    <div className='flex items-center justify-between'>
                       <InputSwitch
                         key={provider}
                         label={ssoProvidersMapper[provider].label}
@@ -239,7 +238,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
                           environmentId={environment.id}
                           provider={provider}
                           trigger={
-                            <Button variant={'ghost'} size={'xs'} type="button">
+                            <Button variant={'ghost'} size={'xs'} type='button'>
                               Edit Credentials
                             </Button>
                           }
@@ -252,24 +251,24 @@ export default function BuilderAuthSettings({ environment }: Props) {
             </div>
           </CardContent>
         </div>
-        <SeparatorLine className="my-0" />
-        <div className="grid grid-cols-[15rem_1fr] gap-3">
+        <SeparatorLine className='my-0' />
+        <div className='grid grid-cols-[15rem_1fr] gap-3'>
           <CardHeader
             padding
-            description="Control who can access your app. Choose between open access or limit it to specific organization domains."
+            description='Control who can access your app. Choose between open access or limit it to specific organization domains.'
           >
             User Creation
           </CardHeader>
-          <CardContent className="flex-1 p-6">
-            <div className="grid gap-5">
+          <CardContent className='flex-1 p-6'>
+            <div className='grid gap-5'>
               <InputWrapper>
                 <Controller
-                  name="enableSignUp"
+                  name='enableSignUp'
                   control={form.control}
                   render={({ field }) => (
                     <InputSwitch
-                      label="Enable sign ups"
-                      description="Allow users to sign up to the platform from login page. When disabled only invitations will be allowed."
+                      label='Enable sign ups'
+                      description='Allow users to sign up to the platform from login page. When disabled only invitations will be allowed.'
                       value={field.value}
                       onCheckedChange={field.onChange}
                       checked={!!field.value}
@@ -283,17 +282,17 @@ export default function BuilderAuthSettings({ environment }: Props) {
             </div>
           </CardContent>
         </div>
-        <SeparatorLine className="my-0" />
-        <div className="grid grid-cols-[15rem_1fr] gap-3">
+        <SeparatorLine className='my-0' />
+        <div className='grid grid-cols-[15rem_1fr] gap-3'>
           <CardHeader
             padding
             description={
               <>
                 The time is based on{' '}
                 <a
-                  href="https://github.com/vercel/ms?tab=readme-ov-file#examples"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href='https://github.com/vercel/ms?tab=readme-ov-file#examples'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <Typo variant={'codeLink'}>vercel/ms</Typo>
                 </a>{' '}
@@ -303,11 +302,11 @@ export default function BuilderAuthSettings({ environment }: Props) {
           >
             Session Tokens Expirations
           </CardHeader>
-          <CardContent className="flex-1 p-6">
-            <div className="grid gap-5">
+          <CardContent className='flex-1 p-6'>
+            <div className='grid gap-5'>
               <InputWrapper>
                 <Label>Access Token Expiration</Label>
-                <div className="grid grid-cols-[6rem_1fr] gap-1">
+                <div className='grid grid-cols-[6rem_1fr] gap-1'>
                   <Input
                     maxLength={2}
                     {...form.register('tokenExpirationValue', {
@@ -315,30 +314,30 @@ export default function BuilderAuthSettings({ environment }: Props) {
                     })}
                   />
                   <Controller
-                    name="tokenExpirationUnit"
+                    name='tokenExpirationUnit'
                     control={form.control}
                     render={({ field }) => (
                       <InputSelect onValueChange={field.onChange} {...field}>
                         <InputSelectTrigger value={field.value}>
-                          <InputSelectValue placeholder="Select an option" />
+                          <InputSelectValue placeholder='Select an option' />
                         </InputSelectTrigger>
                         <InputSelectContent>
-                          <InputSelectItem value="m">minutes</InputSelectItem>
-                          <InputSelectItem value="d">days</InputSelectItem>
+                          <InputSelectItem value='m'>minutes</InputSelectItem>
+                          <InputSelectItem value='d'>days</InputSelectItem>
                         </InputSelectContent>
                       </InputSelect>
                     )}
                   />
                 </div>
                 {form.formState.errors.tokenExpirationValue && (
-                  <Typo variant={'sm'} state={'error'} className="text-sm">
+                  <Typo variant={'sm'} state={'error'} className='text-sm'>
                     {form.formState.errors.tokenExpirationValue?.message}
                   </Typo>
                 )}
               </InputWrapper>
               <InputWrapper>
                 <Label>Refresh Token Expiration</Label>
-                <div className="grid grid-cols-[6rem_1fr] gap-1">
+                <div className='grid grid-cols-[6rem_1fr] gap-1'>
                   <Input
                     maxLength={2}
                     {...form.register('refreshTokenExpirationValue', {
@@ -346,23 +345,23 @@ export default function BuilderAuthSettings({ environment }: Props) {
                     })}
                   />
                   <Controller
-                    name="refreshTokenExpirationUnit"
+                    name='refreshTokenExpirationUnit'
                     control={form.control}
                     render={({ field }) => (
                       <InputSelect onValueChange={field.onChange} {...field}>
                         <InputSelectTrigger value={field.value}>
-                          <InputSelectValue placeholder="Select an option" />
+                          <InputSelectValue placeholder='Select an option' />
                         </InputSelectTrigger>
                         <InputSelectContent>
-                          <InputSelectItem value="m">minutes</InputSelectItem>
-                          <InputSelectItem value="d">days</InputSelectItem>
+                          <InputSelectItem value='m'>minutes</InputSelectItem>
+                          <InputSelectItem value='d'>days</InputSelectItem>
                         </InputSelectContent>
                       </InputSelect>
                     )}
                   />
                 </div>
                 {form.formState.errors.refreshTokenExpirationValue && (
-                  <Typo variant={'sm'} state={'error'} className="text-sm">
+                  <Typo variant={'sm'} state={'error'} className='text-sm'>
                     {form.formState.errors.refreshTokenExpirationValue?.message}
                   </Typo>
                 )}
@@ -370,9 +369,9 @@ export default function BuilderAuthSettings({ environment }: Props) {
             </div>
           </CardContent>
         </div>
-        <CardFooter className="flex gap-2 justify-end">
+        <CardFooter className='flex gap-2 justify-end'>
           <Button
-            type="button"
+            type='button'
             size={'sm'}
             variant={'ghost'}
             disabled={!form.formState.isDirty || isSaving}
@@ -381,7 +380,7 @@ export default function BuilderAuthSettings({ environment }: Props) {
             Cancel
           </Button>
           <Button
-            type="submit"
+            type='submit'
             size={'sm'}
             disabled={!form.formState.isDirty || isSaving}
           >

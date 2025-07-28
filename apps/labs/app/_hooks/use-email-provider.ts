@@ -1,16 +1,13 @@
 import { envFetcher, envHeaders, envURL, labsEnvAPI } from '@helpers/api';
 import { APIErrors } from '@helpers/api/api-errors';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { SSOSocial, SSOSocialProvider } from '@thonlabs/nextjs';
 import { useParams } from 'next/navigation';
 import useSWR from 'swr';
 import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
-import { buildEnvDataMutation } from '@/_hooks/use-environment-app-data';
-import {
+import type {
   EmailProvider,
   EmailProviderTypes,
 } from '@/_interfaces/email-provider';
-import { EmailTemplate } from '@/_interfaces/email-template';
 
 interface Params {
   provider?: EmailProviderTypes;
@@ -28,20 +25,20 @@ export function useEmailProvider(params: Params = {}) {
     envFetcher(environmentId as string),
     {
       revalidateOnFocus: false,
-    },
+    }
   );
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
 
   async function updateEmailProvider(
     provider: EmailProviderTypes,
-    payload: any,
+    payload: any
   ) {
     try {
       await labsEnvAPI.patch(
         `/email-providers/${provider}`,
         payload,
-        envHeaders(environmentId as string),
+        envHeaders(environmentId as string)
       );
 
       toast({
@@ -52,7 +49,7 @@ export function useEmailProvider(params: Params = {}) {
         {
           cacheKey: envURL(
             `/email-providers/${provider}`,
-            environmentId as string,
+            environmentId as string
           ),
           populateCache: (_: any, cache: any) => ({ ...cache, ...payload }),
         },

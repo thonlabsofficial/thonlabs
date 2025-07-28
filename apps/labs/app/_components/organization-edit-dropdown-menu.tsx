@@ -1,13 +1,5 @@
 'use client';
 
-import React from 'react';
-import {
-  MoreHorizontal,
-  Delete,
-  ToggleLeft,
-  ToggleRight,
-  ImageUp,
-} from 'lucide-react';
 import { ButtonIcon } from '@repo/ui/button-icon';
 import {
   DropdownMenu,
@@ -17,13 +9,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/ui/dropdown';
-import OrganizationDeleteLogo from './organization-delete-logo';
-import { Organization } from '@/_interfaces/organization';
-import useOrganization from '@/_hooks/use-organization';
-import OrganizationDeleteAlertDialog from './organization-delete-alert-dialog';
-import { useParams, useRouter } from 'next/navigation';
 import { useToast } from '@repo/ui/hooks/use-toast';
+import {
+  Delete,
+  ImageUp,
+  MoreHorizontal,
+  ToggleLeft,
+  ToggleRight,
+} from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import React from 'react';
 import OrganizationEditLogoDrawer from '@/_components/organization-edit-logo-drawer';
+import useOrganization from '@/_hooks/use-organization';
+import type { Organization } from '@/_interfaces/organization';
+import OrganizationDeleteAlertDialog from './organization-delete-alert-dialog';
+import OrganizationDeleteLogo from './organization-delete-logo';
 
 interface Props {
   organization: Organization;
@@ -41,16 +41,16 @@ export default function OrganizationEditDropdownMenu({ organization }: Props) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <ButtonIcon
-            variant="outline"
+            variant='outline'
             icon={MoreHorizontal}
             size={'sm'}
-            data-dt-bypass-click="true"
+            data-dt-bypass-click='true'
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-56"
-          align="end"
-          data-dt-bypass-click="true"
+          className='w-56'
+          align='end'
+          data-dt-bypass-click='true'
         >
           <DropdownMenuGroup>
             <DropdownMenuItem
@@ -63,12 +63,12 @@ export default function OrganizationEditDropdownMenu({ organization }: Props) {
             >
               {organization.active ? (
                 <>
-                  <ToggleLeft className="mr-2 h-4 w-4" />
+                  <ToggleLeft className='mr-2 h-4 w-4' />
                   <span>Deactivate</span>
                 </>
               ) : (
                 <>
-                  <ToggleRight className="mr-2 h-4 w-4" />
+                  <ToggleRight className='mr-2 h-4 w-4' />
                   <span>Activate</span>
                 </>
               )}
@@ -79,7 +79,7 @@ export default function OrganizationEditDropdownMenu({ organization }: Props) {
                 setOpen('edit-organization-logo-drawer');
               }}
             >
-              <ImageUp className="mr-2 h-4 w-4" />
+              <ImageUp className='mr-2 h-4 w-4' />
               <span>{organization.logo ? 'Change Logo' : 'Upload Logo'}</span>
             </DropdownMenuItem>
             {organization.logo && (
@@ -92,7 +92,7 @@ export default function OrganizationEditDropdownMenu({ organization }: Props) {
                 setOpen('delete-organization');
               }}
             >
-              <Delete className="mr-2 h-4 w-4" />
+              <Delete className='mr-2 h-4 w-4' />
               <span>Delete</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>

@@ -1,8 +1,8 @@
 'use client';
 
-import * as React from 'react';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '../core/utils';
 import { Skeleton } from './skeleton';
@@ -20,7 +20,7 @@ const labelVariants = cva(
     defaultVariants: {
       state: 'default',
     },
-  },
+  }
 );
 
 type Props = {
@@ -43,13 +43,13 @@ const Label = React.forwardRef<
           'group-focus-within:text-zinc-700 dark:group-focus-within:text-zinc-300':
             withFocusWithin,
         },
-        className,
+        className
       )}
       {...props}
     />
   ) : (
     <Skeleton width={'7.5rem'} height={'0.875rem'} />
-  ),
+  )
 );
 Label.displayName = LabelPrimitive.Root.displayName;
 

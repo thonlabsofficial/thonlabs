@@ -1,10 +1,10 @@
-import { useEditor } from 'novel';
 import {
   Bold as BoldIcon,
   Code as CodeIcon,
   Italic as ItalicIcon,
   Underline as UnderlineIcon,
 } from 'lucide-react';
+import { useEditor } from 'novel';
 import { ButtonIcon } from '../../button-icon';
 
 export function TextFormatBlock(props: { options?: string[] }) {
@@ -20,7 +20,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
     <>
       {options.includes('bold') && (
         <ButtonIcon
-          type="button"
+          type='button'
           variant={'ghost'}
           icon={BoldIcon}
           size={'sm'}
@@ -30,7 +30,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
       )}
       {options.includes('italic') && (
         <ButtonIcon
-          type="button"
+          type='button'
           variant={'ghost'}
           icon={ItalicIcon}
           size={'sm'}
@@ -40,7 +40,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
       )}
       {options.includes('underline') && (
         <ButtonIcon
-          type="button"
+          type='button'
           variant={'ghost'}
           icon={UnderlineIcon}
           size={'sm'}
@@ -50,7 +50,7 @@ export function TextFormatBlock(props: { options?: string[] }) {
       )}
       {options.includes('code') && (
         <ButtonIcon
-          type="button"
+          type='button'
           variant={'ghost'}
           icon={CodeIcon}
           size={'sm'}

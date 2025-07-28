@@ -1,6 +1,6 @@
-import { onboardFlow, OnboardStep } from '../_constants/onboard-flow';
 import { notFound } from 'next/navigation';
 import { getAuthSession } from '@/_services/server-auth-session-service';
+import { OnboardStep, onboardFlow } from '../_constants/onboard-flow';
 
 type Params = Promise<{ step: OnboardStep }>;
 
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Params }) {
     const session = await getAuthSession();
     title = title.replace(
       '{userName}',
-      session?.user?.fullName?.split(' ')[0] || '',
+      session?.user?.fullName?.split(' ')[0] || ''
     );
   }
 

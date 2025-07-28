@@ -19,7 +19,7 @@ export const BentoGrid = ({
     <div
       className={cn(
         'mx-auto grid max-w-7xl grid-cols-1 gap-4 md:grid-cols-2',
-        className,
+        className
       )}
     >
       {children}
@@ -61,16 +61,16 @@ export const BentoGridItem = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <CardHeader className="mb-2">
+      <CardHeader className='mb-2'>
         {header}
-        <div className="flex gap-2 transition duration-200 group-hover/bento:translate-x-1">
+        <div className='flex gap-2 transition duration-200 group-hover/bento:translate-x-1'>
           {Icon && (
             <div>
               <Icon size={24} animate={animate} />
             </div>
           )}
           <div>
-            <CardTitle className="mb-2 text-neutral-600 dark:text-neutral-200">
+            <CardTitle className='mb-2 text-neutral-600 dark:text-neutral-200'>
               {title}
             </CardTitle>
             <CardDescription>{description}</CardDescription>

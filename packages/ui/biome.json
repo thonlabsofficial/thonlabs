@@ -1,0 +1,14 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+  "extends": ["../../biome.json"],
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      }
+    }
+  }
+}

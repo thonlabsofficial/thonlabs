@@ -1,5 +1,5 @@
-import { EnvironmentData } from '@thonlabs/nextjs';
-import { Project } from './project';
+import type { EnvironmentData } from '@thonlabs/nextjs';
+import type { Project } from './project';
 
 export enum CustomDomainStatus {
   Verifying = 'Verifying',

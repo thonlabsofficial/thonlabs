@@ -1,10 +1,7 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -15,13 +12,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import { EnvironmentDetail } from '@/_interfaces/environment';
+import { Input, InputWrapper } from '@repo/ui/input';
+import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import useEnvironment from '@/_hooks/use-environment';
+import type { EnvironmentDetail } from '@/_interfaces/environment';
 import {
-  DeleteEnvironmentFormData,
+  type DeleteEnvironmentFormData,
   DeleteEnvironmentFormSchema,
 } from '@/_validators/environments-validators';
-import useEnvironment from '@/_hooks/use-environment';
-import { useRouter } from 'next/navigation';
 
 type Props = {
   trigger: React.ReactNode;
@@ -68,11 +69,11 @@ export default function DeleteEnvironmentDialog({
             absolutely certain before proceeding.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid w-full items-center gap-3">
+        <div className='grid w-full items-center gap-3'>
           <InputWrapper>
             <Input
-              id="name"
-              size="lg"
+              id='name'
+              size='lg'
               label={`To confirm, type "${environment?.name}" in the field below`}
               maxLength={30}
               error={form.formState.errors.name?.message}
@@ -82,12 +83,12 @@ export default function DeleteEnvironmentDialog({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost" disabled={isDeleting}>
+            <Button type='button' variant='ghost' disabled={isDeleting}>
               Cancel
             </Button>
           </DialogClose>
           <Button
-            type="button"
+            type='button'
             variant={'destructive'}
             loading={isDeleting}
             disabled={environment?.name !== name}

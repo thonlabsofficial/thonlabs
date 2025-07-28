@@ -3,7 +3,7 @@ import Moveable from 'react-moveable';
 
 function getImageElement() {
   const element = document.querySelector(
-    '.ProseMirror-selectednode',
+    '.ProseMirror-selectednode'
   ) as HTMLImageElement;
 
   if (!element) {
@@ -12,7 +12,7 @@ function getImageElement() {
 
   if (element.tagName === 'A') {
     return document.querySelector(
-      '.ProseMirror-selectednode img',
+      '.ProseMirror-selectednode img'
     ) as HTMLImageElement;
   }
 

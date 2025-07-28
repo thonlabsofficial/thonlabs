@@ -1,10 +1,10 @@
-import Container from '@/_components/container';
-import { Typo } from '@repo/ui/typo';
-import { Card, CardContent, CardHeader } from '@repo/ui/card';
-import OnboardHeader from '@/onboard/_components/onboard-header';
 import { AlertDialog } from '@repo/ui/alert-dialog';
-import OnboardNewProjectForm from '@/onboard/_components/onboard-new-project-form';
+import { Card, CardContent, CardHeader } from '@repo/ui/card';
+import { Typo } from '@repo/ui/typo';
 import * as motion from 'framer-motion/client';
+import Container from '@/_components/container';
+import OnboardHeader from '@/onboard/_components/onboard-header';
+import OnboardNewProjectForm from '@/onboard/_components/onboard-new-project-form';
 
 export default async function OnboardNewProject() {
   return (
@@ -14,29 +14,29 @@ export default async function OnboardNewProject() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex items-center justify-center mb-4"
+        className='mb-4 flex items-center justify-center'
       >
-        <Container className="flex items-center justify-center p-4 h-[70vh]">
-          <Card className="space-y-2 w-full max-w-96 overflow-hidden">
-            <CardHeader className="text-center">
-              <Typo variant="h4" className="font-bold mt-5">
+        <Container className='flex h-[70vh] items-center justify-center p-4'>
+          <Card className='w-full max-w-96 space-y-2 overflow-hidden'>
+            <CardHeader className='text-center'>
+              <Typo variant='h4' className='mt-5 font-bold'>
                 Create your first project
               </Typo>
               <AlertDialog
                 trigger={
-                  <Typo variant="sm" className="mt-2 underline cursor-pointer">
+                  <Typo variant='sm' className='mt-2 cursor-pointer underline'>
                     What is a project?
                   </Typo>
                 }
-                title="What is a project?"
+                title='What is a project?'
               >
-                <article className="space-y-2">
-                  <Typo as="p" className="text-muted-foreground">
+                <article className='space-y-2'>
+                  <Typo as='p' className='text-muted-foreground'>
                     A project organizes your app&apos;s authentication across
                     different environments - like development, staging, and
                     production.
                   </Typo>
-                  <Typo as="p" className="text-muted-foreground">
+                  <Typo as='p' className='text-muted-foreground'>
                     Each environment has its own users, organizations, email
                     templates, and settings, keeping everything isolated and
                     secure.
@@ -44,8 +44,8 @@ export default async function OnboardNewProject() {
                 </article>
               </AlertDialog>
             </CardHeader>
-            <CardContent className="px-5 pb-5 py-3">
-              <Typo as="div" className="mb-7 text-center" variant="muted">
+            <CardContent className='px-5 py-3 pb-5'>
+              <Typo as='div' className='mb-7 text-center' variant='muted'>
                 We'll start you off with a <strong>"Development"</strong>{' '}
                 environment so you can begin testing right away.
               </Typo>

@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 import { cn } from '../core/utils';
 import { Skeleton } from './skeleton';
 
@@ -38,7 +38,7 @@ const buttonVariants = cva(
       variant: 'primary',
       size: 'md',
     },
-  },
+  }
 );
 
 const buttonIconVariants = cva('', {
@@ -75,7 +75,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       skeleton,
       ...props
     },
-    ref,
+    ref
   ) => {
     if (skeleton) {
       return (
@@ -100,7 +100,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </button>
     );
-  },
+  }
 );
 Button.displayName = 'Button';
 

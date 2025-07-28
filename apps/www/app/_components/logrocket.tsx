@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import logRocket from 'logrocket';
+import React from 'react';
 
 export default function LogRocket() {
   React.useEffect(() => {

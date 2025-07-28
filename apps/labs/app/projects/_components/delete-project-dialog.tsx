@@ -1,14 +1,7 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
-import {
-  DeleteProjectFormSchema,
-  DeleteProjectFormData,
-} from '@/_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -19,9 +12,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useProject from '@/_hooks/use-project';
-import { Project } from '@/_interfaces/project';
+import { Input, InputWrapper } from '@repo/ui/input';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import useProject from '@/_hooks/use-project';
+import type { Project } from '@/_interfaces/project';
+import {
+  type DeleteProjectFormData,
+  DeleteProjectFormSchema,
+} from '@/_validators/projects-validators';
 
 type Props = {
   trigger: React.ReactNode;
@@ -66,11 +67,11 @@ export default function DeleteProjectDialog({
             Please be absolutely certain before proceeding.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid w-full items-center gap-3">
+        <div className='grid w-full items-center gap-3'>
           <InputWrapper>
             <Input
-              id="appName"
-              size="lg"
+              id='appName'
+              size='lg'
               label={`To confirm, type "${project.appName}" in the field below`}
               maxLength={30}
               error={form.formState.errors.appName?.message}
@@ -80,12 +81,12 @@ export default function DeleteProjectDialog({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost" disabled={isDeleting}>
+            <Button type='button' variant='ghost' disabled={isDeleting}>
               Cancel
             </Button>
           </DialogClose>
           <Button
-            type="button"
+            type='button'
             variant={'destructive'}
             loading={isDeleting}
             disabled={project.appName !== appName}

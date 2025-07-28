@@ -1,6 +1,6 @@
-import OnboardWelcome from '@/onboard/_components/onboard-welcome';
-import OnboardNewProject from '@/onboard/_components/onboard-new-project';
 import OnboardFinish from '@/onboard/_components/onboard-finish';
+import OnboardNewProject from '@/onboard/_components/onboard-new-project';
+import OnboardWelcome from '@/onboard/_components/onboard-welcome';
 
 export enum OnboardStep {
   Welcome = 'welcome',

@@ -1,13 +1,13 @@
+import { Check, Copy } from 'lucide-react';
 import * as React from 'react';
-import { Clipboard } from './clipboard';
 import { cn } from '../core/utils';
-import { Copy, Check } from 'lucide-react';
+import { Clipboard } from './clipboard';
 
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto shadow-lg">
+  <div className='relative w-full overflow-auto shadow-lg'>
     <table
       ref={ref}
       className={cn('w-full caption-bottom text-sm', className)}
@@ -45,7 +45,7 @@ const TableFooter = React.forwardRef<
     ref={ref}
     className={cn(
       'border-t bg-muted/50 font-medium [&>tr]:last:border-b-0',
-      className,
+      className
     )}
     {...props}
   />
@@ -67,7 +67,7 @@ const TableRow = React.forwardRef<
         'bg-card': header,
         'transition-colors hover:bg-muted/50': withHover,
       },
-      className,
+      className
     )}
     {...props}
   />
@@ -82,7 +82,7 @@ const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       'h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
-      className,
+      className
     )}
     {...props}
   />
@@ -99,13 +99,13 @@ const TableCell = React.forwardRef<
 >(
   (
     { withCopy, withCopyValue, children, className, loading, ...props },
-    ref,
+    ref
   ) => (
     <td
       ref={ref}
       className={cn(
         'p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
-        className,
+        className
       )}
       {...props}
     >
@@ -113,8 +113,8 @@ const TableCell = React.forwardRef<
         {children}
         {withCopy && (
           <Clipboard
-            size="xs"
-            variant="outline"
+            size='xs'
+            variant='outline'
             value={withCopyValue ?? (children?.toString() as string)}
             labels={[Copy, Check]}
             iconLabels
@@ -122,7 +122,7 @@ const TableCell = React.forwardRef<
         )}
       </div>
     </td>
-  ),
+  )
 );
 TableCell.displayName = 'TableCell';
 
@@ -132,7 +132,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn('mt-4 text-sm text-muted-foreground', className)}
+    className={cn('mt-4 text-muted-foreground text-sm', className)}
     {...props}
   />
 ));

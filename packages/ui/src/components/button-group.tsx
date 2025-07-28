@@ -1,10 +1,10 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 import { cn } from '../core/utils';
-import { ButtonIconProps } from './button-icon';
+import type { ButtonIconProps } from './button-icon';
 
 const buttonIconGroupVariants = cva(
-  'inline-flex gap-1 h-8 items-center justify-center rounded-md bg-muted p-0.5 text-muted-foreground',
+  'inline-flex gap-1 h-8 items-center justify-center rounded-md bg-muted p-0.5 text-muted-foreground'
 );
 
 interface ButtonGroupProps
@@ -24,7 +24,7 @@ export const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
         {children}
       </div>
     );
-  },
+  }
 );
 
 ButtonGroup.displayName = 'ButtonGroup';
@@ -40,16 +40,13 @@ export const ButtonGroupItem = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        `inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 py-1 h-7 text-sm 
-          font-medium ring-offset-background transition-all focus-visible:outline-none 
-          focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 
-          disabled:pointer-events-none`,
+        `inline-flex h-7 items-center justify-center whitespace-nowrap rounded-sm px-2 py-1 font-medium text-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none`,
         {
-          'bg-card text-foreground shadow-sm pointer-events-none': active,
+          'pointer-events-none bg-card text-foreground shadow-sm': active,
           'text-foreground/50 hover:text-foreground/70': !active,
           'pointer-events-none': disabled,
         },
-        className,
+        className
       )}
       {...props}
     >

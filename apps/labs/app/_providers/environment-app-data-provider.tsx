@@ -1,10 +1,10 @@
 'use client';
 
+import { intFetcher } from '@helpers/api';
+import { useParams, useSearchParams } from 'next/navigation';
 import React from 'react';
 import useSWR from 'swr';
-import { EnvironmentAppData } from '@/_interfaces/environment-app-data';
-import { useParams, useSearchParams } from 'next/navigation';
-import { intFetcher } from '@helpers/api';
+import type { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 
 export interface EnvironmentAppDataContextProps {
   environmentAppData: EnvironmentAppData | null;
@@ -31,12 +31,12 @@ export function EnvironmentAppDataProvider({
 
   const { data: appData } = useSWR<EnvironmentAppData>(
     `/api/environments/${environmentId}/data/app`,
-    intFetcher,
+    intFetcher
   );
 
   const memoAppData = React.useMemo(
     () => appData || environmentAppData,
-    [environmentId, appData],
+    [appData, environmentAppData]
   );
 
   return (

@@ -1,10 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 import { cn } from '../core/utils';
-import { VariantProps, cva } from 'class-variance-authority';
 
 const avatarVariants = cva(
   'relative flex shrink-0 overflow-hidden rounded-full',
@@ -19,7 +18,7 @@ const avatarVariants = cva(
     defaultVariants: {
       size: 'md',
     },
-  },
+  }
 );
 
 export interface AvatarProps
@@ -57,8 +56,8 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      'flex h-full w-full items-center justify-center rounded-full bg-card-foreground/[0.2] text-text font-bold uppercase',
-      className,
+      'flex h-full w-full items-center justify-center rounded-full bg-card-foreground/[0.2] font-bold text-text uppercase',
+      className
     )}
     {...props}
   />

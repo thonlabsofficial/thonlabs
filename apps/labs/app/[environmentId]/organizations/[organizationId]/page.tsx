@@ -1,27 +1,27 @@
-import PageWrapper from '@/_components/page-wrapper';
 import { serverEnvHeaders, serverLabsEnvAPI } from '@helpers/api/server';
-import PageHeader from '@/_components/page-header';
+import { Badge } from '@repo/ui/badge';
+import { Button } from '@repo/ui/button';
+import { ImagePreview } from '@repo/ui/image-preview';
+import { Typo } from '@repo/ui/typo';
 import { Building, FileEdit } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import BoxKeyValue from '@/_components/box-key-value';
+import NewUserDialog from '@/_components/new-user-dialog';
+import OrganizationEditDrawer from '@/_components/organization-edit-drawer';
+import OrganizationEditDropdownMenu from '@/_components/organization-edit-dropdown-menu';
+import PageHeader from '@/_components/page-header';
+import PageWrapper from '@/_components/page-wrapper';
+import UsersDataTable from '@/_components/users-data-table';
 import type {
   Organization,
   OrganizationDetail,
 } from '@/_interfaces/organization';
-import BoxKeyValue from '@/_components/box-key-value';
-import { ImagePreview } from '@repo/ui/image-preview';
-import { Badge } from '@repo/ui/badge';
-import { Typo } from '@repo/ui/typo';
-import UsersDataTable from '@/_components/users-data-table';
-import { User } from '@/_interfaces/user';
-import NewUserDialog from '@/_components/new-user-dialog';
-import { Button } from '@repo/ui/button';
-import OrganizationEditDrawer from '@/_components/organization-edit-drawer';
-import OrganizationEditDropdownMenu from '@/_components/organization-edit-dropdown-menu';
+import type { User } from '@/_interfaces/user';
 
 async function getOrganization(environmentId: string, organizationId: string) {
   const { data } = await serverLabsEnvAPI.get<OrganizationDetail>(
     `/organizations/${organizationId}`,
-    serverEnvHeaders(environmentId),
+    serverEnvHeaders(environmentId)
   );
 
   if (!data) {
@@ -54,27 +54,27 @@ export default async function OrganizationDetail({
         title={`Organization - ${organization.name}`}
         icon={Building}
       />
-      <PageWrapper className="pt-4 grid gap-4">
-        <div className="flex gap-8">
+      <PageWrapper className='grid gap-4 pt-4'>
+        <div className='flex gap-8'>
           <section>
             <ImagePreview
               src={organization?.logo}
-              className="min-w-32 w-auto h-24"
+              className='h-24 w-auto min-w-32'
             >
               {!organization?.logo && 'No Logo'}
             </ImagePreview>
           </section>
-          <section className="flex flex-1 justify-between mt-1">
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-8">
-                <BoxKeyValue label="Name" value={organization?.name} />
+          <section className='mt-1 flex flex-1 justify-between'>
+            <div className='flex flex-col gap-2'>
+              <div className='flex gap-8'>
+                <BoxKeyValue label='Name' value={organization?.name} />
                 <BoxKeyValue
-                  label="OID (Organization ID)"
+                  label='OID (Organization ID)'
                   value={
                     <Badge
                       variant={'outline'}
                       size={'xs'}
-                      className="cursor-text"
+                      className='cursor-text'
                     >
                       {organization?.id}
                     </Badge>
@@ -82,31 +82,31 @@ export default async function OrganizationDetail({
                   withCopy
                 />
                 <BoxKeyValue
-                  label="Status"
+                  label='Status'
                   value={
                     <Badge
                       variant={organization?.active ? 'success' : 'destructive'}
                       size={'sm'}
-                      className="cursor-text"
+                      className='cursor-text'
                     >
                       {organization?.active ? 'Active' : 'Inactive'}
                     </Badge>
                   }
                 />
                 <BoxKeyValue
-                  label="Total Users"
+                  label='Total Users'
                   value={organization?.users.length}
                 />
               </div>
-              <div className="flex gap-8">
+              <div className='flex gap-8'>
                 <BoxKeyValue
-                  label="Domains"
+                  label='Domains'
                   value={organization?.domains.map(({ domain }) => (
                     <Badge
                       key={domain}
                       variant={'outline'}
                       size={'sm'}
-                      className="cursor-text"
+                      className='cursor-text'
                     >
                       {domain}
                     </Badge>
@@ -115,7 +115,7 @@ export default async function OrganizationDetail({
               </div>
             </div>
             <div>
-              <div className="flex gap-1 justify-end">
+              <div className='flex justify-end gap-1'>
                 <OrganizationEditDrawer
                   trigger={
                     <Button size={'sm'} variant={'outline'} icon={FileEdit}>
@@ -130,7 +130,7 @@ export default async function OrganizationDetail({
           </section>
         </div>
         <div>
-          <Typo as="div" variant={'h4'} className="mb-2">
+          <Typo as='div' variant={'h4'} className='mb-2'>
             Users
           </Typo>
           <UsersDataTable

@@ -1,8 +1,8 @@
 'use server';
 
-import { User } from '@/_interfaces/user';
 import { serverEnvHeaders, serverLabsEnvAPI } from '@helpers/api/server';
 import { notFound } from 'next/navigation';
+import type { User } from '@/_interfaces/user';
 
 interface UsersResponse {
   items: User[];
@@ -11,7 +11,7 @@ interface UsersResponse {
 export async function fetchUsers(environmentId: string) {
   const { data } = await serverLabsEnvAPI.get<UsersResponse>(
     `/users`,
-    serverEnvHeaders(environmentId),
+    serverEnvHeaders(environmentId)
   );
 
   if (!data?.items) {

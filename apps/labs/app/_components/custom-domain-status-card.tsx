@@ -1,11 +1,8 @@
-import React from 'react';
-import useEnvironment from '@/_hooks/use-environment';
-import { CustomDomainStatus } from '@/_interfaces/environment';
+import { Alert, AlertDescription } from '@repo/ui/alert';
 import { Badge } from '@repo/ui/badge';
 import { Card } from '@repo/ui/card';
+import { Clipboard } from '@repo/ui/clipboard';
 import { cn } from '@repo/ui/core/utils';
-import { Typo } from '@repo/ui/typo';
-import Utils from '@repo/utils';
 import {
   Table,
   TableBody,
@@ -14,9 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from '@repo/ui/table';
-import { Alert, AlertDescription } from '@repo/ui/alert';
+import { Typo } from '@repo/ui/typo';
+import Utils from '@repo/utils';
 import { Check, Copy, Loader, X } from 'lucide-react';
-import { Clipboard } from '@repo/ui/clipboard';
+import React from 'react';
+import useEnvironment from '@/_hooks/use-environment';
+import { CustomDomainStatus } from '@/_interfaces/environment';
 
 interface Props {
   environmentId: string;
@@ -39,7 +39,12 @@ export default function CustomDomainStatusCard({ environmentId }: Props) {
     if (environment?.customDomain && isCustomDomainVerifying()) {
       reverifyCustomDomain(environmentId);
     }
-  }, [environment, isValidatingEnvironment]);
+  }, [
+    environment,
+    environmentId,
+    isCustomDomainVerifying,
+    reverifyCustomDomain,
+  ]);
 
   function isCustomDomainVerifying() {
     return (
@@ -75,15 +80,15 @@ export default function CustomDomainStatusCard({ environmentId }: Props) {
     environment?.customDomain && (
       <>
         {isCustomDomainVerifying() && (
-          <Alert className="mt-3 font-semibold">
+          <Alert className='mt-3 font-semibold'>
             <AlertDescription>
               While validation is in progress, you can continue integrating with
               the custom authentication domain{' '}
               <span>
                 {authDomain}{' '}
                 <Clipboard
-                  size="xs"
-                  variant="outline"
+                  size='xs'
+                  variant='outline'
                   value={authDomain}
                   labels={[Copy, Check]}
                   iconLabels
@@ -93,24 +98,24 @@ export default function CustomDomainStatusCard({ environmentId }: Props) {
             </AlertDescription>
           </Alert>
         )}
-        <Card variant={'darker'} className="mt-3 py-3 px-4">
-          <div className="flex items-center gap-3">
+        <Card variant={'darker'} className='mt-3 px-4 py-3'>
+          <div className='flex items-center gap-3'>
             <div
               className={cn(
-                'flex-none basis-8 h-8 rounded-md flex items-center justify-center border ',
+                'flex h-8 flex-none basis-8 items-center justify-center rounded-md border ',
                 {
-                  'bg-warning/10 border-warning/40': isCustomDomainVerifying(),
-                  'bg-success/10 border-success/40': isCustomDomainVerified(),
-                  'bg-destructive/10 border-destructive/40':
+                  'border-warning/40 bg-warning/10': isCustomDomainVerifying(),
+                  'border-success/40 bg-success/10': isCustomDomainVerified(),
+                  'border-destructive/40 bg-destructive/10':
                     isCustomDomainFailed(),
-                },
+                }
               )}
             >
               {isCustomDomainVerifying() && (
-                <Loader className="w-4 h-4 animate-spin" />
+                <Loader className='h-4 w-4 animate-spin' />
               )}
-              {isCustomDomainVerified() && <Check className="w-4 h-4" />}
-              {isCustomDomainFailed() && <X className="w-4 h-4" />}
+              {isCustomDomainVerified() && <Check className='h-4 w-4' />}
+              {isCustomDomainFailed() && <X className='h-4 w-4' />}
             </div>
             <Typo variant={'sm'}>
               {isCustomDomainVerifying() && (
@@ -121,32 +126,24 @@ export default function CustomDomainStatusCard({ environmentId }: Props) {
                   5 hours.
                 </>
               )}
-              {isCustomDomainVerified() && (
-                <>
-                  Great job! Domain successfully verified. Your environment is
-                  now accessible via the custom domain above.
-                </>
-              )}
-              {isCustomDomainFailed() && (
-                <>
-                  We could not verify the DNS completely. Please double-check
-                  your DNS provider settings to ensure all records are accurate.
-                </>
-              )}
+              {isCustomDomainVerified() &&
+                'Great job! Domain successfully verified. Your environment is now accessible via the custom domain above.'}
+              {isCustomDomainFailed() &&
+                'We could not verify the DNS completely. Please double-check your DNS provider settings to ensure all records are accurate.'}
             </Typo>
           </div>
-          <Table className="rounded overflow-hidden mt-3">
+          <Table className='mt-3 overflow-hidden rounded'>
             <TableHeader>
               <TableRow header withHover={false}>
-                <TableHead className="select-none">Name</TableHead>
-                <TableHead className="select-none">Type</TableHead>
-                <TableHead className="select-none">Value</TableHead>
-                <TableHead className="select-none">TTL</TableHead>
-                <TableHead className="select-none">Status</TableHead>
+                <TableHead className='select-none'>Name</TableHead>
+                <TableHead className='select-none'>Type</TableHead>
+                <TableHead className='select-none'>Value</TableHead>
+                <TableHead className='select-none'>TTL</TableHead>
+                <TableHead className='select-none'>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow className="group">
+              <TableRow className='group'>
                 <TableCell withCopy>
                   {Utils.getSubDomains(environment?.customDomain)}
                 </TableCell>
@@ -168,7 +165,7 @@ export default function CustomDomainStatusCard({ environmentId }: Props) {
                   )}
                 </TableCell>
               </TableRow>
-              <TableRow className="group">
+              <TableRow className='group'>
                 <TableCell withCopy>_tl_verify</TableCell>
                 <TableCell>TXT</TableCell>
                 <TableCell withCopy>{environment?.customDomainTXT}</TableCell>
@@ -192,7 +189,7 @@ export default function CustomDomainStatusCard({ environmentId }: Props) {
           </Table>
 
           {isCustomDomainVerifying() && (
-            <Alert variant={'info'} className="mt-2 font-semibold" size={'sm'}>
+            <Alert variant={'info'} className='mt-2 font-semibold' size={'sm'}>
               Keep in mind that DNS propagation can take some time, so please be
               patient as the changes take effect.
             </Alert>

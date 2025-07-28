@@ -1,5 +1,5 @@
 import React from 'react';
-import { EnvironmentAppData } from '@/_interfaces/environment-app-data';
+import type { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 import { EnvironmentAppDataContext } from '@/_providers/environment-app-data-provider';
 
 type BuildEnvDataMutationOptions = {
@@ -10,7 +10,7 @@ type BuildEnvDataMutationOptions = {
 
 export function buildEnvDataMutation(
   environmentId: string,
-  items: BuildEnvDataMutationOptions[],
+  items: BuildEnvDataMutationOptions[]
 ): any {
   const appMutations: any = {};
   const sdkMutations: any = {};

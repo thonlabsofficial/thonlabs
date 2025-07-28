@@ -1,9 +1,9 @@
-import React from 'react';
-import { cn } from '@repo/ui/core/utils';
 import { Button } from '@repo/ui/button';
-import JoinWaitlistDialog from './join-waitlist-dialog';
-import * as motion from 'framer-motion/client';
+import { cn } from '@repo/ui/core/utils';
 import Logo from '@repo/ui/logo';
+import * as motion from 'framer-motion/client';
+import type React from 'react';
+import JoinWaitlistDialog from './join-waitlist-dialog';
 
 export default function MainHeader({
   className,
@@ -16,17 +16,16 @@ export default function MainHeader({
       transition={{ duration: 0.3 }}
       {...props}
       className={cn(
-        `fixed top-0 left-0 z-40 p-4 w-full flex items-center 
-         justify-between bg-background`,
-        className,
+        `fixed top-0 left-0 z-40 flex w-full items-center justify-between bg-background p-4`,
+        className
       )}
     >
-      <div className="flex items-center gap-1">
+      <div className='flex items-center gap-1'>
         <Logo />
       </div>
 
       <JoinWaitlistDialog
-        trigger={<Button className="hidden lg:flex">Join Waitlist</Button>}
+        trigger={<Button className='hidden lg:flex'>Join Waitlist</Button>}
       />
     </motion.header>
   );

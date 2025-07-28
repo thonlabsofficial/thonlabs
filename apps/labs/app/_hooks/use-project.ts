@@ -1,13 +1,13 @@
+import { APIErrors } from '@helpers/api/api-errors';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import { useSWRConfig } from 'swr';
+import type { Environment } from '@/_interfaces/environment';
+import type { Project } from '@/_interfaces/project';
 import { labsAPI } from '../../helpers/api';
-import {
+import type {
   NewProjectFormData,
   UpdateProjectGeneralInfoFormData,
 } from '../_validators/projects-validators';
-import { useToast } from '@repo/ui/hooks/use-toast';
-import { Environment } from '@/_interfaces/environment';
-import { Project } from '@/_interfaces/project';
-import { APIErrors } from '@helpers/api/api-errors';
-import { useSWRConfig } from 'swr';
 
 export default function useProject() {
   const { toast } = useToast();
@@ -15,7 +15,7 @@ export default function useProject() {
 
   async function createProject(
     payload: NewProjectFormData,
-    withNotification = true,
+    withNotification = true
   ) {
     try {
       const { data } = await labsAPI.post<
@@ -42,7 +42,7 @@ export default function useProject() {
 
   async function updateGeneralInfo(
     projectID: string,
-    payload: UpdateProjectGeneralInfoFormData,
+    payload: UpdateProjectGeneralInfoFormData
   ) {
     try {
       await mutate(
@@ -52,11 +52,11 @@ export default function useProject() {
           populateCache: ({ data }, projects) => ({
             ...projects,
             items: projects.items.map((p: Project) =>
-              p.id === projectID ? { ...p, ...data } : p,
+              p.id === projectID ? { ...p, ...data } : p
             ),
           }),
           revalidate: false,
-        },
+        }
       );
 
       toast({
@@ -84,7 +84,7 @@ export default function useProject() {
             items: projects.items.filter((p: Project) => p.id !== projectID),
           }),
           revalidate: false,
-        },
+        }
       );
 
       toast({

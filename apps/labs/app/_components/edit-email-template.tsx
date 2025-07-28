@@ -1,24 +1,24 @@
 'use client';
 
-import useEmailTemplate from '@/_hooks/use-email-template';
-import {
-  UpdateEmailTemplatePayload,
-  updateEmailTemplateFormSchema,
-} from '@/_validators/emails-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Badge } from '@repo/ui/badge';
 import { Button } from '@repo/ui/button';
-import { Card, CardHeader, CardContent, CardFooter } from '@repo/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { cn } from '@repo/ui/core/utils';
 import Editor from '@repo/ui/editor';
 import { Input, InputWrapper } from '@repo/ui/input';
+import { InputColorPicker } from '@repo/ui/input-color-picker';
+import { Skeleton } from '@repo/ui/skeleton';
 import { Typo } from '@repo/ui/typo';
 import { Plus } from 'lucide-react';
 import React, { useTransition } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import { Skeleton } from '@repo/ui/skeleton';
+import useEmailTemplate from '@/_hooks/use-email-template';
 import { EmailTemplateTypes } from '@/_interfaces/email-template';
-import { InputColorPicker } from '@repo/ui/input-color-picker';
+import {
+  type UpdateEmailTemplatePayload,
+  updateEmailTemplateFormSchema,
+} from '@/_validators/emails-validators';
 
 const EmailInput = React.forwardRef<
   HTMLInputElement,
@@ -31,26 +31,26 @@ const EmailInput = React.forwardRef<
   return (
     <div
       className={cn(
-        'flex items-center gap-1 py-2 border-b border-solid border-zinc-200 hover:border-zinc-300 focus:border-zinc-400',
+        'flex items-center gap-1 border-zinc-200 border-b border-solid py-2 hover:border-zinc-300 focus:border-zinc-400',
         {
           'border-destructive hover:border-destructive focus:border-destructive':
             error,
         },
-        className,
+        className
       )}
     >
-      <Typo variant={'sm'} as="label" className="flex-0 text-zinc-500">
+      <Typo variant={'sm'} as='label' className='flex-0 text-zinc-500'>
         {label}
       </Typo>
       {!loading ? (
         <input
-          type="text"
-          className={`flex-1 w-full bg-transparent text-zinc-900 text-sm`}
+          type='text'
+          className={`w-full flex-1 bg-transparent text-sm text-zinc-900`}
           ref={ref}
           {...props}
         />
       ) : (
-        <Skeleton className="!w-40 h-6" forceTheme="light" />
+        <Skeleton className='!w-40 h-6' forceTheme='light' />
       )}
     </div>
   );
@@ -106,12 +106,17 @@ export default function EditEmailTemplate({
         replyTo: true,
       }));
     }
-  }, [emailTemplate?.preview, emailTemplate?.replyTo]);
+  }, [
+    emailTemplate?.preview,
+    emailTemplate?.replyTo,
+    optionalFields.preview,
+    optionalFields.replyTo,
+  ]);
 
   function onSubmit(payload: UpdateEmailTemplatePayload) {
     payload.content = parseHTMLEmailTemplate(
       payload.content,
-      payload.bodyStyles,
+      payload.bodyStyles
     );
 
     startSavingTransition(async () => {
@@ -125,18 +130,18 @@ export default function EditEmailTemplate({
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_48rem] 2xl:grid-cols-[1fr_55rem] xl:gap-5 2xl:gap-20">
-          <div className="flex flex-col gap-10">
+        <div className='grid grid-cols-1 xl:grid-cols-[1fr_48rem] xl:gap-5 2xl:grid-cols-[1fr_55rem] 2xl:gap-20'>
+          <div className='flex flex-col gap-10'>
             <CardHeader
               padding
-              className="max-w-sm"
+              className='max-w-sm'
               description={
                 <>
                   Render dynamic emails with ease. Use{' '}
                   <a
-                    href="https://ejs.co/#docs"
-                    target="_blank"
-                    rel="noreferrer noopener nofollow"
+                    href='https://ejs.co/#docs'
+                    target='_blank'
+                    rel='noreferrer noopener nofollow'
                   >
                     <Typo variant={'codeLink'}>ejs</Typo>
                   </a>{' '}
@@ -146,9 +151,9 @@ export default function EditEmailTemplate({
             >
               Template
             </CardHeader>
-            <CardContent className="flex flex-col gap-10 p-6">
+            <CardContent className='flex flex-col gap-10 p-6'>
               <div>
-                <header className="flex flex-col max-w-sm">
+                <header className='flex max-w-sm flex-col'>
                   <Typo>Available Variables</Typo>
                   <Typo variant={'muted'}>
                     You can use our variables in different parts of your
@@ -157,12 +162,12 @@ export default function EditEmailTemplate({
                   </Typo>
                 </header>
 
-                <div className="flex flex-col gap-8 mt-6">
-                  <section className="grid grid-cols-[8rem_1fr] gap-3 items-center">
-                    <Typo variant={'xs'} className="flex-0 font-semibold">
+                <div className='mt-6 flex flex-col gap-8'>
+                  <section className='grid grid-cols-[8rem_1fr] items-center gap-3'>
+                    <Typo variant={'xs'} className='flex-0 font-semibold'>
                       User
                     </Typo>
-                    <div className="flex-1 flex flex-wrap gap-2">
+                    <div className='flex flex-1 flex-wrap gap-2'>
                       <Badge variant={'outline'}>user.firstName</Badge>
                       <Badge variant={'outline'}>user.fullName</Badge>
                       <Badge variant={'outline'}>user.id</Badge>
@@ -172,13 +177,13 @@ export default function EditEmailTemplate({
                     </div>
                   </section>
 
-                  <hr className="border-foreground/[0.08]" />
+                  <hr className='border-foreground/[0.08]' />
 
-                  <section className="grid grid-cols-[8rem_1fr] gap-3 items-center">
-                    <Typo variant={'xs'} className="flex-0 font-semibold">
+                  <section className='grid grid-cols-[8rem_1fr] items-center gap-3'>
+                    <Typo variant={'xs'} className='flex-0 font-semibold'>
                       Environment
                     </Typo>
-                    <div className="flex-1 flex flex-wrap gap-2">
+                    <div className='flex flex-1 flex-wrap gap-2'>
                       <Badge variant={'outline'}>environment.id</Badge>
                       <Badge variant={'outline'}>environment.name</Badge>
                       <Badge variant={'outline'}>environment.appURL</Badge>
@@ -192,12 +197,12 @@ export default function EditEmailTemplate({
 
                   {emailTemplate?.type === EmailTemplateTypes.Invite && (
                     <>
-                      <hr className="border-foreground/[0.08]" />
-                      <section className="grid grid-cols-[8rem_1fr] gap-3 items-center">
-                        <Typo variant={'xs'} className="flex-0 font-semibold">
+                      <hr className='border-foreground/[0.08]' />
+                      <section className='grid grid-cols-[8rem_1fr] items-center gap-3'>
+                        <Typo variant={'xs'} className='flex-0 font-semibold'>
                           Inviter
                         </Typo>
-                        <div className="flex-1 flex flex-wrap gap-2">
+                        <div className='flex flex-1 flex-wrap gap-2'>
                           <Badge variant={'outline'}>inviter.fullName</Badge>
                           <Badge variant={'outline'}>inviter.email</Badge>
                         </div>
@@ -213,12 +218,12 @@ export default function EditEmailTemplate({
                       EmailTemplateTypes.ConfirmEmail,
                     ].includes(emailTemplate.type) && (
                       <>
-                        <hr className="border-foreground/[0.08]" />
-                        <section className="grid grid-cols-[8rem_1fr] gap-3 items-center">
-                          <Typo variant={'xs'} className="flex-0 font-semibold">
+                        <hr className='border-foreground/[0.08]' />
+                        <section className='grid grid-cols-[8rem_1fr] items-center gap-3'>
+                          <Typo variant={'xs'} className='flex-0 font-semibold'>
                             Other
                           </Typo>
-                          <div className="flex-1 flex flex-wrap gap-2">
+                          <div className='flex flex-1 flex-wrap gap-2'>
                             <Badge variant={'outline'}>token</Badge>
                           </div>
                         </section>
@@ -228,7 +233,7 @@ export default function EditEmailTemplate({
               </div>
 
               <div>
-                <header className="flex flex-col max-w-sm">
+                <header className='flex max-w-sm flex-col'>
                   <Typo>Email Styles</Typo>
                   <Typo variant={'muted'}>
                     Update general styles for the email body. Other parts of the
@@ -236,19 +241,19 @@ export default function EditEmailTemplate({
                   </Typo>
                 </header>
 
-                <div className="flex flex-col gap-3 mt-6">
-                  <section className="grid grid-cols-[8rem_1fr] gap-3 items-center">
-                    <Typo variant={'xs'} className="flex-0 font-semibold">
+                <div className='mt-6 flex flex-col gap-3'>
+                  <section className='grid grid-cols-[8rem_1fr] items-center gap-3'>
+                    <Typo variant={'xs'} className='flex-0 font-semibold'>
                       Background Color
                     </Typo>
-                    <div className="flex-1 flex flex-wrap gap-2">
+                    <div className='flex flex-1 flex-wrap gap-2'>
                       <Controller
-                        name="bodyStyles.backgroundColor"
+                        name='bodyStyles.backgroundColor'
                         control={form.control}
                         render={({ field, formState }) => (
                           <InputColorPicker
-                            className="!w-24"
-                            size="xs"
+                            className='!w-24'
+                            size='xs'
                             setValue={form.setValue}
                             name={field.name}
                             value={field.value}
@@ -262,18 +267,18 @@ export default function EditEmailTemplate({
                       />
                     </div>
                   </section>
-                  <section className="grid grid-cols-[8rem_1fr] gap-3 items-center">
-                    <Typo variant={'xs'} className="flex-0 font-semibold">
+                  <section className='grid grid-cols-[8rem_1fr] items-center gap-3'>
+                    <Typo variant={'xs'} className='flex-0 font-semibold'>
                       Font Color
                     </Typo>
-                    <div className="flex-1 flex flex-wrap gap-2">
+                    <div className='flex flex-1 flex-wrap gap-2'>
                       <Controller
-                        name="bodyStyles.color"
+                        name='bodyStyles.color'
                         control={form.control}
                         render={({ field, formState }) => (
                           <InputColorPicker
-                            className="!w-24"
-                            size="xs"
+                            className='!w-24'
+                            size='xs'
                             setValue={form.setValue}
                             name={field.name}
                             value={field.value}
@@ -284,13 +289,13 @@ export default function EditEmailTemplate({
                       />
                     </div>
                   </section>
-                  <section className="grid grid-cols-[8rem_1fr] gap-3 items-center">
-                    <Typo variant={'xs'} className="flex-0 font-semibold">
+                  <section className='grid grid-cols-[8rem_1fr] items-center gap-3'>
+                    <Typo variant={'xs'} className='flex-0 font-semibold'>
                       Padding
                     </Typo>
-                    <InputWrapper className="w-24">
+                    <InputWrapper className='w-24'>
                       <Input
-                        type="number"
+                        type='number'
                         size={'xs'}
                         error={
                           form.formState.errors.bodyStyles?.padding?.message
@@ -306,30 +311,30 @@ export default function EditEmailTemplate({
               </div>
             </CardContent>
           </div>
-          <CardContent className="flex-1 p-6">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col space-y-1.5 rounded-sm bg-foreground px-6 pb-6 pt-3">
-                <div className="mb-4">
+          <CardContent className='flex-1 p-6'>
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-col space-y-1.5 rounded-sm bg-foreground px-6 pt-3 pb-6'>
+                <div className='mb-4'>
                   <EmailInput
-                    label="Sender Name:"
+                    label='Sender Name:'
                     error={!!form.formState.errors.fromName}
                     loading={isLoadingEmailTemplate}
                     {...form.register('fromName')}
                   />
                   <EmailInput
-                    label="Sender Email:"
+                    label='Sender Email:'
                     error={!!form.formState.errors.fromEmail}
                     loading={isLoadingEmailTemplate}
                     {...form.register('fromEmail')}
                   />
                   <EmailInput
-                    label="Subject:"
+                    label='Subject:'
                     error={!!form.formState.errors.subject}
                     loading={isLoadingEmailTemplate}
                     {...form.register('subject')}
                   />
                   <EmailInput
-                    label="Reply To:"
+                    label='Reply To:'
                     className={cn({
                       hidden: !optionalFields.replyTo,
                     })}
@@ -337,20 +342,20 @@ export default function EditEmailTemplate({
                     {...form.register('replyTo')}
                   />
                   <EmailInput
-                    label="Preview:"
+                    label='Preview:'
                     className={cn({
                       hidden: !optionalFields.preview,
                     })}
                     loading={isLoadingEmailTemplate}
                     {...form.register('preview')}
                   />
-                  <div className="flex items-center gap-3">
+                  <div className='flex items-center gap-3'>
                     {!optionalFields.replyTo && (
                       <Button
-                        variant="ghost"
+                        variant='ghost'
                         size={'xs'}
                         icon={Plus}
-                        className="text-zinc-500 hover:text-zinc-900 px-0 mt-2"
+                        className='mt-2 px-0 text-zinc-500 hover:text-zinc-900'
                         onClick={() => {
                           setOptionalFields((prevValue) => ({
                             ...prevValue,
@@ -364,10 +369,10 @@ export default function EditEmailTemplate({
                     )}
                     {!optionalFields.preview && (
                       <Button
-                        variant="ghost"
+                        variant='ghost'
                         size={'xs'}
                         icon={Plus}
-                        className="text-zinc-500 hover:text-zinc-900 px-0 mt-2"
+                        className='mt-2 px-0 text-zinc-500 hover:text-zinc-900'
                         onClick={() => {
                           setOptionalFields((prevValue) => ({
                             ...prevValue,
@@ -410,9 +415,9 @@ export default function EditEmailTemplate({
             </div>
           </CardContent>
         </div>
-        <CardFooter className="flex gap-2 justify-end">
+        <CardFooter className='flex justify-end gap-2'>
           <Button
-            type="button"
+            type='button'
             size={'sm'}
             variant={'ghost'}
             disabled={!form.formState.isDirty || isSaving}
@@ -421,7 +426,7 @@ export default function EditEmailTemplate({
             Cancel
           </Button>
           <Button
-            type="submit"
+            type='submit'
             size={'sm'}
             disabled={!form.formState.isDirty || isSaving}
           >

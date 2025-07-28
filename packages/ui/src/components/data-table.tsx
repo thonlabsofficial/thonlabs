@@ -1,16 +1,7 @@
 'use client';
 
-import {
-  ColumnDef,
-  SortingState,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-  FilterFnOption,
-  Row,
-} from '@tanstack/react-table';
+import { cn } from '@repo/ui/core/utils';
+import { Input } from '@repo/ui/input';
 import {
   Table,
   TableBody,
@@ -19,12 +10,21 @@ import {
   TableHeader,
   TableRow,
 } from '@repo/ui/table';
-import { cn } from '@repo/ui/core/utils';
-import React from 'react';
-import { Input } from '@repo/ui/input';
 import Utils from '@repo/utils';
-import { Skeleton } from './skeleton';
+import {
+  type ColumnDef,
+  type FilterFnOption,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  type Row,
+  type SortingState,
+  useReactTable,
+} from '@tanstack/react-table';
 import { ArrowUp } from 'lucide-react';
+import React from 'react';
+import { Skeleton } from './skeleton';
 
 function DataTableHeaderCell({
   accessorKey,
@@ -37,8 +37,8 @@ function DataTableHeaderCell({
 }) {
   return (
     <div
-      role="button"
-      className="flex items-center gap-1"
+      role='button'
+      className='flex items-center gap-1'
       onClick={() =>
         columnDef.column.toggleSorting(columnDef.column.getIsSorted() === 'asc')
       }
@@ -49,8 +49,8 @@ function DataTableHeaderCell({
         .sorting.some((s: any) => s.id === accessorKey) && (
         <ArrowUp
           className={cn(
-            'w-3 h-3',
-            columnDef.column.getIsSorted() === 'asc' ? '' : 'rotate-180',
+            'h-3 w-3',
+            columnDef.column.getIsSorted() === 'asc' ? '' : 'rotate-180'
           )}
         />
       )}
@@ -67,8 +67,8 @@ function DataTableLoaderCell({
     <TableRow header key={headerGroup.id} withHover={false}>
       {headerGroup.headers.map((header) => {
         return (
-          <TableCell loading key={`loading-${header.id}`} className="py-3">
-            <Skeleton className="!w-3/4 h-6" />
+          <TableCell loading key={`loading-${header.id}`} className='py-3'>
+            <Skeleton className='!w-3/4 h-6' />
           </TableCell>
         );
       })}
@@ -127,7 +127,7 @@ function DataTable<TData, TValue>({
         const search = Utils.normalizeString(value);
 
         return searchFields.some((field) =>
-          Utils.normalizeString(data[field]).includes(search),
+          Utils.normalizeString(data[field]).includes(search)
         );
       },
     },
@@ -142,14 +142,14 @@ function DataTable<TData, TValue>({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setGlobalFilter(String(e.target.value));
     },
-    [],
+    []
   );
 
   return (
     <div {...props}>
       {searchFields.length > 0 && (
-        <div className="flex justify-between gap-3 mb-4">
-          <div className="min-w-[22rem]">
+        <div className='mb-4 flex justify-between gap-3'>
+          <div className='min-w-[22rem]'>
             <Input
               placeholder={searchPlaceholder}
               size={'sm'}
@@ -157,22 +157,22 @@ function DataTable<TData, TValue>({
               onChange={handleGlobalFilterChange}
             />
           </div>
-          {actions && <div className="flex items-center gap-2">{actions}</div>}
+          {actions && <div className='flex items-center gap-2'>{actions}</div>}
         </div>
       )}
-      <div className="rounded-md border overflow-hidden">
+      <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow header key={headerGroup.id} withHover={false}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="select-none">
+                    <TableHead key={header.id} className='select-none'>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -207,7 +207,7 @@ function DataTable<TData, TValue>({
                   onClick={(e) => {
                     const target = e.target as HTMLElement;
                     const clickableElement = target.closest(
-                      '[data-dt-bypass-click]',
+                      '[data-dt-bypass-click]'
                     );
                     if (clickableElement) {
                       return;
@@ -225,7 +225,7 @@ function DataTable<TData, TValue>({
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
@@ -235,9 +235,9 @@ function DataTable<TData, TValue>({
               <TableRow withHover={false}>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className='h-24 text-center'
                 >
-                  <div className="w-full flex justify-center items-center">
+                  <div className='flex w-full items-center justify-center'>
                     {noResultsMessage}
                   </div>
                 </TableCell>

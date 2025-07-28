@@ -1,6 +1,6 @@
-import { Environment } from '@/_interfaces/environment';
-import { Project } from '@/_interfaces/project';
 import useSWR from 'swr';
+import type { Environment } from '@/_interfaces/environment';
+import type { Project } from '@/_interfaces/project';
 
 interface ProjectsResponse {
   items: (Project & {

@@ -2,7 +2,6 @@
 
 'use client';
 
-import React from 'react';
 import { Button } from '@repo/ui/button';
 import {
   Dialog,
@@ -14,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
+import React from 'react';
 
 type Props = {
   title: React.ReactNode;
@@ -48,11 +48,11 @@ function AlertDialog({
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
-        {children && <div className="mt-2">{children}</div>}
+        {children && <div className='mt-2'>{children}</div>}
         <DialogFooter>
           <DialogClose asChild>
             <Button
-              type="button"
+              type='button'
               variant={idleLabel ? 'ghost' : 'primary'}
               disabled={isActing}
             >
@@ -61,7 +61,7 @@ function AlertDialog({
           </DialogClose>
           {idleLabel && (
             <Button
-              type="button"
+              type='button'
               variant={variant}
               loading={isActing}
               onClick={async (e) => {

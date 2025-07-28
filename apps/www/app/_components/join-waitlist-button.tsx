@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
 import { Button, buttonVariants } from '@repo/ui/button';
-import JoinWaitlistDialog from './join-waitlist-dialog';
+import React from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
+import JoinWaitlistDialog from './join-waitlist-dialog';
 
 export default function JoinWaitlistButton() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -14,13 +14,13 @@ export default function JoinWaitlistButton() {
     {
       keyup: true,
     },
-    [isOpen],
+    [isOpen]
   );
 
   return (
     <>
       <Button
-        className="group hidden lg:flex"
+        className='group hidden lg:flex'
         variant={'linkGhost'}
         size={'sm'}
         onClick={() => setIsOpen(true)}
@@ -32,7 +32,7 @@ export default function JoinWaitlistButton() {
         to join waitlist
       </Button>
       <Button
-        className="group flex lg:hidden"
+        className='group flex lg:hidden'
         size={'lg'}
         onClick={() => setIsOpen(true)}
       >

@@ -1,8 +1,8 @@
 'use client';
 
-import useOrganization from '@/_hooks/use-organization';
 import { DropdownMenuItem } from '@repo/ui/dropdown';
 import { ImageMinus } from 'lucide-react';
+import useOrganization from '@/_hooks/use-organization';
 
 export default function OrganizationDeleteLogo({
   organizationId,
@@ -17,7 +17,7 @@ export default function OrganizationDeleteLogo({
         await deleteOrganizationLogo(organizationId);
       }}
     >
-      <ImageMinus className="mr-2 h-4 w-4" />
+      <ImageMinus className='mr-2 h-4 w-4' />
       <span>Delete Logo</span>
     </DropdownMenuItem>
   );

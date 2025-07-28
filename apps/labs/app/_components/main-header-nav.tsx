@@ -4,7 +4,6 @@ import { buttonVariants } from '@repo/ui/button';
 import { cn } from '@repo/ui/core/utils';
 import {
   DatabaseZap,
-  Folder,
   LayoutDashboard,
   Settings,
   SquareUser,
@@ -33,15 +32,15 @@ function NavItem({
         variant: 'linkGhost',
         size: 'sm',
         className: cn(
-          'flex items-center gap-2.5 w-full !justify-start !p-2 hover:bg-accent/50',
+          '!justify-start !p-2 flex w-full items-center gap-2.5 hover:bg-accent/50',
           {
             'bg-accent text-foreground hover:bg-accent': isActive,
           },
-          className,
+          className
         ),
       })}
     >
-      {<Icon className="w-4 h-4" />} {label}
+      {<Icon className='h-4 w-4' />} {label}
     </Link>
   );
 }
@@ -50,25 +49,25 @@ export default function MainHeaderEnvNav() {
   const { environmentId } = useParams();
 
   return (
-    <nav className="flex items-center gap-2">
+    <nav className='flex items-center gap-2'>
       <NavItem
         icon={LayoutDashboard}
-        label="Dashboard"
+        label='Dashboard'
         href={`/${environmentId}/dashboard`}
       />
       <NavItem
         icon={SquareUser}
-        label="Users"
+        label='Users'
         href={`/${environmentId}/users`}
       />
       <NavItem
         icon={DatabaseZap}
-        label="Storage"
+        label='Storage'
         href={`/${environmentId}/kv`}
       />
       <NavItem
         icon={Settings}
-        label="Settings"
+        label='Settings'
         href={`/${environmentId}/settings`}
       />
     </nav>

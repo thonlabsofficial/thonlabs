@@ -1,12 +1,11 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
-import Cookies from 'js-cookie';
-import qs from 'qs';
-import https from 'https';
+import https from 'node:https';
 import {
   APIResponseCodes,
-  getAccessToken,
   generateAccessToken,
+  getAccessToken,
 } from '@thonlabs/nextjs';
+import axios, { type InternalAxiosRequestConfig } from 'axios';
+import qs from 'qs';
 
 const httpsAgent =
   process.env.NODE_ENV === 'development'
@@ -48,7 +47,7 @@ const envFetcher = (envID: string) => (url: string) =>
     .then((res) => res.data);
 
 async function validateTokensInterceptor(
-  config: InternalAxiosRequestConfig<any>,
+  config: InternalAxiosRequestConfig<any>
 ) {
   let accessToken = getAccessToken();
 
@@ -56,7 +55,7 @@ async function validateTokensInterceptor(
     accessToken = await generateAccessToken();
   }
 
-  config.headers['Authorization'] = `Bearer ${accessToken}`;
+  config.headers.Authorization = `Bearer ${accessToken}`;
 
   return config;
 }
@@ -83,7 +82,7 @@ function envURL(url: string, envID: string, queryString: any = {}) {
       ...queryString,
       c: envID?.split('-')?.reverse()[0]?.substring(0, 5),
     },
-    { addQueryPrefix: true },
+    { addQueryPrefix: true }
   )}`;
 }
 

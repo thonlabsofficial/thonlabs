@@ -1,8 +1,6 @@
 'use client';
 
 import { buttonVariants } from '@repo/ui/button';
-import Link from 'next/link';
-import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@repo/ui/core/utils';
 import {
   Building,
@@ -12,6 +10,8 @@ import {
   ShieldEllipsis,
   SquareUser,
 } from 'lucide-react';
+import Link from 'next/link';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 
 function NavItem({
   icon: Icon,
@@ -35,16 +35,16 @@ function NavItem({
         variant: 'linkGhost',
         size: 'sm',
         className: cn(
-          'flex items-center gap-2.5 w-full !justify-start !p-2 !font-normal hover:bg-accent/50',
+          '!justify-start !p-2 !font-normal flex w-full items-center gap-2.5 hover:bg-accent/50',
           {
             'bg-accent text-foreground hover:bg-accent': isActive,
           },
-          className,
+          className
         ),
       })}
       onMouseEnter={() => router.prefetch(href)}
     >
-      {<Icon className="w-4 h-4" />} {label}
+      {<Icon className='h-4 w-4' />} {label}
     </Link>
   );
 }
@@ -53,37 +53,37 @@ export default function MainAside() {
   const { environmentId } = useParams();
 
   return (
-    <aside className="w-64 fixed top-0 left-0 border-r border-collapse bg-background flex flex-col justify-between p-3 h-[calc(100%-3.5625rem)] mt-[3.5625rem] pb-1.5">
-      <nav className="w-full flex flex-col justify-between h-[92vh]">
-        <div className="flex flex-col gap-5 w-full">
-          <section className="flex flex-col gap-1 w-full">
+    <aside className='fixed top-0 left-0 mt-[3.5625rem] flex h-[calc(100%-3.5625rem)] w-64 border-collapse flex-col justify-between border-r bg-background p-3 pb-1.5'>
+      <nav className='flex h-[92vh] w-full flex-col justify-between'>
+        <div className='flex w-full flex-col gap-5'>
+          <section className='flex w-full flex-col gap-1'>
             <NavItem
-              label="Dashboard"
+              label='Dashboard'
               href={`/${environmentId}/dashboard`}
               icon={LayoutDashboard}
             />
             <NavItem
-              label="Auth Builder"
+              label='Auth Builder'
               href={`/${environmentId}/builder`}
               icon={ShieldEllipsis}
             />
             <NavItem
-              label="Users"
+              label='Users'
               href={`/${environmentId}/users`}
               icon={SquareUser}
             />
             <NavItem
-              label="Organizations"
+              label='Organizations'
               href={`/${environmentId}/organizations`}
               icon={Building}
             />
             <NavItem
-              label="Email Templates"
+              label='Email Templates'
               href={`/${environmentId}/email-templates`}
               icon={Mail}
             />
             <NavItem
-              label="Settings"
+              label='Settings'
               href={`/${environmentId}/settings`}
               icon={Settings}
             />

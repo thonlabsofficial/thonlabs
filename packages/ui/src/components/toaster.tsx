@@ -12,7 +12,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps['theme']}
-      className="toaster group"
+      className='toaster group'
       toastOptions={{
         classNames: {
           toast: `
@@ -48,9 +48,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
         },
       }}
       icons={{
-        success: <CheckCircle className="w-5 h-5" />,
-        error: <CircleAlert className="w-5 h-5" />,
-        info: <Info className="w-5 h-5" />,
+        success: <CheckCircle className='h-5 w-5' />,
+        error: <CircleAlert className='h-5 w-5' />,
+        info: <Info className='h-5 w-5' />,
       }}
       {...props}
     />

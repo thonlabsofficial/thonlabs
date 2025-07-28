@@ -1,4 +1,4 @@
-import { Input } from './input';
+import type { Input } from './input';
 import { Typo } from './typo';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
@@ -11,5 +11,5 @@ export function InputMessage({
   state = 'error',
   ...props
 }: Props) {
-  return <Typo variant={size} state={state} className="text-sm" {...props} />;
+  return <Typo variant={size} state={state} className='text-sm' {...props} />;
 }

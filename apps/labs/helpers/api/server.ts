@@ -1,8 +1,10 @@
-import { getAccessToken } from '@thonlabs/nextjs/server';
+import https from 'node:https';
 import Log from '@repo/utils/log';
-import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import axios from 'axios';
-import https from 'https';
+import { getAccessToken } from '@thonlabs/nextjs/server';
+import axios, {
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from 'axios';
 
 const httpsAgent =
   process.env.SSL_ON_DEV === 'true'
@@ -25,11 +27,11 @@ const serverLabsInternalAPI = axios.create({
 });
 
 async function validateTokensInterceptor(
-  config: InternalAxiosRequestConfig<any>,
+  config: InternalAxiosRequestConfig<any>
 ) {
   const accessToken = await getAccessToken();
 
-  config.headers['Authorization'] = `Bearer ${accessToken}`;
+  config.headers.Authorization = `Bearer ${accessToken}`;
 
   return config;
 }
@@ -51,8 +53,8 @@ function logRequest(instanceName: string) {
           config.headers['tl-int-key']?.toString()?.substring(0, 5) +
           '...[REDACTED]',
       }),
-      ...(config.headers['Authorization'] && {
-        Authorization: `${config.headers['Authorization']?.toString()?.substring(0, 20)}...[REDACTED]`,
+      ...(config.headers.Authorization && {
+        Authorization: `${config.headers.Authorization?.toString()?.substring(0, 20)}...[REDACTED]`,
       }),
     };
 
@@ -81,10 +83,10 @@ function logResponse(instanceName: string) {
 }
 
 serverLabsInternalAPI.interceptors.request.use(
-  logRequest('serverLabsInternalAPI'),
+  logRequest('serverLabsInternalAPI')
 );
 serverLabsInternalAPI.interceptors.response.use(
-  logResponse('serverLabsInternalAPI'),
+  logResponse('serverLabsInternalAPI')
 );
 serverLabsEnvAPI.interceptors.request.use(logRequest('serverLabsEnvAPI'));
 serverLabsEnvAPI.interceptors.response.use(logResponse('serverLabsEnvAPI'));
