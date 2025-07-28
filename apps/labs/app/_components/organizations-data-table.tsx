@@ -1,26 +1,13 @@
 'use client';
 
-import { ColumnDef, DataTable, DataTableHeaderCell } from '@repo/ui/data-table';
-import { Button } from '@repo/ui/button';
-import React from 'react';
-import NewOrganizationDrawer from '@/_components/new-organization-drawer';
-import { Organization, OrganizationDetail } from '@/_interfaces/organization';
-import { Typo } from '@repo/ui/typo';
 import { Badge } from '@repo/ui/badge';
+import { ButtonIcon } from '@repo/ui/button-icon';
 import { Clipboard } from '@repo/ui/clipboard';
 import {
-  Copy,
-  Check,
-  MoreHorizontal,
-  Delete,
-  FileEdit,
-  FileText,
-  ImageUp,
-  ImageMinus,
-  ToggleLeft,
-  ToggleRight,
-} from 'lucide-react';
-import { format } from 'date-fns';
+  type ColumnDef,
+  DataTable,
+  DataTableHeaderCell,
+} from '@repo/ui/data-table';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,15 +16,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/ui/dropdown';
-import { ButtonIcon } from '@repo/ui/button-icon';
-import { useParams, useRouter } from 'next/navigation';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import { ImagePreview } from '@repo/ui/image-preview';
+import { Typo } from '@repo/ui/typo';
+import { format } from 'date-fns';
+import {
+  Check,
+  Copy,
+  Delete,
+  FileEdit,
+  FileText,
+  ImageMinus,
+  ImageUp,
+  MoreHorizontal,
+  ToggleLeft,
+  ToggleRight,
+} from 'lucide-react';
 import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+import React from 'react';
+import OrganizationDeleteAlertDialog from '@/_components/organization-delete-alert-dialog';
 import OrganizationEditDrawer from '@/_components/organization-edit-drawer';
 import OrganizationEditLogoDrawer from '@/_components/organization-edit-logo-drawer';
 import useOrganization from '@/_hooks/use-organization';
-import { ImagePreview } from '@repo/ui/image-preview';
-import OrganizationDeleteAlertDialog from '@/_components/organization-delete-alert-dialog';
-import { useToast } from '@repo/ui/hooks/use-toast';
+import type {
+  Organization,
+  OrganizationDetail,
+} from '@/_interfaces/organization';
 
 const columns = ({
   setOpen,
@@ -55,9 +60,9 @@ const columns = ({
     header: (columnDef) => {
       return (
         <DataTableHeaderCell
-          header="Name"
+          header='Name'
           columnDef={columnDef}
-          accessorKey="name"
+          accessorKey='name'
         />
       );
     },
@@ -66,24 +71,24 @@ const columns = ({
 
       const data = getValue() as string;
       return (
-        <div className="flex gap-1">
-          <ImagePreview src={logo} className="min-w-24 w-auto h-14">
+        <div className='flex gap-1'>
+          <ImagePreview src={logo} className='h-14 w-auto min-w-24'>
             {!logo && 'No Logo'}
           </ImagePreview>
-          <div className="flex flex-col gap-0.5 mt-px">
-            <Typo className="font-semibold">{data}</Typo>
-            <div className="flex gap-0.5">
-              <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
+          <div className='mt-px flex flex-col gap-0.5'>
+            <Typo className='font-semibold'>{data}</Typo>
+            <div className='flex gap-0.5'>
+              <Badge variant={'outline'} size={'xs'} className='cursor-pointer'>
                 OID: {id?.substring(0, 4)}...{id?.substring(id.length - 4)}
               </Badge>
               <Clipboard
-                size="xs"
-                variant="outline"
+                size='xs'
+                variant='outline'
                 value={id}
-                className="opacity-0 group-hover:opacity-100"
+                className='opacity-0 group-hover:opacity-100'
                 labels={[Copy, Check]}
                 iconLabels
-                data-dt-bypass-click="true"
+                data-dt-bypass-click='true'
               />
             </div>
           </div>
@@ -101,25 +106,25 @@ const columns = ({
       const rest = data.length - limit;
 
       return data.length > 0 ? (
-        <div className="flex gap-0.5">
+        <div className='flex gap-0.5'>
           {data.slice(0, limit).map((domain) => (
             <Badge
               key={domain.domain}
               variant={'outline'}
               size={'xs'}
-              className="cursor-pointer"
+              className='cursor-pointer'
             >
               {domain.domain}
             </Badge>
           ))}
           {rest > 0 && (
-            <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
+            <Badge variant={'outline'} size={'xs'} className='cursor-pointer'>
               +{rest}
             </Badge>
           )}
         </div>
       ) : (
-        <Badge variant={'outline'} size={'xs'} className="cursor-pointer">
+        <Badge variant={'outline'} size={'xs'} className='cursor-pointer'>
           No domains registered
         </Badge>
       );
@@ -134,7 +139,7 @@ const columns = ({
         <Badge
           variant={data ? 'success' : 'destructive'}
           size={'sm'}
-          className="cursor-text"
+          className='cursor-text'
         >
           {data ? 'Active' : 'Inactive'}
         </Badge>
@@ -146,9 +151,9 @@ const columns = ({
     header: (columnDef) => {
       return (
         <DataTableHeaderCell
-          header="Created At"
+          header='Created At'
           columnDef={columnDef}
-          accessorKey="createdAt"
+          accessorKey='createdAt'
         />
       );
     },
@@ -163,9 +168,9 @@ const columns = ({
     header: (columnDef) => {
       return (
         <DataTableHeaderCell
-          header="Updated At"
+          header='Updated At'
           columnDef={columnDef}
-          accessorKey="updatedAt"
+          accessorKey='updatedAt'
         />
       );
     },
@@ -181,27 +186,27 @@ const columns = ({
       const organization = row.original;
 
       return (
-        <div className="flex w-full justify-end">
+        <div className='flex w-full justify-end'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <ButtonIcon
-                variant="outline"
+                variant='outline'
                 icon={MoreHorizontal}
                 size={'sm'}
-                data-dt-bypass-click="true"
+                data-dt-bypass-click='true'
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-56"
-              align="end"
-              data-dt-bypass-click="true"
+              className='w-56'
+              align='end'
+              data-dt-bypass-click='true'
             >
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                   <Link
                     href={`/${organization.environmentId}/organizations/${organization.id}`}
                   >
-                    <FileText className="mr-2 h-4 w-4" />
+                    <FileText className='mr-2 h-4 w-4' />
                     <span>View info</span>
                   </Link>
                 </DropdownMenuItem>
@@ -211,7 +216,7 @@ const columns = ({
                     setOpen('edit-organization-drawer');
                   }}
                 >
-                  <FileEdit className="mr-2 h-4 w-4" />
+                  <FileEdit className='mr-2 h-4 w-4' />
                   <span>Edit</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -224,12 +229,12 @@ const columns = ({
                 >
                   {organization.active ? (
                     <>
-                      <ToggleLeft className="mr-2 h-4 w-4" />
+                      <ToggleLeft className='mr-2 h-4 w-4' />
                       <span>Deactivate</span>
                     </>
                   ) : (
                     <>
-                      <ToggleRight className="mr-2 h-4 w-4" />
+                      <ToggleRight className='mr-2 h-4 w-4' />
                       <span>Activate</span>
                     </>
                   )}
@@ -241,7 +246,7 @@ const columns = ({
                     setOpen('edit-organization-logo-drawer');
                   }}
                 >
-                  <ImageUp className="mr-2 h-4 w-4" />
+                  <ImageUp className='mr-2 h-4 w-4' />
                   <span>
                     {organization.logo ? 'Change Logo' : 'Upload Logo'}
                   </span>
@@ -252,7 +257,7 @@ const columns = ({
                       await deleteOrganizationLogo(organization.id);
                     }}
                   >
-                    <ImageMinus className="mr-2 h-4 w-4" />
+                    <ImageMinus className='mr-2 h-4 w-4' />
                     <span>Delete Logo</span>
                   </DropdownMenuItem>
                 )}
@@ -264,7 +269,7 @@ const columns = ({
                     setOpen('delete-organization');
                   }}
                 >
-                  <Delete className="mr-2 h-4 w-4" />
+                  <Delete className='mr-2 h-4 w-4' />
                   <span>Delete</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -283,7 +288,7 @@ interface Props {
 export default function OrganizationsDataTable({ organizations }: Props) {
   const [open, setOpen] = React.useState<string>('');
   const [organization, setOrganization] = React.useState<Organization | null>(
-    null,
+    null
   );
   const router = useRouter();
   const { environmentId } = useParams();
@@ -302,8 +307,8 @@ export default function OrganizationsDataTable({ organizations }: Props) {
         data={organizations}
         defaultSorting={[{ id: 'name', desc: false }]}
         searchFields={['id', 'name']}
-        noResultsMessage="No organizations found"
-        searchPlaceholder="Search by name..."
+        noResultsMessage='No organizations found'
+        searchPlaceholder='Search by name...'
         onRowClick={(_, row) => {
           router.push(`/${environmentId}/organizations/${row.original.id}`);
         }}

@@ -1,11 +1,14 @@
 'use client';
-import React, { ForwardRefExoticComponent, RefAttributes } from 'react';
-import { Button } from './button';
-import { useToast } from '../hooks/use-toast';
+import type { LucideProps } from 'lucide-react';
+import React, {
+  type ForwardRefExoticComponent,
+  type RefAttributes,
+} from 'react';
+import type { IconType } from 'react-icons';
 import { cn } from '../core/utils';
+import { useToast } from '../hooks/use-toast';
+import { Button } from './button';
 import { ButtonIcon } from './button-icon';
-import { IconType } from 'react-icons';
-import { LucideProps } from 'lucide-react';
 
 type LucideIconType = ForwardRefExoticComponent<
   Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
@@ -56,7 +59,7 @@ function Clipboard({
 
   return isTextLabel ? (
     <Button
-      type="button"
+      type='button'
       onClick={handleClick}
       className={cn(className, {
         'cursor-default': copied,
@@ -68,7 +71,7 @@ function Clipboard({
   ) : (
     <ButtonIcon
       icon={!copied ? (idle as IconType) : (after as IconType)}
-      type="button"
+      type='button'
       onClick={handleClick}
       className={cn(className, {
         'cursor-default': copied,

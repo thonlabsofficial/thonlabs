@@ -1,16 +1,16 @@
 import {
-  Text as TextIcon,
+  ExternalLink as ExternalLinkIcon,
   Heading1 as Heading1Icon,
   Heading2 as Heading2Icon,
   Heading3 as Heading3Icon,
-  ListOrdered as ListOrderedIcon,
-  TextQuote as TextQuoteIcon,
-  SquareDashedBottomCode as SquareDashedBottomCodeIcon,
   Heading4 as Heading4Icon,
-  List as ListIcon,
   Image as ImageIcon,
-  ExternalLink as ExternalLinkIcon,
+  List as ListIcon,
+  ListOrdered as ListOrderedIcon,
   Rows2 as Rows2Icon,
+  SquareDashedBottomCode as SquareDashedBottomCodeIcon,
+  Text as TextIcon,
+  TextQuote as TextQuoteIcon,
 } from 'lucide-react';
 import {
   createSuggestionItems,

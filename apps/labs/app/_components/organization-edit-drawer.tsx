@@ -1,10 +1,10 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
+import { Badge } from '@repo/ui/badge';
+import { Button } from '@repo/ui/button';
+import { ButtonIcon } from '@repo/ui/button-icon';
 import {
   Drawer,
   DrawerClose,
@@ -12,22 +12,22 @@ import {
   DrawerContentContainer,
   DrawerDescription,
   DrawerFooter,
-  DrawerScrollArea,
   DrawerHeader,
+  DrawerScrollArea,
   DrawerTitle,
   DrawerTrigger,
 } from '@repo/ui/drawer';
+import { Input, InputWrapper } from '@repo/ui/input';
 import { Typo, typoVariants } from '@repo/ui/typo';
-import { ButtonIcon } from '@repo/ui/button-icon';
 import { TrashIcon } from 'lucide-react';
+import React, { useTransition } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import useOrganization from '@/_hooks/use-organization';
+import type { Organization } from '@/_interfaces/organization';
 import {
-  EditOrganizationFormData,
+  type EditOrganizationFormData,
   editOrganizationFormSchema,
 } from '@/_validators/organizations-validators';
-import { Badge } from '@repo/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
-import useOrganization from '@/_hooks/use-organization';
-import { Organization } from '@/_interfaces/organization';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -54,7 +54,7 @@ export default function OrganizationEditDrawer({
     if (props.open) {
       handleReset();
     }
-  }, [props.open]);
+  }, [props.open, handleReset]);
 
   function onSubmit(payload: EditOrganizationFormData) {
     startTransitionSaving(async () => {
@@ -88,13 +88,13 @@ export default function OrganizationEditDrawer({
             Make changes to your organization settings below.
           </DrawerDescription>
         </DrawerHeader>
-        <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='h-full' onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
+              <div className='grid w-full items-center gap-4'>
                 <InputWrapper>
                   <Input
-                    label="Name"
+                    label='Name'
                     maxLength={30}
                     error={form.formState.errors.name?.message}
                     {...form.register('name')}
@@ -102,52 +102,52 @@ export default function OrganizationEditDrawer({
                 </InputWrapper>
 
                 <section>
-                  <header className="flex flex-col gap-0.5 mb-2">
-                    <Typo variant="lg" className="flex items-center gap-1">
+                  <header className='mb-2 flex flex-col gap-0.5'>
+                    <Typo variant='lg' className='flex items-center gap-1'>
                       Domains{' '}
-                      <Badge variant="info" size={'sm'}>
+                      <Badge variant='info' size={'sm'}>
                         Optional
                       </Badge>
                     </Typo>
-                    <Typo variant="muted" className="text-sm">
+                    <Typo variant='muted' className='text-sm'>
                       Allow sign up and invitation from email addresses with
                       these domains.
                     </Typo>
                   </header>
 
-                  <div className="flex flex-col gap-1.5">
+                  <div className='flex flex-col gap-1.5'>
                     {domainsFields.fields.map((field, index) => (
-                      <div key={field.id} className="flex gap-2">
-                        <InputWrapper className="flex-1">
+                      <div key={field.id} className='flex gap-2'>
+                        <InputWrapper className='flex-1'>
                           <Input
                             {...form.register(`domains.${index}.domain`)}
-                            placeholder="e.g.: example.com"
+                            placeholder='e.g.: example.com'
                           />
                         </InputWrapper>
                         <ButtonIcon
                           icon={TrashIcon}
-                          type="button"
-                          variant="destructive"
-                          size="sm"
+                          type='button'
+                          variant='destructive'
+                          size='sm'
                           onClick={() => domainsFields.remove(index)}
-                          className="!basis-11 flex-none h-11"
+                          className='!basis-11 h-11 flex-none'
                         />
                       </div>
                     ))}
                   </div>
 
                   <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full mt-2"
+                    type='button'
+                    variant='outline'
+                    size='sm'
+                    className='mt-2 w-full'
                     onClick={() => domainsFields.append({ domain: '' })}
                   >
                     Add Domain
                   </Button>
 
                   {domainsFields.fields.length === 0 && (
-                    <Alert variant="info" size={'sm'} className="mt-2">
+                    <Alert variant='info' size={'sm'} className='mt-2'>
                       <AlertTitle>Good to Know</AlertTitle>
                       <AlertDescription>
                         Without specified domains, users can only join{' '}
@@ -166,11 +166,11 @@ export default function OrganizationEditDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <DrawerClose asChild>
-              <Button type="button" variant="ghost" disabled={isSaving}>
+              <Button type='button' variant='ghost' disabled={isSaving}>
                 Cancel
               </Button>
             </DrawerClose>
-            <Button type="submit" loading={isSaving}>
+            <Button type='submit' loading={isSaving}>
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>
           </DrawerFooter>

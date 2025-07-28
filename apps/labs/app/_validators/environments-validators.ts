@@ -1,6 +1,6 @@
-import { z } from 'zod';
 import { ErrorMessages } from '@repo/utils/errors-metadata';
 import { colorPatterns } from '@repo/utils/validation-patterns';
+import { z } from 'zod';
 
 export const NewEnvironmentFormSchema = z.object({
   name: z
@@ -59,7 +59,7 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
         (color) =>
           colorPatterns.hexColor.test(color) ||
           colorPatterns.rgbColor.test(color),
-        { message: ErrorMessages.InvalidColorFormat },
+        { message: ErrorMessages.InvalidColorFormat }
       ),
   }),
 });
@@ -83,7 +83,7 @@ export const SetCustomDomainFormSchema = z.object({
     .string({ required_error: ErrorMessages.RequiredField })
     .regex(
       /^(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})$/,
-      { message: ErrorMessages.InvalidDomainFormat },
+      { message: ErrorMessages.InvalidDomainFormat }
     )
     .min(1, { message: ErrorMessages.RequiredField }),
 });

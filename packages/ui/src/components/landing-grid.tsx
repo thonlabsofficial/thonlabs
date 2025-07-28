@@ -8,10 +8,7 @@ export default function LandingGrid() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
       className={cn(
-        `
-          absolute inset-0 z-[-1] -left-px 
-          [mask-image:linear-gradient(transparent_1%,white,transparent_43%)]
-        `,
+        `-left-px absolute inset-0 z-[-1] [mask-image:linear-gradient(transparent_1%,white,transparent_43%)] `
       )}
       style={{
         backgroundImage: `linear-gradient(

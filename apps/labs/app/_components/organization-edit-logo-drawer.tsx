@@ -1,31 +1,31 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Alert, AlertDescription } from '@repo/ui/alert';
+import { Button } from '@repo/ui/button';
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerContentContainer,
   DrawerFooter,
-  DrawerScrollArea,
   DrawerHeader,
+  DrawerScrollArea,
   DrawerTitle,
   DrawerTrigger,
 } from '@repo/ui/drawer';
+import { ImagePreview } from '@repo/ui/image-preview';
+import { InputWrapper } from '@repo/ui/input';
+import { InputSingleFile } from '@repo/ui/input-single-file';
 import { Typo } from '@repo/ui/typo';
+import React, { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import useOrganization from '@/_hooks/use-organization';
+import type { Organization } from '@/_interfaces/organization';
 import {
-  UpdateLogoOrganizationFormData,
+  type UpdateLogoOrganizationFormData,
   updateLogoOrganizationFormSchema,
 } from '@/_validators/organizations-validators';
-import { Alert, AlertDescription } from '@repo/ui/alert';
-import useOrganization from '@/_hooks/use-organization';
-import { Organization } from '@/_interfaces/organization';
-import { InputSingleFile } from '@repo/ui/input-single-file';
-import { ImagePreview } from '@repo/ui/image-preview';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -50,7 +50,7 @@ export default function OrganizationEditLogoDrawer({
     if (props.open) {
       handleReset();
     }
-  }, [props.open]);
+  }, [props.open, handleReset]);
 
   function onSubmit(payload: UpdateLogoOrganizationFormData) {
     startTransitionSaving(async () => {
@@ -80,21 +80,21 @@ export default function OrganizationEditLogoDrawer({
         <DrawerHeader>
           <DrawerTitle>Change Organization Logo</DrawerTitle>
         </DrawerHeader>
-        <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='h-full' onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
+              <div className='grid w-full items-center gap-4'>
                 <section>
-                  <header className="flex flex-col gap-0.5 mb-2">
-                    <Typo variant="lg" className="flex items-center gap-1">
+                  <header className='mb-2 flex flex-col gap-0.5'>
+                    <Typo variant='lg' className='flex items-center gap-1'>
                       Logo
                     </Typo>
-                    <Typo variant="muted">
+                    <Typo variant='muted'>
                       Used in email templates and consumed from our APIs.
                       Recommended size is 1024px of width.
                     </Typo>
                     {!logo && (
-                      <Alert variant="info" size={'sm'} className="mt-2">
+                      <Alert variant='info' size={'sm'} className='mt-2'>
                         <AlertDescription>
                           Max size: 50MB - Allowed files: PNG, JPG, JPEG, WEBP
                           or SVG
@@ -118,12 +118,12 @@ export default function OrganizationEditLogoDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <DrawerClose asChild>
-              <Button type="button" variant="ghost" disabled={isSaving}>
+              <Button type='button' variant='ghost' disabled={isSaving}>
                 Cancel
               </Button>
             </DrawerClose>
             <Button
-              type="submit"
+              type='submit'
               loading={isSaving}
               disabled={!form.formState.isDirty || isSaving}
             >

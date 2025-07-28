@@ -1,12 +1,11 @@
-import { useOrganizations } from '@/_hooks/use-organizations';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
-import { Badge } from '@repo/ui/badge';
 import { InputSwitch } from '@repo/ui/input-switch';
 import { typoVariants } from '@repo/ui/typo';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Controller } from 'react-hook-form';
 import NewOrganizationDrawer from '@/_components/new-organization-drawer';
+import { useOrganizations } from '@/_hooks/use-organizations';
 
 interface Props {
   form: any;
@@ -22,17 +21,17 @@ export default function EnableSignUpB2BOnlySwitch({
   const { environmentId } = useParams();
   const { organizations, isLoadingOrganizations } = useOrganizations();
   const organizationsMissingDomains = organizations?.every(
-    (org) => org.domains.length === 0,
+    (org) => org.domains.length === 0
   );
 
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className='flex flex-col gap-0.5'>
       <Controller
-        name="enableSignUpB2BOnly"
+        name='enableSignUpB2BOnly'
         control={form.control}
         render={({ field }) => (
           <InputSwitch
-            label="Restrict sign ups to B2B only"
+            label='Restrict sign ups to B2B only'
             description={
               <>
                 Allow only users with email matching your organization's
@@ -53,13 +52,13 @@ export default function EnableSignUpB2BOnlySwitch({
       />
 
       {!isLoadingOrganizations && organizations?.length === 0 && (
-        <Alert variant="info" className="mt-2" size={'sm'}>
+        <Alert variant='info' className='mt-2' size={'sm'}>
           <AlertDescription>
             Want to enable sign up for B2B only?{' '}
             <NewOrganizationDrawer
               trigger={
                 <button
-                  type="button"
+                  type='button'
                   className={typoVariants({ variant: 'link' })}
                 >
                   Create an organization first.
@@ -73,7 +72,7 @@ export default function EnableSignUpB2BOnlySwitch({
       {!isLoadingOrganizations &&
         organizations?.length > 0 &&
         organizationsMissingDomains && (
-          <Alert variant="warning" className="mt-2" size={'sm'}>
+          <Alert variant='warning' className='mt-2' size={'sm'}>
             <AlertTitle>Attention</AlertTitle>
             <AlertDescription>
               None of your organizations have domains configured. To enable B2B

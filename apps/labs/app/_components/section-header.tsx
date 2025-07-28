@@ -13,24 +13,21 @@ export default function SectionHeader({
   loading?: boolean;
 } & Omit<React.HTMLAttributes<HTMLElement>, 'title'>) {
   return (
-    <header className={cn('flex flex-col gap-0.5 mb-4', className)}>
+    <header className={cn('mb-4 flex flex-col gap-0.5', className)}>
       {!loading ? (
-        <Typo variant="h4">{title}</Typo>
+        <Typo variant='h4'>{title}</Typo>
       ) : (
-        <Skeleton className="h-7" />
+        <Skeleton className='h-7' />
       )}
-      {description && (
-        <>
-          {!loading ? (
-            <Typo variant="muted">{description}</Typo>
-          ) : (
-            <div className="flex flex-col gap-1 mt-0.5">
-              <Skeleton className="h-4" />
-              <Skeleton className="!w-1/3 h-4" />
-            </div>
-          )}
-        </>
-      )}
+      {description &&
+        (!loading ? (
+          <Typo variant='muted'>{description}</Typo>
+        ) : (
+          <div className='mt-0.5 flex flex-col gap-1'>
+            <Skeleton className='h-4' />
+            <Skeleton className='!w-1/3 h-4' />
+          </div>
+        ))}
     </header>
   );
 }

@@ -1,4 +1,4 @@
-import { Node, mergeAttributes } from '@tiptap/core';
+import { mergeAttributes, Node } from '@tiptap/core';
 import { registerCustomProtocol, reset } from 'linkifyjs';
 
 export interface ButtonLinkProtocolOptions {
@@ -84,7 +84,7 @@ declare module '@tiptap/core' {
        * @example editor.commands.setButtonLinkAlign('center')
        */
       setButtonLinkAlign: (
-        alignment: 'left' | 'center' | 'right',
+        alignment: 'left' | 'center' | 'right'
       ) => ReturnType;
     };
   }
@@ -98,7 +98,7 @@ const ATTR_WHITESPACE =
 
 function isAllowedUri(
   uri: string | undefined,
-  protocols?: ButtonLinkOptions['protocols'],
+  protocols?: ButtonLinkOptions['protocols']
 ) {
   const allowedProtocols: string[] = [
     'http',
@@ -132,8 +132,8 @@ function isAllowedUri(
       .match(
         new RegExp(
           `^(?:(?:${allowedProtocols.join('|')}):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))`,
-          'i',
-        ),
+          'i'
+        )
       )
   );
 }

@@ -1,37 +1,37 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Badge } from '@repo/ui/badge';
+import { Button } from '@repo/ui/button';
 import {
   Drawer,
   DrawerContent,
+  DrawerContentContainer,
   DrawerFooter,
   DrawerHeader,
+  DrawerScrollArea,
   DrawerTitle,
   DrawerTrigger,
-  DrawerScrollArea,
-  DrawerContentContainer,
 } from '@repo/ui/drawer';
-import { User } from '@/_interfaces/user';
-import { Typo } from '@repo/ui/typo';
+import { Input, InputWrapper } from '@repo/ui/input';
 import {
-  UpdateUserGeneralDataFormSchema,
-  UpdateUserGeneralDataFormData,
-} from '@/_validators/users-validators';
-import useUser from '@/_hooks/use-user';
-import {
+  InputSelect,
   InputSelectContent,
   InputSelectItem,
   InputSelectTrigger,
   InputSelectValue,
 } from '@repo/ui/input-select';
+import { Typo } from '@repo/ui/typo';
+import React, { useTransition } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
-import { InputSelect } from '@repo/ui/input-select';
-import { Badge } from '@repo/ui/badge';
 import { useOrganizations } from '@/_hooks/use-organizations';
+import useUser from '@/_hooks/use-user';
+import type { User } from '@/_interfaces/user';
+import {
+  type UpdateUserGeneralDataFormData,
+  UpdateUserGeneralDataFormSchema,
+} from '@/_validators/users-validators';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -56,7 +56,7 @@ export default function EditUserDrawer({
     if (props.open) {
       handleReset();
     }
-  }, [props.open]);
+  }, [props.open, handleReset]);
 
   function onSubmit(payload: UpdateUserGeneralDataFormData) {
     startSavingTransition(async () => {
@@ -82,28 +82,28 @@ export default function EditUserDrawer({
       )}
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle className="flex gap-1.5">
-            <div className="flex flex-col justify-center w-[17.625rem]">
+          <DrawerTitle className='flex gap-1.5'>
+            <div className='flex w-[17.625rem] flex-col justify-center'>
               <Typo variant={'muted'}>Edit User</Typo>
-              <div className="truncate">{formValues?.fullName || '-'}</div>
+              <div className='truncate'>{formValues?.fullName || '-'}</div>
             </div>
           </DrawerTitle>
         </DrawerHeader>
-        <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='h-full' onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
+              <div className='grid w-full items-center gap-4'>
                 <InputWrapper>
                   <Input
-                    label="Full Name"
+                    label='Full Name'
                     error={form.formState.errors.fullName?.message}
                     {...form.register('fullName')}
                   />
                 </InputWrapper>
                 {!envData?.enableSignUpB2BOnly && (
-                  <InputWrapper className="z-60">
+                  <InputWrapper className='z-60'>
                     <Controller
-                      name="organizationId"
+                      name='organizationId'
                       control={form.control}
                       render={({ field }) => (
                         <InputSelect onValueChange={field.onChange} {...field}>
@@ -112,9 +112,9 @@ export default function EditUserDrawer({
                               <>
                                 Organization{' '}
                                 <Badge
-                                  variant="info"
+                                  variant='info'
                                   size={'sm'}
-                                  className="!text-text"
+                                  className='!text-text'
                                 >
                                   Optional
                                 </Badge>
@@ -127,7 +127,7 @@ export default function EditUserDrawer({
                             value={field.value}
                             loading={isLoadingOrganizations}
                           >
-                            <InputSelectValue placeholder="Select an option" />
+                            <InputSelectValue placeholder='Select an option' />
                           </InputSelectTrigger>
                           <InputSelectContent>
                             {organizations.map(({ id, name, active }) => (
@@ -138,7 +138,7 @@ export default function EditUserDrawer({
                               >
                                 {name}{' '}
                                 {!active && (
-                                  <Badge variant="destructive" size={'xs'}>
+                                  <Badge variant='destructive' size={'xs'}>
                                     Inactive
                                   </Badge>
                                 )}
@@ -155,9 +155,9 @@ export default function EditUserDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <Button
-              type="submit"
+              type='submit'
               loading={isSaving}
-              className="w-full"
+              className='w-full'
               disabled={!form.formState.isDirty || isSaving}
             >
               {isSaving ? 'Saving...' : 'Save Changes'}

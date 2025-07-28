@@ -39,7 +39,7 @@ const Variants: Variants = {
 const IdCardIcon = forwardRef<IdCardIconHandle, IdCardIconProps>(
   (
     { onMouseEnter, onMouseLeave, animate = false, size = 28, ...props },
-    ref,
+    ref
   ) => {
     const controls = useAnimation();
     const isControlledRef = useRef(false);
@@ -69,7 +69,7 @@ const IdCardIcon = forwardRef<IdCardIconHandle, IdCardIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter],
+      [controls, onMouseEnter]
     );
 
     const handleMouseLeave = useCallback(
@@ -80,7 +80,7 @@ const IdCardIcon = forwardRef<IdCardIconHandle, IdCardIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave],
+      [controls, onMouseLeave]
     );
 
     return (
@@ -90,47 +90,47 @@ const IdCardIcon = forwardRef<IdCardIconHandle, IdCardIconProps>(
         {...props}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns='http://www.w3.org/2000/svg'
           width={size}
           height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
         >
           <motion.path
-            d="M16 10h2"
+            d='M16 10h2'
             variants={Variants}
             animate={controls}
             custom={2}
           />
           <motion.path
-            d="M16 14h2"
+            d='M16 14h2'
             variants={Variants}
             animate={controls}
             custom={2}
           />
           <motion.path
-            d="M6.17 15a3 3 0 0 1 5.66 0"
+            d='M6.17 15a3 3 0 0 1 5.66 0'
             variants={Variants}
             animate={controls}
             custom={0}
           />
           <motion.circle
-            cx="9"
-            cy="11"
-            r="2"
+            cx='9'
+            cy='11'
+            r='2'
             variants={Variants}
             animate={controls}
             custom={1}
           />
-          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <rect x='2' y='5' width='20' height='14' rx='2' />
         </svg>
       </div>
     );
-  },
+  }
 );
 
 IdCardIcon.displayName = 'IdCardIcon';

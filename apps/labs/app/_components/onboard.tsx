@@ -11,8 +11,8 @@ interface Props {
 export default function Onboard({ forceNotInitialized }: Props) {
   return (
     <OnboardIntegrationProvider forceNotInitialized={forceNotInitialized}>
-      <section className="grid grid-cols-[24rem_1fr] gap-2 mt-3">
-        <div className="space-y-2">
+      <section className='mt-3 grid grid-cols-[24rem_1fr] gap-2'>
+        <div className='space-y-2'>
           <OnboardIntegrationHeader />
           <OnboardIntegrationOptions />
         </div>

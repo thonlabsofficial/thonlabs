@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 import { cn } from '../core/utils';
 
 const buttonLinkVariants = cva(
@@ -21,7 +21,7 @@ const buttonLinkVariants = cva(
       variant: 'destructive',
       size: 'md',
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -33,7 +33,7 @@ export interface ButtonProps
 const ButtonLink = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, variant, size, loading, disabled, children, ...props },
-    ref,
+    ref
   ) => {
     return (
       <button
@@ -46,7 +46,7 @@ const ButtonLink = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </button>
     );
-  },
+  }
 );
 ButtonLink.displayName = 'ButtonLink';
 

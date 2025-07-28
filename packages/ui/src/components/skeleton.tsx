@@ -5,8 +5,8 @@ import ReactLoadingSkeleton, { SkeletonTheme } from 'react-loading-skeleton';
 function SkeletonProvider({ children }: React.HTMLAttributes<HTMLElement>) {
   return (
     <SkeletonTheme
-      baseColor="hsl(var(--skeleton-base))"
-      highlightColor="hsl(var(--skeleton-highlight))"
+      baseColor='hsl(var(--skeleton-base))'
+      highlightColor='hsl(var(--skeleton-highlight))'
     >
       {children}
     </SkeletonTheme>
@@ -14,7 +14,7 @@ function SkeletonProvider({ children }: React.HTMLAttributes<HTMLElement>) {
 }
 
 function SkeletonWrapper({ children }: React.HTMLAttributes<HTMLElement>) {
-  return <div className="leading-[0]">{children}</div>;
+  return <div className='leading-[0]'>{children}</div>;
 }
 
 interface SkeletonProps

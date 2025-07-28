@@ -2,9 +2,9 @@ import { Badge } from '@repo/ui/badge';
 import { buttonVariants } from '@repo/ui/button';
 import LandingGrid from '@repo/ui/landing-grid';
 import { Typo } from '@repo/ui/typo';
-import { Metadata } from 'next';
-import { SiGithub } from 'react-icons/si';
 import * as motion from 'framer-motion/client';
+import type { Metadata } from 'next';
+import { SiGithub } from 'react-icons/si';
 import JoinWaitlistButton from './_components/join-waitlist-button';
 
 export const metadata: Metadata = {
@@ -17,12 +17,12 @@ export default function Home() {
   return (
     <>
       <LandingGrid />
-      <div className="p-4 mt-14 lg:mt-24">
+      <div className='mt-14 p-4 lg:mt-24'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center justify-center mb-4"
+          className='mb-4 flex items-center justify-center'
         >
           <Badge size={'lg'}>Currently Building In Public</Badge>
         </motion.div>
@@ -30,9 +30,9 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-col gap-4 lg:gap-2 text-center mx-auto max-w-3xl mb-7 lg:mb-4"
+          className='mx-auto mb-7 flex max-w-3xl flex-col gap-4 text-center lg:mb-4 lg:gap-2'
         >
-          <Typo variant={'h1'} className="lg:leading-tight">
+          <Typo variant={'h1'} className='lg:leading-tight'>
             The open source platform built to scale with your SaaS product.
           </Typo>
           <Typo variant={'lead'}>
@@ -45,7 +45,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex items-center justify-center"
+          className='flex items-center justify-center'
         >
           <JoinWaitlistButton />
         </motion.div>
@@ -54,12 +54,12 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
-          <div className="mx-auto w-20 h-px bg-border my-8" />
-          <div className="flex gap-3 items-center justify-center">
+          <div className='mx-auto my-8 h-px w-20 bg-border' />
+          <div className='flex items-center justify-center gap-3'>
             <a
-              href="https://git.new/thonlabs?utm_source=website"
-              target="_blank"
-              rel="noopener noreferrer"
+              href='https://git.new/thonlabs?utm_source=website'
+              target='_blank'
+              rel='noopener noreferrer'
               className={buttonVariants({
                 variant: 'linkGhost',
                 className: 'flex items-center gap-1.5',

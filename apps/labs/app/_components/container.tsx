@@ -1,5 +1,5 @@
 import { cn } from '@repo/ui/core/utils';
-import React from 'react';
+import type React from 'react';
 
 type Props = {
   withGutter?: boolean;
@@ -19,7 +19,7 @@ export default function Container({
         {
           'px-3': withGutter,
         },
-        className,
+        className
       )}
     >
       {children}

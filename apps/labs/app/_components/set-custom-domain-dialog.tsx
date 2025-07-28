@@ -1,10 +1,7 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -15,12 +12,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import { EnvironmentDetail } from '@/_interfaces/environment';
+import { Input, InputWrapper } from '@repo/ui/input';
+import React, { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import useEnvironment from '@/_hooks/use-environment';
+import type { EnvironmentDetail } from '@/_interfaces/environment';
 import {
-  SetCustomDomainFormData,
+  type SetCustomDomainFormData,
   SetCustomDomainFormSchema,
 } from '@/_validators/environments-validators';
-import useEnvironment from '@/_hooks/use-environment';
 
 type Props = {
   trigger: React.ReactNode;
@@ -66,11 +66,11 @@ export default function SetCustomDomainDialog({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid w-full items-center gap-3">
+          <div className='grid w-full items-center gap-3'>
             <InputWrapper>
               <Input
-                label="Enter you custom domain"
-                placeholder="e.g.: auth.thonlabs.io"
+                label='Enter you custom domain'
+                placeholder='e.g.: auth.thonlabs.io'
                 error={form.formState.errors.customDomain?.message}
                 {...form.register('customDomain')}
               />
@@ -78,7 +78,7 @@ export default function SetCustomDomainDialog({
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="ghost" disabled={isSaving}>
+              <Button type='button' variant='ghost' disabled={isSaving}>
                 Cancel
               </Button>
             </DialogClose>

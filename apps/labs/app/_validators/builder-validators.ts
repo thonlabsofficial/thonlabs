@@ -1,7 +1,7 @@
-import { z } from 'zod';
 import { ErrorMessages } from '@repo/utils/errors-metadata';
 import { colorPatterns } from '@repo/utils/validation-patterns';
 import { SSOSocialProvider } from '@thonlabs/nextjs';
+import { z } from 'zod';
 
 export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
   authProvider: z.string({ required_error: ErrorMessages.RequiredField }),
@@ -20,9 +20,9 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
       invalid_type_error: ErrorMessages.InvalidNumber,
     })
     .min(1, { message: ErrorMessages.MinValue.replace('{min}', '1') }),
-  
+
   refreshTokenExpirationUnit: z.enum(['m', 'd'], {
-    required_error:ErrorMessages.RequiredField,
+    required_error: ErrorMessages.RequiredField,
   }),
   enableSignUp: z.boolean(),
   enableSignUpB2BOnly: z.boolean(),
@@ -33,7 +33,7 @@ export const UpdateEnvironmentAuthSettingsFormSchema = z.object({
         (color) =>
           colorPatterns.hexColor.test(color) ||
           colorPatterns.rgbColor.test(color),
-        { message: ErrorMessages.InvalidColorFormat },
+        { message: ErrorMessages.InvalidColorFormat }
       ),
   }),
   activeSSOProviders: z.array(z.nativeEnum(SSOSocialProvider)),

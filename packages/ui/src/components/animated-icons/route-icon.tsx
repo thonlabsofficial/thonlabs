@@ -41,7 +41,7 @@ const circleVariants: Variants = {
 const RouteIcon = forwardRef<RouteIconHandle, RouteIconProps>(
   (
     { onMouseEnter, onMouseLeave, animate = false, size = 28, ...props },
-    ref,
+    ref
   ) => {
     const controls = useAnimation();
     const isControlledRef = useRef(false);
@@ -71,7 +71,7 @@ const RouteIcon = forwardRef<RouteIconHandle, RouteIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter],
+      [controls, onMouseEnter]
     );
 
     const handleMouseLeave = useCallback(
@@ -82,7 +82,7 @@ const RouteIcon = forwardRef<RouteIconHandle, RouteIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave],
+      [controls, onMouseLeave]
     );
 
     return (
@@ -92,26 +92,26 @@ const RouteIcon = forwardRef<RouteIconHandle, RouteIconProps>(
         {...props}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns='http://www.w3.org/2000/svg'
           width={size}
           height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
         >
           <motion.circle
-            cx="6"
-            cy="19"
-            r="3"
+            cx='6'
+            cy='19'
+            r='3'
             transition={circleTransition}
             variants={circleVariants}
             animate={controls}
           />
           <motion.path
-            d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"
+            d='M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15'
             transition={{ duration: 0.7, delay: 0.5, opacity: { delay: 0.5 } }}
             variants={{
               normal: {
@@ -128,9 +128,9 @@ const RouteIcon = forwardRef<RouteIconHandle, RouteIconProps>(
             animate={controls}
           />
           <motion.circle
-            cx="18"
-            cy="5"
-            r="3"
+            cx='18'
+            cy='5'
+            r='3'
             transition={circleTransition}
             variants={circleVariants}
             animate={controls}
@@ -138,7 +138,7 @@ const RouteIcon = forwardRef<RouteIconHandle, RouteIconProps>(
         </svg>
       </div>
     );
-  },
+  }
 );
 
 RouteIcon.displayName = 'RouteIcon';

@@ -1,8 +1,7 @@
-import { Metadata } from 'next';
-import PageWrapper from '@/_components/page-wrapper';
-import PageHeader from '@/_components/page-header';
-import React from 'react';
 import { Earth } from 'lucide-react';
+import type { Metadata } from 'next';
+import PageHeader from '@/_components/page-header';
+import PageWrapper from '@/_components/page-wrapper';
 
 export const metadata: Metadata = {
   title: 'Translations',
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 export default async function Translations() {
   return (
     <>
-      <PageHeader title="Translations" icon={Earth} />
+      <PageHeader title='Translations' icon={Earth} />
       <PageWrapper withContainer={false}>Translations page</PageWrapper>
     </>
   );

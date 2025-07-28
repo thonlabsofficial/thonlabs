@@ -1,5 +1,5 @@
-import { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 import { z } from 'zod';
+import type { EnvironmentAppData } from '@/_interfaces/environment-app-data';
 
 export const NewUserFormSchema = ({
   envData,
@@ -27,7 +27,7 @@ export const NewUserFormSchema = ({
           const emailDomain = email.split('@')[1];
           return domains.some(({ domain }) => domain === emailDomain);
         },
-        { message: 'Email domain not matches any organization' },
+        { message: 'Email domain not matches any organization' }
       ),
     sendInvite: z.boolean().optional(),
     organizationId: z.string().optional(),

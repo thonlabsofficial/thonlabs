@@ -1,18 +1,18 @@
-import PageWrapper from '@/_components/page-wrapper';
-import EditEmailTemplate from '@/_components/edit-email-template';
 import { serverEnvHeaders, serverLabsEnvAPI } from '@helpers/api/server';
-import { EmailTemplate } from '@/_interfaces/email-template';
-import PageHeader from '@/_components/page-header';
 import { MailOpen } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import EditEmailTemplate from '@/_components/edit-email-template';
 import EditEmailTemplateSettings from '@/_components/edit-email-template-settings';
+import PageHeader from '@/_components/page-header';
+import PageWrapper from '@/_components/page-wrapper';
+import type { EmailTemplate } from '@/_interfaces/email-template';
 
 type Params = Promise<{ environmentId: string; templateId: string }>;
 
 async function getEmailTemplate(environmentId: string, templateId: string) {
   const { data } = await serverLabsEnvAPI.get<EmailTemplate>(
     `/email-templates/${templateId}`,
-    serverEnvHeaders(environmentId),
+    serverEnvHeaders(environmentId)
   );
 
   if (!data) {
@@ -40,7 +40,7 @@ export default async function EmailDetail({ params }: { params: Params }) {
         icon={MailOpen}
         withContainer={false}
       />
-      <PageWrapper withContainer={false} className="pt-4 grid gap-10">
+      <PageWrapper withContainer={false} className='grid gap-10 pt-4'>
         <EditEmailTemplate templateId={templateId} />
         <EditEmailTemplateSettings templateId={templateId} />
       </PageWrapper>

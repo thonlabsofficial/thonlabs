@@ -1,19 +1,19 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Globe as GlobeIcon, Image as ImageIcon } from 'lucide-react';
+import { useEditor } from 'novel';
 import { useCallback, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { ButtonIcon } from '../../button-icon';
 import {
   Command,
-  CommandInput,
-  CommandList,
   CommandGroup,
+  CommandInput,
   CommandItem,
+  CommandList,
 } from '../../command';
-import { Typo } from '../../typo';
 import { Popover, PopoverContent, PopoverTrigger } from '../../popover';
-import { useEditor } from 'novel';
-import { Globe as GlobeIcon, Image as ImageIcon } from 'lucide-react';
-import { ButtonIcon } from '../../button-icon';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { Typo } from '../../typo';
 
 const imageFormSchema = z.object({
   href: z.string().url({ message: 'Please enter a valid URL' }),
@@ -40,7 +40,7 @@ export function ImageBlock() {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [inputRef]);
+  }, []);
 
   const setImageOnEditor = useCallback(
     (url: string) => {
@@ -52,23 +52,23 @@ export function ImageBlock() {
 
       form.setValue('href', '');
     },
-    [editor, form],
+    [editor, form]
   );
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <ButtonIcon
-          type="button"
+          type='button'
           variant={'ghost'}
           icon={ImageIcon}
           size={'sm'}
         />
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
-        <Command className="bg-transparent" shouldFilter={false}>
+      <PopoverContent className='flex w-52 flex-col gap-1 rounded-md border border-foreground/[0.07] bg-muted p-0'>
+        <Command className='bg-transparent' shouldFilter={false}>
           <CommandInput
-            placeholder="Enter or paste the URL"
+            placeholder='Enter or paste the URL'
             onValueChange={(value) => {
               form.setValue('href', value, {
                 shouldValidate: true,
@@ -78,26 +78,24 @@ export function ImageBlock() {
           <CommandList>
             {formHref && (
               <CommandGroup>
-                <>
-                  <CommandItem
-                    className="items-start data-[selected='true']:bg-foreground/10"
-                    onSelect={() => {
-                      setImageOnEditor(form.getValues('href'));
-                    }}
-                  >
-                    <GlobeIcon className="mr-2 mt-0.5 h-4 w-4" />
-                    <div className="flex flex-col">
-                      <Typo variant={'sm'} className="max-w-40 truncate">
-                        {formHref}
-                      </Typo>
-                      <Typo variant={'mutedXs'}>
-                        {form.formState.errors.href
-                          ? form.formState.errors.href?.message
-                          : 'Show an image from this URL'}
-                      </Typo>
-                    </div>
-                  </CommandItem>
-                </>
+                <CommandItem
+                  className="items-start data-[selected='true']:bg-foreground/10"
+                  onSelect={() => {
+                    setImageOnEditor(form.getValues('href'));
+                  }}
+                >
+                  <GlobeIcon className='mt-0.5 mr-2 h-4 w-4' />
+                  <div className='flex flex-col'>
+                    <Typo variant={'sm'} className='max-w-40 truncate'>
+                      {formHref}
+                    </Typo>
+                    <Typo variant={'mutedXs'}>
+                      {form.formState.errors.href
+                        ? form.formState.errors.href?.message
+                        : 'Show an image from this URL'}
+                    </Typo>
+                  </div>
+                </CommandItem>
               </CommandGroup>
             )}
           </CommandList>

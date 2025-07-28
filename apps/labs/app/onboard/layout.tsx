@@ -1,5 +1,5 @@
-import { Metadata } from 'next';
 import { Toaster } from '@repo/ui/toaster';
+import type { Metadata } from 'next';
 import LandingGrid from '@/_components/landing-grid';
 
 export const metadata: Metadata = {

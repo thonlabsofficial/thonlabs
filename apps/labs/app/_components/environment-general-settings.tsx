@@ -1,11 +1,5 @@
 'use client';
 
-import useEnvironment from '@/_hooks/use-environment';
-import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
-import {
-  UpdateEnvironmentGeneralSettingsFormData,
-  UpdateEnvironmentGeneralSettingsFormSchema,
-} from '@/_validators/environments-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
@@ -13,10 +7,16 @@ import { ImagePreview } from '@repo/ui/image-preview';
 import { Input, InputWrapper } from '@repo/ui/input';
 import { InputSingleFile } from '@repo/ui/input-single-file';
 import { Label } from '@repo/ui/label';
+import { Typo } from '@repo/ui/typo';
 import { useParams } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { Typo } from '@repo/ui/typo';
+import useEnvironment from '@/_hooks/use-environment';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
+import {
+  type UpdateEnvironmentGeneralSettingsFormData,
+  UpdateEnvironmentGeneralSettingsFormSchema,
+} from '@/_validators/environments-validators';
 
 export default function EnvironmentGeneralSettings() {
   const form = useForm<UpdateEnvironmentGeneralSettingsFormData>({
@@ -39,7 +39,7 @@ export default function EnvironmentGeneralSettings() {
           logo: undefined,
         });
       },
-    },
+    }
   );
   const { environmentLogo } = useEnvironmentAppData();
   const [isSaving, startSavingTransition] = useTransition();
@@ -50,7 +50,7 @@ export default function EnvironmentGeneralSettings() {
 
   function onSubmit(payload: UpdateEnvironmentGeneralSettingsFormData) {
     startSavingTransition(async () => {
-      await updateEnvironmentGeneralSettings(environment!.id, payload).then(
+      await updateEnvironmentGeneralSettings(environment?.id, payload).then(
         () => {
           form.reset({
             name: payload?.name || '',
@@ -58,7 +58,7 @@ export default function EnvironmentGeneralSettings() {
             logo: undefined,
           });
           setShowLogoInput(false);
-        },
+        }
       );
     });
   }
@@ -66,15 +66,15 @@ export default function EnvironmentGeneralSettings() {
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-[19rem_1fr] gap-40">
+        <div className='grid grid-cols-[19rem_1fr] gap-40'>
           <CardHeader padding>General Settings</CardHeader>
-          <CardContent className="flex-1 p-6">
-            <div className="grid gap-5">
+          <CardContent className='flex-1 p-6'>
+            <div className='grid gap-5'>
               <InputWrapper>
                 <Input
-                  id="name"
-                  placeholder="id..."
-                  label="Environment ID"
+                  id='name'
+                  placeholder='id...'
+                  label='Environment ID'
                   readOnly
                   loading={isLoadingEnvironment}
                   value={environment?.id}
@@ -83,9 +83,9 @@ export default function EnvironmentGeneralSettings() {
               </InputWrapper>
               <InputWrapper>
                 <Input
-                  id="name"
-                  placeholder="e.g.: Staging"
-                  label="Name"
+                  id='name'
+                  placeholder='e.g.: Staging'
+                  label='Name'
                   maxLength={25}
                   loading={isLoadingEnvironment}
                   error={form.formState.errors.name?.message}
@@ -95,9 +95,9 @@ export default function EnvironmentGeneralSettings() {
 
               <InputWrapper>
                 <Input
-                  id="appURL"
-                  placeholder="e.g.: https://staging.thonlabs.io"
-                  label="Application URL"
+                  id='appURL'
+                  placeholder='e.g.: https://staging.thonlabs.io'
+                  label='Application URL'
                   loading={isLoadingEnvironment}
                   error={form.formState.errors.appURL?.message}
                   {...form.register('appURL')}
@@ -105,7 +105,7 @@ export default function EnvironmentGeneralSettings() {
               </InputWrapper>
 
               <div>
-                <header className="flex justify-between">
+                <header className='flex justify-between'>
                   <Label>Your company logo</Label>
                   <Typo
                     variant={'sm'}
@@ -113,7 +113,7 @@ export default function EnvironmentGeneralSettings() {
                       setShowLogoInput(!showLogoInput);
                       form.setValue('logo', undefined);
                     }}
-                    className="cursor-pointer text-muted-foreground hover:underline"
+                    className='cursor-pointer text-muted-foreground hover:underline'
                   >
                     {showLogoInput ? 'Cancel' : 'Change logo'}
                   </Typo>
@@ -129,16 +129,16 @@ export default function EnvironmentGeneralSettings() {
                 ) : (
                   <ImagePreview
                     src={`${process.env.NEXT_PUBLIC_TL_EXT_FILES}/environments/${environmentId}/images/${environmentLogo}`}
-                    className="max-h-40"
+                    className='max-h-40'
                   />
                 )}
               </div>
             </div>
           </CardContent>
         </div>
-        <CardFooter className="flex gap-2 justify-end">
+        <CardFooter className='flex justify-end gap-2'>
           <Button
-            type="button"
+            type='button'
             size={'sm'}
             variant={'ghost'}
             disabled={!form.formState.isDirty || isSaving}
@@ -147,7 +147,7 @@ export default function EnvironmentGeneralSettings() {
             Cancel
           </Button>
           <Button
-            type="submit"
+            type='submit'
             size={'sm'}
             disabled={!form.formState.isDirty || isSaving}
           >

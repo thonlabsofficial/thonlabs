@@ -1,13 +1,12 @@
 'use client';
 
-import { Card, CardFooter, CardContent, CardHeader } from '@repo/ui/card';
-import { Input } from '@repo/ui/input';
-import { InputWrapper } from '@repo/ui/input';
-import CustomDomainStatusCard from '@/_components/custom-domain-status-card';
-import CustomDomainActions from '@/_components/custom-domain-actions';
-import useEnvironment from '@/_hooks/use-environment';
-import { useMemo } from 'react';
+import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
+import { Input, InputWrapper } from '@repo/ui/input';
 import { useParams } from 'next/navigation';
+import { useMemo } from 'react';
+import CustomDomainActions from '@/_components/custom-domain-actions';
+import CustomDomainStatusCard from '@/_components/custom-domain-status-card';
+import useEnvironment from '@/_hooks/use-environment';
 
 export default function CustomDomainSettings() {
   const { environmentId } = useParams();
@@ -20,14 +19,14 @@ export default function CustomDomainSettings() {
 
   return (
     <Card>
-      <div className="grid grid-cols-[19rem_1fr] gap-40">
+      <div className='grid grid-cols-[19rem_1fr] gap-40'>
         <CardHeader
           padding
-          description="Used in authentication flows such as login, signup, password reset, and email confirmation."
+          description='Used in authentication flows such as login, signup, password reset, and email confirmation.'
         >
           Domain
         </CardHeader>
-        <CardContent className="flex-1 p-6">
+        <CardContent className='flex-1 p-6'>
           <InputWrapper>
             <Input
               readOnly
@@ -40,7 +39,7 @@ export default function CustomDomainSettings() {
           <CustomDomainStatusCard environmentId={environmentId as string} />
         </CardContent>
       </div>
-      <CardFooter className="flex justify-end gap-2">
+      <CardFooter className='flex justify-end gap-2'>
         <CustomDomainActions environmentId={environmentId as string} />
       </CardFooter>
     </Card>

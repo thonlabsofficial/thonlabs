@@ -1,8 +1,8 @@
 'use server';
 
-import { EmailTemplate } from '@/_interfaces/email-template';
 import { serverEnvHeaders, serverLabsEnvAPI } from '@helpers/api/server';
 import { notFound } from 'next/navigation';
+import type { EmailTemplate } from '@/_interfaces/email-template';
 
 interface FetchEmailTemplatesResponse {
   items: EmailTemplate[];
@@ -11,7 +11,7 @@ interface FetchEmailTemplatesResponse {
 export async function fetchEmailTemplates(environmentId: string) {
   const { data } = await serverLabsEnvAPI.get<FetchEmailTemplatesResponse>(
     `/email-templates`,
-    serverEnvHeaders(environmentId),
+    serverEnvHeaders(environmentId)
   );
 
   if (!data?.items) {

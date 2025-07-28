@@ -1,10 +1,10 @@
 import { labsEnvAPI } from '@helpers/api';
 import { APIErrors } from '@helpers/api/api-errors';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import { SSOSocial, SSOSocialProvider } from '@thonlabs/nextjs';
+import type { SSOSocial, SSOSocialProvider } from '@thonlabs/nextjs';
 import useSWR from 'swr';
-import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import { buildEnvDataMutation } from '@/_hooks/use-environment-app-data';
+import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 
 interface Params {
   environmentId?: string;
@@ -28,7 +28,7 @@ export function useCredential(params: Params = {}) {
       `/environments/${params.environmentId}/credentials/${params.provider}`,
     {
       revalidateOnFocus: false,
-    },
+    }
   );
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
@@ -36,12 +36,12 @@ export function useCredential(params: Params = {}) {
   async function upsertCredential(
     environmentId: string,
     provider: SSOSocialProvider,
-    payload: any,
+    payload: any
   ) {
     try {
       const { data } = await labsEnvAPI.post<CredentialBaseResponse>(
         `/environments/${environmentId}/credentials/${provider}`,
-        payload,
+        payload
       );
 
       if (data.activeSSOProviders) {
@@ -52,7 +52,7 @@ export function useCredential(params: Params = {}) {
               value: data.activeSSOProviders,
               isSDKData: true,
             },
-          ]),
+          ])
         );
       }
 
@@ -79,12 +79,12 @@ export function useCredential(params: Params = {}) {
   async function updateCredentialStatus(
     environmentId: string,
     provider: SSOSocialProvider,
-    { active }: { active: boolean },
+    { active }: { active: boolean }
   ) {
     try {
       const { data } = await labsEnvAPI.patch<CredentialBaseResponse>(
         `/environments/${environmentId}/credentials/${provider}/status`,
-        { active },
+        { active }
       );
 
       toast({
@@ -98,7 +98,7 @@ export function useCredential(params: Params = {}) {
             value: data.activeSSOProviders,
             isSDKData: true,
           },
-        ]),
+        ])
       );
     } catch (error: any) {
       console.error('useCredential.updateCredentialStatus', error);
@@ -113,11 +113,11 @@ export function useCredential(params: Params = {}) {
 
   async function deleteCredential(
     environmentId: string,
-    provider: SSOSocialProvider,
+    provider: SSOSocialProvider
   ) {
     try {
       const { data } = await labsEnvAPI.delete<CredentialBaseResponse>(
-        `/environments/${environmentId}/credentials/${provider}`,
+        `/environments/${environmentId}/credentials/${provider}`
       );
 
       toast({
@@ -131,7 +131,7 @@ export function useCredential(params: Params = {}) {
             value: data.activeSSOProviders,
             isSDKData: true,
           },
-        ]),
+        ])
       );
     } catch (error: any) {
       console.error('useCredential.deleteCredential', error);

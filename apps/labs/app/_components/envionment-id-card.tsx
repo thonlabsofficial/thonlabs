@@ -9,15 +9,15 @@ export default function EnvironmentIdCard() {
 
   return (
     <Card>
-      <div className="grid grid-cols-[19rem_1fr] gap-40">
+      <div className='grid grid-cols-[19rem_1fr] gap-40'>
         <CardHeader
           padding
-          description="This is the unique identifier for your environment."
+          description='This is the unique identifier for your environment.'
         >
           Environment ID
         </CardHeader>
-        <CardContent className="flex-1 p-6">
-          <div className="grid gap-5">
+        <CardContent className='flex-1 p-6'>
+          <div className='grid gap-5'>
             <InputWrapper>
               <Input readOnly value={environmentId} withCopy />
             </InputWrapper>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAnimation, motion } from 'motion/react';
+import { motion, useAnimation } from 'motion/react';
 import type { HTMLAttributes } from 'react';
 import {
   forwardRef,
@@ -26,7 +26,7 @@ const LayoutPanelTopIcon = forwardRef<
 >(
   (
     { onMouseEnter, onMouseLeave, animate = false, size = 28, ...props },
-    ref,
+    ref
   ) => {
     const controls = useAnimation();
     const isControlledRef = useRef(false);
@@ -56,7 +56,7 @@ const LayoutPanelTopIcon = forwardRef<
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter],
+      [controls, onMouseEnter]
     );
 
     const handleMouseLeave = useCallback(
@@ -67,7 +67,7 @@ const LayoutPanelTopIcon = forwardRef<
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave],
+      [controls, onMouseLeave]
     );
 
     return (
@@ -77,23 +77,23 @@ const LayoutPanelTopIcon = forwardRef<
         {...props}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns='http://www.w3.org/2000/svg'
           width={size}
           height={size}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
         >
           <motion.rect
-            width="18"
-            height="7"
-            x="3"
-            y="3"
-            rx="1"
-            initial="normal"
+            width='18'
+            height='7'
+            x='3'
+            y='3'
+            rx='1'
+            initial='normal'
             animate={controls}
             variants={{
               normal: { opacity: 1, translateY: 0 },
@@ -108,12 +108,12 @@ const LayoutPanelTopIcon = forwardRef<
             }}
           />
           <motion.rect
-            width="7"
-            height="7"
-            x="3"
-            y="14"
-            rx="1"
-            initial="normal"
+            width='7'
+            height='7'
+            x='3'
+            y='14'
+            rx='1'
+            initial='normal'
             animate={controls}
             variants={{
               normal: { opacity: 1, translateX: 0 },
@@ -129,12 +129,12 @@ const LayoutPanelTopIcon = forwardRef<
             }}
           />
           <motion.rect
-            width="7"
-            height="7"
-            x="14"
-            y="14"
-            rx="1"
-            initial="normal"
+            width='7'
+            height='7'
+            x='14'
+            y='14'
+            rx='1'
+            initial='normal'
             animate={controls}
             variants={{
               normal: { opacity: 1, translateX: 0 },
@@ -152,7 +152,7 @@ const LayoutPanelTopIcon = forwardRef<
         </svg>
       </div>
     );
-  },
+  }
 );
 
 LayoutPanelTopIcon.displayName = 'LayoutPanelTopIcon';

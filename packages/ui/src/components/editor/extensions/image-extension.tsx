@@ -62,20 +62,20 @@ function isAllowedUri(uri: string | undefined) {
       .match(
         new RegExp(
           `^(?:(?:${allowedProtocols.join('|')}):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))`,
-          'i',
-        ),
+          'i'
+        )
       )
   );
 }
 
 function getImageElement() {
   const element = document.querySelector(
-    '.ProseMirror-selectednode',
+    '.ProseMirror-selectednode'
   ) as HTMLImageElement;
 
   if (element.tagName === 'A') {
     return document.querySelector(
-      '.ProseMirror-selectednode img',
+      '.ProseMirror-selectednode img'
     ) as HTMLImageElement;
   }
 
@@ -84,7 +84,7 @@ function getImageElement() {
 
 function forwardDOMAttrs(
   dom: HTMLElement,
-  extraAttrs: Record<string, any> = {},
+  extraAttrs: Record<string, any> = {}
 ) {
   const hasLink = dom.parentElement?.tagName === 'A';
   const imageAttrs = Utils.getDOMAttributes(dom);
@@ -209,7 +209,7 @@ export const Image = Node.create<ImageOptions>({
           ? {
               style: `display:block;outline:none;border:none;text-decoration:none;margin-top:8px;margin-bottom:8px;`,
             }
-          : {},
+          : {}
       ),
     ];
   },
@@ -248,7 +248,7 @@ export const Image = Node.create<ImageOptions>({
             this.name,
             forwardDOMAttrs(imageDOM, {
               imageAlign: alignment,
-            }),
+            })
           );
         },
       setImageSize:
@@ -261,7 +261,7 @@ export const Image = Node.create<ImageOptions>({
 
           return commands.updateAttributes(
             this.name,
-            forwardDOMAttrs(imageDOM),
+            forwardDOMAttrs(imageDOM)
           );
         },
       setImageSource:
@@ -273,20 +273,20 @@ export const Image = Node.create<ImageOptions>({
 
           return commands.updateAttributes(
             this.name,
-            forwardDOMAttrs(imageDOM),
+            forwardDOMAttrs(imageDOM)
           );
         },
       setImageLink:
         (href: string) =>
         ({ commands }) => {
           const element = document.querySelector(
-            '.ProseMirror-selectednode',
+            '.ProseMirror-selectednode'
           ) as HTMLImageElement;
           let imgElement;
 
           if (element.tagName === 'A') {
             imgElement = document.querySelector(
-              '.ProseMirror-selectednode img',
+              '.ProseMirror-selectednode img'
             ) as HTMLImageElement;
           } else if (element.tagName === 'IMG') {
             element.classList.remove('ProseMirror-selectednode');
@@ -310,7 +310,7 @@ export const Image = Node.create<ImageOptions>({
         () =>
         ({ commands }) => {
           const element = document.querySelector(
-            '.ProseMirror-selectednode',
+            '.ProseMirror-selectednode'
           ) as HTMLImageElement;
           const imgElement = getImageElement();
 
@@ -353,7 +353,7 @@ export const Image = Node.create<ImageOptions>({
               return false;
             },
           },
-        }),
+        })
       );
     }
 

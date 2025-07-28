@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent } from '@repo/ui/card';
-import { ThonLabsAuthPagePreview } from '@thonlabs/nextjs';
-import BuilderActivatePreviewMode from '@/_components/builder-activate-preview-mode';
 import { ButtonGroup, ButtonGroupItem } from '@repo/ui/button-group';
-import SectionHeader from '@/_components/section-header';
+import { Card, CardContent } from '@repo/ui/card';
+import { cn } from '@repo/ui/core/utils';
+import { ThonLabsAuthPagePreview } from '@thonlabs/nextjs';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { cn } from '@repo/ui/core/utils';
+import React, { useState } from 'react';
+import BuilderActivatePreviewMode from '@/_components/builder-activate-preview-mode';
+import SectionHeader from '@/_components/section-header';
 
 export default function BuilderPreview() {
   const { resolvedTheme } = useTheme();
@@ -19,13 +19,13 @@ export default function BuilderPreview() {
     if (!previewTheme || previewTheme === 'system') {
       setPreviewTheme(resolvedTheme);
     }
-  }, [resolvedTheme]);
+  }, [resolvedTheme, previewTheme]);
 
   return (
     <>
-      <div className="flex justify-between items-center mb-3">
-        <SectionHeader title="Preview" className="mb-0" />
-        <div className="flex gap-1 items-center">
+      <div className='mb-3 flex items-center justify-between'>
+        <SectionHeader title='Preview' className='mb-0' />
+        <div className='flex items-center gap-1'>
           <ButtonGroup>
             <ButtonGroupItem
               onClick={() => setPage('login')}
@@ -57,20 +57,20 @@ export default function BuilderPreview() {
               onClick={() => setPreviewTheme('light')}
               active={previewTheme === 'light'}
             >
-              <Sun className="w-4 h-4" />
+              <Sun className='h-4 w-4' />
             </ButtonGroupItem>
             <ButtonGroupItem
               onClick={() => setPreviewTheme('dark')}
               active={previewTheme === 'dark'}
             >
-              <Moon className="w-4 h-4" />
+              <Moon className='h-4 w-4' />
             </ButtonGroupItem>
           </ButtonGroup>
         </div>
       </div>
-      <Card className="h-[53rem] overflow-hidden relative">
+      <Card className='relative h-[53rem] overflow-hidden'>
         <CardContent
-          className={cn('p-0 w-full h-full bg-background', previewTheme)}
+          className={cn('h-full w-full bg-background p-0', previewTheme)}
         >
           <BuilderActivatePreviewMode />
           <ThonLabsAuthPagePreview

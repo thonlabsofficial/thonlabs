@@ -1,6 +1,5 @@
-import { error } from 'console';
 import React from 'react';
-import { Environment } from '../_interfaces/environment';
+import type { Environment } from '../_interfaces/environment';
 import { useProjects } from './use-projects';
 
 export function useEnvironments() {
@@ -14,7 +13,7 @@ export function useEnvironments() {
         }));
         return [...acc, ...environments];
       }, []),
-    [projects],
+    [projects]
   );
 
   return {

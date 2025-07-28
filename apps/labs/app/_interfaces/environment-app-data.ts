@@ -1,4 +1,4 @@
-import { EnvironmentData } from '@thonlabs/nextjs';
+import type { EnvironmentData } from '@thonlabs/nextjs';
 
 export interface EnvironmentAppData extends EnvironmentData {
   environmentName: string;

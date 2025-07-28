@@ -1,17 +1,17 @@
+import { APIErrors } from '@helpers/api/api-errors';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import React from 'react';
+import useSWR from 'swr';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
+import type { Environment, EnvironmentDetail } from '@/_interfaces/environment';
+import { revalidateCache } from '@/_services/server-cache-service';
 import { labsAPI } from '../../helpers/api';
-import {
+import type { Project } from '../_interfaces/project';
+import type {
   NewEnvironmentFormData,
   UpdateEnvironmentGeneralSettingsFormData,
 } from '../_validators/environments-validators';
-import { useToast } from '@repo/ui/hooks/use-toast';
-import { Environment, EnvironmentDetail } from '@/_interfaces/environment';
-import { APIErrors } from '@helpers/api/api-errors';
-import useSWR from 'swr';
-import React from 'react';
-import { Project } from '../_interfaces/project';
 import useOptimisticUpdate from './use-optimistic-update';
-import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
-import { revalidateCache } from '@/_services/server-cache-service';
 
 type Params = {
   environmentId?: string;
@@ -23,7 +23,7 @@ type Options = {
 
 export default function useEnvironment(
   params: Params = {},
-  { onFetchComplete }: Options = {},
+  { onFetchComplete }: Options = {}
 ) {
   const {
     data: environment,
@@ -31,7 +31,7 @@ export default function useEnvironment(
     isValidating: isValidatingEnvironment,
     error: environmentError,
   } = useSWR<EnvironmentDetail>(
-    () => params.environmentId && `/environments/${params.environmentId}`,
+    () => params.environmentId && `/environments/${params.environmentId}`
   );
   const environmentData = useEnvironmentAppData();
 
@@ -48,11 +48,11 @@ export default function useEnvironment(
 
   React.useEffect(() => {
     environmentMemo && onFetchComplete?.(environmentMemo);
-  }, [environmentMemo]);
+  }, [environmentMemo, onFetchComplete]);
 
   async function createEnvironment(
     projectId: string,
-    payload: NewEnvironmentFormData,
+    payload: NewEnvironmentFormData
   ) {
     try {
       const { data } = await labsAPI.post<Environment>('/environments', {
@@ -78,15 +78,15 @@ export default function useEnvironment(
 
   async function updateEnvironmentGeneralSettings(
     environmentId: string,
-    payload: UpdateEnvironmentGeneralSettingsFormData,
+    payload: UpdateEnvironmentGeneralSettingsFormData
   ) {
     try {
       await labsAPI.patch<Environment>(
         `/environments/${environmentId}/general-settings`,
-        payload,
+        payload
       );
 
-      if (payload.logo && payload.logo?.[0]) {
+      if (payload.logo?.[0]) {
         await updateLogoGeneralSettings(environmentId, payload.logo, false);
       }
 
@@ -109,9 +109,9 @@ export default function useEnvironment(
               (project: Project & { environments: Environment[] }) => ({
                 ...project,
                 environments: project.environments.map((e: Environment) =>
-                  e.id === environmentId ? { ...e, ...payload } : e,
+                  e.id === environmentId ? { ...e, ...payload } : e
                 ),
-              }),
+              })
             ),
           }),
         },
@@ -140,7 +140,7 @@ export default function useEnvironment(
   async function updateLogoGeneralSettings(
     environmentId: string,
     logo: FileList,
-    showNotification = true,
+    showNotification = true
   ) {
     try {
       await labsAPI.patch<Environment>(
@@ -150,7 +150,7 @@ export default function useEnvironment(
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-        },
+        }
       );
 
       await revalidateCache([`/${environmentId}/general-settings`]);
@@ -177,7 +177,7 @@ export default function useEnvironment(
   async function regenerateEnvironmentPublicKey(environmentId: string) {
     try {
       const { data } = await labsAPI.patch<{ publicKey: string }>(
-        `/environments/${environmentId}/public`,
+        `/environments/${environmentId}/public`
       );
 
       makeMutations([
@@ -206,7 +206,7 @@ export default function useEnvironment(
   async function regenerateEnvironmentSecretKey(environmentId: string) {
     try {
       const { data } = await labsAPI.patch<{ secretKey: string }>(
-        `/environments/${environmentId}/secret`,
+        `/environments/${environmentId}/secret`
       );
 
       makeMutations([
@@ -234,7 +234,7 @@ export default function useEnvironment(
 
   async function getEnvironmentSecretKey(environmentId: string) {
     const { data } = await labsAPI.get<{ secretKey: string }>(
-      `/environments/${environmentId}/secret`,
+      `/environments/${environmentId}/secret`
     );
 
     return data.secretKey;
@@ -255,10 +255,10 @@ export default function useEnvironment(
                   ? {
                       ...p,
                       environments: p.environments.filter(
-                        (e) => e.id !== environment.id,
+                        (e) => e.id !== environment.id
                       ),
                     }
-                  : p,
+                  : p
             ),
           }),
         },
@@ -285,7 +285,7 @@ export default function useEnvironment(
         `/environments/${environmentId}/domains`,
         {
           customDomain,
-        },
+        }
       );
 
       makeMutations([
@@ -347,7 +347,7 @@ export default function useEnvironment(
   async function verifyCustomDomain(environmentId: string) {
     try {
       const { data } = await labsAPI.post(
-        `/environments/${environmentId}/domains/verify`,
+        `/environments/${environmentId}/domains/verify`
       );
 
       makeMutations([
@@ -372,7 +372,7 @@ export default function useEnvironment(
   async function reverifyCustomDomain(environmentId: string) {
     try {
       const { data } = await labsAPI.post(
-        `/environments/${environmentId}/domains/reverify`,
+        `/environments/${environmentId}/domains/reverify`
       );
 
       makeMutations([

@@ -20,7 +20,7 @@ const ImagePreview = ({
   React.useEffect(() => {
     if (src) {
       const existingImg = document.querySelector(
-        `img[src="${src}"]`,
+        `img[src="${src}"]`
       ) as HTMLImageElement;
 
       if (existingImg) {
@@ -42,7 +42,7 @@ const ImagePreview = ({
         img.onload = () => analyzeImage(img);
       }
     }
-  }, [src]);
+  }, [src, analyzeImage]);
 
   const analyzeImage = (img: HTMLImageElement) => {
     try {
@@ -89,29 +89,28 @@ const ImagePreview = ({
 
   return (
     <Card
-      variant="transparent"
-      border="dashed"
+      variant='transparent'
+      border='dashed'
       className={cn(
-        `flex flex-col h-44 items-center justify-center w-full
-          p-2 overflow-hidden select-none`,
-        className,
+        `flex h-44 w-full select-none flex-col items-center justify-center overflow-hidden p-2`,
+        className
       )}
       {...props}
     >
       <div
         className={cn(
-          'rounded w-full h-full p-1 flex items-center justify-center relative',
+          'relative flex h-full w-full items-center justify-center rounded p-1',
           {
             'bg-accent': darkBackground && resolvedTheme === 'dark',
             'bg-accent-foreground':
               (!darkBackground && resolvedTheme === 'dark') ||
               (darkBackground && resolvedTheme === 'light'),
             'bg-transparent': !darkBackground && resolvedTheme === 'light',
-          },
+          }
         )}
       >
         <div
-          className="flex items-center justify-center bg-contain bg-center bg-no-repeat w-full h-full"
+          className='flex h-full w-full items-center justify-center bg-center bg-contain bg-no-repeat'
           style={{
             backgroundImage: `url(${src})`,
           }}

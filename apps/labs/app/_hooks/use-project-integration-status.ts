@@ -8,7 +8,7 @@ interface ProjectIntegrationStatusResponse {
 export function useProjectIntegrationStatus() {
   const { projectId } = useEnvironmentAppData();
   const { data, error, isLoading } = useSWR<ProjectIntegrationStatusResponse>(
-    `/projects/${projectId}/integration-status`,
+    `/projects/${projectId}/integration-status`
   );
 
   return {

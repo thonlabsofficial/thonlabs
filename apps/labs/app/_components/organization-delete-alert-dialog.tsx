@@ -1,8 +1,8 @@
 'use client';
 
-import useOrganization from '@/_hooks/use-organization';
-import { Organization } from '@/_interfaces/organization';
 import { AlertDialog } from '@repo/ui/alert-dialog';
+import useOrganization from '@/_hooks/use-organization';
+import type { Organization } from '@/_interfaces/organization';
 
 interface Props {
   open: boolean;
@@ -23,11 +23,11 @@ export default function OrganizationDeleteAlertDialog({
     <AlertDialog
       open={open}
       onOpenChange={() => setOpen('')}
-      title="Delete Organization"
+      title='Delete Organization'
       description={`Are you sure you want to delete ${organization?.name}? This action cannot be undone.`}
-      idleLabel="Yes, delete"
-      actingLabel="Deleting..."
-      variant="destructive"
+      idleLabel='Yes, delete'
+      actingLabel='Deleting...'
+      variant='destructive'
       onClick={async () => {
         try {
           await deleteOrganization(organization.id);

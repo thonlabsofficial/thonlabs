@@ -1,14 +1,14 @@
+import { cva, type VariantProps } from 'class-variance-authority';
+import { FileIcon, FileImageIcon } from 'lucide-react';
 import * as React from 'react';
-import { VariantProps, cva } from 'class-variance-authority';
-import { Typo } from './typo';
-import { Label } from './label';
-import { Skeleton } from './skeleton';
 import { useWatch } from 'react-hook-form';
 import { useToast } from '../hooks/use-toast';
+import { ButtonLink } from './button-link';
 import { Card } from './card';
 import { IconSquare } from './icon-square';
-import { FileImageIcon, FileIcon } from 'lucide-react';
-import { ButtonLink } from './button-link';
+import { Label } from './label';
+import { Skeleton } from './skeleton';
+import { Typo } from './typo';
 
 const iconFileMapper = [
   {
@@ -24,7 +24,7 @@ const iconFileMapper = [
 const inputSingleFileVariants = cva(
   `flex flex-col h-24 items-center justify-center w-full
     group-hover:border-zinc-400 dark:group-hover:border-zinc-500
-    transition-default`,
+    transition-default`
 );
 
 export interface InputProps
@@ -54,13 +54,13 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
       onRemove,
       ...props
     },
-    ref,
+    ref
   ) => {
     const formValues = useWatch({ control: form.control });
     const name = props.name || '';
     const formFile: File = React.useMemo(
       () => formValues[name]?.[0],
-      [formValues, name],
+      [formValues, name]
     );
     const [validFile, setValidFile] = React.useState(false);
     const [fileIcon, setFileIcon] = React.useState<any>(null);
@@ -100,10 +100,16 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
 
       setValidFile(true);
       setFileIcon(
-        iconFileMapper.find((icon) => icon.extensions.includes(extension))
-          ?.icon,
+        iconFileMapper.find((icon) => icon.extensions.includes(extension))?.icon
       );
-    }, [formFile]);
+    }, [
+      formFile,
+      allowedExtensions,
+      form.setValue,
+      maxFileSizeInMB,
+      name,
+      toast,
+    ]);
 
     return (
       <>
@@ -121,64 +127,62 @@ const InputSingleFile = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className={className}>
           {!loading ? (
-            <>
-              {validFile ? (
-                <div className="flex flex-col gap-2">
-                  {replaceBy}
-                  <Card
-                    variant={'darker'}
-                    className="flex items-center gap-1.5 p-1.5"
-                  >
-                    <IconSquare icon={fileIcon} />
-                    <div className="flex flex-col">
-                      <div className="truncate max-w-[17.375rem]">
-                        <Typo variant="sm">{formFile?.name}</Typo>
-                      </div>
-                      <div className="flex gap-1">
-                        <ButtonLink
-                          type="button"
-                          size={'xs'}
-                          variant={'destructive'}
-                          onClick={() => {
-                            setValidFile(false);
-                            form.setValue(name, undefined);
-                            onRemove?.();
-                          }}
-                        >
-                          Remove
-                        </ButtonLink>
-                      </div>
+            validFile ? (
+              <div className='flex flex-col gap-2'>
+                {replaceBy}
+                <Card
+                  variant={'darker'}
+                  className='flex items-center gap-1.5 p-1.5'
+                >
+                  <IconSquare icon={fileIcon} />
+                  <div className='flex flex-col'>
+                    <div className='max-w-[17.375rem] truncate'>
+                      <Typo variant='sm'>{formFile?.name}</Typo>
                     </div>
-                  </Card>
-                </div>
-              ) : (
-                <div className="w-full relative group cursor-pointer">
-                  <input
-                    id={props.name}
-                    type="file"
-                    className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                    ref={ref}
-                    {...props}
-                  />
-                  <Card
-                    variant="transparent"
-                    border="dashed"
-                    className={inputSingleFileVariants()}
-                  >
-                    <Typo className="font-semibold">Drop File</Typo>
-                    <Typo variant="sm">or</Typo>
-                    <Typo className="font-semibold">Click to Upload</Typo>
-                  </Card>
-                </div>
-              )}
-            </>
+                    <div className='flex gap-1'>
+                      <ButtonLink
+                        type='button'
+                        size={'xs'}
+                        variant={'destructive'}
+                        onClick={() => {
+                          setValidFile(false);
+                          form.setValue(name, undefined);
+                          onRemove?.();
+                        }}
+                      >
+                        Remove
+                      </ButtonLink>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            ) : (
+              <div className='group relative w-full cursor-pointer'>
+                <input
+                  id={props.name}
+                  type='file'
+                  className='absolute top-0 left-0 h-full w-full cursor-pointer opacity-0'
+                  ref={ref}
+                  {...props}
+                />
+                <Card
+                  variant='transparent'
+                  border='dashed'
+                  className={inputSingleFileVariants()}
+                >
+                  <Typo className='font-semibold'>Drop File</Typo>
+                  <Typo variant='sm'>or</Typo>
+                  <Typo className='font-semibold'>Click to Upload</Typo>
+                </Card>
+              </div>
+            )
           ) : (
-            <Skeleton width={'100%'} className="!rounded-md h-24" />
+            <Skeleton width={'100%'} className='!rounded-md h-24' />
           )}
         </div>
       </>
     );
-  },
+  }
 );
 InputSingleFile.displayName = 'InputSingleFile';
 

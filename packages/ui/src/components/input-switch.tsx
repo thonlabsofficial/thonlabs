@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Typo } from './typo';
-import { Switch } from './switch';
 import { cn } from '../core/utils';
 import { Spinner } from './spinner';
+import { Switch } from './switch';
+import { Typo } from './typo';
 
 export interface InputSwitchProps extends React.HTMLAttributes<HTMLElement> {
   label: React.ReactNode;
@@ -29,23 +29,20 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
       disabled,
       ...props
     },
-    _,
+    _
   ) => {
     return (
       <label
         className={cn(
-          `
-          flex gap-3 items-center rounded-md py-1
-          cursor-pointer select-none
-        `,
+          `flex cursor-pointer select-none items-center gap-3 rounded-md py-1 `,
           {
             'pointer-events-none opacity-50': disabled,
           },
-          className,
+          className
         )}
         {...props}
       >
-        <div className="w-11 flex justify-center">
+        <div className='flex w-11 justify-center'>
           {!loading ? (
             <Switch
               value={value}
@@ -53,20 +50,20 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
               checked={checked}
             />
           ) : (
-            <Spinner className="h-6 w-6" />
+            <Spinner className='h-6 w-6' />
           )}
         </div>
-        <div className="flex flex-col gap-0.5">
+        <div className='flex flex-col gap-0.5'>
           <Typo variant={'sm'}>{label}</Typo>
           {description && (
-            <Typo variant={'muted'} className="font-normal">
+            <Typo variant={'muted'} className='font-normal'>
               {description}
             </Typo>
           )}
         </div>
       </label>
     );
-  },
+  }
 );
 
 export { InputSwitch };

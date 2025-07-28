@@ -1,17 +1,16 @@
-import { envHeaders, envURL, labsEnvAPI } from '@helpers/api';
-import { useToast } from '@repo/ui/hooks/use-toast';
+import { envFetcher, envHeaders, envURL, labsEnvAPI } from '@helpers/api';
 import { APIErrors } from '@helpers/api/api-errors';
+import { useToast } from '@repo/ui/hooks/use-toast';
+import { useEffect } from 'react';
+import useSWR from 'swr';
 import useOptimisticUpdate from '@/_hooks/use-optimistic-update';
 import useUserSession from '@/_hooks/use-user-session';
-import {
+import type { EmailTemplate } from '@/_interfaces/email-template';
+import { revalidateCache } from '@/_services/server-cache-service';
+import type {
   UpdateEmailTemplatePayload,
   UpdateEmailTemplateStatusPayload,
 } from '@/_validators/emails-validators';
-import { EmailTemplate } from '@/_interfaces/email-template';
-import useSWR from 'swr';
-import { envFetcher } from '@helpers/api';
-import { useEffect } from 'react';
-import { revalidateCache } from '@/_services/server-cache-service';
 
 interface Params {
   templateId?: string;
@@ -23,7 +22,7 @@ type Options = {
 
 export default function useEmailTemplate(
   params: Params = {},
-  { onFetchComplete }: Options = {},
+  { onFetchComplete }: Options = {}
 ) {
   const { environmentId } = useUserSession();
   const {
@@ -33,24 +32,24 @@ export default function useEmailTemplate(
     error: emailTemplateError,
   } = useSWR<EmailTemplate>(
     () => params.templateId && `/email-templates/${params.templateId}`,
-    envFetcher(environmentId),
+    envFetcher(environmentId)
   );
   const { toast } = useToast();
   const { makeMutations } = useOptimisticUpdate();
 
   useEffect(() => {
-    onFetchComplete && onFetchComplete();
-  }, [emailTemplate]);
+    onFetchComplete?.();
+  }, [onFetchComplete]);
 
   async function updateEmailTemplate(
     templateId: string,
-    payload: UpdateEmailTemplatePayload,
+    payload: UpdateEmailTemplatePayload
   ) {
     try {
       const { data } = await labsEnvAPI.patch<EmailTemplate>(
         `/email-templates/${templateId}`,
         payload,
-        envHeaders(environmentId),
+        envHeaders(environmentId)
       );
 
       toast({
@@ -73,7 +72,7 @@ export default function useEmailTemplate(
             items: cache.items.map((item: EmailTemplate) =>
               item.id === templateId
                 ? { ...item, updatedAt: data.updatedAt }
-                : item,
+                : item
             ),
           }),
         },
@@ -93,13 +92,13 @@ export default function useEmailTemplate(
 
   async function updateStatus(
     templateId: string,
-    payload: UpdateEmailTemplateStatusPayload,
+    payload: UpdateEmailTemplateStatusPayload
   ) {
     try {
       const { data } = await labsEnvAPI.patch<EmailTemplate>(
         `/email-templates/${templateId}/status`,
         payload,
-        envHeaders(environmentId),
+        envHeaders(environmentId)
       );
 
       toast({
@@ -123,7 +122,7 @@ export default function useEmailTemplate(
             items: cache.items.map((item: EmailTemplate) =>
               item.id === templateId
                 ? { ...item, enabled: payload.enabled }
-                : item,
+                : item
             ),
           }),
         },
@@ -144,7 +143,7 @@ export default function useEmailTemplate(
 
   function parseHTMLEmailTemplate(
     content: string,
-    bodyStyles: UpdateEmailTemplatePayload['bodyStyles'],
+    bodyStyles: UpdateEmailTemplatePayload['bodyStyles']
   ) {
     const shouldIncludeUnit = ['padding'];
     let bodyInlineStyles = '';

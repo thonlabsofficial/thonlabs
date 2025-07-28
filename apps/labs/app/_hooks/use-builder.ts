@@ -1,11 +1,11 @@
-import { labsAPI } from '../../helpers/api';
-import { UpdateEnvironmentAuthSettingsFormData } from '@/_validators/builder-validators';
-import { useToast } from '@repo/ui/hooks/use-toast';
-import { Environment } from '@/_interfaces/environment';
 import { APIErrors } from '@helpers/api/api-errors';
-import useOptimisticUpdate from './use-optimistic-update';
+import { useToast } from '@repo/ui/hooks/use-toast';
 import { buildEnvDataMutation } from '@/_hooks/use-environment-app-data';
+import type { Environment } from '@/_interfaces/environment';
 import { revalidateCache } from '@/_services/server-cache-service';
+import type { UpdateEnvironmentAuthSettingsFormData } from '@/_validators/builder-validators';
+import { labsAPI } from '../../helpers/api';
+import useOptimisticUpdate from './use-optimistic-update';
 
 export default function useBuilder() {
   const { toast } = useToast();
@@ -13,7 +13,7 @@ export default function useBuilder() {
 
   async function updateEnvironmentAuthSettings(
     environmentId: string,
-    payload: UpdateEnvironmentAuthSettingsFormData,
+    payload: UpdateEnvironmentAuthSettingsFormData
   ) {
     try {
       await labsAPI.patch<Environment>(
@@ -26,7 +26,7 @@ export default function useBuilder() {
           activeSSOProviders: payload.activeSSOProviders,
           tokenExpiration: `${payload.tokenExpirationValue}${payload.tokenExpirationUnit}`,
           refreshTokenExpiration: `${payload.refreshTokenExpirationValue}${payload.refreshTokenExpirationUnit}`,
-        },
+        }
       );
 
       makeMutations(
@@ -36,8 +36,8 @@ export default function useBuilder() {
             key,
             value,
             isSDKData: true,
-          })),
-        ),
+          }))
+        )
       );
 
       await revalidateCache([`/${environmentId}/builder`]);

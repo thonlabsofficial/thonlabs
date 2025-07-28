@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@repo/ui/button';
-import React, { useTransition } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -12,8 +11,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useEnvironment from '@/_hooks/use-environment';
 import { Input, InputWrapper } from '@repo/ui/input';
+import React, { useTransition } from 'react';
+import useEnvironment from '@/_hooks/use-environment';
 
 type Props = {
   trigger: React.ReactNode;
@@ -60,12 +60,12 @@ export default function RegeneratePublicKeyDialog({
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button type="button" variant="ghost" disabled={isRegenerating}>
+                <Button type='button' variant='ghost' disabled={isRegenerating}>
                   Cancel
                 </Button>
               </DialogClose>
               <Button
-                type="button"
+                type='button'
                 loading={isRegenerating}
                 onClick={() =>
                   startRegeneratingTransition(handleRegeneratePublicKey)
@@ -93,7 +93,7 @@ export default function RegeneratePublicKeyDialog({
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button type="button">Done</Button>
+                <Button type='button'>Done</Button>
               </DialogClose>
             </DialogFooter>
           </>

@@ -1,10 +1,10 @@
-import { useEditor } from 'novel';
 import {
   AlignCenter as AlignCenterIcon,
   AlignJustify as AlignJustifyIcon,
   AlignLeft as AlignLeftIcon,
   AlignRight as AlignRightIcon,
 } from 'lucide-react';
+import { useEditor } from 'novel';
 import { ButtonIcon } from '../../button-icon';
 
 export function TextAlignBlock() {
@@ -17,7 +17,7 @@ export function TextAlignBlock() {
   return (
     <>
       <ButtonIcon
-        type="button"
+        type='button'
         variant={'ghost'}
         icon={AlignLeftIcon}
         size={'sm'}
@@ -25,7 +25,7 @@ export function TextAlignBlock() {
         active={editor.isActive({ textAlign: 'left' })}
       />
       <ButtonIcon
-        type="button"
+        type='button'
         variant={'ghost'}
         icon={AlignCenterIcon}
         size={'sm'}
@@ -33,7 +33,7 @@ export function TextAlignBlock() {
         active={editor.isActive({ textAlign: 'center' })}
       />
       <ButtonIcon
-        type="button"
+        type='button'
         variant={'ghost'}
         icon={AlignRightIcon}
         size={'sm'}
@@ -41,7 +41,7 @@ export function TextAlignBlock() {
         active={editor.isActive({ textAlign: 'right' })}
       />
       <ButtonIcon
-        type="button"
+        type='button'
         variant={'ghost'}
         icon={AlignJustifyIcon}
         size={'sm'}

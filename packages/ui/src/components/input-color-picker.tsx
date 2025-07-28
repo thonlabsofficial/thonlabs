@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Command, CommandGroup, CommandItem, CommandList } from './command';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { inputVariants } from './input';
 import { cn } from '../core/utils';
-import { Skeleton } from './skeleton';
+import { Command, CommandGroup, CommandItem, CommandList } from './command';
+import { inputVariants } from './input';
 import { InputMessage } from './input-message';
 import { Label } from './label';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
+import { Skeleton } from './skeleton';
 
 const colors = {
   white: '#ffffff',
@@ -166,49 +166,48 @@ export function InputColorPicker({
             className={inputVariants({
               size,
               className: cn(
-                `flex items-center gap-1 border-zinc-200 dark:border-zinc-600 
-                hover:border-zinc-400 dark:hover:border-zinc-500 !bg-transparent cursor-pointer`,
-                className,
+                `!bg-transparent flex cursor-pointer items-center gap-1 border-zinc-200 hover:border-zinc-400 dark:border-zinc-600 dark:hover:border-zinc-500`,
+                className
               ),
             })}
           >
             <PopoverTrigger asChild>
               <div
                 className={cn('flex-none rounded border border-foreground/10', {
-                  'w-4 h-4': size === 'xs' || size === 'sm',
-                  'w-5 h-5': size === 'md',
-                  'w-6 h-6': size === 'lg',
+                  'h-4 w-4': size === 'xs' || size === 'sm',
+                  'h-5 w-5': size === 'md',
+                  'h-6 w-6': size === 'lg',
                 })}
                 style={{ backgroundColor: value }}
               />
             </PopoverTrigger>
             <input
-              type="text"
-              className="w-full bg-transparent"
+              type='text'
+              className='w-full bg-transparent'
               value={value}
               onChange={onInputChange}
               name={name}
             />
           </div>
           {error && (
-            <InputMessage size={size} state="error">
+            <InputMessage size={size} state='error'>
               {error}
             </InputMessage>
           )}
         </>
       ) : (
-        <Skeleton className="!w-24 h-7 !rounded-md" />
+        <Skeleton className='!w-24 !rounded-md h-7' />
       )}
-      <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
-        <Command className="bg-transparent">
+      <PopoverContent className='flex w-52 flex-col gap-1 rounded-md border border-foreground/[0.07] bg-muted p-0'>
+        <Command className='bg-transparent'>
           <CommandList>
-            <CommandGroup heading="Pick a color">
-              <div className="grid grid-cols-8 gap-1 pt-0 pb-1 px-2 mb-1">
+            <CommandGroup heading='Pick a color'>
+              <div className='mb-1 grid grid-cols-8 gap-1 px-2 pt-0 pb-1'>
                 {Object.entries(colors)
                   .slice(0, 2)
                   .map(([name, color]) => (
                     <CommandItem
-                      className="w-5 h-5 flex !p-0 hover:bg-foreground/10 data-[selected='true']:bg-foreground/10"
+                      className="!p-0 flex h-5 w-5 hover:bg-foreground/10 data-[selected='true']:bg-foreground/10"
                       key={name}
                       onSelect={() => {
                         handleSelect({
@@ -218,18 +217,18 @@ export function InputColorPicker({
                       }}
                     >
                       <div
-                        className="w-full h-full rounded shadow-md border border-foreground/[0.07] hover:border-foreground transition-default"
+                        className='h-full w-full rounded border border-foreground/[0.07] shadow-md transition-default hover:border-foreground'
                         style={{ backgroundColor: color }}
                       />
                     </CommandItem>
                   ))}
               </div>
-              <div className="grid grid-cols-8 gap-1 pt-0 pb-1 px-2">
+              <div className='grid grid-cols-8 gap-1 px-2 pt-0 pb-1'>
                 {Object.entries(colors)
                   .slice(2)
                   .map(([name, color]) => (
                     <CommandItem
-                      className="w-5 h-5 flex !p-0 hover:bg-foreground/10 data-[selected='true']:bg-foreground/10"
+                      className="!p-0 flex h-5 w-5 hover:bg-foreground/10 data-[selected='true']:bg-foreground/10"
                       key={name}
                       onSelect={() => {
                         handleSelect({
@@ -239,7 +238,7 @@ export function InputColorPicker({
                       }}
                     >
                       <div
-                        className="w-full h-full rounded shadow-md border border-foreground/[0.07] hover:border-foreground transition-default"
+                        className='h-full w-full rounded border border-foreground/[0.07] shadow-md transition-default hover:border-foreground'
                         style={{ backgroundColor: color }}
                       />
                     </CommandItem>

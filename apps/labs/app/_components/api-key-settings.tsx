@@ -1,14 +1,14 @@
 'use client';
 
-import React from 'react';
-import useEnvironment from '@/_hooks/use-environment';
 import { Button } from '@repo/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@repo/ui/card';
 import { Input, InputWrapper } from '@repo/ui/input';
 import { Skeleton } from '@repo/ui/skeleton';
+import { useParams } from 'next/navigation';
+import React from 'react';
 import RegeneratePublicKeyDialog from '@/_components/regenerate-public-key-dialog';
 import RegenerateSecretKeyDialog from '@/_components/regenerate-secret-key-dialog';
-import { useParams } from 'next/navigation';
+import useEnvironment from '@/_hooks/use-environment';
 
 export default function APIKeysSettings() {
   const { environmentId } = useParams();
@@ -31,14 +31,14 @@ export default function APIKeysSettings() {
   return (
     <>
       <Card>
-        <div className="grid grid-cols-[19rem_1fr] gap-40">
+        <div className='grid grid-cols-[19rem_1fr] gap-40'>
           <CardHeader
             padding
-            description="The public key allows secure retrieval of data from the client."
+            description='The public key allows secure retrieval of data from the client.'
           >
             Public Key
           </CardHeader>
-          <CardContent className="flex-1 p-6">
+          <CardContent className='flex-1 p-6'>
             <InputWrapper>
               <Input
                 readOnly
@@ -49,15 +49,15 @@ export default function APIKeysSettings() {
             </InputWrapper>
           </CardContent>
         </div>
-        <CardFooter className="flex justify-end gap-2">
+        <CardFooter className='flex justify-end gap-2'>
           {isLoadingEnvironment ? (
-            <Skeleton className="!w-44 h-8" />
+            <Skeleton className='!w-44 h-8' />
           ) : (
             <RegeneratePublicKeyDialog
               environmentId={environmentId as string}
               trigger={
                 <Button
-                  type="button"
+                  type='button'
                   size={'sm'}
                   disabled={isLoadingEnvironment}
                 >
@@ -69,14 +69,14 @@ export default function APIKeysSettings() {
         </CardFooter>
       </Card>
       <Card>
-        <div className="grid grid-cols-[19rem_1fr] gap-40">
+        <div className='grid grid-cols-[19rem_1fr] gap-40'>
           <CardHeader
             padding
             description="The secret key is used to securely access and manage data on the server. Keep it confidential to protect your application's integrity."
           >
             Secret Key
           </CardHeader>
-          <CardContent className="flex-1 p-6">
+          <CardContent className='flex-1 p-6'>
             <InputWrapper>
               <Input
                 readOnly
@@ -89,15 +89,15 @@ export default function APIKeysSettings() {
             </InputWrapper>
           </CardContent>
         </div>
-        <CardFooter className="flex justify-end gap-2">
+        <CardFooter className='flex justify-end gap-2'>
           {isLoadingEnvironment ? (
-            <Skeleton className="!w-44 h-8" />
+            <Skeleton className='!w-44 h-8' />
           ) : (
             <RegenerateSecretKeyDialog
               environmentId={environmentId as string}
               trigger={
                 <Button
-                  type="button"
+                  type='button'
                   size={'sm'}
                   disabled={isLoadingEnvironment}
                 >

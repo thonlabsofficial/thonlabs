@@ -1,12 +1,12 @@
-import Container from '@/_components/container';
-import { getAuthSession } from '@/_services/server-auth-session-service';
-import { Typo } from '@repo/ui/typo';
-import { Card, CardContent, CardHeader } from '@repo/ui/card';
-import Link from 'next/link';
 import { buttonVariants } from '@repo/ui/button';
+import { Card, CardContent, CardHeader } from '@repo/ui/card';
+import { Typo } from '@repo/ui/typo';
 import * as motion from 'framer-motion/client';
 import { Check } from 'lucide-react';
+import Link from 'next/link';
+import Container from '@/_components/container';
 import { fetchProjects } from '@/_services/project-service';
+import { getAuthSession } from '@/_services/server-auth-session-service';
 
 export default async function OnboardFinish() {
   const [session, projects] = await Promise.all([
@@ -15,24 +15,24 @@ export default async function OnboardFinish() {
   ]);
 
   return (
-    <Container className="flex items-center justify-center p-4 h-[80vh]">
+    <Container className='flex h-[80vh] items-center justify-center p-4'>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex items-center justify-center mb-4"
+        className='mb-4 flex items-center justify-center'
       >
-        <Card className="space-y-2 text-center w-full max-w-96 overflow-hidden">
-          <CardHeader className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-md bg-success/50 border-success flex items-center justify-center border mt-6">
-              <Check className="w-8 h-8" />
+        <Card className='w-full max-w-96 space-y-2 overflow-hidden text-center'>
+          <CardHeader className='flex flex-col items-center'>
+            <div className='mt-6 flex h-12 w-12 items-center justify-center rounded-md border border-success bg-success/50'>
+              <Check className='h-8 w-8' />
             </div>
-            <Typo variant="h4" className="font-bold mt-5">
+            <Typo variant='h4' className='mt-5 font-bold'>
               Well done, {session.user?.fullName.split(' ')[0]}!
             </Typo>
           </CardHeader>
-          <CardContent className="px-5 pb-5 py-3">
-            <Typo as="div" className="mb-7" variant="muted">
+          <CardContent className='px-5 py-3 pb-5'>
+            <Typo as='div' className='mb-7' variant='muted'>
               You can now integrate your app and start using ThonLabs to manage
               authentication, organizations and more.
             </Typo>

@@ -1,10 +1,9 @@
-import * as React from 'react';
-
-import { cn } from '../core/utils';
-import { VariantProps, cva } from 'class-variance-authority';
-import { Typo } from './typo';
-import { iconVariants } from './icon-square';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { ArrowRight } from 'lucide-react';
+import * as React from 'react';
+import { cn } from '../core/utils';
+import { iconVariants } from './icon-square';
+import { Typo } from './typo';
 
 const cardVariants = cva(
   `rounded-lg border text-card-foreground shadow transition-all duration-120 ease-in-out`,
@@ -26,7 +25,7 @@ const cardVariants = cva(
       variant: 'default',
       border: 'solid',
     },
-  },
+  }
 );
 
 export interface CardProps
@@ -39,7 +38,7 @@ export interface CardProps
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
     { className, variant, border, icon: Icon, padding, children, ...props },
-    ref,
+    ref
   ) => (
     <div
       ref={ref}
@@ -48,20 +47,20 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         {
           'p-5': padding,
         },
-        className,
+        className
       )}
       {...props}
     >
       {Icon ? (
-        <div className="flex gap-3">
+        <div className='flex gap-3'>
           <Icon className={iconVariants({ size: 'md' })} />
-          <div className="flex flex-col gap-2">{children}</div>
+          <div className='flex flex-col gap-2'>{children}</div>
         </div>
       ) : (
         children
       )}
     </div>
-  ),
+  )
 );
 Card.displayName = 'Card';
 
@@ -82,7 +81,7 @@ function CardHeader({
         {
           'p-5': padding,
         },
-        className,
+        className
       )}
       {...props}
     >
@@ -106,8 +105,8 @@ const CardArrowRight = ({
 }: React.ComponentProps<'svg'>) => (
   <ArrowRight
     className={cn(
-      'group-hover:translate-x-1 transition-all duration-120 ease-in-out',
-      className,
+      'transition-all duration-120 ease-in-out group-hover:translate-x-1',
+      className
     )}
     {...props}
   />
@@ -119,9 +118,9 @@ const CardDescription = ({
   ...props
 }: React.ComponentProps<typeof Typo>) => (
   <Typo
-    as="p"
+    as='p'
     variant={'muted'}
-    className={cn('text-sm text-muted-foreground', className)}
+    className={cn('text-muted-foreground text-sm', className)}
     {...props}
   />
 );
@@ -141,7 +140,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex items-center py-4 px-6 border-t', className)}
+    className={cn('flex items-center border-t px-6 py-4', className)}
     {...props}
   />
 ));

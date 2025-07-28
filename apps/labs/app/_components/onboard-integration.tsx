@@ -1,29 +1,29 @@
 'use client';
 
-import { ButtonGroup, ButtonGroupItem } from '@repo/ui/button-group';
-import { BentoGrid, BentoGridItem } from '@repo/ui/bento-grid';
 import {
+  BlocksIcon,
   BoxesIcon,
   CpuIcon,
-  IdCardIcon,
-  RouteIcon,
-  LayoutPanelTopIcon,
   FlaskIcon,
-  BlocksIcon,
+  IdCardIcon,
+  LayoutPanelTopIcon,
+  RouteIcon,
 } from '@repo/ui/animated-icons';
-import { CodeBlock } from '@repo/ui/code-block';
-import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 import { Badge } from '@repo/ui/badge';
+import { BentoGrid, BentoGridItem } from '@repo/ui/bento-grid';
+import { BorderBeam } from '@repo/ui/border-beam';
+import { ButtonGroup, ButtonGroupItem } from '@repo/ui/button-group';
+import { CodeBlock } from '@repo/ui/code-block';
+import { cn } from '@repo/ui/core/utils';
 import { Typo } from '@repo/ui/typo';
 import React from 'react';
-import { BorderBeam } from '@repo/ui/border-beam';
+import SectionHeader from '@/_components/section-header';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
+import { useProjectIntegrationStatus } from '@/_hooks/use-project-integration-status';
 import {
   OnboardIntegrationContext,
   OnboardIntegrationSdks,
 } from '@/_providers/onboard-integration-provider';
-import { cn } from '@repo/ui/core/utils';
-import { useProjectIntegrationStatus } from '@/_hooks/use-project-integration-status';
-import SectionHeader from '@/_components/section-header';
 
 export function OnboardIntegrationHeader() {
   const { projectIntegrationStatus, isLoadingProjectIntegrationStatus } =
@@ -34,25 +34,25 @@ export function OnboardIntegrationHeader() {
     return (
       <SectionHeader
         title={
-          <div className="flex items-center gap-0.5">
-            <BlocksIcon className="-mt-1" />
+          <div className='flex items-center gap-0.5'>
+            <BlocksIcon className='-mt-1' />
             <div>Integrate in minutes, it's like lego</div>
           </div>
         }
-        description="Select your library below, and follow simple quick steps to add authentication to your app."
+        description='Select your library below, and follow simple quick steps to add authentication to your app.'
       />
     );
   }
 
   if (isLoadingProjectIntegrationStatus) {
-    return <SectionHeader title="loading" description="loading" loading />;
+    return <SectionHeader title='loading' description='loading' loading />;
   }
 
   if (projectIntegrationStatus === 'partialCompleted') {
     return (
       <SectionHeader
-        title="Update the environment variables"
-        description="Your code integration is ready, but we need to connect it to this environment yet."
+        title='Update the environment variables'
+        description='Your code integration is ready, but we need to connect it to this environment yet.'
       />
     );
   }
@@ -61,7 +61,7 @@ export function OnboardIntegrationHeader() {
 export function OnboardIntegrationOptions() {
   const { projectIntegrationStatus } = useProjectIntegrationStatus();
   const { currentSdk, setCurrentSdk, forceNotInitialized } = React.useContext(
-    OnboardIntegrationContext,
+    OnboardIntegrationContext
   );
 
   if (projectIntegrationStatus !== 'notInitialized' && !forceNotInitialized) {
@@ -99,7 +99,7 @@ export function OnboardIntegrationOptions() {
           >
             {sdk.label}
             {sdk.disabled && (
-              <Badge size="xs" variant={'defaultNoOpacity'}>
+              <Badge size='xs' variant={'defaultNoOpacity'}>
                 Soon
               </Badge>
             )}
@@ -124,18 +124,18 @@ function getNextJSSteps({
   return {
     'step-1': (
       <CodeBlock
-        language="markdown"
-        filename=".env"
+        language='markdown'
+        filename='.env'
         code={`NEXT_PUBLIC_TL_ENV_ID=${environmentId}
 NEXT_PUBLIC_TL_PK=${publicKey}
 NEXT_PUBLIC_TL_AUTH_DOMAIN=${authDomain}`}
       />
     ),
     'step-2': (
-      <div className="space-y-2">
+      <div className='space-y-2'>
         <CodeBlock
-          language="bash"
-          filename=""
+          language='bash'
+          filename=''
           showLineNumbers={false}
           tabs={[
             {
@@ -156,8 +156,8 @@ NEXT_PUBLIC_TL_AUTH_DOMAIN=${authDomain}`}
     ),
     'step-3': (
       <CodeBlock
-        language="tsx"
-        filename="app/layout.tsx"
+        language='tsx'
+        filename='app/layout.tsx'
         code={`import {ThonLabsWrapper} from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}";
 
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
@@ -178,15 +178,15 @@ export default async function RootLayout({children}: Readonly<{children: React.R
       />
     ),
     'step-4': (
-      <div className="flex gap-2">
+      <div className='flex gap-2'>
         <CodeBlock
-          language="typescript"
-          filename="app/api/auth/[...thonlabs]/route.ts"
+          language='typescript'
+          filename='app/api/auth/[...thonlabs]/route.ts'
           code={`export * from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}/api";`}
         />
         <CodeBlock
-          language="typescript"
-          filename="app/auth/[...thonlabs]/page.tsx"
+          language='typescript'
+          filename='app/auth/[...thonlabs]/page.tsx'
           code={`import {ThonLabsAuthPage} from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}";
 export default ThonLabsAuthPage;`}
         />
@@ -194,8 +194,8 @@ export default ThonLabsAuthPage;`}
     ),
     'step-5': (
       <CodeBlock
-        language="typescript"
-        filename="app/middleware.ts"
+        language='typescript'
+        filename='app/middleware.ts'
         code={`import { type NextRequest, NextResponse } from 'next/server';
 import { validateSession, redirectToLogin, thonLabsConfig } from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}/server";
 
@@ -216,7 +216,7 @@ export default function OnboardIntegration() {
   const { projectIntegrationStatus } = useProjectIntegrationStatus();
   const { environmentId, publicKey, authDomain } = useEnvironmentAppData();
   const { currentSdk, forceNotInitialized } = React.useContext(
-    OnboardIntegrationContext,
+    OnboardIntegrationContext
   );
   const itemsChildren: Record<
     OnboardIntegrationSdks,
@@ -307,7 +307,7 @@ export default function OnboardIntegration() {
 
   return (
     <div>
-      <BentoGrid className="grid-cols-2 gap-2">
+      <BentoGrid className='grid-cols-2 gap-2'>
         {items.map((item, i) => (
           <BentoGridItem
             key={i}
@@ -318,36 +318,36 @@ export default function OnboardIntegration() {
         {projectIntegrationStatus === 'notInitialized' &&
           !forceNotInitialized && (
             <BentoGridItem
-              title=""
-              description=""
-              className="relative overflow-hidden col-span-2"
+              title=''
+              description=''
+              className='relative col-span-2 overflow-hidden'
               afterSlot={
                 <>
                   <BorderBeam
                     duration={6}
                     size={400}
-                    className="from-transparent via-green-500 to-transparent"
+                    className='from-transparent via-green-500 to-transparent'
                   />
                   <BorderBeam
                     duration={6}
                     size={400}
                     delay={9}
-                    className="from-transparent via-blue-500 to-transparent"
+                    className='from-transparent via-blue-500 to-transparent'
                     reverse
                   />
                 </>
               }
             >
               <div
-                className="flex items-center justify-center gap-2 cursor-default"
+                className='flex cursor-default items-center justify-center gap-2'
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
                 <FlaskIcon size={24} animate={animate} />
-                <Typo as="div" variant="h4" className="text-center">
+                <Typo as='div' variant='h4' className='text-center'>
                   Ready to go!
                 </Typo>
-                <Typo as="div" variant="lead" className="text-center">
+                <Typo as='div' variant='lead' className='text-center'>
                   Test your integration by signing up a new user in your app.
                 </Typo>
               </div>

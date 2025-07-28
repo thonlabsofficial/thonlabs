@@ -1,10 +1,9 @@
+import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-
 import { cn } from '../core/utils';
-import { VariantProps, cva } from 'class-variance-authority';
-import { Typo } from './typo';
 import { Label } from './label';
 import { Skeleton } from './skeleton';
+import { Typo } from './typo';
 
 const inputRadioOptionsWrapperVariants = cva(
   `flex gap-3 items-center cursor-pointer group
@@ -25,7 +24,7 @@ const inputRadioOptionsWrapperVariants = cva(
       state: 'default',
       size: 'md',
     },
-  },
+  }
 );
 
 const inputRadioOptionVariants = cva(``, {
@@ -78,34 +77,26 @@ const InputRadio = React.forwardRef<HTMLInputElement, InputRadioProps>(
 
     return (
       <div className={cn('flex flex-col space-y-1.5', className)}>
-        {label && (
-          <>
-            {!loading ? (
-              <Label withFocusWithin={!props.readOnly}>{label}</Label>
-            ) : (
-              <Skeleton width={'7.5rem'} height={'0.875rem'} />
-            )}
-          </>
-        )}
+        {label &&
+          (!loading ? (
+            <Label withFocusWithin={!props.readOnly}>{label}</Label>
+          ) : (
+            <Skeleton width={'7.5rem'} height={'0.875rem'} />
+          ))}
 
         {!loading ? (
-          <div className="border rounded-md border-zinc-200 dark:border-zinc-600 overflow-hidden">
+          <div className='overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-600'>
             {options.map((option, index) => (
               <Label
                 className={inputRadioOptionsWrapperVariants({
                   size,
                   state: error ? 'error' : 'default',
                   className: cn(
-                    `
-                    text-zinc-600 dark:text-zinc-400
-                    group-hover:text-zinc-800 dark:group-hover:text-zinc-200 
-                    has-[:checked]:text-zinc-800 dark:has-[:checked]:text-zinc-200 has-[:checked]:bg-accent
-                    transition-default
-                    `,
+                    `text-zinc-600 transition-default group-hover:text-zinc-800 has-[:checked]:bg-accent has-[:checked]:text-zinc-800 dark:text-zinc-400 dark:has-[:checked]:text-zinc-200 dark:group-hover:text-zinc-200 `,
                     {
                       'border-t': index > 0,
                     },
-                    className,
+                    className
                   ),
                 })}
                 withFocusWithin={false}
@@ -124,16 +115,16 @@ const InputRadio = React.forwardRef<HTMLInputElement, InputRadioProps>(
                           size,
                           state: error ? 'error' : 'default',
                         })}
-                        type="radio"
+                        type='radio'
                         value={option.value}
                         ref={ref}
                         {...props}
                       />
                     </span>
-                    <span className="flex flex-col">
+                    <span className='flex flex-col'>
                       <Typo variant={'sm'}>{option.label}</Typo>
                       {option.description && (
-                        <Typo variant={'muted'} className="font-normal">
+                        <Typo variant={'muted'} className='font-normal'>
                           {option.description}
                         </Typo>
                       )}
@@ -143,7 +134,7 @@ const InputRadio = React.forwardRef<HTMLInputElement, InputRadioProps>(
                   <Skeleton
                     width={'100%'}
                     height={loadingSizeMapper[size || 'md']}
-                    className="!rounded-md"
+                    className='!rounded-md'
                   />
                 )}
               </Label>
@@ -160,7 +151,7 @@ const InputRadio = React.forwardRef<HTMLInputElement, InputRadioProps>(
         )}
       </div>
     );
-  },
+  }
 );
 
 export { InputRadio };

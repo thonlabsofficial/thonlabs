@@ -1,7 +1,7 @@
-import { EmailTemplateTypes } from '@/_interfaces/email-template';
-import { SiResend } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
+import { SiResend } from 'react-icons/si';
 import { EmailProviderTypes } from '@/_interfaces/email-provider';
+import { EmailTemplateTypes } from '@/_interfaces/email-template';
 
 interface EmailTemplatesConstants {
   allowedStatusChange: EmailTemplateTypes[];

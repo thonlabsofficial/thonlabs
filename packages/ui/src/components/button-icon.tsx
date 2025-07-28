@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 import { cn } from '../core/utils';
 import { Skeleton } from './skeleton';
 
@@ -38,7 +38,7 @@ const buttonIconVariants = cva(
       variant: 'primary',
       size: 'md',
     },
-  },
+  }
 );
 
 const iconVariants = cva('', {
@@ -73,7 +73,7 @@ const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
       active,
       ...props
     },
-    ref,
+    ref
   ) => {
     return loading ? (
       <Skeleton className={buttonIconVariants({ size, variant: 'none' })} />
@@ -89,7 +89,7 @@ const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
         <Icon className={cn(iconVariants({ iconSize: size }))} />
       </button>
     );
-  },
+  }
 );
 ButtonIcon.displayName = 'ButtonIcon';
 

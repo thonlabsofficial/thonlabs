@@ -1,8 +1,8 @@
-import React from 'react';
-import { useParams } from 'next/navigation';
 import { useSession } from '@thonlabs/nextjs';
+import { useParams } from 'next/navigation';
+import React from 'react';
 import { useEnvironments } from '@/_hooks/use-environments';
-import { Environment } from '@/_interfaces/environment';
+import type { Environment } from '@/_interfaces/environment';
 
 export default function useUserSession() {
   const session = useSession();

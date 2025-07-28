@@ -1,13 +1,12 @@
+import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-
 import { cn } from '../core/utils';
-import { VariantProps, cva } from 'class-variance-authority';
+import { Button } from './button';
+import { Clipboard } from './clipboard';
+import { InputMessage } from './input-message';
 import { Label } from './label';
 import { Skeleton } from './skeleton';
-import { Clipboard } from './clipboard';
-import { Button } from './button';
 import { Spinner } from './spinner';
-import { InputMessage } from './input-message';
 
 const inputVariants = cva(
   `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-solid hover:bg-input-hover shadow-sm 
@@ -37,7 +36,7 @@ const inputVariants = cva(
       state: 'default',
       size: 'md',
     },
-  },
+  }
 );
 
 export interface InputProps
@@ -76,10 +75,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       onHiddenClick,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [hidden, setHidden] = React.useState(withHide);
-    const [buttonTriggered, setButtonTriggered] = React.useState(0);
+    const [_buttonTriggered, setButtonTriggered] = React.useState(0);
     const [buttonsWidth, setButtonsWidth] = React.useState(0);
     const buttonsRef = React.useRef<HTMLDivElement>(null);
     const [loadingFromButtons, setLoadingFromButtons] = React.useState<
@@ -91,7 +90,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         const { width } = buttonsRef.current?.getBoundingClientRect() || {};
         setButtonsWidth((width + 10) / 16 || 0);
       }
-    }, [buttonTriggered]);
+    }, []);
 
     return (
       <>
@@ -108,13 +107,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </>
         )}
         {!loading ? (
-          <div className="w-full relative">
+          <div className='relative w-full'>
             <input
               id={props.name}
               type={type}
               className={cn(
                 inputVariants({ size, state: error ? 'error' : state }),
-                className,
+                className
               )}
               style={{ paddingRight: `${buttonsWidth}rem` }}
               ref={ref}
@@ -124,13 +123,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {(withCopy || withHide) && (
               <div
                 ref={buttonsRef}
-                className="inline-flex gap-1 absolute top-1.5 right-1.5 h-[calc(100%-0.75rem)]"
+                className='absolute top-1.5 right-1.5 inline-flex h-[calc(100%-0.75rem)] gap-1'
               >
                 {withCopy && !hidden && (
                   <Clipboard
-                    className="inline-flex"
-                    size="xs"
-                    variant="secondary"
+                    className='inline-flex'
+                    size='xs'
+                    variant='secondary'
                     value={props.value?.toString() || ''}
                     onCopied={() => {
                       setButtonTriggered(Math.random());
@@ -145,9 +144,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     className={cn('inline-flex', {
                       'pointer-events-none': loadingFromButtons === 'show-hide',
                     })}
-                    size="xs"
-                    variant="secondary"
-                    type="button"
+                    size='xs'
+                    variant='secondary'
+                    type='button'
                     onClick={async () => {
                       if (onHiddenClick) {
                         setLoadingFromButtons('show-hide');
@@ -175,13 +174,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <Skeleton
             width={'100%'}
             height={loadingSizeMapper[size || 'md']}
-            className="!rounded-md"
+            className='!rounded-md'
           />
         )}
         {error && <InputMessage size={size}>{error}</InputMessage>}
       </>
     );
-  },
+  }
 );
 Input.displayName = 'Input';
 
@@ -191,7 +190,7 @@ function InputWrapper({
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <div {...props} className={cn('flex flex-col gap-1 group', className)}>
+    <div {...props} className={cn('group flex flex-col gap-1', className)}>
       {children}
     </div>
   );

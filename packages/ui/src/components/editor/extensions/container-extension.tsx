@@ -1,8 +1,8 @@
-import { Node, mergeAttributes } from '@tiptap/core';
 import Utils from '@repo/utils';
-import { EditorState, Transaction } from '@tiptap/pm/state';
+import { mergeAttributes, Node } from '@tiptap/core';
+import type { EditorState, Transaction } from '@tiptap/pm/state';
 
-export interface ContainerOptions {}
+export type ContainerOptions = {};
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -67,7 +67,7 @@ function updateContainerStyle({
       node.attrs.containerId === containerId
     ) {
       const containerNode = document.querySelector(
-        `#${containerId}`,
+        `#${containerId}`
       ) as HTMLTableElement;
 
       if (property === 'borderColor') {

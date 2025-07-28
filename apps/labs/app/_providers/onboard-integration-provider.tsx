@@ -1,7 +1,7 @@
 'use client';
 
-import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 import React from 'react';
+import { useEnvironmentAppData } from '@/_hooks/use-environment-app-data';
 
 export enum OnboardIntegrationSdks {
   NextJS15 = 'nextjs15',
@@ -33,7 +33,7 @@ export const OnboardIntegrationProvider = ({
 }: Props) => {
   const { sdkIntegrated } = useEnvironmentAppData();
   const [currentSdk, setCurrentSdk] = React.useState<OnboardIntegrationSdks>(
-    OnboardIntegrationSdks.NextJS15,
+    OnboardIntegrationSdks.NextJS15
   );
 
   return (

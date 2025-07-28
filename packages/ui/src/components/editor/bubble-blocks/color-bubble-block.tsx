@@ -1,14 +1,14 @@
-import { Command, CommandList, CommandGroup, CommandItem } from '../../command';
-import { Button } from '../../button';
-import { Popover, PopoverContent, PopoverTrigger } from '../../popover';
-import { useEditor } from 'novel';
 import {
-  Type as TypeIcon,
   Highlighter as HighlighterIcon,
   PaintBucket as PaintBucketIcon,
   PencilLine as PencilLineIcon,
+  Type as TypeIcon,
 } from 'lucide-react';
+import { useEditor } from 'novel';
 import { useState } from 'react';
+import { Button } from '../../button';
+import { Command, CommandGroup, CommandItem, CommandList } from '../../command';
+import { Popover, PopoverContent, PopoverTrigger } from '../../popover';
 
 export function ColorBlock({
   type = 'color',
@@ -164,9 +164,9 @@ export function ColorBlock({
     >
       <PopoverTrigger asChild>
         <Button
-          type="button"
-          variant="ghost"
-          size="sm"
+          type='button'
+          variant='ghost'
+          size='sm'
           icon={labelsMapper[type].icon}
           onClick={() => {
             if (isOpen) {
@@ -175,25 +175,25 @@ export function ColorBlock({
           }}
         >
           <div
-            className="h-4 w-4 rounded border border-gray-200"
+            className='h-4 w-4 rounded border border-gray-200'
             style={{
               backgroundColor: currentColor || 'hsl(var(--foreground))',
             }}
           />
-          <span className="sr-only">Choose color</span>
+          <span className='sr-only'>Choose color</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col gap-1 w-52 p-0 rounded-md bg-muted border border-foreground/[0.07]">
-        <Command className="bg-transparent">
+      <PopoverContent className='flex w-52 flex-col gap-1 rounded-md border border-foreground/[0.07] bg-muted p-0'>
+        <Command className='bg-transparent'>
           <CommandList>
             <CommandGroup
               heading={
-                <div className="flex justify-between">
+                <div className='flex justify-between'>
                   <div>{labelsMapper[type].headingLabel}</div>
                   {currentColor && (
                     <button
-                      type="button"
-                      className="hover:text-foreground/80 transition-default"
+                      type='button'
+                      className='transition-default hover:text-foreground/80'
                       onClick={() => {
                         switch (type) {
                           case 'color':
@@ -237,10 +237,10 @@ export function ColorBlock({
                 </div>
               }
             >
-              <div className="grid grid-cols-8 gap-1 pt-0 pb-1 px-2">
+              <div className='grid grid-cols-8 gap-1 px-2 pt-0 pb-1'>
                 {Object.entries(colors).map(([name, color]) => (
                   <CommandItem
-                    className="w-5 h-5 flex !p-0 hover:bg-foreground/10 data-[selected='true']:bg-foreground/10"
+                    className="!p-0 flex h-5 w-5 hover:bg-foreground/10 data-[selected='true']:bg-foreground/10"
                     key={name}
                     onSelect={() => {
                       switch (type) {
@@ -280,7 +280,7 @@ export function ColorBlock({
                     }}
                   >
                     <div
-                      className="w-full h-full rounded shadow-md border border-foreground/[0.07] hover:border-foreground transition-default"
+                      className='h-full w-full rounded border border-foreground/[0.07] shadow-md transition-default hover:border-foreground'
                       style={{ backgroundColor: color }}
                     />
                   </CommandItem>

@@ -1,5 +1,5 @@
 import { useSWRConfig } from 'swr';
-import { MutatorOptions } from 'swr/_internal';
+import type { MutatorOptions } from 'swr/_internal';
 
 export default function useOptimisticUpdate() {
   const { cache, mutate: swrMutate } = useSWRConfig();
@@ -12,7 +12,7 @@ export default function useOptimisticUpdate() {
     data: {
       cacheKey: string;
       populateCache: MutatorOptions['populateCache'];
-    }[],
+    }[]
   ) {
     data.forEach(({ cacheKey, populateCache }) => {
       if (hasCache(cacheKey)) {

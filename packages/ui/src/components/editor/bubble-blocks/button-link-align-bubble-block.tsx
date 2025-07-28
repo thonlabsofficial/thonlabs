@@ -1,9 +1,9 @@
-import { useEditor } from 'novel';
 import {
   AlignCenter as AlignCenterIcon,
   AlignLeft as AlignLeftIcon,
   AlignRight as AlignRightIcon,
 } from 'lucide-react';
+import { useEditor } from 'novel';
 import { ButtonIcon } from '../../button-icon';
 
 export function ButtonLinkAlignBlock() {
@@ -16,7 +16,7 @@ export function ButtonLinkAlignBlock() {
   return (
     <>
       <ButtonIcon
-        type="button"
+        type='button'
         variant={'ghost'}
         icon={AlignLeftIcon}
         size={'sm'}
@@ -24,7 +24,7 @@ export function ButtonLinkAlignBlock() {
         active={editor.isActive('buttonLink', { buttonLinkAlign: 'left' })}
       />
       <ButtonIcon
-        type="button"
+        type='button'
         variant={'ghost'}
         icon={AlignCenterIcon}
         size={'sm'}
@@ -34,7 +34,7 @@ export function ButtonLinkAlignBlock() {
         active={editor.isActive('buttonLink', { buttonLinkAlign: 'center' })}
       />
       <ButtonIcon
-        type="button"
+        type='button'
         variant={'ghost'}
         icon={AlignRightIcon}
         size={'sm'}

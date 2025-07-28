@@ -1,14 +1,7 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
-import {
-  NewProjectFormData,
-  NewProjectFormSchema,
-} from '@/_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -19,8 +12,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useProject from '@/_hooks/use-project';
+import { Input, InputWrapper } from '@repo/ui/input';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import useProject from '@/_hooks/use-project';
+import {
+  type NewProjectFormData,
+  NewProjectFormSchema,
+} from '@/_validators/projects-validators';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -68,12 +69,12 @@ export default function NewProjectDialog({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid w-full items-center gap-4">
+          <div className='grid w-full items-center gap-4'>
             <InputWrapper>
               <Input
-                id="appName"
-                placeholder="e.g.: Acme Inc."
-                label="Name"
+                id='appName'
+                placeholder='e.g.: Acme Inc.'
+                label='Name'
                 maxLength={30}
                 error={form.formState.errors.appName?.message}
                 {...form.register('appName')}
@@ -81,9 +82,9 @@ export default function NewProjectDialog({
             </InputWrapper>
             <InputWrapper>
               <Input
-                id="appURL"
-                placeholder="e.g.: https://thonlabs.io or http://localhost:3000"
-                label="URL"
+                id='appURL'
+                placeholder='e.g.: https://thonlabs.io or http://localhost:3000'
+                label='URL'
                 error={form.formState.errors.appURL?.message}
                 {...form.register('appURL')}
               />
@@ -92,14 +93,14 @@ export default function NewProjectDialog({
           <DialogFooter>
             <DialogClose asChild>
               <Button
-                type="button"
-                variant="ghost"
+                type='button'
+                variant='ghost'
                 disabled={isCreatingProject}
               >
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" loading={isCreatingProject}>
+            <Button type='submit' loading={isCreatingProject}>
               {isCreatingProject ? 'Creating...' : 'Create Project'}
             </Button>
           </DialogFooter>

@@ -1,28 +1,28 @@
 'use client';
 
-import React from 'react';
 import { buttonVariants } from '@repo/ui/button';
-import useUserSession from '@/_hooks/use-user-session';
-import BreadcrumbSlashDivider from '@/_components/breadcrumb-slash-divider';
-import { usePathname } from 'next/navigation';
-import { ScrollArea } from '@repo/ui/scroll-area';
-import { useProjects } from '@/_hooks/use-projects';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@repo/ui/dropdown';
-import { ChevronsUpDown, Grid2X2, Plus, Settings } from 'lucide-react';
-import { Skeleton } from '@repo/ui/skeleton';
-import Link from 'next/link';
 import { useToast } from '@repo/ui/hooks/use-toast';
-import ProjectSettingsDrawer from '@/projects/_components/project-settings-drawer';
-import NewProjectDialog from '@/projects/_components/new-project-dialog';
+import { ScrollArea } from '@repo/ui/scroll-area';
+import { Skeleton } from '@repo/ui/skeleton';
+import { ChevronsUpDown, Grid2X2, Plus, Settings } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React from 'react';
+import BreadcrumbSlashDivider from '@/_components/breadcrumb-slash-divider';
+import { useProjects } from '@/_hooks/use-projects';
+import useUserSession from '@/_hooks/use-user-session';
 import NewEnvironmentDialog from '@/projects/_components/new-environment-dialog';
+import NewProjectDialog from '@/projects/_components/new-project-dialog';
+import ProjectSettingsDrawer from '@/projects/_components/project-settings-drawer';
 
 const ProjectEnvButton = React.forwardRef<
   HTMLButtonElement,
@@ -34,22 +34,18 @@ const ProjectEnvButton = React.forwardRef<
       className={buttonVariants({
         variant: 'linkGhost',
         size: 'xs',
-        className: `
-        max-w-[9.375rem] truncate group flex justify-between items-center gap-1 
-        !text-zinc-900 dark:!text-zinc-50 cursor-pointer pr-1`,
+        className: `group !text-zinc-900 dark:!text-zinc-50 flex max-w-[9.375rem] cursor-pointer items-center justify-between gap-1 truncate pr-1`,
       })}
       {...props}
     >
       {label}
       <ChevronsUpDown
-        className={`w-3.5 h-3.5 -mt-0.5
-          text-foreground/60 group-hover:text-zinc-900 dark:group-hover:text-zinc-50
-          transition-default`}
+        className={`-mt-0.5 h-3.5 w-3.5 text-foreground/60 transition-default group-hover:text-zinc-900 dark:group-hover:text-zinc-50`}
       />
     </button>
   ) : (
-    <div className="w-20">
-      <Skeleton className="w-full h-4" />
+    <div className='w-20'>
+      <Skeleton className='h-4 w-full' />
     </div>
   );
 });
@@ -64,21 +60,20 @@ export default function MainHeaderEnvNav() {
   const [dialogOpen, setDialogOpen] = React.useState('');
 
   const projectEnvironments = projects.find(
-    (project) => project.id === environment?.project?.id,
+    (project) => project.id === environment?.project?.id
   )?.environments;
   const restPathname = pathname.split('/').slice(2).join('/');
   const isLoading = isLoadingProjects || isLoadingUserSession;
 
   const otherProjectsEnvironments = projects
     .filter((project) => project.id !== environment?.project?.id)
-    .map((project) => project.environments)
-    .flat();
+    .flatMap((project) => project.environments);
 
   return (
     <>
-      <div className="flex items-center ml-1">
+      <div className='ml-1 flex items-center'>
         <BreadcrumbSlashDivider />
-        <span className="flex items-center">
+        <span className='flex items-center'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <ProjectEnvButton
@@ -86,7 +81,7 @@ export default function MainHeaderEnvNav() {
                 loading={isLoading}
               />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64" align="start">
+            <DropdownMenuContent className='w-64' align='start'>
               <DropdownMenuLabel>Project</DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuItem
@@ -94,7 +89,7 @@ export default function MainHeaderEnvNav() {
                     setDialogOpen('project-settings');
                   }}
                 >
-                  <Settings className="mr-2 h-4 w-4" />
+                  <Settings className='mr-2 h-4 w-4' />
                   Settings
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -104,13 +99,13 @@ export default function MainHeaderEnvNav() {
                     <DropdownMenuSeparator />
                     <DropdownMenuLabel>Other Projects</DropdownMenuLabel>
                     <DropdownMenuGroup>
-                      <ScrollArea className="max-h-[6.125rem]">
+                      <ScrollArea className='max-h-[6.125rem]'>
                         {!isLoading ? (
                           projects
                             .filter(
                               (project) =>
                                 project.environments &&
-                                project.id !== environment?.project?.id,
+                                project.id !== environment?.project?.id
                             )
                             .map((project) => (
                               <Link
@@ -130,10 +125,10 @@ export default function MainHeaderEnvNav() {
                               </Link>
                             ))
                         ) : (
-                          <div className="flex flex-col gap-1">
-                            <Skeleton className="h-6 w-full" />
-                            <Skeleton className="h-6 w-full" />
-                            <Skeleton className="h-6 w-full" />
+                          <div className='flex flex-col gap-1'>
+                            <Skeleton className='h-6 w-full' />
+                            <Skeleton className='h-6 w-full' />
+                            <Skeleton className='h-6 w-full' />
                           </div>
                         )}
                       </ScrollArea>
@@ -147,12 +142,12 @@ export default function MainHeaderEnvNav() {
                     setDialogOpen('new-project');
                   }}
                 >
-                  <Plus className="mr-2 h-4 w-4" />
+                  <Plus className='mr-2 h-4 w-4' />
                   New project
                 </DropdownMenuItem>
-                <Link href="/projects">
+                <Link href='/projects'>
                   <DropdownMenuItem>
-                    <Grid2X2 className="mr-2 h-4 w-4" />
+                    <Grid2X2 className='mr-2 h-4 w-4' />
                     See all projects
                   </DropdownMenuItem>
                 </Link>
@@ -166,12 +161,12 @@ export default function MainHeaderEnvNav() {
             <DropdownMenuTrigger asChild>
               <ProjectEnvButton label={environment?.name} loading={isLoading} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64" align="start">
+            <DropdownMenuContent className='w-64' align='start'>
               <DropdownMenuLabel>
                 {environment?.project?.appName} Environments
               </DropdownMenuLabel>
               <DropdownMenuGroup>
-                <ScrollArea className="max-h-[6.125rem]">
+                <ScrollArea className='max-h-[6.125rem]'>
                   {!isLoading ? (
                     projectEnvironments?.map((env) => (
                       <Link
@@ -189,10 +184,10 @@ export default function MainHeaderEnvNav() {
                       </Link>
                     ))
                   ) : (
-                    <div className="flex flex-col gap-1">
-                      <Skeleton className="h-6 w-full" />
-                      <Skeleton className="h-6 w-full" />
-                      <Skeleton className="h-6 w-full" />
+                    <div className='flex flex-col gap-1'>
+                      <Skeleton className='h-6 w-full' />
+                      <Skeleton className='h-6 w-full' />
+                      <Skeleton className='h-6 w-full' />
                     </div>
                   )}
                 </ScrollArea>
@@ -204,7 +199,7 @@ export default function MainHeaderEnvNav() {
                     setDialogOpen('new-environment');
                   }}
                 >
-                  <Plus className="mr-2 h-4 w-4" />
+                  <Plus className='mr-2 h-4 w-4' />
                   New Environment
                 </DropdownMenuItem>
               </DropdownMenuGroup>

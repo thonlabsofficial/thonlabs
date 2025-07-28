@@ -1,11 +1,11 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import Log from '@repo/utils/log';
+import { forwardSearchParams } from '@thonlabs/nextjs';
 import {
-  validateSession,
   redirectToLogin,
   thonLabsConfig,
+  validateSession,
 } from '@thonlabs/nextjs/server';
-import { forwardSearchParams } from '@thonlabs/nextjs';
-import Log from '@repo/utils/log';
+import { type NextRequest, NextResponse } from 'next/server';
 import { fetchProjects } from '@/_services/project-service';
 
 export const config = {
@@ -27,7 +27,7 @@ export async function middleware(req: NextRequest) {
     if (projects.length === 0) {
       Log.info('middleware', 'No projects found, redirecting to /onboard');
       return NextResponse.redirect(
-        forwardSearchParams(req, '/onboard/welcome'),
+        forwardSearchParams(req, '/onboard/welcome')
       );
     }
   }

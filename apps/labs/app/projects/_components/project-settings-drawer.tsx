@@ -1,27 +1,27 @@
 'use client';
 
-import { Button } from '@repo/ui/button';
-import { Input, InputWrapper } from '@repo/ui/input';
-import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
-import {
-  UpdateProjectGeneralInfoFormSchema,
-  UpdateProjectGeneralInfoFormData,
-} from '@/_validators/projects-validators';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/button';
 import {
   Drawer,
   DrawerContent,
+  DrawerContentContainer,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
+  DrawerScrollArea,
   DrawerTitle,
   DrawerTrigger,
-  DrawerScrollArea,
-  DrawerContentContainer,
 } from '@repo/ui/drawer';
-import { Project } from '@/_interfaces/project';
+import { Input, InputWrapper } from '@repo/ui/input';
+import React, { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
 import useProject from '@/_hooks/use-project';
+import type { Project } from '@/_interfaces/project';
+import {
+  type UpdateProjectGeneralInfoFormData,
+  UpdateProjectGeneralInfoFormSchema,
+} from '@/_validators/projects-validators';
 import DeleteProjectDialog from './delete-project-dialog';
 
 type Props = {
@@ -56,7 +56,7 @@ export default function ProjectSettingsDrawer({
     if (props.open) {
       handleReset();
     }
-  }, [props.open]);
+  }, [props.open, handleReset]);
 
   return (
     <Drawer {...props}>
@@ -72,14 +72,14 @@ export default function ProjectSettingsDrawer({
             Update the name of <strong>{project?.appName}</strong> project.
           </DrawerDescription>
         </DrawerHeader>
-        <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='h-full' onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
+              <div className='grid w-full items-center gap-4'>
                 <InputWrapper>
                   <Input
-                    id="appName"
-                    label="PID (Project ID)"
+                    id='appName'
+                    label='PID (Project ID)'
                     value={project?.id}
                     readOnly
                     withCopy
@@ -87,8 +87,8 @@ export default function ProjectSettingsDrawer({
                 </InputWrapper>
                 <InputWrapper>
                   <Input
-                    id="appName"
-                    label="Project Name"
+                    id='appName'
+                    label='Project Name'
                     maxLength={25}
                     error={form.formState.errors.appName?.message}
                     {...form.register('appName')}
@@ -99,10 +99,10 @@ export default function ProjectSettingsDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <DeleteProjectDialog
-              trigger={<Button variant="ghost">Delete Project</Button>}
+              trigger={<Button variant='ghost'>Delete Project</Button>}
               project={project}
             />
-            <Button type="submit" loading={isSaving}>
+            <Button type='submit' loading={isSaving}>
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>
           </DrawerFooter>

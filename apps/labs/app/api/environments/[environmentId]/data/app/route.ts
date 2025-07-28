@@ -1,11 +1,11 @@
+import { type NextRequest, NextResponse } from 'next/server';
 import { getAppData } from '@/_services/server-environment-app-data-service';
-import { NextRequest, NextResponse } from 'next/server';
 
 type Params = Promise<{ environmentId: string }>;
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Params },
+  _request: NextRequest,
+  { params }: { params: Params }
 ) {
   try {
     const { environmentId } = await params;
@@ -16,7 +16,7 @@ export async function GET(
     console.error('api.data.GET', error);
     return NextResponse.json(
       { message: 'Error fetching thonlabs data' },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

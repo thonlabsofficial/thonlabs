@@ -1,10 +1,10 @@
-import React from 'react';
 import { cn } from '@repo/ui/core/utils';
 import Link from 'next/link';
-import MainHeaderEnvNav from './main-header-env-nav';
-import { UserSession } from '@/_services/server-auth-session-service';
-import UserAvatar from '@/_components/user-avatar';
+import type React from 'react';
 import Logo from '@/_components/logo';
+import UserAvatar from '@/_components/user-avatar';
+import type { UserSession } from '@/_services/server-auth-session-service';
+import MainHeaderEnvNav from './main-header-env-nav';
 import MainNavHorizontal from './main-nav-horizontal';
 
 type Props = {
@@ -26,12 +26,11 @@ export default function MainHeader({
     <header
       {...props}
       className={cn(
-        `fixed top-0 left-0 px-4 py-3 border-b border-collapse w-full flex items-center 
-         justify-between bg-background z-50`,
-        className,
+        `fixed top-0 left-0 z-50 flex w-full border-collapse items-center justify-between border-b bg-background px-4 py-3`,
+        className
       )}
     >
-      <div className="flex items-center gap-1">
+      <div className='flex items-center gap-1'>
         {environmentId ? (
           <Link href={`/${environmentId}/dashboard`}>
             <Logo reduced={logoReduced} />
@@ -46,7 +45,7 @@ export default function MainHeader({
         <MainNavHorizontal environmentId={environmentId} />
       )}
 
-      <div className="flex items-center gap-2">
+      <div className='flex items-center gap-2'>
         <UserAvatar session={session} />
       </div>
     </header>
