@@ -36,13 +36,13 @@ export default function CustomDomainSettings() {
               withCopy
             />
           </InputWrapper>
-
-          <CustomDomainStatusCard environmentId={environmentId as string} />
+          {/* TODO: uncomment both blocks when the SSL is finished */}
+          {/* <CustomDomainStatusCard environmentId={environmentId as string} /> */}
         </CardContent>
       </div>
-      <CardFooter className="flex justify-end gap-2">
+      {/* <CardFooter className="flex justify-end gap-2">
         <CustomDomainActions environmentId={environmentId as string} />
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }
