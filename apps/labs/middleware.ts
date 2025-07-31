@@ -4,7 +4,6 @@ import {
   redirectToLogin,
   thonLabsConfig,
 } from '@thonlabs/nextjs/server';
-import { forwardSearchParams } from '@thonlabs/nextjs';
 import Log from '@repo/utils/log';
 import { fetchProjects } from '@/_services/project-service';
 
@@ -26,15 +25,16 @@ export async function middleware(req: NextRequest) {
 
     if (projects.length === 0) {
       Log.info('middleware', 'No projects found, redirecting to /onboard');
-      return NextResponse.redirect(
-        forwardSearchParams(req, '/onboard/welcome'),
-      );
+      return NextResponse.redirect(new URL('/onboard/welcome', req.url));
     }
   }
 
   if (req.nextUrl.pathname === '/') {
-    Log.info('middleware', 'No environment selected, redirecting to /projects');
-    return NextResponse.redirect(forwardSearchParams(req, '/projects'));
+    Log.info(
+      'middleware',
+      'Found projects but no environment selected, redirecting to /projects',
+    );
+    return NextResponse.redirect(new URL('/projects', req.url));
   }
 
   return NextResponse.next(thonLabsConfig(req));

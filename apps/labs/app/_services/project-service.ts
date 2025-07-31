@@ -14,7 +14,5 @@ interface ProjectsResponse {
 export async function fetchProjects() {
   const { data } = await serverLabsEnvAPI.get<ProjectsResponse>(`/projects`);
 
-  console.log(data.items);
-
   return data?.items || [];
 }

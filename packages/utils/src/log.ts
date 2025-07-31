@@ -10,7 +10,7 @@ const Log = {
     );
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(data);
+      console.log(JSON.stringify(data, null, 2));
     }
   },
 };
