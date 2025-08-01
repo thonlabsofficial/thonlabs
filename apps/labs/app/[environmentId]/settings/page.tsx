@@ -8,6 +8,7 @@ import SectionHeader from '@/_components/section-header';
 import { SettingsIcon } from 'lucide-react';
 import EnvironmentIdCard from '@/_components/envionment-id-card';
 import CustomDomainSettings from '@/_components/custom-domain-settings';
+import AllowedOriginsSettings from '@/_components/allowed-origins-settings';
 import APIKeysSettings from '@/_components/api-key-settings';
 
 export const metadata: Metadata = {
@@ -29,6 +30,14 @@ export default async function Settings() {
             description="Use this domain to connect your application to ThonLabs"
           />
           <CustomDomainSettings />
+        </section>
+
+        <section>
+          <SectionHeader
+            title="Allowed Origins"
+            description="List of origins permited for access"
+          />
+          <AllowedOriginsSettings />
         </section>
 
         <section>
