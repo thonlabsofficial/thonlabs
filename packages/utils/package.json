@@ -8,10 +8,12 @@
   },
   "exports": {
     ".": "./src/utils.ts",
-    "./validation-patterns": "./src/validation-patterns.ts",
-    "./errors-metadata": "./src/errors-metadata.ts",
     "./data-return": "./src/data-return.ts",
-    "./log": "./src/log.ts"
+    "./errors-metadata": "./src/errors-metadata.ts",
+    "./log": "./src/log.ts",
+    "./stripe/services": "./src/stripe/services.ts",
+    "./stripe/models": "./src/stripe/models.ts",
+    "./validation-patterns": "./src/validation-patterns.ts"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
@@ -19,6 +21,7 @@
   },
   "dependencies": {
     "date-fns": "^3.6.0",
+    "stripe": "^18.4.0",
     "typescript": "5.3.3"
   }
 }
