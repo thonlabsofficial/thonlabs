@@ -35,6 +35,7 @@
     "./landing-grid": "./src/components/landing-grid.tsx",
     "./logo": "./src/components/logo.tsx",
     "./popover": "./src/components/popover.tsx",
+    "./pricing-cards": "./src/components/pricing-cards.tsx",
     "./scroll-area": "./src/components/scroll-area.tsx",
     "./separator": "./src/components/separator.tsx",
     "./shadow-root": "./src/components/shadow-root.tsx",
