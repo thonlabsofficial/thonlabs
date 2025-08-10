@@ -195,14 +195,18 @@ export default ThonLabsAuthPage;`}
     'step-5': (
       <CodeBlock
         language="typescript"
-        filename="app/middleware.ts"
+        filename="middleware.ts"
         code={`import { type NextRequest, NextResponse } from 'next/server';
 import { validateSession, redirectToLogin, thonLabsConfig } from "@thonlabs/nextjs${sdkVersion === OnboardIntegrationSdks.NextJS15 ? '' : '/v14'}/server";
+
+export const config = {
+	matcher: "/((?!_next/static|_next/image|favicon.ico|favicon.png).*)",
+};
 
 export async function middleware(req: NextRequest) {
   const redirect = await validateSession(req);
   if (redirect) {
-    return redirectToLogin(redirect);
+    return redirectToLogin(req, redirect);
   }
 
   return NextResponse.next(thonLabsConfig(req));

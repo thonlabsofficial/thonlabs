@@ -3,13 +3,17 @@
 import Stripe from 'stripe';
 import { ProductPrice } from './models';
 
-const stripe = new Stripe(process.env.PAYMENT_PROVIDER_SK!, {
-  apiVersion: '2025-07-30.basil',
-});
+export async function getStripeClient() {
+  return new Stripe(process.env.PAYMENT_PROVIDER_SK!, {
+    apiVersion: '2025-07-30.basil',
+  });
+}
 
 export async function getProductPrices(
   productRefId: string,
 ): Promise<ProductPrice[]> {
+  const stripe = await getStripeClient();
+
   const prices = await stripe.prices.list({
     product: productRefId,
     active: true,
@@ -35,6 +39,7 @@ export async function getProductPrices(
 }
 
 export async function getProductPrice(priceId: string): Promise<ProductPrice> {
+  const stripe = await getStripeClient();
   const price = await stripe.prices.retrieve(priceId);
 
   return {

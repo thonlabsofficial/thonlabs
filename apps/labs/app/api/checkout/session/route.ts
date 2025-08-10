@@ -1,14 +1,9 @@
 import { checkoutSessionValidator } from '@/_validators/checkout-validators';
 import Log from '@repo/utils/log';
-import { getProductPrice } from '@repo/utils/stripe/services';
+import { getProductPrice, getStripeClient } from '@repo/utils/stripe/services';
 import { getSession } from '@thonlabs/nextjs/server';
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.PAYMENT_PROVIDER_SK!, {
-  apiVersion: '2025-07-30.basil',
-});
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,6 +27,7 @@ export async function POST(request: NextRequest) {
     const { user } = await getSession();
     const headersList = await headers();
     const origin = headersList.get('origin');
+    const stripe = await getStripeClient();
 
     const price = await getProductPrice(priceId!);
 
