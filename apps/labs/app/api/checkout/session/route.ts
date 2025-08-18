@@ -1,9 +1,15 @@
 import { checkoutSessionValidator } from '@/_validators/checkout-validators';
 import Log from '@repo/utils/log';
-import { getProductPrice, getStripeClient } from '@repo/utils/stripe/services';
+import {
+  createStripeCustomer,
+  getProductPrice,
+  getStripeClient,
+  getStripeCustomer,
+} from '@repo/utils/stripe/services';
 import { getSession } from '@thonlabs/nextjs/server';
 import { headers } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,12 +30,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 
-    const { user } = await getSession();
-    const headersList = await headers();
+    const [{ user }, headersList, stripe, price] = await Promise.all([
+      getSession(),
+      headers(),
+      getStripeClient(),
+      getProductPrice(priceId!),
+    ]);
     const origin = headersList.get('origin');
-    const stripe = await getStripeClient();
 
-    const price = await getProductPrice(priceId!);
+    let stripeCustomer = await getStripeCustomer(user?.id!);
+
+    if (!stripeCustomer) {
+      const newCustomer = await createStripeCustomer(user!);
+      stripeCustomer = newCustomer;
+    }
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -38,10 +52,10 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      customer_email: user?.email,
+      customer: stripeCustomer.id,
       mode: price.type === 'one_time' ? 'payment' : 'subscription',
       ui_mode: 'hosted',
-      success_url: `${origin}/${environmentId}/dashboard?session_id={CHECKOUT_SESSION_ID}&checkout_status=success`,
+      success_url: `${origin}/${environmentId}/dashboard?checkout_status=success`,
       cancel_url: `${origin}/${environmentId}/dashboard?checkout_status=canceled`,
     });
 

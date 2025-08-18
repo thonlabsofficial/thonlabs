@@ -49,3 +49,25 @@ export async function getProductPrice(priceId: string): Promise<ProductPrice> {
     lookupKey: price.lookup_key || '',
   };
 }
+
+export async function getStripeCustomer(tlUserId: string) {
+  const stripe = await getStripeClient();
+  const customers = await stripe.customers.search({
+    query: `metadata['tlUserId']:'${tlUserId}'`,
+  });
+
+  return customers?.data?.[0];
+}
+
+export async function createStripeCustomer(user: {
+  id: string;
+  email: string;
+  fullName: string;
+}) {
+  const stripe = await getStripeClient();
+  return stripe.customers.create({
+    email: user.email,
+    name: user.fullName,
+    metadata: { tlUserId: user.id },
+  });
+}

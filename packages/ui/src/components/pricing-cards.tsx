@@ -102,24 +102,19 @@ const defaultPricingCards: PricingCard[] = [
 interface PricingCardsProps {
   environmentId?: string;
   location: 'landing' | 'dashboard';
-  userPromotionCategory: 'standard' | 'waitlist';
   prices: ProductPrice[];
 }
 
 export function PricingCards({
   environmentId,
   location,
-  userPromotionCategory,
   prices,
 }: PricingCardsProps) {
   const pricingCards = prices
     .filter((price) => {
-      const [type, interval, category] = price.lookupKey.split('::');
+      const [type] = price.lookupKey.split('::');
 
-      return (
-        type === 'pro' &&
-        (category === userPromotionCategory || interval === 'lifetime')
-      );
+      return type === 'pro';
     })
     .map((price) => {
       const [type, interval] = price.lookupKey.split('::');
