@@ -1,6 +1,6 @@
 import React from 'react';
 import useSWR from 'swr';
-import { labsAPI } from '@helpers/api';
+import { envHeaders, labsEnvAPI } from '@helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
 import {
@@ -41,9 +41,10 @@ export default function useOrganization(params: Params = {}) {
     ...payload
   }: NewOrganizationFormData) {
     try {
-      const { data } = await labsAPI.post<Organization>(
-        '/organizations',
+      const { data } = await labsEnvAPI.post<Organization>(
+        `/organizations`,
         payload,
+        envHeaders(environmentId as string),
       );
 
       if (logo && logo?.[0]) {
@@ -74,9 +75,10 @@ export default function useOrganization(params: Params = {}) {
     payload: EditOrganizationFormData,
   ) {
     try {
-      const { data } = await labsAPI.patch<Organization>(
+      const { data } = await labsEnvAPI.patch<Organization>(
         `/organizations/${organizationId}`,
         payload,
+        envHeaders(environmentId as string),
       );
 
       toast({
@@ -107,12 +109,13 @@ export default function useOrganization(params: Params = {}) {
     showNotification = true,
   ) {
     try {
-      await labsAPI.patch<Organization>(
+      await labsEnvAPI.patch<Organization>(
         `/organizations/${organizationId}/logo`,
         { file: payload.logo?.[0] },
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            ...envHeaders(environmentId as string).headers,
           },
         },
       );
@@ -146,7 +149,10 @@ export default function useOrganization(params: Params = {}) {
         description: 'Deleting logo...',
       });
 
-      await labsAPI.delete(`/organizations/${organizationId}/logo`);
+      await labsEnvAPI.delete(
+        `/organizations/${organizationId}/logo`,
+        envHeaders(environmentId as string),
+      );
 
       await revalidateCache([
         `/${environmentId}/organizations`,
@@ -170,7 +176,10 @@ export default function useOrganization(params: Params = {}) {
 
   async function deleteOrganization(organizationId: string) {
     try {
-      await labsAPI.delete(`/organizations/${organizationId}`);
+      await labsEnvAPI.delete(
+        `/organizations/${organizationId}`,
+        envHeaders(environmentId as string),
+      );
       await revalidateCache([`/${environmentId}/organizations`]);
 
       toast({
@@ -193,7 +202,11 @@ export default function useOrganization(params: Params = {}) {
     payload: { active: boolean },
   ) {
     try {
-      await labsAPI.patch(`/organizations/${organizationId}/status`, payload);
+      await labsEnvAPI.patch(
+        `/organizations/${organizationId}/status`,
+        payload,
+        envHeaders(environmentId as string),
+      );
 
       await revalidateCache([
         `/${environmentId}/organizations`,
