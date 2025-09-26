@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default function UserAvatar({ session }: Props) {
-  const { logout, isLoggingOut } = useSession();
+  const { user, logout, isLoggingOut } = useSession();
   const { environmentId } = useParams();
 
   return (
@@ -30,7 +30,9 @@ export default function UserAvatar({ session }: Props) {
         <DropdownMenuTrigger asChild>
           <Avatar size="sm" className="cursor-pointer">
             <AvatarFallback>
-              {Utils.getFirstAndLastInitials(session?.user?.fullName || '')}
+              {Utils.getFirstAndLastInitials(
+                user?.fullName || session?.user?.fullName || '',
+              )}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>

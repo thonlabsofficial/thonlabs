@@ -16,6 +16,6 @@ export default function useUserSession() {
     user: session.user,
     environmentId: environmentId as string,
     environment: environment as Environment,
-    isLoadingUserSession: isLoadingEnvironments,
+    isLoadingUserSession: isLoadingEnvironments || session.isLoadingSession,
   };
 }
