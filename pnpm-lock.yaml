@@ -42,8 +42,8 @@ importers:
         specifier: ^7.8.0
         version: 7.8.0
       '@thonlabs/nextjs':
-        specifier: 3.0.1
-        version: 3.0.1(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(next@15.2.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.89.2))(react-dom@19.1.1(react@19.1.1))(react-hook-form@7.61.1(react@19.1.1))(react@19.1.1)(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.19.9)(typescript@5.8.3)))
+        specifier: 3.0.5
+        version: 3.0.5(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(next@15.2.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.89.2))(react-dom@19.1.1(react@19.1.1))(react-hook-form@7.61.1(react@19.1.1))(react@19.1.1)(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.19.9)(typescript@5.8.3)))
       axios:
         specifier: ^1.8.2
         version: 1.11.0
@@ -1652,8 +1652,8 @@ packages:
     resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
     engines: {node: '>=12'}
 
-  '@thonlabs/nextjs@3.0.1':
-    resolution: {integrity: sha512-u8dNDnrBdIHR7Bljq4yfdkPtyWv+3wNyDJHSwXv4I1wO12UehouQ51p/j6debMCGcd1/9N2/0myrqprNZqMoiQ==}
+  '@thonlabs/nextjs@3.0.5':
+    resolution: {integrity: sha512-l6HxwThwpU32xQSJyJYceTRS5tQLdF6iJQOtVFmzYcWr5aWs1YdJa4jU0JETW2UeM0UTYwiRk7D0Z3o7ttq3jA==}
     peerDependencies:
       next: '>=13.0.0'
       react: '>=18.0.0'
@@ -7327,7 +7327,7 @@ snapshots:
 
   '@tanstack/table-core@8.21.3': {}
 
-  '@thonlabs/nextjs@3.0.1(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(next@15.2.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.89.2))(react-dom@19.1.1(react@19.1.1))(react-hook-form@7.61.1(react@19.1.1))(react@19.1.1)(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.19.9)(typescript@5.8.3)))':
+  '@thonlabs/nextjs@3.0.5(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(next@15.2.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.89.2))(react-dom@19.1.1(react@19.1.1))(react-hook-form@7.61.1(react@19.1.1))(react@19.1.1)(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.19.9)(typescript@5.8.3)))':
     dependencies:
       '@hookform/resolvers': 3.10.0(react-hook-form@7.61.1(react@19.1.1))
       '@radix-ui/react-icons': 1.3.2(react@19.1.1)

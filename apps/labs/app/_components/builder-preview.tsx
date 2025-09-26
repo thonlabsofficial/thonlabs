@@ -2,24 +2,36 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from '@repo/ui/card';
-import { ThonLabsAuthPagePreview } from '@thonlabs/nextjs';
+import {
+  ThonLabsAuthPagePreview,
+  ThonLabsEnvDataProvider,
+} from '@thonlabs/nextjs';
 import BuilderActivatePreviewMode from '@/_components/builder-activate-preview-mode';
 import { ButtonGroup, ButtonGroupItem } from '@repo/ui/button-group';
 import SectionHeader from '@/_components/section-header';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { cn } from '@repo/ui/core/utils';
+import { EnvironmentDetail } from '@/_interfaces/environment';
 
-export default function BuilderPreview() {
+type Props = {
+  environment: EnvironmentDetail;
+};
+
+export default function BuilderPreview({ environment }: Props) {
   const { resolvedTheme } = useTheme();
   const [page, setPage] = useState('login');
   const [previewTheme, setPreviewTheme] = useState(resolvedTheme);
 
-  React.useEffect(() => {
-    if (!previewTheme || previewTheme === 'system') {
-      setPreviewTheme(resolvedTheme);
-    }
-  }, [resolvedTheme]);
+  // React.useEffect(() => {
+  //   if (!previewTheme || previewTheme === 'system') {
+  //     setPreviewTheme(resolvedTheme);
+  //   }
+  // }, [resolvedTheme]);
+
+  if (!previewTheme) {
+    return null;
+  }
 
   return (
     <>
@@ -73,10 +85,17 @@ export default function BuilderPreview() {
           className={cn('p-0 w-full h-full bg-background', previewTheme)}
         >
           <BuilderActivatePreviewMode />
-          <ThonLabsAuthPagePreview
-            params={{ thonlabs: [page] }}
-            searchParams={{}}
-          />
+          <ThonLabsEnvDataProvider
+            environmentData={environment}
+            environmentId={environment.id}
+            publicKey={environment.publicKey}
+            withShadowRoot={false}
+          >
+            <ThonLabsAuthPagePreview
+              params={{ thonlabs: [page] }}
+              searchParams={{}}
+            />
+          </ThonLabsEnvDataProvider>
         </CardContent>
       </Card>
     </>

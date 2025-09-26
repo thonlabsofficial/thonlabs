@@ -7,6 +7,7 @@ import BuilderAuthSettings from '@/_components/builder-auth-settings';
 import { getEnvironmentById } from '@/_services/environment-service';
 import BuilderPreview from '@/_components/builder-preview';
 import SectionHeader from '@/_components/section-header';
+import { ThonLabsPreviewProvider } from '@thonlabs/nextjs';
 
 export const metadata: Metadata = {
   title: 'Auth Builder',
@@ -26,15 +27,17 @@ export default async function Builder({ params }: { params: Params }) {
         icon={ShieldEllipsis}
       />
       <PageWrapper className="pt-4 grid gap-10" withContainer={false}>
-        <div className="grid grid-cols-[42rem_1fr] gap-2">
-          <section>
-            <SectionHeader title="Settings" />
-            <BuilderAuthSettings environment={environment} />
-          </section>
-          <section>
-            <BuilderPreview />
-          </section>
-        </div>
+        <ThonLabsPreviewProvider>
+          <div className="grid grid-cols-[42rem_1fr] gap-2">
+            <section>
+              <SectionHeader title="Settings" />
+              <BuilderAuthSettings environment={environment} />
+            </section>
+            <section>
+              <BuilderPreview environment={environment} />
+            </section>
+          </div>
+        </ThonLabsPreviewProvider>
       </PageWrapper>
     </>
   );

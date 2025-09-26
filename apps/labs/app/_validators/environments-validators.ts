@@ -18,7 +18,18 @@ export const UpdateEnvironmentGeneralSettingsFormSchema = z.object({
     .min(1, { message: ErrorMessages.RequiredField })
     .max(25, { message: 'This field must be 25 characters or fewer' }),
   appURL: z.string().url(),
-  logo: z.instanceof(FileList).optional(),
+  logo: z
+    .any()
+    .optional()
+    .refine(
+      (files) => {
+        // Skip validation on server side
+        if (typeof window === 'undefined') return true;
+        // Validate on client side
+        return !files || (files instanceof FileList && files.length <= 1);
+      },
+      { message: 'Please select a valid image file' },
+    ),
 });
 
 export type UpdateEnvironmentGeneralSettingsFormData = z.infer<

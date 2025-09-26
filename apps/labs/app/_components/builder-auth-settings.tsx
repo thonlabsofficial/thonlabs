@@ -106,10 +106,13 @@ export default function BuilderAuthSettings({ environment }: Props) {
   const { updateEnvironmentAuthSettings } = useBuilder();
   const [isSaving, startSavingTransition] = useTransition();
   const { setPreviewEnvironmentData } = usePreviewMode();
-  const { appName } = useEnvironmentAppData();
+  const envAppData = useEnvironmentAppData();
 
   React.useEffect(() => {
-    setPreviewEnvironmentData({ appName, ...formData } as EnvironmentData);
+    setPreviewEnvironmentData({
+      ...envAppData,
+      ...formData,
+    } as EnvironmentData);
   }, [formData, setPreviewEnvironmentData]);
 
   React.useEffect(() => {

@@ -10,7 +10,18 @@ export const newOrganizationFormSchema = z.object({
       domain: domain(),
     })
     .array(),
-  logo: z.instanceof(FileList).optional(),
+  logo: z
+    .any()
+    .optional()
+    .refine(
+      (files) => {
+        // Skip validation on server side
+        if (typeof window === 'undefined') return true;
+        // Validate on client side
+        return !files || (files instanceof FileList && files.length <= 1);
+      },
+      { message: 'Please select a valid image file' },
+    ),
 });
 export type NewOrganizationFormData = z.infer<typeof newOrganizationFormSchema>;
 
@@ -30,7 +41,18 @@ export type EditOrganizationFormData = z.infer<
 >;
 
 export const updateLogoOrganizationFormSchema = z.object({
-  logo: z.instanceof(FileList).optional(),
+  logo: z
+    .any()
+    .optional()
+    .refine(
+      (files) => {
+        // Skip validation on server side
+        if (typeof window === 'undefined') return true;
+        // Validate on client side
+        return !files || (files instanceof FileList && files.length <= 1);
+      },
+      { message: 'Please select a valid image file' },
+    ),
 });
 export type UpdateLogoOrganizationFormData = z.infer<
   typeof updateLogoOrganizationFormSchema
