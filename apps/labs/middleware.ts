@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
     '/builder-preview',
   ]);
   if (redirect) {
-    return redirectToLogin(redirect);
+    return redirectToLogin(req, redirect);
   }
 
   if (['/', '/projects'].includes(req.nextUrl.pathname)) {

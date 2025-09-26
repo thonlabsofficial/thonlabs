@@ -27,9 +27,7 @@ const serverLabsInternalAPI = axios.create({
 async function validateTokensInterceptor(
   config: InternalAxiosRequestConfig<any>,
 ) {
-  const accessToken = await getAccessToken();
-
-  config.headers['Authorization'] = `Bearer ${accessToken}`;
+  config.headers['Authorization'] = `Bearer ${await getAccessToken()}`;
 
   return config;
 }
