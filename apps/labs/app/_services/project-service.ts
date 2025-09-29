@@ -4,7 +4,7 @@ import { Environment } from '@/_interfaces/environment';
 import { Project } from '@/_interfaces/project';
 import { serverLabsEnvAPI } from '@helpers/api/server';
 
-interface ProjectsResponse {
+export interface ProjectsResponse {
   items: Project &
     {
       environments: Environment[];

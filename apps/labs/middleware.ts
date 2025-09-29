@@ -2,28 +2,36 @@ import { type NextRequest, NextResponse } from 'next/server';
 import {
   validateSession,
   redirectToLogin,
-  thonLabsConfig,
+  withThonLabs,
 } from '@thonlabs/nextjs/server';
 import Log from '@repo/utils/log';
-import { fetchProjects } from '@/_services/project-service';
+import { ProjectsResponse } from '@/_services/project-service';
+import axios from 'axios';
 
 export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico|favicon.png).*)',
 };
 
 export async function middleware(req: NextRequest) {
-  const redirect = await validateSession(req, [
+  const sessionConfig = await validateSession(req, [
     '/api/environments',
     '/builder-preview',
   ]);
-  if (redirect) {
-    return redirectToLogin(req, redirect);
+  if (sessionConfig.redirect) {
+    return redirectToLogin(req, sessionConfig.redirect);
   }
 
   if (['/', '/projects'].includes(req.nextUrl.pathname)) {
-    const projects = await fetchProjects();
+    const projects = await axios.get<ProjectsResponse>(
+      `${process.env.NEXT_PUBLIC_TL_API}/projects`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionConfig.accessToken}`,
+        },
+      },
+    );
 
-    if (projects.length === 0) {
+    if (projects.data.items.length === 0) {
       Log.info('middleware', 'No projects found, redirecting to /onboard');
       return NextResponse.redirect(new URL('/onboard/welcome', req.url));
     }
@@ -37,5 +45,5 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/projects', req.url));
   }
 
-  return NextResponse.next(thonLabsConfig(req));
+  return withThonLabs(req, sessionConfig);
 }
