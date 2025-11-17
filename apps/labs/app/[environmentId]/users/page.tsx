@@ -17,7 +17,7 @@ export default async function Users({
   params: Promise<{ environmentId: string }>;
 }) {
   const { environmentId } = await params;
-  // const { items: users } = await fetchUsers(environmentId);
+  const { items: users } = await fetchUsers(environmentId);
 
   return (
     <>
@@ -26,7 +26,9 @@ export default async function Users({
         icon={SquareUser}
         actions={<NewUserDialog trigger={<Button>New User</Button>} />}
       />
-      <PageWrapper>{/* <UsersDataTable users={users} /> */}</PageWrapper>
+      <PageWrapper>
+        <UsersDataTable users={users} />
+      </PageWrapper>
     </>
   );
 }
