@@ -9,11 +9,11 @@ import { Metadata } from '@/_interfaces/metadata';
 import useUserSession from '@/_hooks/use-user-session';
 import { revalidateCache } from '@/_services/server-cache-service';
 
-export default function useMetadata() {
+export default function useMetadataModel() {
   const { environment } = useUserSession();
   const { toast } = useToast();
 
-  async function createMetadata(payload: CreateMetadataFormData) {
+  async function createMetadataModel(payload: CreateMetadataFormData) {
     try {
       const { data: metadata } = await labsEnvAPI.post<Metadata>(
         `/metadata/models`,
@@ -30,7 +30,7 @@ export default function useMetadata() {
 
       return metadata;
     } catch (error: any) {
-      console.error('useMetadata.createMetadata', error);
+      console.error('useMetadataModel.createMetadataModel', error);
       toast({
         title: 'Creating Error',
         description: error?.response?.data?.message || APIErrors.GenericForm,
@@ -40,9 +40,9 @@ export default function useMetadata() {
     }
   }
 
-  async function updateMetadata(
+  async function updateMetadataModel(
     metadataId: string,
-    payload: UpdateMetadataFormData,
+    payload: Omit<UpdateMetadataFormData, 'key' | 'type' | 'context'>,
   ) {
     try {
       const { data } = await labsEnvAPI.put<Metadata>(
@@ -60,7 +60,7 @@ export default function useMetadata() {
 
       return data;
     } catch (error: any) {
-      console.error('useMetadata.updateMetadata', error);
+      console.error('useMetadataModel.updateMetadataModel', error);
       toast({
         title: 'Updating Error',
         description: error?.response?.data?.message || APIErrors.GenericForm,
@@ -70,23 +70,21 @@ export default function useMetadata() {
     }
   }
 
-  async function deleteMetadata(metadataId: string) {
+  async function deleteMetadataModel(metadataId: string) {
     try {
-      const { data } = await labsEnvAPI.delete<Metadata>(
+      await labsEnvAPI.delete<Metadata>(
         `/metadata/models/${metadataId}`,
         envHeaders(environment.id),
       );
 
       toast({
-        title: 'Metadata Deleted',
-        description: `${data.name} has been deleted successfully`,
+        title: 'Metadata Model Deleted',
+        description: 'The metadata model has been deleted successfully',
       });
 
       await revalidateCache([`/${environment.id}/metadata`]);
-
-      return data;
     } catch (error: any) {
-      console.error('useMetadata.deleteMetadata', error);
+      console.error('useMetadataModel.deleteMetadataModel', error);
       toast({
         title: 'Delete Metadata Error',
         description: error?.response?.data?.message || APIErrors.Generic,
@@ -96,8 +94,8 @@ export default function useMetadata() {
   }
 
   return {
-    createMetadata,
-    updateMetadata,
-    deleteMetadata,
+    createMetadataModel,
+    updateMetadataModel,
+    deleteMetadataModel,
   };
 }

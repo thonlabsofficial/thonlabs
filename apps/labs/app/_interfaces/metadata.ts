@@ -10,6 +10,7 @@ export interface Metadata {
   id: string;
   name: string;
   key: string;
+  description?: string;
   type: MetadataType;
   context: MetadataContext;
   options?: MetadataOption[];

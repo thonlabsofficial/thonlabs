@@ -16,27 +16,10 @@ import {
   DropdownMenuSeparator,
 } from '@repo/ui/dropdown';
 import React from 'react';
-import MetadataUpdateDrawer from './metadata-update-drawer';
-import useMetadata from '@/_hooks/use-metadata';
+import MetadataModelEditDrawer from './metadata-model-edit-drawer';
+import useMetadataModel from '@/_hooks/use-metadata-model';
 import { AlertDialog } from '@repo/ui/alert-dialog';
 import { Copy, Check, FileEdit, MoreHorizontal, Delete } from 'lucide-react';
-
-const getTypeColor = (type: string) => {
-  switch (type) {
-    case 'String':
-      return 'default';
-    case 'Number':
-      return 'info';
-    case 'Boolean':
-      return 'success';
-    case 'JSON':
-      return 'warning';
-    case 'List':
-      return 'secondary';
-    default:
-      return 'default';
-  }
-};
 
 const columns = ({
   setOpen,
@@ -57,14 +40,14 @@ const columns = ({
       );
     },
     cell: ({ getValue, row }) => {
-      const { id, key } = row.original;
+      const { key } = row.original;
       const data = getValue() as string;
       return (
         <div className="flex flex-col gap-0.5">
           <Typo className="font-semibold">{data}</Typo>
           <div className="flex gap-0.5">
             <Badge variant={'outline'} size={'xs'} className="cursor-text">
-              Key: {key}
+              {key}
             </Badge>
             <Clipboard
               size="xs"
@@ -82,16 +65,20 @@ const columns = ({
     sortingFn: 'alphanumeric',
   },
   {
+    accessorKey: 'description',
+    header: 'Description',
+    cell: ({ getValue }) => {
+      const data = getValue() as string;
+      return <Typo className="text-muted-foreground">{data}</Typo>;
+    },
+  },
+  {
     accessorKey: 'type',
     header: 'Type',
     cell: ({ getValue }) => {
       const data = getValue() as string;
       return (
-        <Badge
-          variant={getTypeColor(data) as any}
-          size={'sm'}
-          className="cursor-text"
-        >
+        <Badge variant="outline" size={'sm'} className="cursor-text">
           {data}
         </Badge>
       );
@@ -106,20 +93,6 @@ const columns = ({
         <Badge variant={'outline'} size={'sm'} className="cursor-text">
           {data}
         </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: 'options',
-    header: 'Options',
-    cell: ({ getValue }) => {
-      const data = getValue() as any[];
-      return data && data.length > 0 ? (
-        <Badge variant={'info'} size={'sm'} className="cursor-text">
-          {data.length} option{data.length !== 1 ? 's' : ''}
-        </Badge>
-      ) : (
-        <span className="text-muted-foreground">-</span>
       );
     },
   },
@@ -164,7 +137,7 @@ const columns = ({
                 <DropdownMenuItem
                   onSelect={() => {
                     setMetadata(metadata);
-                    setOpen('edit-metadata-drawer');
+                    setOpen('edit-metadata-model-drawer');
                   }}
                 >
                   <FileEdit className="mr-2 h-4 w-4" />
@@ -175,7 +148,7 @@ const columns = ({
                   variant={'destructive'}
                   onSelect={() => {
                     setMetadata(metadata);
-                    setOpen('delete-metadata');
+                    setOpen('delete-metadata-model');
                   }}
                 >
                   <Delete className="mr-2 h-4 w-4" />
@@ -196,16 +169,15 @@ interface Props {
   actions?: React.ReactNode;
 }
 
-export default function MetadataDataTable({
+export default function MetadataModelDataTable({
   metadata,
   loading,
   actions,
 }: Props) {
-  const { deleteMetadata } = useMetadata();
+  const { deleteMetadataModel } = useMetadataModel();
   const [open, setOpen] = React.useState('');
-  const [selectedMetadata, setSelectedMetadata] = React.useState<Metadata | null>(
-    null,
-  );
+  const [selectedMetadata, setSelectedMetadata] =
+    React.useState<Metadata | null>(null);
 
   return (
     <>
@@ -217,31 +189,42 @@ export default function MetadataDataTable({
         })}
         data={metadata}
         defaultSorting={[{ id: 'name', desc: false }]}
-        searchFields={['id', 'name', 'key']}
-        noResultsMessage="No metadata found"
+        searchFields={['name', 'key']}
+        noResultsMessage="No metadata models found"
         searchPlaceholder="Search by name or key..."
         actions={actions}
         onRowClick={(_, row) => {
           setSelectedMetadata(row.original);
-          setOpen('edit-metadata-drawer');
+          setOpen('edit-metadata-model-drawer');
         }}
       />
-      <MetadataUpdateDrawer
+      <MetadataModelEditDrawer
         metadata={selectedMetadata as Metadata}
-        open={open === 'edit-metadata-drawer'}
+        open={open === 'edit-metadata-model-drawer'}
         onOpenChange={() => setOpen('')}
       />
       <AlertDialog
-        open={open === 'delete-metadata'}
+        open={open === 'delete-metadata-model'}
         onOpenChange={() => setOpen('')}
-        title="Delete Metadata"
-        description={`Are you sure you want to delete ${selectedMetadata?.name}? This action cannot be undone and will remove this metadata field from all ${selectedMetadata?.context.toLowerCase()}s.`}
+        title="Delete Metadata Model"
+        description={
+          <div className="space-y-2">
+            <p>
+              Are you sure you want to delete{' '}
+              <strong>{selectedMetadata?.name}</strong>?
+            </p>
+            <p>
+              This action cannot be undone and will remove this metadata model
+              from all fields using this model.
+            </p>
+          </div>
+        }
         idleLabel="Yes, delete"
         actingLabel="Deleting..."
         variant="destructive"
         onClick={async () => {
           if (selectedMetadata) {
-            await deleteMetadata(selectedMetadata.id);
+            await deleteMetadataModel(selectedMetadata.id);
             setOpen('');
             setSelectedMetadata(null);
           }

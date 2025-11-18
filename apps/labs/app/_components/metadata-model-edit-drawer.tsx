@@ -21,15 +21,17 @@ import {
   UpdateMetadataFormData,
   UpdateMetadataFormSchema,
 } from '@/_validators/metadata-validators';
-import useMetadata from '@/_hooks/use-metadata';
-import MetadataFormFields from './metadata-form-fields';
+import useMetadata from '@/_hooks/use-metadata-model';
+import MetadataModelListOptionsForm from './metadata-model-list-options-form';
+import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
+import useMetadataModel from '@/_hooks/use-metadata-model';
 
 type Props = {
   trigger?: React.ReactNode;
   metadata: Metadata;
 };
 
-export default function MetadataUpdateDrawer({
+export default function MetadataModelEditDrawer({
   trigger,
   metadata,
   ...props
@@ -38,7 +40,7 @@ export default function MetadataUpdateDrawer({
     resolver: zodResolver(UpdateMetadataFormSchema),
   });
   const [isSaving, startSavingTransition] = useTransition();
-  const { updateMetadata } = useMetadata();
+  const { updateMetadataModel } = useMetadataModel();
   const formValues = form.getValues();
 
   React.useEffect(() => {
@@ -50,13 +52,13 @@ export default function MetadataUpdateDrawer({
   function onSubmit(payload: UpdateMetadataFormData) {
     startSavingTransition(async () => {
       try {
-        // Remove options if type is not List
         const finalPayload = {
-          ...payload,
+          name: payload.name,
+          description: payload.description,
           options: metadata.type === 'List' ? payload.options : undefined,
         };
 
-        await updateMetadata(metadata.id, finalPayload);
+        await updateMetadataModel(metadata.id, finalPayload);
         props.onOpenChange?.(false);
       } catch {}
     });
@@ -65,6 +67,8 @@ export default function MetadataUpdateDrawer({
   function handleReset() {
     form.clearErrors();
     form.setValue('name', metadata.name);
+    form.setValue('type', metadata.type);
+    form.setValue('description', metadata.description || '');
     form.setValue('options', metadata.options || []);
   }
 
@@ -79,7 +83,7 @@ export default function MetadataUpdateDrawer({
         <DrawerHeader>
           <DrawerTitle className="flex gap-1.5">
             <div className="flex flex-col justify-center w-[17.625rem]">
-              <Typo variant={'muted'}>Edit Metadata</Typo>
+              <Typo variant={'muted'}>Edit Metadata Model</Typo>
               <div className="truncate">{formValues?.name || '-'}</div>
             </div>
           </DrawerTitle>
@@ -88,19 +92,54 @@ export default function MetadataUpdateDrawer({
           <DrawerScrollArea>
             <DrawerContentContainer>
               <div className="grid w-full items-center gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <InputWrapper>
+                    <Input
+                      label="Name"
+                      error={form.formState.errors.name?.message}
+                      maxLength={100}
+                      {...form.register('name')}
+                    />
+                  </InputWrapper>
+                  <InputWrapper>
+                    <Input
+                      label="Key"
+                      value={metadata?.key}
+                      readOnly
+                      withCopy
+                    />
+                  </InputWrapper>
+                </div>
                 <InputWrapper>
                   <Input
-                    label="Name"
-                    error={form.formState.errors.name?.message}
-                    {...form.register('name')}
+                    label="Description"
+                    error={form.formState.errors.description?.message as string}
+                    maxLength={255}
+                    {...form.register('description')}
                   />
                 </InputWrapper>
-                <MetadataFormFields
-                  control={form.control}
-                  register={form.register}
-                  errors={form.formState.errors}
-                  type={metadata.type}
-                />
+                <div className="grid grid-cols-2 gap-4">
+                  <InputWrapper>
+                    <Input label="Type" value={metadata?.type} readOnly />
+                  </InputWrapper>
+                  <InputWrapper>
+                    <Input label="Context" value={metadata?.context} readOnly />
+                  </InputWrapper>
+                </div>
+                {metadata?.type === 'List' && (
+                  <InputWrapper>
+                    <div className="flex items-center justify-between">
+                      <Typo variant="baseBold">Options</Typo>
+                    </div>
+                    <MetadataModelListOptionsForm form={form} />
+                    <Alert variant="info" size="sm" className="mt-2">
+                      <AlertTitle>Good to Know</AlertTitle>
+                      <AlertDescription>
+                        Removing an option will not affect existing data stored.
+                      </AlertDescription>
+                    </Alert>
+                  </InputWrapper>
+                )}
               </div>
             </DrawerContentContainer>
           </DrawerScrollArea>

@@ -2,13 +2,13 @@ import { Metadata } from 'next';
 import PageWrapper from '@/_components/page-wrapper';
 import PageHeader from '@/_components/page-header';
 import { Database } from 'lucide-react';
-import MetadataCreateDialog from '@/_components/metadata-create-dialog';
-import MetadataDataTable from '@/_components/metadata-data-table';
+import MetadataModelCreateDialog from '@/_components/metadata-model-create-dialog';
+import MetadataModelDataTable from '@/_components/metadata-model-data-table';
 import { fetchMetadata } from '@/_services/metadata-service';
 import { Button } from '@repo/ui/button';
 
 export const metadata: Metadata = {
-  title: 'Metadata',
+  title: 'Metadata Models',
 };
 
 export default async function MetadataPage({
@@ -22,14 +22,17 @@ export default async function MetadataPage({
   return (
     <>
       <PageHeader
-        title="Metadata"
+        title="Metadata Models"
+        description="Create data structures to be applied to users, organizations, or environments"
         icon={Database}
         actions={
-          <MetadataCreateDialog trigger={<Button>New Metadata</Button>} />
+          <MetadataModelCreateDialog
+            trigger={<Button>New Metadata Model</Button>}
+          />
         }
       />
       <PageWrapper>
-        <MetadataDataTable metadata={metadataList} />
+        <MetadataModelDataTable metadata={metadataList} />
       </PageWrapper>
     </>
   );

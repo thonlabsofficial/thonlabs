@@ -19,7 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/dialog';
-import useMetadata from '@/_hooks/use-metadata';
+import useMetadataModel from '@/_hooks/use-metadata-model';
 import {
   InputSelect,
   InputSelectContent,
@@ -27,26 +27,25 @@ import {
   InputSelectTrigger,
   InputSelectValue,
 } from '@repo/ui/input-select';
-import MetadataFormFields from './metadata-form-fields';
+import MetadataModelListOptionsForm from './metadata-model-list-options-form';
 import Utils from '@repo/utils';
+import {
+  METADATA_CONTEXT_OPTIONS,
+  METADATA_TYPE_OPTIONS,
+} from '@/_constants/metadata-constants';
 
 type Props = {
   trigger: React.ReactNode;
 };
 
-export default function MetadataCreateDialog({
+export default function MetadataModelCreateDialog({
   trigger,
-  ...props
 }: Props & React.ComponentProps<typeof Dialog>) {
   const [open, setOpen] = React.useState(false);
   const [isCreating, startTransitionCreating] = useTransition();
-  const { createMetadata } = useMetadata();
+  const { createMetadataModel } = useMetadataModel();
   const form = useForm<CreateMetadataFormData>({
     resolver: zodResolver(CreateMetadataFormSchema),
-    defaultValues: {
-      type: 'String',
-      context: 'User',
-    },
   });
 
   const watchType = form.watch('type');
@@ -60,22 +59,21 @@ export default function MetadataCreateDialog({
 
   // Auto-generate key from name
   React.useEffect(() => {
-    if (watchName) {
-      const normalizedKey = Utils.normalizeString(watchName, '_');
-      form.setValue('key', normalizedKey);
+    if (watchName !== null && watchName !== undefined) {
+      const normalizedKey = Utils.toCamelCase(watchName);
+      form.setValue('key', normalizedKey, { shouldValidate: true });
     }
   }, [watchName]);
 
   function onSubmit(payload: CreateMetadataFormData) {
     startTransitionCreating(async () => {
       try {
-        // Remove options if type is not List
         const finalPayload = {
           ...payload,
           options: payload.type === 'List' ? payload.options : undefined,
         };
 
-        const metadata = await createMetadata(finalPayload);
+        const metadata = await createMetadataModel(finalPayload);
 
         if (metadata) {
           setOpen(false);
@@ -87,8 +85,6 @@ export default function MetadataCreateDialog({
   function handleReset() {
     form.clearErrors();
     form.reset({
-      type: 'String',
-      context: 'User',
       options: [],
     });
   }
@@ -107,46 +103,33 @@ export default function MetadataCreateDialog({
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid w-full items-center gap-4">
+            <div className="grid grid-cols-2 gap-4">
+              <InputWrapper>
+                <Input
+                  label="Name"
+                  error={form.formState.errors.name?.message}
+                  maxLength={100}
+                  {...form.register('name')}
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Input
+                  label="Key"
+                  error={form.formState.errors.key?.message}
+                  maxLength={100}
+                  {...form.register('key')}
+                />
+              </InputWrapper>
+            </div>
             <InputWrapper>
               <Input
-                label="Name"
-                placeholder="User Department"
-                error={form.formState.errors.name?.message}
-                {...form.register('name')}
-              />
-            </InputWrapper>
-            <InputWrapper>
-              <Input
-                label="Key"
-                placeholder="user_department"
-                error={form.formState.errors.key?.message}
-                {...form.register('key')}
+                label="Description"
+                error={form.formState.errors.description?.message as string}
+                maxLength={255}
+                {...form.register('description')}
               />
             </InputWrapper>
             <div className="grid grid-cols-2 gap-4">
-              <InputWrapper>
-                <Controller
-                  name="type"
-                  control={form.control}
-                  render={({ field }) => (
-                    <InputSelect onValueChange={field.onChange} {...field}>
-                      <InputSelectTrigger
-                        label="Type"
-                        error={form.formState.errors.type?.message}
-                      >
-                        <InputSelectValue placeholder="Select type" />
-                      </InputSelectTrigger>
-                      <InputSelectContent>
-                        <InputSelectItem value="String">String</InputSelectItem>
-                        <InputSelectItem value="Number">Number</InputSelectItem>
-                        <InputSelectItem value="Boolean">Boolean</InputSelectItem>
-                        <InputSelectItem value="JSON">JSON</InputSelectItem>
-                        <InputSelectItem value="List">List</InputSelectItem>
-                      </InputSelectContent>
-                    </InputSelect>
-                  )}
-                />
-              </InputWrapper>
               <InputWrapper>
                 <Controller
                   name="context"
@@ -157,26 +140,52 @@ export default function MetadataCreateDialog({
                         label="Context"
                         error={form.formState.errors.context?.message}
                       >
-                        <InputSelectValue placeholder="Select context" />
+                        <InputSelectValue placeholder="Select a context" />
                       </InputSelectTrigger>
                       <InputSelectContent>
-                        <InputSelectItem value="User">User</InputSelectItem>
-                        <InputSelectItem value="Organization">
-                          Organization
-                        </InputSelectItem>
+                        {METADATA_CONTEXT_OPTIONS.map((option) => (
+                          <InputSelectItem
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </InputSelectItem>
+                        ))}
+                      </InputSelectContent>
+                    </InputSelect>
+                  )}
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Controller
+                  name="type"
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSelect onValueChange={field.onChange} {...field}>
+                      <InputSelectTrigger
+                        label="Type"
+                        error={form.formState.errors.type?.message}
+                      >
+                        <InputSelectValue placeholder="Select a type" />
+                      </InputSelectTrigger>
+                      <InputSelectContent>
+                        {METADATA_TYPE_OPTIONS.map((option) => (
+                          <InputSelectItem
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </InputSelectItem>
+                        ))}
                       </InputSelectContent>
                     </InputSelect>
                   )}
                 />
               </InputWrapper>
             </div>
-            <MetadataFormFields
-              control={form.control}
-              register={form.register}
-              errors={form.formState.errors}
-              type={watchType}
-              watchName={watchName}
-            />
+            {watchType === 'List' && (
+              <MetadataModelListOptionsForm form={form} />
+            )}
           </div>
           <DialogFooter className="mt-6">
             <DialogClose asChild>
