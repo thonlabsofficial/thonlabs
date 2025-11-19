@@ -12,6 +12,7 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
   label: React.ReactNode;
   value: React.ReactNode | Date;
   withCopy?: boolean;
+  copyValue?: string;
   date?: boolean;
   loading?: boolean;
 }
@@ -20,6 +21,7 @@ export default function BoxKeyValue({
   label,
   value,
   withCopy,
+  copyValue,
   className,
   date,
   loading,
@@ -43,7 +45,7 @@ export default function BoxKeyValue({
             <Clipboard
               size="xs"
               variant="outline"
-              value={value?.toString() as string}
+              value={copyValue || (value?.toString() as string)}
               labels={[Copy, Check]}
               iconLabels
             />

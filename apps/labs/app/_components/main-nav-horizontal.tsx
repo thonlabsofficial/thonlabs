@@ -53,7 +53,10 @@ export default function MainNavHorizontal({
       <NavItem label="Builder" href={`/${environmentId}/builder`} />
       <NavItem label="Users" href={`/${environmentId}/users`} />
       <NavItem label="Organizations" href={`/${environmentId}/organizations`} />
-      <NavItem label="Metadata" href={`/${environmentId}/metadata`} />
+      <NavItem
+        label="Metadata Models"
+        href={`/${environmentId}/metadata-models`}
+      />
       <NavItem
         label="Email Templates"
         href={`/${environmentId}/email-templates`}

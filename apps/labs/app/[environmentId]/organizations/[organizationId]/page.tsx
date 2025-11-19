@@ -80,6 +80,7 @@ export default async function OrganizationDetail({
                     </Badge>
                   }
                   withCopy
+                  copyValue={organization?.id}
                 />
                 <BoxKeyValue
                   label="Status"

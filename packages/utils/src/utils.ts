@@ -1,3 +1,5 @@
+import camelCase from 'lodash/camelCase';
+
 const Utils = {
   getFirstAndLastInitials(name: string) {
     const nameSplit = name.split(' ');
@@ -20,16 +22,18 @@ const Utils = {
       'àáäâãèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;';
     const alphabetCommonChars = 'aaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------';
 
+    console.log(whiteSpaceReplace);
+
     const normalizedValue = value
       .trim()
       .toLowerCase()
       .trim()
-      .replace(/ /g, whiteSpaceReplace)
       .replace(/--/g, '-')
       .replace(/[&/\\#,+()$~%.'":*?<>{}\[\]]/g, '')
       .replace(new RegExp(alphabetSpecialChars.split('').join('|'), 'g'), (c) =>
         alphabetCommonChars.charAt(alphabetSpecialChars.indexOf(c)),
-      );
+      )
+      .replace(/ /g, whiteSpaceReplace);
 
     return normalizedValue;
   },
@@ -60,6 +64,10 @@ const Utils = {
         .filter((attr) => !exclude.includes(attr.name))
         .map((attr) => [attr.name, attr.value]),
     );
+  },
+
+  toCamelCase(value: string) {
+    return camelCase(value);
   },
 };
 
