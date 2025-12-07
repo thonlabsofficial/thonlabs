@@ -79,7 +79,7 @@ export default function SetCustomDomainDialog({
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="ghost" disabled={isSaving}>
-                Cancel
+                Back
               </Button>
             </DialogClose>
             <Button loading={isSaving}>

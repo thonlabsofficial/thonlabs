@@ -61,7 +61,7 @@ export default function RegeneratePublicKeyDialog({
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="ghost" disabled={isRegenerating}>
-                  Cancel
+                  Back
                 </Button>
               </DialogClose>
               <Button

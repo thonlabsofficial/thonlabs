@@ -19,7 +19,7 @@ import {
 } from '@repo/ui/drawer';
 import { Typo, typoVariants } from '@repo/ui/typo';
 import { ButtonIcon } from '@repo/ui/button-icon';
-import { TrashIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 import {
   NewOrganizationFormData,
   newOrganizationFormSchema,
@@ -83,15 +83,24 @@ export default function NewOrganizationDrawer({
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
-                <InputWrapper>
-                  <Input
-                    label="Name"
-                    maxLength={30}
-                    error={form.formState.errors.name?.message}
-                    {...form.register('name')}
-                  />
-                </InputWrapper>
+              <div className="grid w-full items-center gap-6">
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg" className="flex items-center gap-1">
+                      General
+                    </Typo>
+                  </header>
+                  <div className="space-y-3">
+                    <InputWrapper>
+                      <Input
+                        label="Name"
+                        maxLength={30}
+                        error={form.formState.errors.name?.message}
+                        {...form.register('name')}
+                      />
+                    </InputWrapper>
+                  </div>
+                </section>
 
                 <section>
                   <header className="flex flex-col gap-0.5 mb-2">
@@ -150,12 +159,11 @@ export default function NewOrganizationDrawer({
                           />
                         </InputWrapper>
                         <ButtonIcon
-                          icon={TrashIcon}
+                          icon={XIcon}
                           type="button"
                           variant="destructive"
                           size="sm"
                           onClick={() => domainsFields.remove(index)}
-                          className="!basis-11 flex-none h-11"
                         />
                       </div>
                     ))}
@@ -194,12 +202,13 @@ export default function NewOrganizationDrawer({
               <Button
                 type="button"
                 variant="ghost"
+                size="md"
                 disabled={isCreatingOrganization}
               >
-                Cancel
+                Back
               </Button>
             </DrawerClose>
-            <Button type="submit" loading={isCreatingOrganization}>
+            <Button type="submit" size="md" loading={isCreatingOrganization}>
               {isCreatingOrganization ? 'Creating...' : 'Create Organization'}
             </Button>
           </DrawerFooter>

@@ -1,4 +1,5 @@
 import { Organization } from './organization';
+import { MetadataValue } from './metadata';
 
 export interface User {
   id: string;
@@ -13,4 +14,5 @@ export interface User {
   invitedAt?: Date;
   environmentId: string;
   organization?: Organization;
+  metadata?: MetadataValue;
 }

@@ -23,12 +23,13 @@ const inputSelectTriggerVariants = cva(
     transition duration-200 ease-in-out
     placeholder:text-zinc-300 dark:placeholder:text-zinc-600 
     focus:outline-none disabled:cursor-not-allowed 
-    disabled:opacity-50 [&>span]:line-clamp-1`,
+    disabled:opacity-50 [&>span]:line-clamp-1 select-none`,
   {
     variants: {
       state: {
         default: `border-zinc-200 dark:border-zinc-600 
                   hover:border-zinc-400 dark:hover:border-zinc-500
+                  peer-hover:border-zinc-400 dark:peer-hover:border-zinc-500
                   focus:border-zinc-700 dark:focus:border-zinc-300`,
         error: 'border-red-500 focus:border-red-500',
       },
@@ -40,7 +41,7 @@ const inputSelectTriggerVariants = cva(
     },
     defaultVariants: {
       state: 'default',
-      size: 'md',
+      size: 'sm',
     },
   },
 );
@@ -89,29 +90,29 @@ const InputSelectTrigger = React.forwardRef<
         </>
       )}
       {!loading ? (
-        <SelectPrimitive.Trigger
-          ref={ref}
-          className={inputSelectTriggerVariants({
-            state: error ? 'error' : state,
-            size,
-            className,
-          })}
-          {...props}
-        >
-          {children}
-          <div className="flex items-center gap-2">
-            {props.value && onClear && (
-              <X
-                className="h-4 w-4 cursor-pointer opacity-50"
-                onClick={onClear}
-                data-state="closed"
-              />
-            )}
+        <div className="relative">
+          {props.value && onClear && (
+            <X
+              className="peer h-4 w-4 cursor-pointer opacity-50 hover:opacity-100 transition-default absolute right-8 top-1/2 -translate-y-1/2"
+              onClick={onClear}
+              data-state="closed"
+            />
+          )}
+          <SelectPrimitive.Trigger
+            ref={ref}
+            className={inputSelectTriggerVariants({
+              state: error ? 'error' : state,
+              size,
+              className,
+            })}
+            {...props}
+          >
+            {children}
             <SelectPrimitive.Icon asChild>
               <ChevronDown className="h-4 w-4 opacity-50" />
             </SelectPrimitive.Icon>
-          </div>
-        </SelectPrimitive.Trigger>
+          </SelectPrimitive.Trigger>
+        </div>
       ) : (
         <Skeleton
           width={'100%'}

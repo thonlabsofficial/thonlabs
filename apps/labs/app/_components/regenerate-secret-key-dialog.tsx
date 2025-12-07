@@ -64,7 +64,7 @@ export default function RegenerateSecretKeyDialog({
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="ghost" disabled={isRegenerating}>
-                  Cancel
+                  Back
                 </Button>
               </DialogClose>
               <Button

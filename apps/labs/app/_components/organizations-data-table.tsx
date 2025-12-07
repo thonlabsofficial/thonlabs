@@ -278,9 +278,13 @@ const columns = ({
 
 interface Props {
   organizations: OrganizationDetail[];
+  actions?: React.ReactNode;
 }
 
-export default function OrganizationsDataTable({ organizations }: Props) {
+export default function OrganizationsDataTable({
+  organizations,
+  actions,
+}: Props) {
   const [open, setOpen] = React.useState<string>('');
   const [organization, setOrganization] = React.useState<Organization | null>(
     null,
@@ -293,6 +297,7 @@ export default function OrganizationsDataTable({ organizations }: Props) {
   return (
     <>
       <DataTable
+        actions={actions}
         columns={columns({
           setOpen,
           setOrganization,

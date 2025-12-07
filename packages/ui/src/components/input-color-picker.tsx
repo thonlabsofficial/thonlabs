@@ -122,7 +122,7 @@ interface Props extends React.ComponentPropsWithoutRef<typeof Popover> {
 }
 
 export function InputColorPicker({
-  size = 'md',
+  size = 'sm',
   name,
   loading,
   value,

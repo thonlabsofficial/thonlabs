@@ -10,10 +10,10 @@ type Props = {
 export default function PageWrapper({
   children,
   className,
-  withContainer = true,
+  withContainer = false,
   withPadding = true,
 }: Props & React.HTMLAttributes<HTMLElement>) {
-  const defaultClassName = cn({ 'px-3 mt-8': withPadding }, className);
+  const defaultClassName = cn({ 'p-6': withPadding }, className);
   return (
     <div>
       {withContainer ? (

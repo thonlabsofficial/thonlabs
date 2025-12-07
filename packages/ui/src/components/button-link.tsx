@@ -19,7 +19,7 @@ const buttonLinkVariants = cva(
     },
     defaultVariants: {
       variant: 'destructive',
-      size: 'md',
+      size: 'sm',
     },
   },
 );

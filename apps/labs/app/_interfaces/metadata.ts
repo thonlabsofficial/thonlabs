@@ -17,3 +17,5 @@ export interface Metadata {
   createdAt: string;
   updatedAt: string;
 }
+
+export type MetadataValue = Record<string, any>;

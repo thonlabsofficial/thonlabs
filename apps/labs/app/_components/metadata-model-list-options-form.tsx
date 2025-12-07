@@ -72,10 +72,7 @@ export default function MetadataModelListOptionsForm({ form }: Props) {
             size="sm"
             onClick={() => remove(index)}
             disabled={fields.length === 1}
-            className={cn(
-              '!basis-11 flex-none h-11',
-              index === 0 ? 'mt-[1.15rem]' : '',
-            )}
+            className={cn(index === 0 ? 'mt-[1.15rem]' : '')}
           />
         </div>
       ))}

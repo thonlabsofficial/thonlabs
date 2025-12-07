@@ -91,15 +91,22 @@ export default function OrganizationEditDrawer({
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
-                <InputWrapper>
-                  <Input
-                    label="Name"
-                    maxLength={30}
-                    error={form.formState.errors.name?.message}
-                    {...form.register('name')}
-                  />
-                </InputWrapper>
+              <div className="grid w-full items-center gap-6">
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg">General</Typo>
+                  </header>
+                  <div className="space-y-3">
+                    <InputWrapper>
+                      <Input
+                        label="Name"
+                        maxLength={30}
+                        error={form.formState.errors.name?.message}
+                        {...form.register('name')}
+                      />
+                    </InputWrapper>
+                  </div>
+                </section>
 
                 <section>
                   <header className="flex flex-col gap-0.5 mb-2">
@@ -167,7 +174,7 @@ export default function OrganizationEditDrawer({
           <DrawerFooter>
             <DrawerClose asChild>
               <Button type="button" variant="ghost" disabled={isSaving}>
-                Cancel
+                Back
               </Button>
             </DrawerClose>
             <Button type="submit" loading={isSaving}>

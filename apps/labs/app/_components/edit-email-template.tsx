@@ -418,7 +418,7 @@ export default function EditEmailTemplate({
             disabled={!form.formState.isDirty || isSaving}
             onClick={() => form.reset()}
           >
-            Cancel
+            Back
           </Button>
           <Button
             type="submit"

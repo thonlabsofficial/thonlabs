@@ -83,7 +83,7 @@ export default function EditEmailTemplateSettings({ templateId }: Props) {
               disabled={!form.formState.isDirty || isSaving}
               onClick={() => form.reset()}
             >
-              Cancel
+              Back
             </Button>
             <Button
               type="submit"

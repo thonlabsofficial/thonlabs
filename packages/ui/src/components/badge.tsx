@@ -18,10 +18,10 @@ const badgeVariants = cva(
         info: 'bg-info/20 dark:bg-info/40 border-info/50 dark:border-info/40',
       },
       size: {
-        xs: 'text-[0.6875rem] px-1 py-0',
+        xs: 'text-[0.6875rem] px-1 py-0.5',
         sm: 'px-1 py-0.5',
         md: 'px-2 py-0.5',
-        lg: 'px-3 py-1 text-sm',
+        lg: 'px-2 py-1 text-sm',
       },
     },
     defaultVariants: {

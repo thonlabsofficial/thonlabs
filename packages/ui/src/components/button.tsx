@@ -16,6 +16,8 @@ const buttonVariants = cva(
         opposite: 'bg-foreground text-secondary shadow hover:bg-foreground/90',
         destructive:
           'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+        'outline-destructive':
+          'border text-destructive bg-transparent border-destructive/20 hover:bg-card hover:text-destructive',
         outline: `border text-foreground bg-transparent border-foreground/20 
            hover:bg-card hover:text-accent-foreground group-hover:bg-card group-hover:text-accent-foreground`,
         secondary:
@@ -36,7 +38,7 @@ const buttonVariants = cva(
     },
     defaultVariants: {
       variant: 'primary',
-      size: 'md',
+      size: 'sm',
     },
   },
 );

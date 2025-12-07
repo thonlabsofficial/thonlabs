@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation';
 import { useSession } from '@thonlabs/nextjs';
 import { useEnvironments } from '@/_hooks/use-environments';
 import { Environment } from '@/_interfaces/environment';
+import { User } from '@/_interfaces/user';
 
 export default function useUserSession() {
   const session = useSession();
@@ -13,7 +14,7 @@ export default function useUserSession() {
   }, [environments, environmentId]);
 
   return {
-    user: session.user,
+    user: session.user as unknown as User,
     environmentId: environmentId as string,
     environment: environment as Environment,
     isLoadingUserSession: isLoadingEnvironments || session.isLoadingSession,

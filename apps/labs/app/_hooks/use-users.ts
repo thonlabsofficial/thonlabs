@@ -8,10 +8,19 @@ interface UsersResponse {
   items: User[];
 }
 
-export function useUsers() {
+interface UseUsersParams {
+  executeQuery?: boolean;
+}
+
+const DEFAULT_PARAMS: UseUsersParams = {
+  executeQuery: true,
+};
+
+export function useUsers(params: UseUsersParams = {}) {
+  const { executeQuery } = { ...DEFAULT_PARAMS, ...params };
   const { environmentId } = useParams();
   const { data, error, isLoading } = useSWR<UsersResponse>(
-    envURL('/users', environmentId as string),
+    executeQuery ? envURL('/users', environmentId as string) : null,
     envFetcher(environmentId as string),
   );
 

@@ -8,6 +8,7 @@ import { Clipboard } from './clipboard';
 import { Button } from './button';
 import { Spinner } from './spinner';
 import { InputMessage } from './input-message';
+import { Badge } from './badge';
 
 const inputVariants = cva(
   `flex text-zinc-900 dark:text-zinc-50 w-full rounded-md border border-solid hover:bg-input-hover shadow-sm 
@@ -35,7 +36,7 @@ const inputVariants = cva(
     },
     defaultVariants: {
       state: 'default',
-      size: 'md',
+      size: 'sm',
     },
   },
 );
@@ -51,6 +52,7 @@ export interface InputProps
   withHide?: boolean;
   hidePlaceholder?: string;
   onHiddenClick?: () => void;
+  optional?: boolean;
 }
 
 const loadingSizeMapper = {
@@ -74,6 +76,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       withHide,
       hidePlaceholder = '••••••••••••••••••••••••',
       onHiddenClick,
+      optional,
       ...props
     },
     ref,
@@ -100,7 +103,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {' '}
             {!loading ? (
               <Label htmlFor={props.id} withFocusWithin={!props.readOnly}>
-                {label}
+                {label}{' '}
+                {optional && (
+                  <Badge variant="info" size={'xs'}>
+                    Optional
+                  </Badge>
+                )}
               </Label>
             ) : (
               <Skeleton width={'7.5rem'} height={'0.875rem'} />
@@ -174,7 +182,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ) : (
           <Skeleton
             width={'100%'}
-            height={loadingSizeMapper[size || 'md']}
+            height={loadingSizeMapper[size || 'sm']}
             className="!rounded-md"
           />
         )}

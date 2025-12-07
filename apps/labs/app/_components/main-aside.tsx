@@ -6,6 +6,7 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@repo/ui/core/utils';
 import {
   Building,
+  Database,
   LayoutDashboard,
   Mail,
   Settings,
@@ -37,14 +38,18 @@ function NavItem({
         className: cn(
           'flex items-center gap-2.5 w-full !justify-start !p-2 !font-normal hover:bg-accent/50',
           {
-            'bg-accent text-foreground hover:bg-accent': isActive,
+            'bg-accent/60 text-foreground hover:bg-accent border border-accent':
+              isActive,
           },
           className,
         ),
       })}
       onMouseEnter={() => router.prefetch(href)}
     >
-      {<Icon className="w-4 h-4" />} {label}
+      <Icon className="flex-none basis-5 size-5" />
+      <span className="opacity-0 group-hover:opacity-100 group-hover:visible transition-all duration-150 w-0 group-hover:w-auto overflow-hidden whitespace-nowrap">
+        {label}
+      </span>
     </Link>
   );
 }
@@ -53,10 +58,14 @@ export default function MainAside() {
   const { environmentId } = useParams();
 
   return (
-    <aside className="w-64 fixed top-0 left-0 border-r border-collapse bg-background flex flex-col justify-between p-3 h-[calc(100%-3.5625rem)] mt-[3.5625rem] pb-1.5">
+    <aside
+      className={`group w-[3.8125rem] hover:w-64 fixed top-0 left-0 border-r border-collapse 
+      bg-background flex flex-col justify-between p-3 h-[calc(100%-3.5625rem)] 
+      mt-[3.5625rem] pb-1.5 transition-all duration-150 z-30`}
+    >
       <nav className="w-full flex flex-col justify-between h-[92vh]">
         <div className="flex flex-col gap-5 w-full">
-          <section className="flex flex-col gap-1 w-full">
+          <section className="flex flex-col gap-2.5 w-full mt-1">
             <NavItem
               label="Dashboard"
               href={`/${environmentId}/dashboard`}
@@ -83,31 +92,16 @@ export default function MainAside() {
               icon={Mail}
             />
             <NavItem
+              label="Metadata Models"
+              href={`/${environmentId}/metadata/models`}
+              icon={Database}
+            />
+            <NavItem
               label="Settings"
               href={`/${environmentId}/settings`}
               icon={Settings}
             />
           </section>
-          {/* <section className="flex flex-col gap-1 w-full">
-            <Typo variant={'mutedXs'} className="px-2">
-              Databases
-            </Typo>
-            <NavItem
-              label="Key/Value"
-              href={`/${environmentId}/kv`}
-              icon={DatabaseZap}
-            />
-            <NavItem
-              label="Content"
-              href={`/${environmentId}/content`}
-              icon={Folder}
-            />
-            <NavItem
-              label="Translations"
-              href={`/${environmentId}/translations`}
-              icon={Earth}
-            />
-          </section> */}
         </div>
       </nav>
     </aside>

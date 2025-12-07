@@ -119,7 +119,7 @@ export default function OrganizationEditLogoDrawer({
           <DrawerFooter>
             <DrawerClose asChild>
               <Button type="button" variant="ghost" disabled={isSaving}>
-                Cancel
+                Back
               </Button>
             </DrawerClose>
             <Button

@@ -15,23 +15,23 @@ export default function PageHeader({
   title,
   icon: Icon,
   description,
-  withContainer = true,
+  withContainer = false,
   actions,
 }: Props & React.HTMLAttributes<HTMLElement>) {
   const body = React.useMemo(
     () => (
       <div
-        className={cn('flex items-center justify-between py-8', {
+        className={cn('flex items-center justify-between py-5', {
           'px-3': !withContainer,
         })}
       >
         <div className="flex gap-2">
-          <div className="w-10 h-10 rounded-md bg-foreground/5 flex items-center justify-center border border-foreground/[0.05]">
-            <Icon className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-md bg-foreground/5 flex items-center justify-center border border-foreground/[0.05]">
+            <Icon className="w-4 h-4" />
           </div>
 
           <div className="flex flex-col">
-            <Typo as="h2" variant={'h3'}>
+            <Typo as="h2" variant={'h4'}>
               {title}
             </Typo>
             {description && <Typo variant={'muted'}>{description}</Typo>}

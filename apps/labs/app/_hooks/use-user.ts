@@ -1,4 +1,4 @@
-import { envHeaders, labsEnvAPI } from '@helpers/api';
+import { envHeaders, envURL, labsEnvAPI } from '@helpers/api';
 import { useToast } from '@repo/ui/hooks/use-toast';
 import { APIErrors } from '@helpers/api/api-errors';
 import {
@@ -9,11 +9,12 @@ import {
 import { User } from '@/_interfaces/user';
 import qs from 'qs';
 import useUserSession from '@/_hooks/use-user-session';
-import { revalidateCache } from '@/_services/server-cache-service';
+import { useSWRConfig } from 'swr';
 
 export default function useUser() {
   const { environment } = useUserSession();
   const { toast } = useToast();
+  const { mutate } = useSWRConfig();
 
   async function createUser({ sendInvite, ...payload }: NewUserFormData) {
     try {
@@ -28,12 +29,15 @@ export default function useUser() {
         description: `${user.fullName} has been created successfully${sendInvite ? ' and an invite has been sent' : ''}`,
       });
 
-      await revalidateCache([
-        `/${environment.id}/users`,
-        payload.organizationId
-          ? `/${environment.id}/organizations/${payload.organizationId}`
-          : '',
-      ]);
+      mutate(envURL('/users', environment.id as string));
+      if (payload.organizationId) {
+        mutate(
+          envURL(
+            `/organizations/${payload.organizationId}`,
+            environment.id as string,
+          ),
+        );
+      }
 
       return user;
     } catch (error: any) {
@@ -63,7 +67,7 @@ export default function useUser() {
         description: `${data.fullName} has been updated successfully`,
       });
 
-      await revalidateCache([`/${environment.id}/users`]);
+      mutate(envURL('/users', environment.id as string));
 
       return data;
     } catch (error: any) {
@@ -93,7 +97,7 @@ export default function useUser() {
         description: `${data.fullName} has been ${payload.active ? 'activated' : 'deactivated'} successfully`,
       });
 
-      await revalidateCache([`/${environment.id}/users`]);
+      mutate(envURL('/users', environment.id as string));
 
       return data;
     } catch (error: any) {
@@ -118,7 +122,7 @@ export default function useUser() {
         description: `${data.fullName} has been deleted successfully`,
       });
 
-      await revalidateCache([`/${environment.id}/users`]);
+      mutate(envURL('/users', environment.id as string));
 
       return data;
     } catch (error: any) {

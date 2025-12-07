@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 import { Organization } from '@/_interfaces/organization';
 import Link from 'next/link';
+import { useUsers } from '@/_hooks/use-users';
 
 function DropdownMenuItemAction({
   type,
@@ -96,7 +97,7 @@ const columns = ({
 }: {
   setOpen: React.Dispatch<React.SetStateAction<string>>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  authUser: User;
+  authUser: User | null;
   hideFields?: string[];
 }): ColumnDef<User>[] => [
   {
@@ -337,7 +338,7 @@ const columns = ({
 ];
 
 interface Props {
-  users: User[];
+  users?: User[];
   loading?: boolean;
   hideFields?: string[];
   actions?: React.ReactNode;
@@ -349,22 +350,39 @@ export default function UsersDataTable({
   hideFields,
   actions,
 }: Props) {
+  const { users: usersData, isLoadingUsers } = useUsers({
+    executeQuery: !users,
+  });
+  const usersList = users || usersData;
   const { exclude } = useUser();
+  const { user: authUser } = useUserSession();
   const [open, setOpen] = React.useState('');
   const [user, setUser] = React.useState<User | null>(null);
-  const { user: authUser } = useUserSession();
+
+  /*
+    This memo is necessary to ensure any changes happened
+    on user data e.g.: from "edit user" will be reflected
+    on the "view user" dialog and others.
+  */
+  const selectedUser = React.useMemo(() => {
+    if (!user) {
+      return null;
+    }
+
+    return usersList.find((u) => u.id === user.id) || user;
+  }, [user, usersList]);
 
   return (
     <>
       <DataTable
-        loading={loading}
+        loading={isLoadingUsers || loading}
         columns={columns({
           setOpen,
           setUser,
-          authUser: authUser as User,
+          authUser,
           hideFields,
         })}
-        data={users}
+        data={users || usersData}
         defaultSorting={[{ id: 'fullName', desc: false }]}
         searchFields={['id', 'fullName', 'email']}
         noResultsMessage="No users found"
@@ -376,12 +394,12 @@ export default function UsersDataTable({
         }}
       />
       <InfoUserDrawer
-        user={user as User}
+        user={selectedUser as User}
         open={open === 'info-user-drawer'}
         onOpenChange={() => setOpen('')}
       />
       <EditUserDrawer
-        user={user as User}
+        user={selectedUser as User}
         open={open === 'edit-user-drawer'}
         onOpenChange={() => setOpen('')}
       />
@@ -389,13 +407,13 @@ export default function UsersDataTable({
         open={open === 'delete-user'}
         onOpenChange={() => setOpen('')}
         title="Delete User"
-        description={`Are you sure you want to delete ${user?.fullName}? This action cannot be undone.`}
+        description={`Are you sure you want to delete ${selectedUser?.fullName}? This action cannot be undone.`}
         idleLabel="Yes, delete"
         actingLabel="Deleting..."
         variant="destructive"
         onClick={async () => {
-          if (user) {
-            await exclude(user.id);
+          if (selectedUser) {
+            await exclude(selectedUser.id);
             setOpen('');
             setUser(null);
           }

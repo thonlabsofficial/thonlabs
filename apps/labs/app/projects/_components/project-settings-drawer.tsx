@@ -19,10 +19,13 @@ import {
   DrawerTrigger,
   DrawerScrollArea,
   DrawerContentContainer,
+  DrawerClose,
 } from '@repo/ui/drawer';
 import { Project } from '@/_interfaces/project';
 import useProject from '@/_hooks/use-project';
 import DeleteProjectDialog from './delete-project-dialog';
+import { Card, CardContent, CardHeader } from '@repo/ui/card';
+import { Typo } from '@repo/ui/typo';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -75,33 +78,63 @@ export default function ProjectSettingsDrawer({
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>
           <DrawerScrollArea>
             <DrawerContentContainer>
-              <div className="grid w-full items-center gap-4">
-                <InputWrapper>
-                  <Input
-                    id="appName"
-                    label="PID (Project ID)"
-                    value={project?.id}
-                    readOnly
-                    withCopy
-                  />
-                </InputWrapper>
-                <InputWrapper>
-                  <Input
-                    id="appName"
-                    label="Project Name"
-                    maxLength={25}
-                    error={form.formState.errors.appName?.message}
-                    {...form.register('appName')}
-                  />
-                </InputWrapper>
+              <div className="grid w-full items-center gap-6">
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg">General</Typo>
+                  </header>
+                  <div className="space-y-3">
+                    <InputWrapper>
+                      <Input
+                        id="appName"
+                        label="PID (Project ID)"
+                        value={project?.id}
+                        readOnly
+                        withCopy
+                      />
+                    </InputWrapper>
+                    <InputWrapper>
+                      <Input
+                        id="appName"
+                        label="Project Name"
+                        maxLength={25}
+                        error={form.formState.errors.appName?.message}
+                        {...form.register('appName')}
+                      />
+                    </InputWrapper>
+                  </div>
+                </section>
+
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg">Danger zone</Typo>
+                  </header>
+                  <Card className="border-destructive/60 bg-destructive/10">
+                    <div className="grid grid-cols-[22rem_1fr] gap-24">
+                      <CardHeader
+                        padding
+                        description="Deleting a project is permanent and cannot be undone."
+                      >
+                        Delete Project
+                      </CardHeader>
+                      <CardContent className="flex justify-end items-center p-6">
+                        <DeleteProjectDialog
+                          trigger={
+                            <Button variant="destructive">Delete</Button>
+                          }
+                          project={project}
+                        />
+                      </CardContent>
+                    </div>
+                  </Card>
+                </section>
               </div>
             </DrawerContentContainer>
           </DrawerScrollArea>
           <DrawerFooter>
-            <DeleteProjectDialog
-              trigger={<Button variant="ghost">Delete Project</Button>}
-              project={project}
-            />
+            <DrawerClose asChild>
+              <Button variant="ghost">Cancel</Button>
+            </DrawerClose>
             <Button type="submit" loading={isSaving}>
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>

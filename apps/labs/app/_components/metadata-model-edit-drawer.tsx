@@ -14,6 +14,8 @@ import {
   DrawerTrigger,
   DrawerScrollArea,
   DrawerContentContainer,
+  DrawerDescription,
+  DrawerClose,
 } from '@repo/ui/drawer';
 import { Metadata } from '@/_interfaces/metadata';
 import { Typo } from '@repo/ui/typo';
@@ -21,10 +23,10 @@ import {
   UpdateMetadataFormData,
   UpdateMetadataFormSchema,
 } from '@/_validators/metadata-validators';
-import useMetadata from '@/_hooks/use-metadata-model';
 import MetadataModelListOptionsForm from './metadata-model-list-options-form';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import useMetadataModel from '@/_hooks/use-metadata-model';
+import { Badge } from '@repo/ui/badge';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -92,40 +94,61 @@ export default function MetadataModelEditDrawer({
           <DrawerScrollArea>
             <DrawerContentContainer>
               <div className="grid w-full items-center gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <InputWrapper>
-                    <Input
-                      label="Name"
-                      error={form.formState.errors.name?.message}
-                      maxLength={100}
-                      {...form.register('name')}
-                    />
-                  </InputWrapper>
-                  <InputWrapper>
-                    <Input
-                      label="Key"
-                      value={metadata?.key}
-                      readOnly
-                      withCopy
-                    />
-                  </InputWrapper>
-                </div>
-                <InputWrapper>
-                  <Input
-                    label="Description"
-                    error={form.formState.errors.description?.message as string}
-                    maxLength={255}
-                    {...form.register('description')}
-                  />
-                </InputWrapper>
-                <div className="grid grid-cols-2 gap-4">
-                  <InputWrapper>
-                    <Input label="Type" value={metadata?.type} readOnly />
-                  </InputWrapper>
-                  <InputWrapper>
-                    <Input label="Context" value={metadata?.context} readOnly />
-                  </InputWrapper>
-                </div>
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg" className="flex items-center gap-1">
+                      Model Info
+                    </Typo>
+                  </header>
+                  <div className="space-x-3">
+                    <Typo variant="muted">
+                      Context:{' '}
+                      <Badge variant="outline" size="lg">
+                        {metadata?.context}
+                      </Badge>
+                    </Typo>
+                    <Typo variant="muted">
+                      Key:{' '}
+                      <Badge variant="outline" size="lg">
+                        {metadata?.key}
+                      </Badge>
+                    </Typo>
+                    <Typo variant="muted">
+                      Type:{' '}
+                      <Badge variant="outline" size="lg">
+                        {metadata?.type}
+                      </Badge>
+                    </Typo>
+                  </div>
+                </section>
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg" className="flex items-center gap-1">
+                      General
+                    </Typo>
+                  </header>
+                  <div className="space-y-3">
+                    <InputWrapper>
+                      <Input
+                        label="Name"
+                        error={form.formState.errors.name?.message}
+                        maxLength={100}
+                        {...form.register('name')}
+                      />
+                    </InputWrapper>
+                    <InputWrapper>
+                      <Input
+                        label="Description"
+                        optional
+                        error={
+                          form.formState.errors.description?.message as string
+                        }
+                        maxLength={255}
+                        {...form.register('description')}
+                      />
+                    </InputWrapper>
+                  </div>
+                </section>
                 {metadata?.type === 'List' && (
                   <InputWrapper>
                     <div className="flex items-center justify-between">
@@ -144,10 +167,14 @@ export default function MetadataModelEditDrawer({
             </DrawerContentContainer>
           </DrawerScrollArea>
           <DrawerFooter>
+            <DrawerClose asChild>
+              <Button type="button" variant="ghost" disabled={isSaving}>
+                Back
+              </Button>
+            </DrawerClose>
             <Button
               type="submit"
               loading={isSaving}
-              className="w-full"
               disabled={!form.formState.isDirty || isSaving}
             >
               {isSaving ? 'Saving...' : 'Save Changes'}

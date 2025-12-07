@@ -60,19 +60,30 @@ export default function DeleteProjectDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete Project</DialogTitle>
-          <DialogDescription>
-            Deleting a project will permanently erase all environments, users,
-            and stored data. <strong>This action is irreversible</strong>.
-            Please be absolutely certain before proceeding.
+          <DialogDescription className="space-y-2">
+            <p>
+              Deleting a project will permanently erase all environments, users,
+              and stored data.
+            </p>
+            <p className="text-text">
+              <strong>
+                This action is irreversible. Please be absolutely certain before
+                proceeding.
+              </strong>
+            </p>
           </DialogDescription>
         </DialogHeader>
         <div className="grid w-full items-center gap-3">
           <InputWrapper>
             <Input
               id="appName"
-              size="lg"
-              label={`To confirm, type "${project.appName}" in the field below`}
-              maxLength={30}
+              label={
+                <>
+                  To confirm, type <strong>"Delete {project.appName}"</strong>{' '}
+                  in the field below
+                </>
+              }
+              size="md"
               error={form.formState.errors.appName?.message}
               {...form.register('appName')}
             />
@@ -81,17 +92,17 @@ export default function DeleteProjectDialog({
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="ghost" disabled={isDeleting}>
-              Cancel
+              Back
             </Button>
           </DialogClose>
           <Button
             type="button"
             variant={'destructive'}
             loading={isDeleting}
-            disabled={project.appName !== appName}
+            disabled={appName !== `Delete ${project.appName}`}
             onClick={handleDelete}
           >
-            {isDeleting ? 'Deleting...' : 'Delete this project'}
+            {isDeleting ? 'Deleting...' : 'Confirm deletion'}
           </Button>
         </DialogFooter>
       </DialogContent>

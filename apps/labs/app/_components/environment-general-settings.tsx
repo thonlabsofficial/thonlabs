@@ -144,7 +144,7 @@ export default function EnvironmentGeneralSettings() {
             disabled={!form.formState.isDirty || isSaving}
             onClick={() => form.reset()}
           >
-            Cancel
+            Back
           </Button>
           <Button
             type="submit"

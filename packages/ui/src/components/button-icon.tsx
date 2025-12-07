@@ -29,14 +29,14 @@ const buttonIconVariants = cva(
       },
       size: {
         xs: 'flex-none basis-6 w-6 h-6',
-        sm: 'flex-none basis-[2.125rem] w-[2.125rem] h-[2.125rem]',
+        sm: 'flex-none basis-9 w-9 h-9',
         md: 'flex-none basis-10 w-10 h-10',
         lg: 'flex-none basis-12 w-12 h-12',
       },
     },
     defaultVariants: {
       variant: 'primary',
-      size: 'md',
+      size: 'sm',
     },
   },
 );
@@ -45,9 +45,9 @@ const iconVariants = cva('', {
   variants: {
     iconSize: {
       xs: 'w-3 h-3',
-      sm: 'w-3.5 h-3.5',
-      md: 'w-4 h-4',
-      lg: 'w-5 h-5',
+      sm: 'w-4 h-4',
+      md: 'w-5 h-5',
+      lg: 'w-6 h-6',
     },
   },
 });
@@ -65,7 +65,7 @@ const ButtonIcon = React.forwardRef<HTMLButtonElement, ButtonIconProps>(
     {
       className,
       variant,
-      size,
+      size = 'sm',
       loading,
       disabled,
       children,

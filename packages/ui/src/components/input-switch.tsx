@@ -5,7 +5,7 @@ import { cn } from '../core/utils';
 import { Spinner } from './spinner';
 
 export interface InputSwitchProps extends React.HTMLAttributes<HTMLElement> {
-  label: React.ReactNode;
+  label?: React.ReactNode;
   value: React.ComponentProps<typeof Switch>['value'];
   onCheckedChange: React.ComponentProps<typeof Switch>['onCheckedChange'];
   checked?: React.ComponentProps<typeof Switch>['checked'];
@@ -56,14 +56,16 @@ const InputSwitch = React.forwardRef<HTMLInputElement, InputSwitchProps>(
             <Spinner className="h-6 w-6" />
           )}
         </div>
-        <div className="flex flex-col gap-0.5">
-          <Typo variant={'sm'}>{label}</Typo>
-          {description && (
-            <Typo variant={'muted'} className="font-normal">
-              {description}
-            </Typo>
-          )}
-        </div>
+        {(label || description) && (
+          <div className="flex flex-col gap-0.5">
+            <Typo variant={'sm'}>{label}</Typo>
+            {description && (
+              <Typo variant={'muted'} className="font-normal">
+                {description}
+              </Typo>
+            )}
+          </div>
+        )}
       </label>
     );
   },

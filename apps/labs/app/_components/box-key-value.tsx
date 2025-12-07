@@ -28,7 +28,7 @@ export default function BoxKeyValue({
   ...props
 }: Props) {
   return (
-    <div className={cn('flex flex-col gap-0.5', className)} {...props}>
+    <div className={cn('flex flex-col gap-0.5 group', className)} {...props}>
       <Typo variant={'muted'} className="font-semibold">
         {label}
       </Typo>
@@ -48,6 +48,7 @@ export default function BoxKeyValue({
               value={copyValue || (value?.toString() as string)}
               labels={[Copy, Check]}
               iconLabels
+              className="invisible group-hover:visible opacity-0 group-hover:opacity-100"
             />
           )}
         </Typo>

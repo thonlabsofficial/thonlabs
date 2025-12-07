@@ -121,12 +121,14 @@ const columns = ({
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <ButtonIcon
-                variant="outline"
-                icon={MoreHorizontal}
-                size={'sm'}
-                data-dt-bypass-click="true"
-              />
+              <div className="w-full flex justify-end">
+                <ButtonIcon
+                  variant="outline"
+                  icon={MoreHorizontal}
+                  size={'sm'}
+                  data-dt-bypass-click="true"
+                />
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               className="w-56"

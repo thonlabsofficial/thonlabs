@@ -96,7 +96,7 @@ export default function NewProjectDialog({
                 variant="ghost"
                 disabled={isCreatingProject}
               >
-                Cancel
+                Back
               </Button>
             </DialogClose>
             <Button type="submit" loading={isCreatingProject}>

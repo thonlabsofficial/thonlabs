@@ -27,11 +27,11 @@ function ProjectSection({
 
   return (
     <Card key={project.id} padding>
-      <CardContent className="flex flex-col gap-6">
+      <CardContent className="flex flex-col gap-4">
         <header className="flex justify-between">
           <div className="flex items-center gap-2">
             {!loading ? (
-              <Typo variant={'h4'}>{project.appName}</Typo>
+              <Typo variant={'lg'}>{project.appName}</Typo>
             ) : (
               <Skeleton width={'5.75rem'} height={'1.75rem'} />
             )}

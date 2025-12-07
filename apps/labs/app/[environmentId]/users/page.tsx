@@ -1,33 +1,33 @@
 import { Metadata } from 'next';
 import PageWrapper from '@/_components/page-wrapper';
 import PageHeader from '@/_components/page-header';
-import { SquareUser } from 'lucide-react';
+import { PlusIcon, SquareUser } from 'lucide-react';
 import NewUserDialog from '@/_components/new-user-dialog';
 import UsersDataTable from '@/_components/users-data-table';
-import { fetchUsers } from '@/_services/user-service';
-import { Button } from '@repo/ui/button';
+import { ButtonIcon } from '@repo/ui/button-icon';
 
 export const metadata: Metadata = {
   title: 'Users',
 };
 
-export default async function Users({
-  params,
-}: {
-  params: Promise<{ environmentId: string }>;
-}) {
-  const { environmentId } = await params;
-  const { items: users } = await fetchUsers(environmentId);
-
+export default async function Users() {
   return (
     <>
       <PageHeader
         title="Users"
+        description="The list of all users in this environment"
         icon={SquareUser}
-        actions={<NewUserDialog trigger={<Button>New User</Button>} />}
       />
       <PageWrapper>
-        <UsersDataTable users={users} />
+        <UsersDataTable
+          actions={
+            <NewUserDialog
+              trigger={
+                <ButtonIcon variant="outline" icon={PlusIcon} size="sm" />
+              }
+            />
+          }
+        />
       </PageWrapper>
     </>
   );

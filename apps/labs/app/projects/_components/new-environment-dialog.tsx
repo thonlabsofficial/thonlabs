@@ -95,7 +95,7 @@ export default function NewEnvironmentDialog({
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="ghost" disabled={isCreating}>
-                Cancel
+                Back
               </Button>
             </DialogClose>
             <Button type="submit" loading={isCreating}>
