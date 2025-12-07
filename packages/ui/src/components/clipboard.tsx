@@ -1,15 +1,10 @@
 'use client';
-import React, { ForwardRefExoticComponent, RefAttributes } from 'react';
+import React from 'react';
 import { Button } from './button';
 import { useToast } from '../hooks/use-toast';
 import { cn } from '../core/utils';
 import { ButtonIcon } from './button-icon';
 import { IconType } from 'react-icons';
-import { LucideProps } from 'lucide-react';
-
-type LucideIconType = ForwardRefExoticComponent<
-  Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
->;
 
 type Props = {
   value: string;
