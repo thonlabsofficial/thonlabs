@@ -115,7 +115,7 @@ const createMetadataFieldSchema = (model: Metadata) => {
         });
 
     case 'Boolean':
-      return z.boolean({ required_error: baseErrorMsg });
+      return z.boolean({ required_error: baseErrorMsg }).default(false);
 
     case 'List':
       return z
