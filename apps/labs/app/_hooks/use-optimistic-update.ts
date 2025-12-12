@@ -8,6 +8,7 @@ export default function useOptimisticUpdate() {
     return cache.get(cacheKey) !== undefined;
   }
 
+  /* we should deprecate this, too complicated to maintain */
   function makeMutations(
     data: {
       cacheKey: string;

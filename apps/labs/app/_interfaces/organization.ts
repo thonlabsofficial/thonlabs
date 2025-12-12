@@ -1,3 +1,5 @@
+import { MetadataValue } from '@/_interfaces/metadata';
+
 export interface Organization {
   id: string;
   name: string;
@@ -9,6 +11,7 @@ export interface Organization {
   updatedAt: Date;
   environmentId: string;
   active: boolean;
+  metadata?: MetadataValue;
 }
 
 export interface OrganizationUser {

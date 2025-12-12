@@ -10,15 +10,26 @@ import {
 } from '@/_validators/organizations-validators';
 import { Organization, OrganizationDetail } from '@/_interfaces/organization';
 import { useParams } from 'next/navigation';
-import { revalidateCache } from '@/_services/server-cache-service';
+import useMutation from '@/_hooks/use-mutation';
+import { envURL } from '@helpers/api';
 
 interface Params {
   organizationId?: string;
 }
 
+type HandlingStatus =
+  | 'creating'
+  | 'updating'
+  | 'updating-logo'
+  | 'deleting-logo'
+  | 'updating-status'
+  | 'deleting'
+  | null;
+
 export default function useOrganization(params: Params = {}) {
   const { toast } = useToast();
   const { environmentId } = useParams();
+  const { invalidateQueries } = useMutation();
   const {
     data: organizationData,
     isLoading: isLoadingOrganization,
@@ -27,6 +38,8 @@ export default function useOrganization(params: Params = {}) {
   } = useSWR<OrganizationDetail>(
     () => params.organizationId && `/organizations/${params.organizationId}`,
   );
+  const [handlingOrganization, setHandlingOrganization] =
+    React.useState<HandlingStatus>(null);
 
   const organization = React.useMemo(() => {
     if (!organizationData) {
@@ -40,6 +53,7 @@ export default function useOrganization(params: Params = {}) {
     logo,
     ...payload
   }: NewOrganizationFormData) {
+    setHandlingOrganization('creating');
     try {
       const { data } = await labsEnvAPI.post<Organization>(
         `/organizations`,
@@ -56,7 +70,7 @@ export default function useOrganization(params: Params = {}) {
         description: `Your organization ${payload.name} has been successfully created.`,
       });
 
-      await revalidateCache([`/${environmentId}/organizations`]);
+      invalidateQueries([envURL('/organizations', environmentId as string)]);
 
       return data;
     } catch (error: any) {
@@ -67,6 +81,8 @@ export default function useOrganization(params: Params = {}) {
         variant: 'destructive',
       });
       throw error;
+    } finally {
+      setHandlingOrganization(null);
     }
   }
 
@@ -74,6 +90,7 @@ export default function useOrganization(params: Params = {}) {
     organizationId: string,
     payload: EditOrganizationFormData,
   ) {
+    setHandlingOrganization('updating');
     try {
       const { data } = await labsEnvAPI.patch<Organization>(
         `/organizations/${organizationId}`,
@@ -86,10 +103,7 @@ export default function useOrganization(params: Params = {}) {
         description: `Your organization ${payload.name} has been successfully updated.`,
       });
 
-      await revalidateCache([
-        `/${environmentId}/organizations`,
-        `/${environmentId}/organizations/${organizationId}`,
-      ]);
+      invalidateQueries([envURL('/organizations', environmentId as string)]);
 
       return data;
     } catch (error: any) {
@@ -100,6 +114,8 @@ export default function useOrganization(params: Params = {}) {
         variant: 'destructive',
       });
       throw error;
+    } finally {
+      setHandlingOrganization(null);
     }
   }
 
@@ -108,6 +124,7 @@ export default function useOrganization(params: Params = {}) {
     payload: UpdateLogoOrganizationFormData,
     showNotification = true,
   ) {
+    setHandlingOrganization('updating-logo');
     try {
       await labsEnvAPI.patch<Organization>(
         `/organizations/${organizationId}/logo`,
@@ -120,9 +137,7 @@ export default function useOrganization(params: Params = {}) {
         },
       );
 
-      await revalidateCache([
-        `/${environmentId}/organizations/${organizationId}`,
-      ]);
+      invalidateQueries([envURL('/organizations', environmentId as string)]);
 
       if (showNotification) {
         toast({
@@ -140,10 +155,13 @@ export default function useOrganization(params: Params = {}) {
         });
       }
       throw error;
+    } finally {
+      setHandlingOrganization(null);
     }
   }
 
   async function deleteOrganizationLogo(organizationId: string) {
+    setHandlingOrganization('deleting-logo');
     try {
       toast({
         description: 'Deleting logo...',
@@ -154,10 +172,7 @@ export default function useOrganization(params: Params = {}) {
         envHeaders(environmentId as string),
       );
 
-      await revalidateCache([
-        `/${environmentId}/organizations`,
-        `/${environmentId}/organizations/${organizationId}`,
-      ]);
+      invalidateQueries([envURL('/organizations', environmentId as string)]);
 
       toast({
         title: 'Organization Logo Deleted',
@@ -171,16 +186,19 @@ export default function useOrganization(params: Params = {}) {
         variant: 'destructive',
       });
       throw error;
+    } finally {
+      setHandlingOrganization(null);
     }
   }
 
   async function deleteOrganization(organizationId: string) {
+    setHandlingOrganization('deleting');
     try {
       await labsEnvAPI.delete(
         `/organizations/${organizationId}`,
         envHeaders(environmentId as string),
       );
-      await revalidateCache([`/${environmentId}/organizations`]);
+      invalidateQueries([envURL('/organizations', environmentId as string)]);
 
       toast({
         title: 'Organization Deleted',
@@ -194,6 +212,8 @@ export default function useOrganization(params: Params = {}) {
         variant: 'destructive',
       });
       throw error;
+    } finally {
+      setHandlingOrganization(null);
     }
   }
 
@@ -201,6 +221,7 @@ export default function useOrganization(params: Params = {}) {
     organizationId: string,
     payload: { active: boolean },
   ) {
+    setHandlingOrganization('updating-status');
     try {
       await labsEnvAPI.patch(
         `/organizations/${organizationId}/status`,
@@ -208,10 +229,7 @@ export default function useOrganization(params: Params = {}) {
         envHeaders(environmentId as string),
       );
 
-      await revalidateCache([
-        `/${environmentId}/organizations`,
-        `/${environmentId}/organizations/${organizationId}`,
-      ]);
+      invalidateQueries([envURL('/organizations', environmentId as string)]);
 
       toast({
         title: 'Organization Status Updated',
@@ -225,6 +243,8 @@ export default function useOrganization(params: Params = {}) {
         variant: 'destructive',
       });
       throw error;
+    } finally {
+      setHandlingOrganization(null);
     }
   }
 
@@ -239,5 +259,6 @@ export default function useOrganization(params: Params = {}) {
     isLoadingOrganization,
     isValidatingOrganization,
     organizationError,
+    handlingOrganization,
   };
 }

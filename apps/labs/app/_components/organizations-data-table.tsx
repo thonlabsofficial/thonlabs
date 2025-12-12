@@ -1,10 +1,8 @@
 'use client';
 
 import { ColumnDef, DataTable, DataTableHeaderCell } from '@repo/ui/data-table';
-import { Button } from '@repo/ui/button';
 import React from 'react';
-import NewOrganizationDrawer from '@/_components/new-organization-drawer';
-import { Organization, OrganizationDetail } from '@/_interfaces/organization';
+import { Organization } from '@/_interfaces/organization';
 import { Typo } from '@repo/ui/typo';
 import { Badge } from '@repo/ui/badge';
 import { Clipboard } from '@repo/ui/clipboard';
@@ -38,11 +36,14 @@ import useOrganization from '@/_hooks/use-organization';
 import { ImagePreview } from '@repo/ui/image-preview';
 import OrganizationDeleteAlertDialog from '@/_components/organization-delete-alert-dialog';
 import { useToast } from '@repo/ui/hooks/use-toast';
+import { useOrganizations } from '@/_hooks/use-organizations';
+import OrganizationInfoDrawer from '@/_components/organization-info-drawer';
+import { AlertDialog } from '@repo/ui/alert-dialog';
 
 const columns = ({
   setOpen,
   setOrganization,
-  organizationHook: { deleteOrganizationLogo, updateOrganizationStatus },
+  organizationHook: { updateOrganizationStatus },
   toast,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<string>>;
@@ -249,7 +250,8 @@ const columns = ({
                 {organization.logo && (
                   <DropdownMenuItem
                     onSelect={async () => {
-                      await deleteOrganizationLogo(organization.id);
+                      setOrganization(organization);
+                      setOpen('delete-organization-logo');
                     }}
                   >
                     <ImageMinus className="mr-2 h-4 w-4" />
@@ -277,22 +279,34 @@ const columns = ({
 ];
 
 interface Props {
-  organizations: OrganizationDetail[];
   actions?: React.ReactNode;
 }
 
-export default function OrganizationsDataTable({
-  organizations,
-  actions,
-}: Props) {
+export default function OrganizationsDataTable({ actions }: Props) {
+  const { organizations: organizationsData, isLoadingOrganizations } =
+    useOrganizations();
   const [open, setOpen] = React.useState<string>('');
   const [organization, setOrganization] = React.useState<Organization | null>(
     null,
   );
   const router = useRouter();
-  const { environmentId } = useParams();
   const organizationHook = useOrganization();
   const { toast } = useToast();
+
+  /*
+    This memo is necessary to ensure any changes happened
+    on user data e.g.: from "edit user" will be reflected
+    on the "view user" dialog and others.
+  */
+  const selectedOrganization = React.useMemo(() => {
+    if (!organization) {
+      return null;
+    }
+
+    return (
+      organizationsData.find((o) => o.id === organization.id) || organization
+    );
+  }, [organization, organizationsData]);
 
   return (
     <>
@@ -304,33 +318,55 @@ export default function OrganizationsDataTable({
           organizationHook,
           toast,
         })}
-        data={organizations}
+        data={organizationsData}
+        loading={isLoadingOrganizations}
         defaultSorting={[{ id: 'name', desc: false }]}
         searchFields={['id', 'name']}
         noResultsMessage="No organizations found"
         searchPlaceholder="Search by name..."
         onRowClick={(_, row) => {
-          router.push(`/${environmentId}/organizations/${row.original.id}`);
-        }}
-        onRowHover={(_, row) => {
-          router.prefetch(`/${environmentId}/organizations/${row.original.id}`);
+          setOrganization(row.original);
+          setOpen('info-organization-drawer');
         }}
       />
 
+      <OrganizationInfoDrawer
+        organization={selectedOrganization as Organization}
+        open={open === 'info-organization-drawer'}
+        onOpenChange={() => setOpen('')}
+      />
       <OrganizationEditDrawer
-        organization={organization as Organization}
+        organization={selectedOrganization as Organization}
         open={open === 'edit-organization-drawer'}
         onOpenChange={() => setOpen('')}
       />
       <OrganizationEditLogoDrawer
-        organization={organization as Organization}
+        organization={selectedOrganization as Organization}
         open={open === 'edit-organization-logo-drawer'}
         onOpenChange={() => setOpen('')}
       />
       <OrganizationDeleteAlertDialog
         open={open === 'delete-organization'}
         setOpen={setOpen}
-        organization={organization as Organization}
+        organization={selectedOrganization as Organization}
+      />
+      <AlertDialog
+        open={open === 'delete-organization-logo'}
+        title="Delete Logo"
+        description="Are you sure you want to delete the logo? No worries, you can always upload a new one later."
+        idleLabel="Yes, delete"
+        actingLabel="Deleting..."
+        variant="destructive"
+        onClick={async () => {
+          if (selectedOrganization) {
+            await organizationHook.deleteOrganizationLogo(
+              selectedOrganization.id,
+            );
+            setOpen('');
+            setOrganization(null);
+          }
+        }}
+        isActing={organizationHook.handlingOrganization === 'deleting-logo'}
       />
     </>
   );

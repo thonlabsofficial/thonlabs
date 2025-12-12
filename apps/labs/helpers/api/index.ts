@@ -69,8 +69,8 @@ async function handleResponseError(error: any) {
 function envURL(url: string, envID: string, queryString: any = {}) {
   return `${url}${qs.stringify(
     {
-      ...queryString,
       c: envID?.split('-')?.reverse()[0]?.substring(0, 5),
+      ...queryString,
     },
     { addQueryPrefix: true },
   )}`;

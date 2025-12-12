@@ -12,22 +12,41 @@ const ScrollArea = React.forwardRef<
     forceMount?: React.ComponentProps<
       typeof ScrollAreaPrimitive.ScrollAreaScrollbar
     >['forceMount'];
+    orientation?: 'horizontal' | 'vertical';
+    wrapperClassName?: string;
   } & React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
->(({ className, children, scrollBackground, forceMount, ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    className="relative overflow-hidden"
-    {...props}
-  >
-    <ScrollAreaPrimitive.Viewport
-      className={cn('h-full w-full rounded-[inherit]', className)}
+>(
+  (
+    {
+      className,
+      children,
+      scrollBackground,
+      forceMount,
+      orientation = 'vertical',
+      wrapperClassName,
+      ...props
+    },
+    ref,
+  ) => (
+    <ScrollAreaPrimitive.Root
+      ref={ref}
+      className={cn('relative overflow-hidden', wrapperClassName)}
+      {...props}
     >
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar background={scrollBackground} forceMount={forceMount} />
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
-));
+      <ScrollAreaPrimitive.Viewport
+        className={cn('h-full w-full rounded-[inherit]', className)}
+      >
+        {children}
+      </ScrollAreaPrimitive.Viewport>
+      <ScrollBar
+        background={scrollBackground}
+        forceMount={forceMount}
+        orientation={orientation}
+      />
+      <ScrollAreaPrimitive.Corner />
+    </ScrollAreaPrimitive.Root>
+  ),
+);
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 
 const ScrollBar = React.forwardRef<

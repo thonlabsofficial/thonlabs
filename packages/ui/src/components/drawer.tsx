@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as DrawerPrimitive from '@radix-ui/react-dialog';
 import { cn } from '../core/utils';
 import { X } from 'lucide-react';
+import { ScrollArea } from './scroll-area';
 
 const DrawerDepthContext = React.createContext(0);
 
@@ -68,7 +69,7 @@ const DrawerContent = ({
         ref={ref}
         className={cn(
           `
-        fixed w-[40rem] top-0 z-50 flex
+        fixed w-[50rem] top-0 z-50 flex
         flex-col bg-card !select-auto !cursor-auto 
         inset-y-0 right-0 h-full border-l
         data-[state=open]:animate-slide-fade-in-from-right 
@@ -172,10 +173,7 @@ const DrawerHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      'grid sm:text-left pl-5 pr-12 pt-5 pb-5 mb-6 border-b',
-      className,
-    )}
+    className={cn('grid sm:text-left pl-5 pr-12 pt-5 pb-5 border-b', className)}
     {...props}
   />
 );
@@ -233,18 +231,11 @@ const DrawerDescription = ({
 const DrawerScrollArea = ({
   className,
   children,
-  ref,
   ...props
-}: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
-  ref?: React.Ref<HTMLDivElement>;
-}) => (
-  <div
-    className={cn('flex h-[calc(100%-4.5rem)]', className)}
-    {...props}
-    ref={ref}
-  >
+}: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>) => (
+  <ScrollArea wrapperClassName="h-[calc(100%-4rem)]">
     <div className="w-full">{children}</div>
-  </div>
+  </ScrollArea>
 );
 
 const DrawerContentContainer = ({
@@ -255,7 +246,7 @@ const DrawerContentContainer = ({
 }: React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
   ref?: React.Ref<HTMLDivElement>;
 }) => (
-  <div className={cn('px-5', className)} {...props} ref={ref}>
+  <div className={cn('p-5', className)} {...props} ref={ref}>
     {children}
   </div>
 );

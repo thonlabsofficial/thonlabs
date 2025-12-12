@@ -19,7 +19,7 @@ import {
 } from '@repo/ui/drawer';
 import { Typo, typoVariants } from '@repo/ui/typo';
 import { ButtonIcon } from '@repo/ui/button-icon';
-import { TrashIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 import {
   EditOrganizationFormData,
   editOrganizationFormSchema,
@@ -28,6 +28,8 @@ import { Badge } from '@repo/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import useOrganization from '@/_hooks/use-organization';
 import { Organization } from '@/_interfaces/organization';
+import MetadataValueForm from '@/_components/metadata-value-form';
+import { useMetadataModels } from '@/_hooks/use-metadata-models';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -40,8 +42,9 @@ export default function OrganizationEditDrawer({
   ...props
 }: Props & React.ComponentProps<typeof Drawer>) {
   const [open, setOpen] = React.useState(props.open || false);
+  const { metadataModels } = useMetadataModels('Organization');
   const form = useForm<EditOrganizationFormData>({
-    resolver: zodResolver(editOrganizationFormSchema),
+    resolver: zodResolver(editOrganizationFormSchema({ metadataModels })),
   });
   const domainsFields = useFieldArray<EditOrganizationFormData>({
     control: form.control,
@@ -72,6 +75,16 @@ export default function OrganizationEditDrawer({
       name: organization.name,
       domains: organization.domains,
     });
+
+    if (organization.metadata) {
+      Object.keys(organization.metadata).forEach((key) => {
+        let value = organization.metadata![key];
+        if (value !== null && typeof value === 'object') {
+          value = JSON.stringify(value);
+        }
+        form.setValue(`metadata.${key}` as any, value);
+      });
+    }
   }
 
   return (
@@ -132,12 +145,12 @@ export default function OrganizationEditDrawer({
                           />
                         </InputWrapper>
                         <ButtonIcon
-                          icon={TrashIcon}
+                          icon={XIcon}
                           type="button"
                           variant="destructive"
                           size="sm"
                           onClick={() => domainsFields.remove(index)}
-                          className="!basis-11 flex-none h-11"
+                          className="!basis-9 flex-none h-9"
                         />
                       </div>
                     ))}
@@ -145,7 +158,7 @@ export default function OrganizationEditDrawer({
 
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     className="w-full mt-2"
                     onClick={() => domainsFields.append({ domain: '' })}
@@ -168,16 +181,33 @@ export default function OrganizationEditDrawer({
                     </Alert>
                   )}
                 </section>
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg" className="flex items-center gap-1">
+                      Metadata
+                    </Typo>
+                  </header>
+                  <MetadataValueForm
+                    form={form}
+                    metadataModels={metadataModels}
+                    context="organizations"
+                  />
+                </section>
               </div>
             </DrawerContentContainer>
           </DrawerScrollArea>
           <DrawerFooter>
             <DrawerClose asChild>
-              <Button type="button" variant="ghost" disabled={isSaving}>
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isSaving}
+                size="md"
+              >
                 Back
               </Button>
             </DrawerClose>
-            <Button type="submit" loading={isSaving}>
+            <Button type="submit" loading={isSaving} size="md">
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>
           </DrawerFooter>

@@ -9,12 +9,12 @@ import {
 import { User } from '@/_interfaces/user';
 import qs from 'qs';
 import useUserSession from '@/_hooks/use-user-session';
-import { useSWRConfig } from 'swr';
+import useMutation from '@/_hooks/use-mutation';
 
 export default function useUser() {
   const { environment } = useUserSession();
   const { toast } = useToast();
-  const { mutate } = useSWRConfig();
+  const { invalidateQueries } = useMutation();
 
   async function createUser({ sendInvite, ...payload }: NewUserFormData) {
     try {
@@ -29,14 +29,9 @@ export default function useUser() {
         description: `${user.fullName} has been created successfully${sendInvite ? ' and an invite has been sent' : ''}`,
       });
 
-      mutate(envURL('/users', environment.id as string));
+      invalidateQueries([envURL('/users', environment.id)]);
       if (payload.organizationId) {
-        mutate(
-          envURL(
-            `/organizations/${payload.organizationId}`,
-            environment.id as string,
-          ),
-        );
+        invalidateQueries([envURL('/organizations', environment.id)]);
       }
 
       return user;
@@ -67,7 +62,7 @@ export default function useUser() {
         description: `${data.fullName} has been updated successfully`,
       });
 
-      mutate(envURL('/users', environment.id as string));
+      invalidateQueries([envURL('/users', environment.id)]);
 
       return data;
     } catch (error: any) {
@@ -97,7 +92,7 @@ export default function useUser() {
         description: `${data.fullName} has been ${payload.active ? 'activated' : 'deactivated'} successfully`,
       });
 
-      mutate(envURL('/users', environment.id as string));
+      invalidateQueries([envURL('/users', environment.id)]);
 
       return data;
     } catch (error: any) {
@@ -122,7 +117,7 @@ export default function useUser() {
         description: `${data.fullName} has been deleted successfully`,
       });
 
-      mutate(envURL('/users', environment.id as string));
+      invalidateQueries([envURL('/users', environment.id)]);
 
       return data;
     } catch (error: any) {

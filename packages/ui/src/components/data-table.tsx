@@ -25,6 +25,7 @@ import { Input } from '@repo/ui/input';
 import Utils from '@repo/utils';
 import { Skeleton } from './skeleton';
 import { ArrowUp } from 'lucide-react';
+import { ScrollArea } from './scroll-area';
 
 function DataTableHeaderCell({
   accessorKey,
@@ -68,7 +69,7 @@ function DataTableLoaderCell({
       {headerGroup.headers.map((header) => {
         return (
           <TableCell loading key={`loading-${header.id}`} className="py-3">
-            <Skeleton className="!w-3/4 h-6" />
+            <Skeleton className="min-w-4 !w-3/4 h-6" />
           </TableCell>
         );
       })}
@@ -87,6 +88,8 @@ interface DataTableProps<TData, TValue> {
   searchFields?: string[];
   loading?: boolean;
   actions?: React.ReactNode;
+  wrapperClassName?: string;
+  className?: string;
   onRowHover?: (e: React.MouseEvent, row: Row<TData>) => void;
   onRowClick?: (e: React.MouseEvent, row: Row<TData>) => void;
 }
@@ -102,13 +105,16 @@ function DataTable<TData, TValue>({
   searchFields = [],
   loading,
   actions,
+  wrapperClassName,
+  className,
   onRowHover,
   onRowClick,
   ...props
 }: DataTableProps<TData, TValue> & React.HTMLAttributes<HTMLElement>) {
   const [sorting, setSorting] = React.useState<SortingState>(defaultSorting);
   const [globalFilter, setGlobalFilter] = React.useState(defaultSearch);
-
+  const tableWrapperRef = React.useRef<HTMLTableElement>(null);
+  const [tableHeight, setTableHeight] = React.useState<number>(186.5);
   const memoizedColumns = React.useMemo(() => columns, [columns]);
   const memoizedData = React.useMemo(() => data, [data]);
 
@@ -145,10 +151,34 @@ function DataTable<TData, TValue>({
     [],
   );
 
+  React.useEffect(() => {
+    if (!tableWrapperRef.current) return;
+
+    const updateHeight = () => {
+      if (tableWrapperRef.current) {
+        setTableHeight(tableWrapperRef.current.scrollHeight);
+      }
+    };
+
+    updateHeight();
+
+    const resizeObserver = new ResizeObserver(updateHeight);
+    resizeObserver.observe(tableWrapperRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [data, loading]);
+
   return (
-    <div {...props}>
+    <div className={cn('w-full max-w-full', className)} {...props}>
       {searchFields.length > 0 && (
-        <div className="flex justify-between gap-3 mb-4">
+        <div
+          className={cn(
+            'flex w-full justify-between gap-3 mb-4',
+            wrapperClassName,
+          )}
+        >
           <div className="min-w-[22rem]">
             <Input
               placeholder={searchPlaceholder}
@@ -160,8 +190,16 @@ function DataTable<TData, TValue>({
           {actions && <div className="flex items-center gap-2">{actions}</div>}
         </div>
       )}
-      <div className="rounded-md border overflow-hidden">
-        <Table>
+      <ScrollArea
+        className={'rounded-md border [&>div]:h-full'}
+        wrapperClassName={cn('w-full min-w-0 relative', wrapperClassName)}
+        style={{ height: tableHeight || 'auto' }}
+        orientation="horizontal"
+      >
+        <Table
+          ref={tableWrapperRef}
+          className="absolute inset-0 [&_th]:whitespace-nowrap [&_td]:whitespace-nowrap"
+        >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow header key={headerGroup.id} withHover={false}>
@@ -245,7 +283,7 @@ function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

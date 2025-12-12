@@ -23,6 +23,8 @@ const buttonIconVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'text-text hover:bg-foreground/10 hover:text-accent-foreground',
+        'ghost-destructive':
+          'text-text hover:bg-destructive/40 hover:text-destructive-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         linkGhost:
           'text-zinc-500 hover:bg-accent hover:text-accent-foreground hover:text-zinc-600 dark:hover:text-zinc-300',
@@ -30,7 +32,7 @@ const buttonIconVariants = cva(
         info: 'bg-info shadow-sm hover:bg-info/90',
       },
       size: {
-        xs: 'flex-none basis-6 w-6 h-6',
+        xs: 'flex-none basis-[1.625rem] w-[1.625rem] h-[1.625rem]',
         sm: 'flex-none basis-9 w-9 h-9',
         md: 'flex-none basis-10 w-10 h-10',
         lg: 'flex-none basis-12 w-12 h-12',

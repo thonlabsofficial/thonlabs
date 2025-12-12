@@ -342,6 +342,7 @@ interface Props {
   loading?: boolean;
   hideFields?: string[];
   actions?: React.ReactNode;
+  wrapperClassName?: string;
 }
 
 export default function UsersDataTable({
@@ -349,6 +350,7 @@ export default function UsersDataTable({
   loading,
   hideFields,
   actions,
+  wrapperClassName,
 }: Props) {
   const { users: usersData, isLoadingUsers } = useUsers({
     executeQuery: !users,
@@ -388,6 +390,7 @@ export default function UsersDataTable({
         noResultsMessage="No users found"
         searchPlaceholder="Search by name, email or UID..."
         actions={actions}
+        wrapperClassName={wrapperClassName}
         onRowClick={(_, row) => {
           setUser(row.original);
           setOpen('info-user-drawer');

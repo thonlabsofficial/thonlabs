@@ -118,7 +118,12 @@ export default function OrganizationEditLogoDrawer({
           </DrawerScrollArea>
           <DrawerFooter>
             <DrawerClose asChild>
-              <Button type="button" variant="ghost" disabled={isSaving}>
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isSaving}
+                size="md"
+              >
                 Back
               </Button>
             </DrawerClose>
@@ -126,6 +131,7 @@ export default function OrganizationEditLogoDrawer({
               type="submit"
               loading={isSaving}
               disabled={!form.formState.isDirty || isSaving}
+              size="md"
             >
               {isSaving ? 'Saving...' : 'Save Changes'}
             </Button>

@@ -29,6 +29,8 @@ import { Alert, AlertDescription, AlertTitle } from '@repo/ui/alert';
 import { InputSingleFile } from '@repo/ui/input-single-file';
 import { ImagePreview } from '@repo/ui/image-preview';
 import useOrganization from '@/_hooks/use-organization';
+import { useMetadataModels } from '@/_hooks/use-metadata-models';
+import MetadataValueForm from '@/_components/metadata-value-form';
 
 type Props = {
   trigger: React.ReactNode;
@@ -37,12 +39,13 @@ type Props = {
 export default function NewOrganizationDrawer({
   trigger,
 }: Props & React.ComponentProps<typeof Drawer>) {
+  const { metadataModels } = useMetadataModels('Organization');
   const [open, setOpen] = React.useState(false);
   const form = useForm<NewOrganizationFormData>({
     defaultValues: {
       domains: [],
     },
-    resolver: zodResolver(newOrganizationFormSchema),
+    resolver: zodResolver(newOrganizationFormSchema({ metadataModels })),
   });
   const domainsFields = useFieldArray<NewOrganizationFormData>({
     control: form.control,
@@ -171,7 +174,7 @@ export default function NewOrganizationDrawer({
 
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     className="w-full mt-2"
                     onClick={() => domainsFields.append({ domain: '' })}
@@ -193,6 +196,19 @@ export default function NewOrganizationDrawer({
                       </AlertDescription>
                     </Alert>
                   )}
+                </section>
+
+                <section>
+                  <header className="flex flex-col gap-0.5 mb-2">
+                    <Typo variant="lg" className="flex items-center gap-1">
+                      Metadata
+                    </Typo>
+                  </header>
+                  <MetadataValueForm
+                    form={form}
+                    metadataModels={metadataModels}
+                    context="organizations"
+                  />
                 </section>
               </div>
             </DrawerContentContainer>

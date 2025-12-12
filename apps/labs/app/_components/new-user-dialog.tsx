@@ -105,7 +105,8 @@ export default function NewUserDrawer({
         <DrawerHeader>
           <DrawerTitle>Create User</DrawerTitle>
           <DrawerDescription>
-            Complete the information below to create a new user.
+            Complete the information below to create a new user
+            {organization ? ` for ${organization.name}` : ''}.
           </DrawerDescription>
         </DrawerHeader>
         <form className="h-full" onSubmit={form.handleSubmit(onSubmit)}>

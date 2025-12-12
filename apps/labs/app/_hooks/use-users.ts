@@ -10,17 +10,22 @@ interface UsersResponse {
 
 interface UseUsersParams {
   executeQuery?: boolean;
+  filters?: {
+    organizationId?: string;
+    active?: boolean;
+  };
 }
 
 const DEFAULT_PARAMS: UseUsersParams = {
   executeQuery: true,
+  filters: {},
 };
 
 export function useUsers(params: UseUsersParams = {}) {
-  const { executeQuery } = { ...DEFAULT_PARAMS, ...params };
+  const { executeQuery, filters } = { ...DEFAULT_PARAMS, ...params };
   const { environmentId } = useParams();
   const { data, error, isLoading } = useSWR<UsersResponse>(
-    executeQuery ? envURL('/users', environmentId as string) : null,
+    executeQuery ? envURL('/users', environmentId as string, filters) : null,
     envFetcher(environmentId as string),
   );
 
