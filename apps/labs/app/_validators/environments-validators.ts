@@ -8,6 +8,15 @@ export const NewEnvironmentFormSchema = z.object({
     .min(1, { message: ErrorMessages.RequiredField })
     .max(25, { message: 'Environment name must be 25 characters or fewer' }),
   appURL: z.string().url(),
+  copyFromEnvId: z.string().optional(),
+  copyOptions: z
+    .object({
+      authBuilderOptions: z.boolean(),
+      emailTemplates: z.boolean(),
+      metadataModels: z.boolean(),
+      credentials: z.boolean(),
+    })
+    .optional(),
 });
 
 export type NewEnvironmentFormData = z.infer<typeof NewEnvironmentFormSchema>;
