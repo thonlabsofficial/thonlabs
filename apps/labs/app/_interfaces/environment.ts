@@ -1,5 +1,6 @@
 import { EnvironmentData } from '@thonlabs/nextjs';
 import { Project } from './project';
+import { MetadataValue } from './metadata';
 
 export enum CustomDomainStatus {
   Verifying = 'Verifying',
@@ -30,4 +31,5 @@ export interface EnvironmentDetail extends Environment, EnvironmentData {
   customDomainLastValidationAt?: Date;
   customDomainTXT?: string;
   customDomainTXTStatus?: string;
+  metadata?: MetadataValue;
 }

@@ -23,7 +23,7 @@ import { InputMessage } from '@repo/ui/input-message';
 interface Props {
   form: UseFormReturn<any>;
   metadataModels: Metadata[];
-  context: 'users' | 'organizations';
+  context: 'users' | 'organizations' | 'environments';
 }
 
 function MetadataModelInfo({ model }: { model: Metadata }) {

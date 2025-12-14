@@ -1,5 +1,5 @@
 export const METADATA_CONTEXT_OPTIONS = [
-  // { label: 'Environment', value: 'Environment' }, // TODO: soon
+  { label: 'Environment', value: 'Environment' },
   { label: 'User', value: 'User' },
   { label: 'Organization', value: 'Organization' },
 ] as const;

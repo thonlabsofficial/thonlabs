@@ -344,6 +344,43 @@ export default function useEnvironment(
     }
   }
 
+  async function updateEnvironmentMetadata(
+    environmentId: string,
+    metadata: Record<string, any>,
+  ) {
+    try {
+      await labsAPI.patch(`/environments/${environmentId}/metadata`, {
+        metadata,
+      });
+
+      makeMutations([
+        {
+          cacheKey: `/environments/${environmentId}`,
+          populateCache: (_, environment) => ({
+            ...environment,
+            metadata,
+          }),
+        },
+      ]);
+
+      toast({
+        title: 'Metadata Updated',
+        description: 'Environment metadata has been successfully updated.',
+      });
+
+      return Promise.resolve();
+    } catch (error: any) {
+      console.error('useEnvironment.updateEnvironmentMetadata', error);
+      toast({
+        title: 'Update Error',
+        description: error?.response?.data?.message || APIErrors.GenericForm,
+        variant: 'destructive',
+      });
+
+      return Promise.reject(error);
+    }
+  }
+
   async function verifyCustomDomain(environmentId: string) {
     try {
       const { data } = await labsAPI.post(
@@ -406,5 +443,6 @@ export default function useEnvironment(
     setCustomDomain,
     verifyCustomDomain,
     reverifyCustomDomain,
+    updateEnvironmentMetadata,
   };
 }

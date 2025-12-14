@@ -1,5 +1,5 @@
 export type MetadataType = 'String' | 'Number' | 'Boolean' | 'JSON' | 'List';
-export type MetadataContext = 'User' | 'Organization';
+export type MetadataContext = 'User' | 'Organization' | 'Environment';
 
 export interface MetadataOption {
   label: string;
