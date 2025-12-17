@@ -14,6 +14,11 @@ const config: DeployConfig = {
       serviceId: 'f0bcca10-7846-4f20-b9f3-ea4bc2e7def1',
     },
   },
+  www: {
+    prod: {
+      serviceId: '2d0b93bf-1edd-4aff-a3a3-ef7dc9950549',
+    },
+  },
 };
 
 async function deploy(project: string, environment: string) {
