@@ -3,7 +3,7 @@
 import { Button } from '@repo/ui/button';
 import { Input, InputWrapper } from '@repo/ui/input';
 import React, { useTransition } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import {
   NewEnvironmentFormData,
   NewEnvironmentFormSchema,
@@ -22,6 +22,15 @@ import {
 import { useRouter } from 'next/navigation';
 import { Project } from '@/_interfaces/project';
 import useEnvironment from '@/_hooks/use-environment';
+import { useEnvironments } from '@/_hooks/use-environments';
+import {
+  InputSelect,
+  InputSelectContent,
+  InputSelectItem,
+  InputSelectTrigger,
+  InputSelectValue,
+} from '@repo/ui/input-select';
+import { InputSwitch } from '@repo/ui/input-switch';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -35,10 +44,27 @@ export default function NewEnvironmentDialog({
 }: Props & React.ComponentProps<typeof Dialog>) {
   const form = useForm<NewEnvironmentFormData>({
     resolver: zodResolver(NewEnvironmentFormSchema),
+    defaultValues: {
+      copyOptions: {
+        authBuilderOptions: true,
+        emailTemplates: true,
+        metadataModels: true,
+        credentials: true,
+      },
+    },
   });
   const { createEnvironment } = useEnvironment();
+  const { environments } = useEnvironments();
   const [isCreating, startCreatingTransition] = useTransition();
   const router = useRouter();
+
+  // Filter environments to only show environments from the same project
+  const projectEnvironments = React.useMemo(
+    () => environments.filter((env) => env.project.id === project.id),
+    [environments, project.id],
+  );
+
+  const copyFromEnvId = form.watch('copyFromEnvId');
 
   function onSubmit(payload: NewEnvironmentFormData) {
     startCreatingTransition(async () => {
@@ -91,6 +117,89 @@ export default function NewEnvironmentDialog({
                 {...form.register('appURL')}
               />
             </InputWrapper>
+            <InputWrapper>
+              <Controller
+                name="copyFromEnvId"
+                control={form.control}
+                render={({ field }) => (
+                  <InputSelect
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <InputSelectTrigger
+                      label="Copy from (optional)"
+                      onClear={() => field.onChange(undefined)}
+                    >
+                      <InputSelectValue placeholder="Select an environment to copy from" />
+                    </InputSelectTrigger>
+                    <InputSelectContent>
+                      {projectEnvironments.map((env) => (
+                        <InputSelectItem key={env.id} value={env.id}>
+                          {env.name}
+                        </InputSelectItem>
+                      ))}
+                    </InputSelectContent>
+                  </InputSelect>
+                )}
+              />
+            </InputWrapper>
+            {copyFromEnvId && (
+              <div className="grid w-full items-center gap-3 border rounded-md p-4 bg-muted/30">
+                <p className="text-sm font-medium">Copy Options</p>
+                <Controller
+                  name="copyOptions.authBuilderOptions"
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSwitch
+                      label="Auth Builder Options"
+                      description="Copy authentication configuration and settings"
+                      checked={field.value}
+                      value={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+                <Controller
+                  name="copyOptions.emailTemplates"
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSwitch
+                      label="Email Templates"
+                      description="Copy all email templates"
+                      checked={field.value}
+                      value={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+                <Controller
+                  name="copyOptions.metadataModels"
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSwitch
+                      label="Metadata Models"
+                      description="Copy metadata model definitions"
+                      checked={field.value}
+                      value={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+                <Controller
+                  name="copyOptions.credentials"
+                  control={form.control}
+                  render={({ field }) => (
+                    <InputSwitch
+                      label="Credentials"
+                      description="Copy API credentials and keys"
+                      checked={field.value}
+                      value={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+              </div>
+            )}
           </div>
           <DialogFooter>
             <DialogClose asChild>

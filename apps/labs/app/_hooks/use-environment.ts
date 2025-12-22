@@ -55,10 +55,30 @@ export default function useEnvironment(
     payload: NewEnvironmentFormData,
   ) {
     try {
-      const { data } = await labsAPI.post<Environment>('/environments', {
-        ...payload,
+      // Prepare the API payload
+      const apiPayload: any = {
+        name: payload.name,
+        appURL: payload.appURL,
         projectId,
-      });
+      };
+
+      // Add copy options if copyFromEnvId is provided
+      if (payload.copyFromEnvId) {
+        apiPayload.copyFromEnvId = payload.copyFromEnvId;
+        
+        // Convert copyOptions to an array of items to copy
+        if (payload.copyOptions) {
+          const itemsToCopy = Object.entries(payload.copyOptions)
+            .filter(([_, shouldCopy]) => shouldCopy)
+            .map(([key, _]) => key);
+          
+          if (itemsToCopy.length > 0) {
+            apiPayload.copyItems = itemsToCopy;
+          }
+        }
+      }
+
+      const { data } = await labsAPI.post<Environment>('/environments', apiPayload);
 
       toast({
         title: 'Welcome to your environment',
