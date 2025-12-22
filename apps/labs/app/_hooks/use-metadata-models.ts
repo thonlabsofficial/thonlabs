@@ -8,7 +8,7 @@ interface MetadataModelsResponse {
   items: Metadata[];
 }
 
-export function useMetadataModels(context?: 'User' | 'Organization') {
+export function useMetadataModels(context?: 'User' | 'Organization' | 'Environment') {
   const { environmentId } = useParams();
   const url = context
     ? `${envURL('/metadata/models', environmentId as string)}&context=${context}`
