@@ -8,7 +8,7 @@ export const NewEnvironmentFormSchema = z.object({
     .min(1, { message: ErrorMessages.RequiredField })
     .max(25, { message: 'Environment name must be 25 characters or fewer' }),
   appURL: z.string().url(),
-  copyFromEnvId: z.string().optional(),
+  copyFromEnvironmentId: z.string().optional(),
   copyOptions: z
     .object({
       authBuilderOptions: z.boolean(),

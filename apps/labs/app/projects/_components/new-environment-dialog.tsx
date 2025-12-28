@@ -31,6 +31,7 @@ import {
   InputSelectValue,
 } from '@repo/ui/input-select';
 import { InputSwitch } from '@repo/ui/input-switch';
+import { Badge } from '@repo/ui/badge';
 
 type Props = {
   trigger?: React.ReactNode;
@@ -60,11 +61,11 @@ export default function NewEnvironmentDialog({
 
   // Filter environments to only show environments from the same project
   const projectEnvironments = React.useMemo(
-    () => environments.filter((env) => env.project.id === project.id),
-    [environments, project.id],
+    () => environments.filter((env) => env.project?.id === project?.id),
+    [environments, project],
   );
 
-  const copyFromEnvId = form.watch('copyFromEnvId');
+  const copyFromEnvId = form.watch('copyFromEnvironmentId');
 
   function onSubmit(payload: NewEnvironmentFormData) {
     startCreatingTransition(async () => {
@@ -119,7 +120,7 @@ export default function NewEnvironmentDialog({
             </InputWrapper>
             <InputWrapper>
               <Controller
-                name="copyFromEnvId"
+                name="copyFromEnvironmentId"
                 control={form.control}
                 render={({ field }) => (
                   <InputSelect
@@ -127,10 +128,18 @@ export default function NewEnvironmentDialog({
                     onValueChange={field.onChange}
                   >
                     <InputSelectTrigger
-                      label="Copy from (optional)"
-                      onClear={() => field.onChange(undefined)}
+                      label={
+                        <>
+                          Copy from{' '}
+                          <Badge variant="info" size="sm">
+                            Optional
+                          </Badge>
+                        </>
+                      }
+                      onClear={() => field.onChange('')}
+                      value={field.value}
                     >
-                      <InputSelectValue placeholder="Select an environment to copy from" />
+                      <InputSelectValue placeholder="Select an environment" />
                     </InputSelectTrigger>
                     <InputSelectContent>
                       {projectEnvironments.map((env) => (

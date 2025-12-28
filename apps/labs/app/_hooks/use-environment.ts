@@ -63,22 +63,18 @@ export default function useEnvironment(
       };
 
       // Add copy options if copyFromEnvId is provided
-      if (payload.copyFromEnvId) {
-        apiPayload.copyFromEnvId = payload.copyFromEnvId;
-        
-        // Convert copyOptions to an array of items to copy
+      if (payload.copyFromEnvironmentId) {
+        apiPayload.copyFromEnvironmentId = payload.copyFromEnvironmentId;
+
         if (payload.copyOptions) {
-          const itemsToCopy = Object.entries(payload.copyOptions)
-            .filter(([_, shouldCopy]) => shouldCopy)
-            .map(([key, _]) => key);
-          
-          if (itemsToCopy.length > 0) {
-            apiPayload.copyItems = itemsToCopy;
-          }
+          apiPayload.copyOptions = payload.copyOptions;
         }
       }
 
-      const { data } = await labsAPI.post<Environment>('/environments', apiPayload);
+      const { data } = await labsAPI.post<Environment>(
+        '/environments',
+        apiPayload,
+      );
 
       toast({
         title: 'Welcome to your environment',
