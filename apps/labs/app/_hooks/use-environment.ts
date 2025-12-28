@@ -55,10 +55,26 @@ export default function useEnvironment(
     payload: NewEnvironmentFormData,
   ) {
     try {
-      const { data } = await labsAPI.post<Environment>('/environments', {
-        ...payload,
+      // Prepare the API payload
+      const apiPayload: any = {
+        name: payload.name,
+        appURL: payload.appURL,
         projectId,
-      });
+      };
+
+      // Add copy options if copyFromEnvId is provided
+      if (payload.copyFromEnvironmentId) {
+        apiPayload.copyFromEnvironmentId = payload.copyFromEnvironmentId;
+
+        if (payload.copyOptions) {
+          apiPayload.copyOptions = payload.copyOptions;
+        }
+      }
+
+      const { data } = await labsAPI.post<Environment>(
+        '/environments',
+        apiPayload,
+      );
 
       toast({
         title: 'Welcome to your environment',
