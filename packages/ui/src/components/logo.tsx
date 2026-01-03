@@ -11,18 +11,26 @@ import { useTheme } from 'next-themes';
 
 type Props = {
   reduced?: boolean;
+  forceTheme?: 'light' | 'dark';
 };
 
 export default function Logo({
   className,
   reduced,
+  forceTheme,
   ...props
 }: Props & Omit<React.ComponentProps<typeof Image>, 'alt' | 'src'>) {
   const { resolvedTheme } = useTheme();
 
   let sourceImg;
 
-  if (resolvedTheme !== 'dark') {
+  if (forceTheme) {
+    if (forceTheme === 'light') {
+      sourceImg = reduced ? logoLightReduced : logoLight;
+    } else {
+      sourceImg = reduced ? logoDarkReduced : logoDark;
+    }
+  } else if (resolvedTheme !== 'dark') {
     sourceImg = reduced ? logoLightReduced : logoLight;
   } else {
     sourceImg = reduced ? logoDarkReduced : logoDark;
@@ -33,7 +41,7 @@ export default function Logo({
       {...props}
       src={sourceImg}
       alt="Thon Labs Logo"
-      className={cn('w-auto h-[1.125rem]', className)}
+      className={cn('w-auto h-[1rem]', className)}
     />
   );
 }
