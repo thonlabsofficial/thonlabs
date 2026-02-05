@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "date-fns": "^3.6.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "stripe": "^18.4.0",
     "typescript": "5.3.3"
   }
